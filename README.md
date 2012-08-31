@@ -12,6 +12,6 @@ Build Instructions
 ----
 Assuming you have maven installed, just run
 
-`mvn package shade:shade`
+    mvn package
 
 And maven will produce a jar file called `/target/SwiftApi-<version>-shaded.jar`

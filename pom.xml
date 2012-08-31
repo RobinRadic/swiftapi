@@ -15,14 +15,14 @@
 	</properties>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
-			<version>1.3.1-R0.1-SNAPSHOT</version>
+			<version>1.3.1-R2.0</version>
 		</dependency>
-		
-		<!-- Thrift Deps  -->
+
+		<!-- Thrift Deps -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -53,9 +53,9 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
-		</dependency>		
-		<!-- / Thrift Deps  -->
-		
+		</dependency>
+		<!-- / Thrift Deps -->
+
 	</dependencies>
 	<repositories>
 		<repository>
@@ -76,27 +76,6 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-shade-plugin</artifactId>
-					<version>1.7.1</version>
-					<configuration>
-						<minimizeJar>true</minimizeJar>
-						<artifactSet>
-							<excludes>
-								<exclude>org.bukkit:craftbukkit</exclude>
-							</excludes>
-						</artifactSet>
-					</configuration>
-					<executions>
-						<execution>
-							<phase>package</phase>
-							<goals>
-								<goal>shade</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
 				<plugin>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>1.3</version>
@@ -167,6 +146,28 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.7.1</version>
+				<configuration>
+					<minimizeJar>true</minimizeJar>
+					<artifactSet>
+						<excludes>
+							<exclude>org.bukkit:craftbukkit</exclude>
+						</excludes>
+					</artifactSet>
+				</configuration>
+				<executions>
+					<execution>
+						<id>shadify</id>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.2</version>
