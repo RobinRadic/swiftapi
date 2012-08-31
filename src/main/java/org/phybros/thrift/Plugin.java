@@ -839,7 +839,6 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
 
   private static class PluginTupleScheme extends TupleScheme<Plugin> {
 
-    
     public void write(org.apache.thrift.protocol.TProtocol prot, Plugin struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
@@ -888,7 +887,6 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       }
     }
 
-    
     public void read(org.apache.thrift.protocol.TProtocol prot, Plugin struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(6);

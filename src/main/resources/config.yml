@@ -1,0 +1,14 @@
+# SwiftApi Config File
+#
+# This is the default config file for SwiftApi
+
+# Authentication Information
+username: admin
+password: password
+salt: saltines
+
+# The port to listen on
+port: 21111
+
+# Set to true to log every method call
+logMethodCalls: true

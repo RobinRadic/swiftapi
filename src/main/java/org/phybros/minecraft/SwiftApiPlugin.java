@@ -4,16 +4,27 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class SwiftApiPlugin extends JavaPlugin {
 
+	private SwiftServer server;
+
 	@Override
 	public void onEnable() {
-		getLogger().info("SwiftApi was enabled.");
-		SwiftServer s = new SwiftServer(this);
+		try {
+			getLogger().info("SwiftApi was enabled.");
+			this.saveDefaultConfig();
+
+			server = new SwiftServer(this);
+		} catch (Exception e) {
+			getLogger().severe(e.getMessage());
+		}
 	}
-	
+
 	@Override
 	public void onDisable() {
-		getLogger().info("SwiftApi was disabled");
+		try {
+			server.stop();
+			getLogger().info("SwiftApi was disabled");
+		} catch (Exception e) {
+			getLogger().severe(e.getMessage());
+		}
 	}
-
-
 }
