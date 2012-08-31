@@ -151,6 +151,7 @@ public class EDataException extends Exception implements org.apache.thrift.TBase
     return new EDataException(this);
   }
 
+  @Override
   public void clear() {
     this.code = null;
     this.message = null;
@@ -459,6 +460,7 @@ public class EDataException extends Exception implements org.apache.thrift.TBase
 
   private static class EDataExceptionTupleScheme extends TupleScheme<EDataException> {
 
+    @Override
     public void write(org.apache.thrift.protocol.TProtocol prot, EDataException struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
@@ -477,6 +479,7 @@ public class EDataException extends Exception implements org.apache.thrift.TBase
       }
     }
 
+    @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, EDataException struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);

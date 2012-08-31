@@ -199,6 +199,7 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     return new Plugin(this);
   }
 
+  @Override
   public void clear() {
     this.name = null;
     this.description = null;
@@ -839,6 +840,7 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
 
   private static class PluginTupleScheme extends TupleScheme<Plugin> {
 
+    @Override
     public void write(org.apache.thrift.protocol.TProtocol prot, Plugin struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
@@ -887,6 +889,7 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       }
     }
 
+    @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, Plugin struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(6);

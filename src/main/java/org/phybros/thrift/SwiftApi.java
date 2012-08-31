@@ -372,6 +372,7 @@ public class SwiftApi {
       return new getPlugins_args(this);
     }
 
+    @Override
     public void clear() {
       this.authString = null;
     }
@@ -594,6 +595,7 @@ public class SwiftApi {
 
     private static class getPlugins_argsTupleScheme extends TupleScheme<getPlugins_args> {
 
+      @Override
       public void write(org.apache.thrift.protocol.TProtocol prot, getPlugins_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
@@ -606,6 +608,7 @@ public class SwiftApi {
         }
       }
 
+      @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getPlugins_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
@@ -739,6 +742,7 @@ public class SwiftApi {
       return new getPlugins_result(this);
     }
 
+    @Override
     public void clear() {
       this.success = null;
       this.aex = null;
@@ -1073,6 +1077,7 @@ public class SwiftApi {
 
     private static class getPlugins_resultTupleScheme extends TupleScheme<getPlugins_result> {
 
+      @Override
       public void write(org.apache.thrift.protocol.TProtocol prot, getPlugins_result struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
@@ -1097,6 +1102,7 @@ public class SwiftApi {
         }
       }
 
+      @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getPlugins_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(2);
@@ -1240,6 +1246,7 @@ public class SwiftApi {
       return new getPlugin_args(this);
     }
 
+    @Override
     public void clear() {
       this.authString = null;
       this.name = null;
@@ -1540,6 +1547,7 @@ public class SwiftApi {
 
     private static class getPlugin_argsTupleScheme extends TupleScheme<getPlugin_args> {
 
+      @Override
       public void write(org.apache.thrift.protocol.TProtocol prot, getPlugin_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
@@ -1558,6 +1566,7 @@ public class SwiftApi {
         }
       }
 
+      @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getPlugin_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(2);
@@ -1702,6 +1711,7 @@ public class SwiftApi {
       return new getPlugin_result(this);
     }
 
+    @Override
     public void clear() {
       this.success = null;
       this.aex = null;
@@ -2083,6 +2093,7 @@ public class SwiftApi {
 
     private static class getPlugin_resultTupleScheme extends TupleScheme<getPlugin_result> {
 
+      @Override
       public void write(org.apache.thrift.protocol.TProtocol prot, getPlugin_result struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
@@ -2107,6 +2118,7 @@ public class SwiftApi {
         }
       }
 
+      @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getPlugin_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(3);

@@ -151,6 +151,7 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
     return new EAuthException(this);
   }
 
+  @Override
   public void clear() {
     this.code = null;
     this.message = null;
@@ -459,6 +460,7 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
 
   private static class EAuthExceptionTupleScheme extends TupleScheme<EAuthException> {
 
+    @Override
     public void write(org.apache.thrift.protocol.TProtocol prot, EAuthException struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
@@ -477,6 +479,7 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
       }
     }
 
+    @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, EAuthException struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);
