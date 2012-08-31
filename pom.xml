@@ -8,23 +8,26 @@
 	<version>0.1</version>
 	<packaging>jar</packaging>
 
-	<url>http://dev.bukkit.org</url>
+	<url>https://github.com/phybros/swiftapi</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
+	
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>1.3.1-R0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- Thrift Deps  -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>1.3.1-R0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -36,13 +39,11 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.5.8</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.1.2</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
@@ -52,8 +53,9 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
-		</dependency>
-
+		</dependency>		
+		<!-- / Thrift Deps  -->
+		
 	</dependencies>
 	<repositories>
 		<repository>
@@ -79,7 +81,12 @@
 					<artifactId>maven-shade-plugin</artifactId>
 					<version>1.7.1</version>
 					<configuration>
-						<!-- put your configurations here -->
+						<minimizeJar>true</minimizeJar>
+						<artifactSet>
+							<excludes>
+								<exclude>org.bukkit:craftbukkit</exclude>
+							</excludes>
+						</artifactSet>
 					</configuration>
 					<executions>
 						<execution>
@@ -195,6 +202,6 @@
 
 		</plugins>
 	</build>
-	<name>PluginTemplate</name>
-	<description>A plugin template</description>
+	<name>SwiftApi</name>
+	<description>A bukkit plugin to expose functionality over an Apache Thrift interface</description>
 </project>
