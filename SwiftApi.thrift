@@ -7,6 +7,36 @@ enum ErrorCode {
 	NOT_FOUND = 2,
 }
 
+enum GameMode {
+	SURVIVAL = 0,
+	CREATIVE = 1,
+	ADVENTURE = 2,
+}
+
+enum Enchantment {
+	PROTECTION_ENVIRONMENTAL = 0,
+    PROTECTION_FIRE = 1,
+    PROTECTION_FALL = 2,
+    PROTECTION_EXPLOSIONS = 3,
+    PROTECTION_PROJECTILE = 4,
+    OXYGEN = 5,
+    WATER_WORKER = 6,
+    DAMAGE_ALL = 16,
+    DAMAGE_UNDEAD = 17,
+    DAMAGE_ARTHROPODS = 18,
+    KNOCKBACK = 19,
+    FIRE_ASPECT = 20,
+    LOOT_BONUS_MOBS = 21,
+    DIG_SPEED = 32,
+    SILK_TOUCH = 33,
+    DURABILITY = 34,
+    LOOT_BONUS_BLOCKS = 35,
+    ARROW_DAMAGE = 48,
+    ARROW_KNOCKBACK = 49,
+    ARROW_FIRE = 50,
+    ARROW_INFINITE = 51,
+}
+
 // This exception is thrown when something data-related went wrong
 exception EDataException {
 	1: ErrorCode code,
@@ -17,6 +47,49 @@ exception EDataException {
 exception EAuthException {
 	1: ErrorCode code,
 	2: string message,
+}
+
+struct ItemStack {
+	1: i32 amount,
+	2: i32 typeId,
+	3: i32 durability,
+	4: map<Enchantment, i32> enchantments,
+}
+
+struct PlayerArmor {
+	1: ItemStack helmet,
+	2: ItemStack chestplate,
+	3: ItemStack leggings,
+	4: ItemStack boots,
+}
+
+// Represents a player's inventory
+struct PlayerInventory {
+	1: list<ItemStack> inventory,
+	2: ItemStack itemInHand,
+	3: PlayerArmor armor,
+}
+
+// Represents a Player
+struct Player {
+	1: string name,
+	2: GameMode gamemode,
+	3: bool isSleeping,
+	4: bool isSneaking,
+	5: bool isSprinting,
+	6: bool isInVehicle,
+	7: i64 experience,
+	8: i32 level,
+	9: string ip,
+	10: bool isOp,
+	11: i32 foodLevel,
+	12: i32 health,
+	13: double exhaustion,
+	14: i64 firstPlayed,
+	15: i64 lastPlayed,
+	16: bool isBanned,
+	17: bool isWhitelisted,
+	18: PlayerInventory inventory,
 }
 
 // Represents a server plugin
