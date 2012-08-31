@@ -1,0 +1,4 @@
+name: SwiftApi
+main: org.phybros.minecraft.SwiftApiPlugin
+version: 0.1
+author: phybros
