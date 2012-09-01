@@ -13,6 +13,7 @@ import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.phybros.thrift.EAuthException;
 import org.phybros.thrift.EDataException;
@@ -27,134 +28,52 @@ import org.phybros.thrift.SwiftApi;
 
 public class SwiftServer {
 
-	private int port;
-	private TServer server;
-	private SwiftApiPlugin plugin;
-
 	public class SwiftApiHandler implements SwiftApi.Iface {
 
 		/**
-		 * Get a loaded server plugin by name
+		 * Authenticate a method call.
 		 * 
-		 * @throws TException
-		 *             If something thrifty went wrong
-		 * @throws EDataException
-		 *             If the requested plugin was not found
+		 * @param authString
+		 *            The authString to check.
+		 * @param methodName
+		 *            The method that is being called.
 		 * @throws EAuthException
-		 *             If the method call was not correctly authenticated
-		 * @return Plugin The plugin
-		 * @see org.phybros.thrift.SwiftApi.Iface#getPlugins()
+		 *             This is thrown if the authString is invalid.
 		 */
-		@Override
-		public Plugin getPlugin(String authString, String name)
-				throws TException, EDataException, EAuthException {
-			logCall("getPlugin");
-			authenticate(authString, "getPlugin");
+		private void authenticate(String authString, String methodName)
+				throws EAuthException {
+			String username = plugin.getConfig().getString("username");
+			String password = plugin.getConfig().getString("password");
+			String salt = plugin.getConfig().getString("salt");
 
-			Plugin newPlugin = new Plugin();
-			org.bukkit.plugin.Plugin p = plugin.getServer().getPluginManager()
-					.getPlugin(name);
+			// build the pre-hashed string
+			String myAuthString = username + methodName + password + salt;
 
-			if (p == null) {
-				EDataException e = new EDataException();
-				e.code = ErrorCode.NOT_FOUND;
-				e.message = "Server plugin \"" + name + "\" not found";
-				throw e;
+			try {
+				MessageDigest md = MessageDigest.getInstance("SHA-256");
+				md.update(myAuthString.getBytes());
+				String hash = byteToString(md.digest());
+				// plugin.getLogger().info("Expecting: " + hash);
+				// plugin.getLogger().info("Received:  " + authString);
+
+				if (!hash.equalsIgnoreCase(authString)) {
+					plugin.getLogger().info("Invalid Authentication received");
+					EAuthException e = new EAuthException();
+					e.code = ErrorCode.INVALID_AUTHSTRING;
+					e.message = "Authentication string was invalid";
+					throw e;
+				}
+			} catch (NoSuchAlgorithmException algex) {
+				plugin.getLogger().severe(algex.getMessage());
 			}
-
-			newPlugin.authors = p.getDescription().getAuthors();
-			newPlugin.description = p.getDescription().getDescription();
-			newPlugin.enabled = p.isEnabled();
-			newPlugin.name = p.getDescription().getName();
-			newPlugin.version = p.getDescription().getVersion();
-			newPlugin.website = p.getDescription().getWebsite();
-
-			return newPlugin;
 		}
 
-		/**
-		 * This method returns a list of all the currently loaded plugins on the
-		 * server.
-		 * 
-		 * @throws TException
-		 *             If something thrifty went wrong
-		 * @throws EAuthException
-		 *             If the method call was not correctly authenticated
-		 * @return List<Plugin> A list of the plugins on the server
-		 * @see org.phybros.thrift.SwiftApi.Iface#getPlugins(java.lang.String)
-		 */
-		@Override
-		public List<Plugin> getPlugins(String authString) throws TException,
-				EAuthException {
-			logCall("getPlugins");
-			authenticate(authString, "getPlugins");
-
-			List<Plugin> serverPlugins = new ArrayList<Plugin>();
-
-			for (org.bukkit.plugin.Plugin p : plugin.getServer()
-					.getPluginManager().getPlugins()) {
-				Plugin newPlugin = new Plugin();
-
-				newPlugin.authors = p.getDescription().getAuthors();
-				newPlugin.description = p.getDescription().getDescription();
-				newPlugin.enabled = p.isEnabled();
-				newPlugin.name = p.getDescription().getName();
-				newPlugin.version = p.getDescription().getVersion();
-				newPlugin.website = p.getDescription().getWebsite();
-
-				serverPlugins.add(newPlugin);
+		private String byteToString(byte[] bytes) {
+			String result = "";
+			for (int i = 0; i < bytes.length; i++) {
+				result += String.format("%02x", bytes[i]);
 			}
-
-			return serverPlugins;
-		}
-
-		/**
-		 * Get a player by name
-		 * 
-		 * @throws TException
-		 *             , EDataException, TException
-		 * @return Player The requested player. If the player could not be
-		 *         found, and EDataException is thrown
-		 * @see org.phybros.thrift.SwiftApi.Iface#getPlugins(java.lang.String)
-		 */
-		@Override
-		public Player getPlayer(String authString, String name)
-				throws EAuthException, EDataException, TException {
-			logCall("getPlayer");
-			authenticate(authString, "getPlayer");
-			org.bukkit.entity.Player p = plugin.getServer().getPlayer(name);
-
-			if (p == null) {
-				EDataException e = new EDataException();
-				e.code = ErrorCode.NOT_FOUND;
-				e.message = "Player \"" + name + "\" not found";
-				throw e;
-			}
-
-			return convertBukkitPlayer(p);
-		}
-
-		/**
-		 * Get all online Players
-		 * 
-		 * @throws TException
-		 *             , TException
-		 * @return List<Player> A list of all currently online players
-		 * @see org.phybros.thrift.SwiftApi.Iface#getPlayers(java.lang.String)
-		 */
-		@Override
-		public List<Player> getPlayers(String authString)
-				throws EAuthException, TException {
-			logCall("getPlayers");
-			authenticate(authString, "getPlayers");
-			List<Player> players = new ArrayList<Player>();
-
-			for (org.bukkit.entity.Player bPlayer : plugin.getServer()
-					.getOnlinePlayers()) {
-				players.add(convertBukkitPlayer(bPlayer));
-			}
-
-			return players;
+			return result;
 		}
 
 		/**
@@ -250,6 +169,209 @@ public class SwiftServer {
 			return playerInventory;
 		}
 
+		@Override
+		public boolean deOp(String authString, String name)
+				throws EAuthException, EDataException, TException {
+			logCall("deOp");
+			authenticate(authString, "deOp");
+
+			org.bukkit.entity.Player player = plugin.getServer()
+					.getPlayer(name);
+
+			if (player == null) {
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = "Player \"" + name + "\" not found";
+				throw e;
+			}
+
+			try {
+				player.setOp(false);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+
+		@Override
+		public String getBukkitVersion(String authString)
+				throws EAuthException, TException {
+			logCall("getBukkitVersion");
+			authenticate(authString, "getBukkitVersion");
+
+			return plugin.getServer().getBukkitVersion();
+		}
+
+		@Override
+		public Player getOfflinePlayer(String authString, String name)
+				throws EAuthException, EDataException, TException {
+			logCall("getOfflinePlayer");
+			authenticate(authString, "getOfflinePlayer");
+
+			org.bukkit.entity.Player p = plugin.getServer().getOfflinePlayer(
+					name).getPlayer();
+
+			if (p == null) {
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = "Player \"" + name + "\" not found";
+				throw e;
+			}
+			
+			return convertBukkitPlayer(p);
+		}
+
+		@Override
+		public List<Player> getOfflinePlayers(String authString)
+				throws EAuthException, TException {
+			logCall("getOfflinePlayers");
+			authenticate(authString, "getOfflinePlayers");
+
+			List<Player> result = new ArrayList<Player>();
+			OfflinePlayer[] players = plugin.getServer().getOfflinePlayers();
+			
+			for(OfflinePlayer p : players) {
+				if(!p.isOnline()) {
+					result.add(convertBukkitPlayer(p.getPlayer()));
+				}
+			}
+			
+			return result;
+		}
+
+		/**
+		 * Get a player by name
+		 * 
+		 * @throws TException
+		 *             , EDataException, TException
+		 * @return Player The requested player. If the player could not be
+		 *         found, and EDataException is thrown
+		 * @see org.phybros.thrift.SwiftApi.Iface#getPlugins(java.lang.String)
+		 */
+		@Override
+		public Player getPlayer(String authString, String name)
+				throws EAuthException, EDataException, TException {
+			logCall("getPlayer");
+			authenticate(authString, "getPlayer");
+			org.bukkit.entity.Player p = plugin.getServer().getPlayer(name);
+
+			if (p == null) {
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = "Player \"" + name + "\" not found";
+				throw e;
+			}
+
+			return convertBukkitPlayer(p);
+		}
+
+		/**
+		 * Get all online Players
+		 * 
+		 * @throws TException
+		 *             , TException
+		 * @return List<Player> A list of all currently online players
+		 * @see org.phybros.thrift.SwiftApi.Iface#getPlayers(java.lang.String)
+		 */
+		@Override
+		public List<Player> getPlayers(String authString)
+				throws EAuthException, TException {
+			logCall("getPlayers");
+			authenticate(authString, "getPlayers");
+			List<Player> players = new ArrayList<Player>();
+
+			for (org.bukkit.entity.Player bPlayer : plugin.getServer()
+					.getOnlinePlayers()) {
+				players.add(convertBukkitPlayer(bPlayer));
+			}
+
+			return players;
+		}
+
+		/**
+		 * Get a loaded server plugin by name
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * @throws EDataException
+		 *             If the requested plugin was not found
+		 * @throws EAuthException
+		 *             If the method call was not correctly authenticated
+		 * @return Plugin The plugin
+		 * @see org.phybros.thrift.SwiftApi.Iface#getPlugins()
+		 */
+		@Override
+		public Plugin getPlugin(String authString, String name)
+				throws TException, EDataException, EAuthException {
+			logCall("getPlugin");
+			authenticate(authString, "getPlugin");
+
+			Plugin newPlugin = new Plugin();
+			org.bukkit.plugin.Plugin p = plugin.getServer().getPluginManager()
+					.getPlugin(name);
+
+			if (p == null) {
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = "Server plugin \"" + name + "\" not found";
+				throw e;
+			}
+
+			newPlugin.authors = p.getDescription().getAuthors();
+			newPlugin.description = p.getDescription().getDescription();
+			newPlugin.enabled = p.isEnabled();
+			newPlugin.name = p.getDescription().getName();
+			newPlugin.version = p.getDescription().getVersion();
+			newPlugin.website = p.getDescription().getWebsite();
+
+			return newPlugin;
+		}
+
+		/**
+		 * This method returns a list of all the currently loaded plugins on the
+		 * server.
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * @throws EAuthException
+		 *             If the method call was not correctly authenticated
+		 * @return List<Plugin> A list of the plugins on the server
+		 * @see org.phybros.thrift.SwiftApi.Iface#getPlugins(java.lang.String)
+		 */
+		@Override
+		public List<Plugin> getPlugins(String authString) throws TException,
+				EAuthException {
+			logCall("getPlugins");
+			authenticate(authString, "getPlugins");
+
+			List<Plugin> serverPlugins = new ArrayList<Plugin>();
+
+			for (org.bukkit.plugin.Plugin p : plugin.getServer()
+					.getPluginManager().getPlugins()) {
+				Plugin newPlugin = new Plugin();
+
+				newPlugin.authors = p.getDescription().getAuthors();
+				newPlugin.description = p.getDescription().getDescription();
+				newPlugin.enabled = p.isEnabled();
+				newPlugin.name = p.getDescription().getName();
+				newPlugin.version = p.getDescription().getVersion();
+				newPlugin.website = p.getDescription().getWebsite();
+
+				serverPlugins.add(newPlugin);
+			}
+
+			return serverPlugins;
+		}
+
+		@Override
+		public String getServerVersion(String authString)
+				throws EAuthException, TException {
+			logCall("getServerVersion");
+			authenticate(authString, "getServerVersion");
+
+			return plugin.getServer().getVersion();
+		}
+
 		/**
 		 * Log an API call. If the config option logMethodCalls is false, this
 		 * method does nothing.
@@ -264,53 +386,61 @@ public class SwiftServer {
 			}
 		}
 
-		/**
-		 * Authenticate a method call.
-		 * 
-		 * @param authString
-		 *            The authString to check.
-		 * @param methodName
-		 *            The method that is being called.
-		 * @throws EAuthException
-		 *             This is thrown if the authString is invalid.
-		 */
-		private void authenticate(String authString, String methodName)
-				throws EAuthException {
-			String username = plugin.getConfig().getString("username");
-			String password = plugin.getConfig().getString("password");
-			String salt = plugin.getConfig().getString("salt");
+		@Override
+		public boolean op(String authString, String name)
+				throws EAuthException, EDataException, TException {
+			logCall("op");
+			authenticate(authString, "op");
 
-			// build the pre-hashed string
-			String myAuthString = username + methodName + password + salt;
+			org.bukkit.entity.Player player = plugin.getServer()
+					.getPlayer(name);
+
+			if (player == null) {
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = "Player \"" + name + "\" not found";
+				throw e;
+			}
 
 			try {
-				MessageDigest md = MessageDigest.getInstance("SHA-256");
-				md.update(myAuthString.getBytes());
-				String hash = byteToString(md.digest());
-				// plugin.getLogger().info("Expecting: " + hash);
-				// plugin.getLogger().info("Received:  " + authString);
-
-				if (!hash.equalsIgnoreCase(authString)) {
-					plugin.getLogger().info("Invalid Authentication received");
-					EAuthException e = new EAuthException();
-					e.code = ErrorCode.INVALID_AUTHSTRING;
-					e.message = "Authentication string was invalid";
-					throw e;
-				}
-			} catch (NoSuchAlgorithmException algex) {
-				plugin.getLogger().severe(algex.getMessage());
+				player.setOp(true);
+				return true;
+			} catch (Exception e) {
+				return false;
 			}
 		}
 
-		private String byteToString(byte[] bytes) {
-			String result = "";
-			for (int i = 0; i < bytes.length; i++) {
-				result += String.format("%02x", bytes[i]);
-			}
-			return result;
-		}
+		@Override
+		public boolean setGameMode(String authString, String name, GameMode mode)
+				throws EAuthException, EDataException, TException {
+			logCall("setGameMode");
+			authenticate(authString, "setGameMode");
 
+			org.bukkit.entity.Player player = plugin.getServer()
+					.getPlayer(name);
+
+			if (player == null) {
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = "Player \"" + name + "\" not found";
+				throw e;
+			}
+
+			try {
+				org.bukkit.GameMode m = org.bukkit.GameMode.getByValue(mode
+						.getValue());
+				player.setGameMode(m);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
 	}
+
+	private int port;
+	private TServer server;
+
+	private SwiftApiPlugin plugin;
 
 	public SwiftServer(SwiftApiPlugin plugin) {
 		this.plugin = plugin;
