@@ -104,6 +104,8 @@ struct Plugin {
 
 // The main service that provides all the methods
 service SwiftApi {
+	Player getPlayer(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
+	list<Player> getPlayers(1:string authString) throws (1:EAuthException aex),
 	list<Plugin> getPlugins(1:string authString) throws (1:EAuthException aex),
 	Plugin getPlugin(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
 }

@@ -1006,14 +1006,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                  struct.success = new ArrayList<Plugin>(_list8.size);
-                  for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+                  org.apache.thrift.protocol.TList _list26 = iprot.readListBegin();
+                  struct.success = new ArrayList<Plugin>(_list26.size);
+                  for (int _i27 = 0; _i27 < _list26.size; ++_i27)
                   {
-                    Plugin _elem10; // required
-                    _elem10 = new Plugin();
-                    _elem10.read(iprot);
-                    struct.success.add(_elem10);
+                    Plugin _elem28; // required
+                    _elem28 = new Plugin();
+                    _elem28.read(iprot);
+                    struct.success.add(_elem28);
                   }
                   iprot.readListEnd();
                 }
@@ -1050,9 +1050,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Plugin _iter11 : struct.success)
+            for (Plugin _iter29 : struct.success)
             {
-              _iter11.write(oprot);
+              _iter29.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -1091,9 +1091,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Plugin _iter12 : struct.success)
+            for (Plugin _iter30 : struct.success)
             {
-              _iter12.write(oprot);
+              _iter30.write(oprot);
             }
           }
         }
@@ -1108,14 +1108,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Plugin>(_list13.size);
-            for (int _i14 = 0; _i14 < _list13.size; ++_i14)
+            org.apache.thrift.protocol.TList _list31 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Plugin>(_list31.size);
+            for (int _i32 = 0; _i32 < _list31.size; ++_i32)
             {
-              Plugin _elem15; // required
-              _elem15 = new Plugin();
-              _elem15.read(iprot);
-              struct.success.add(_elem15);
+              Plugin _elem33; // required
+              _elem33 = new Plugin();
+              _elem33.read(iprot);
+              struct.success.add(_elem33);
             }
           }
           struct.setSuccessIsSet(true);

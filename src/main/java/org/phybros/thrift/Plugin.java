@@ -753,13 +753,13 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
           case 5: // AUTHORS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                struct.authors = new ArrayList<String>(_list0.size);
-                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+                org.apache.thrift.protocol.TList _list18 = iprot.readListBegin();
+                struct.authors = new ArrayList<String>(_list18.size);
+                for (int _i19 = 0; _i19 < _list18.size; ++_i19)
                 {
-                  String _elem2; // required
-                  _elem2 = iprot.readString();
-                  struct.authors.add(_elem2);
+                  String _elem20; // required
+                  _elem20 = iprot.readString();
+                  struct.authors.add(_elem20);
                 }
                 iprot.readListEnd();
               }
@@ -815,9 +815,9 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
         oprot.writeFieldBegin(AUTHORS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.authors.size()));
-          for (String _iter3 : struct.authors)
+          for (String _iter21 : struct.authors)
           {
-            oprot.writeString(_iter3);
+            oprot.writeString(_iter21);
           }
           oprot.writeListEnd();
         }
@@ -878,9 +878,9 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       if (struct.isSetAuthors()) {
         {
           oprot.writeI32(struct.authors.size());
-          for (String _iter4 : struct.authors)
+          for (String _iter22 : struct.authors)
           {
-            oprot.writeString(_iter4);
+            oprot.writeString(_iter22);
           }
         }
       }
@@ -911,13 +911,13 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       }
       if (incoming.get(4)) {
         {
-          org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-          struct.authors = new ArrayList<String>(_list5.size);
-          for (int _i6 = 0; _i6 < _list5.size; ++_i6)
+          org.apache.thrift.protocol.TList _list23 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+          struct.authors = new ArrayList<String>(_list23.size);
+          for (int _i24 = 0; _i24 < _list23.size; ++_i24)
           {
-            String _elem7; // required
-            _elem7 = iprot.readString();
-            struct.authors.add(_elem7);
+            String _elem25; // required
+            _elem25 = iprot.readString();
+            struct.authors.add(_elem25);
           }
         }
         struct.setAuthorsIsSet(true);

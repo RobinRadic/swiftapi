@@ -11,14 +11,14 @@ import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum ErrorCode implements org.apache.thrift.TEnum {
-  INVALID_REQUEST(0),
-  INVALID_AUTHSTRING(1),
-  NOT_FOUND(2);
+public enum GameMode implements org.apache.thrift.TEnum {
+  SURVIVAL(0),
+  CREATIVE(1),
+  ADVENTURE(2);
 
   private final int value;
 
-  private ErrorCode(int value) {
+  private GameMode(int value) {
     this.value = value;
   }
 
@@ -33,14 +33,14 @@ public enum ErrorCode implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static ErrorCode findByValue(int value) { 
+  public static GameMode findByValue(int value) { 
     switch (value) {
       case 0:
-        return INVALID_REQUEST;
+        return SURVIVAL;
       case 1:
-        return INVALID_AUTHSTRING;
+        return CREATIVE;
       case 2:
-        return NOT_FOUND;
+        return ADVENTURE;
       default:
         return null;
     }
