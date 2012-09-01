@@ -57,10 +57,10 @@ public class SwiftServer {
 				// plugin.getLogger().info("Received:  " + authString);
 
 				if (!hash.equalsIgnoreCase(authString)) {
-					plugin.getLogger().info("Invalid Authentication received");
+					plugin.getLogger().info(String.format("Invalid Authentication received (method: %s)", methodName));
 					EAuthException e = new EAuthException();
 					e.code = ErrorCode.INVALID_AUTHSTRING;
-					e.message = "Authentication string was invalid";
+					e.message = plugin.getConfig().getString("errorMessages.invalidAuthentication");
 					throw e;
 				}
 			} catch (NoSuchAlgorithmException algex) {
@@ -203,9 +203,10 @@ public class SwiftServer {
 			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
 
 			if (offPl == null) {
+				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = "Player \"" + name + "\" not found";
+				e.message = String.format(plugin.getConfig().getString("errorMessages.playerNotFound"), name);
 				throw e;
 			}
 
@@ -240,9 +241,10 @@ public class SwiftServer {
 			OfflinePlayer p = plugin.getServer().getOfflinePlayer(name);
 
 			if (p == null) {
+				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = "Player \"" + name + "\" not found";
+				e.message = String.format(plugin.getConfig().getString("errorMessages.offlinePlayerNotFound"), name);
 				throw e;
 			}
 
@@ -282,9 +284,10 @@ public class SwiftServer {
 			org.bukkit.entity.Player p = plugin.getServer().getPlayer(name);
 
 			if (p == null) {
+				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = "Player \"" + name + "\" not found";
+				e.message = String.format(plugin.getConfig().getString("errorMessages.playerNotFound"), name);
 				throw e;
 			}
 
@@ -337,9 +340,10 @@ public class SwiftServer {
 					.getPlugin(name);
 
 			if (p == null) {
+				plugin.getLogger().info("Plugin not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = "Server plugin \"" + name + "\" not found";
+				e.message = String.format(plugin.getConfig().getString("errorMessages.pluginNotFound"), name);
 				throw e;
 			}
 
@@ -421,9 +425,10 @@ public class SwiftServer {
 			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
 
 			if (offPl == null) {
+				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = "Player \"" + name + "\" not found";
+				e.message = String.format(plugin.getConfig().getString("errorMessages.playerNotFound"), name);
 				throw e;
 			}
 
@@ -449,9 +454,10 @@ public class SwiftServer {
 					.getPlayer(name);
 
 			if (player == null) {
+				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = "Player \"" + name + "\" not found";
+				e.message = String.format(plugin.getConfig().getString("errorMessages.playerNotFound"), name);
 				throw e;
 			}
 

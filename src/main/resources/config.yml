@@ -2,18 +2,35 @@
 #
 # This is the default config file for SwiftApi
 
-# Authentication Information
+# Authentication Information (CHANGE THESE)
 username: admin
 password: password
 salt: saltines
 
-# The port to listen on
+# The port to listen on (default 21111)
 port: 21111
 
-# Set to true to log every method call
-logMethodCalls: true
+# Set to true to log every method call (mainly for debugging)
+logMethodCalls: false
 
 # Various messages
 messages:
     deOp: You have been deOpped
     op: You have been opped
+
+# Error messages.
+errorMessages:
+    # Requestor's authString was invalid
+    invalidAuthentication: Authentication string was invalid
+    
+    # Requested player was not found
+    # Use %s to represent the requested player name
+    playerNotFound: Player "%s" was not found
+    
+    # Requested plugin was not found
+    # Use %s to represent the requested plugin name
+    pluginNotFound: Plugin "%s" was not found
+    
+    # Requested world was not found
+    # Use %s to represent the requested world name
+    worldNotFound: World "%s" was not found
