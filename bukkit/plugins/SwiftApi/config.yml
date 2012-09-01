@@ -11,4 +11,4 @@ salt: saltines
 port: 21111
 
 # Set to true to log every method call
-logMethodCalls: false
+logMethodCalls: true

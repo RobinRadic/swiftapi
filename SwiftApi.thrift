@@ -78,7 +78,7 @@ struct Player {
 	4: bool isSneaking,
 	5: bool isSprinting,
 	6: bool isInVehicle,
-	7: i64 experience,
+	7: i64 xpToNextLevel,
 	8: i32 level,
 	9: string ip,
 	10: bool isOp,
@@ -90,6 +90,8 @@ struct Player {
 	16: bool isBanned,
 	17: bool isWhitelisted,
 	18: PlayerInventory inventory,
+	19: double levelProgress,
+	20: i32 port,
 }
 
 // Represents a server plugin

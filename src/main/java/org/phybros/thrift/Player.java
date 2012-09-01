@@ -36,7 +36,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   private static final org.apache.thrift.protocol.TField IS_SNEAKING_FIELD_DESC = new org.apache.thrift.protocol.TField("isSneaking", org.apache.thrift.protocol.TType.BOOL, (short)4);
   private static final org.apache.thrift.protocol.TField IS_SPRINTING_FIELD_DESC = new org.apache.thrift.protocol.TField("isSprinting", org.apache.thrift.protocol.TType.BOOL, (short)5);
   private static final org.apache.thrift.protocol.TField IS_IN_VEHICLE_FIELD_DESC = new org.apache.thrift.protocol.TField("isInVehicle", org.apache.thrift.protocol.TType.BOOL, (short)6);
-  private static final org.apache.thrift.protocol.TField EXPERIENCE_FIELD_DESC = new org.apache.thrift.protocol.TField("experience", org.apache.thrift.protocol.TType.I64, (short)7);
+  private static final org.apache.thrift.protocol.TField XP_TO_NEXT_LEVEL_FIELD_DESC = new org.apache.thrift.protocol.TField("xpToNextLevel", org.apache.thrift.protocol.TType.I64, (short)7);
   private static final org.apache.thrift.protocol.TField LEVEL_FIELD_DESC = new org.apache.thrift.protocol.TField("level", org.apache.thrift.protocol.TType.I32, (short)8);
   private static final org.apache.thrift.protocol.TField IP_FIELD_DESC = new org.apache.thrift.protocol.TField("ip", org.apache.thrift.protocol.TType.STRING, (short)9);
   private static final org.apache.thrift.protocol.TField IS_OP_FIELD_DESC = new org.apache.thrift.protocol.TField("isOp", org.apache.thrift.protocol.TType.BOOL, (short)10);
@@ -48,6 +48,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   private static final org.apache.thrift.protocol.TField IS_BANNED_FIELD_DESC = new org.apache.thrift.protocol.TField("isBanned", org.apache.thrift.protocol.TType.BOOL, (short)16);
   private static final org.apache.thrift.protocol.TField IS_WHITELISTED_FIELD_DESC = new org.apache.thrift.protocol.TField("isWhitelisted", org.apache.thrift.protocol.TType.BOOL, (short)17);
   private static final org.apache.thrift.protocol.TField INVENTORY_FIELD_DESC = new org.apache.thrift.protocol.TField("inventory", org.apache.thrift.protocol.TType.STRUCT, (short)18);
+  private static final org.apache.thrift.protocol.TField LEVEL_PROGRESS_FIELD_DESC = new org.apache.thrift.protocol.TField("levelProgress", org.apache.thrift.protocol.TType.DOUBLE, (short)19);
+  private static final org.apache.thrift.protocol.TField PORT_FIELD_DESC = new org.apache.thrift.protocol.TField("port", org.apache.thrift.protocol.TType.I32, (short)20);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -65,7 +67,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   public boolean isSneaking; // required
   public boolean isSprinting; // required
   public boolean isInVehicle; // required
-  public long experience; // required
+  public long xpToNextLevel; // required
   public int level; // required
   public String ip; // required
   public boolean isOp; // required
@@ -77,6 +79,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   public boolean isBanned; // required
   public boolean isWhitelisted; // required
   public PlayerInventory inventory; // required
+  public double levelProgress; // required
+  public int port; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -90,7 +94,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     IS_SNEAKING((short)4, "isSneaking"),
     IS_SPRINTING((short)5, "isSprinting"),
     IS_IN_VEHICLE((short)6, "isInVehicle"),
-    EXPERIENCE((short)7, "experience"),
+    XP_TO_NEXT_LEVEL((short)7, "xpToNextLevel"),
     LEVEL((short)8, "level"),
     IP((short)9, "ip"),
     IS_OP((short)10, "isOp"),
@@ -101,7 +105,9 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     LAST_PLAYED((short)15, "lastPlayed"),
     IS_BANNED((short)16, "isBanned"),
     IS_WHITELISTED((short)17, "isWhitelisted"),
-    INVENTORY((short)18, "inventory");
+    INVENTORY((short)18, "inventory"),
+    LEVEL_PROGRESS((short)19, "levelProgress"),
+    PORT((short)20, "port");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -128,8 +134,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
           return IS_SPRINTING;
         case 6: // IS_IN_VEHICLE
           return IS_IN_VEHICLE;
-        case 7: // EXPERIENCE
-          return EXPERIENCE;
+        case 7: // XP_TO_NEXT_LEVEL
+          return XP_TO_NEXT_LEVEL;
         case 8: // LEVEL
           return LEVEL;
         case 9: // IP
@@ -152,6 +158,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
           return IS_WHITELISTED;
         case 18: // INVENTORY
           return INVENTORY;
+        case 19: // LEVEL_PROGRESS
+          return LEVEL_PROGRESS;
+        case 20: // PORT
+          return PORT;
         default:
           return null;
       }
@@ -196,7 +206,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   private static final int __ISSNEAKING_ISSET_ID = 1;
   private static final int __ISSPRINTING_ISSET_ID = 2;
   private static final int __ISINVEHICLE_ISSET_ID = 3;
-  private static final int __EXPERIENCE_ISSET_ID = 4;
+  private static final int __XPTONEXTLEVEL_ISSET_ID = 4;
   private static final int __LEVEL_ISSET_ID = 5;
   private static final int __ISOP_ISSET_ID = 6;
   private static final int __FOODLEVEL_ISSET_ID = 7;
@@ -206,7 +216,9 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   private static final int __LASTPLAYED_ISSET_ID = 11;
   private static final int __ISBANNED_ISSET_ID = 12;
   private static final int __ISWHITELISTED_ISSET_ID = 13;
-  private BitSet __isset_bit_vector = new BitSet(14);
+  private static final int __LEVELPROGRESS_ISSET_ID = 14;
+  private static final int __PORT_ISSET_ID = 15;
+  private BitSet __isset_bit_vector = new BitSet(16);
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -222,7 +234,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.IS_IN_VEHICLE, new org.apache.thrift.meta_data.FieldMetaData("isInVehicle", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.EXPERIENCE, new org.apache.thrift.meta_data.FieldMetaData("experience", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.XP_TO_NEXT_LEVEL, new org.apache.thrift.meta_data.FieldMetaData("xpToNextLevel", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.LEVEL, new org.apache.thrift.meta_data.FieldMetaData("level", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
@@ -246,6 +258,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.INVENTORY, new org.apache.thrift.meta_data.FieldMetaData("inventory", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, PlayerInventory.class)));
+    tmpMap.put(_Fields.LEVEL_PROGRESS, new org.apache.thrift.meta_data.FieldMetaData("levelProgress", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.PORT, new org.apache.thrift.meta_data.FieldMetaData("port", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Player.class, metaDataMap);
   }
@@ -260,7 +276,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     boolean isSneaking,
     boolean isSprinting,
     boolean isInVehicle,
-    long experience,
+    long xpToNextLevel,
     int level,
     String ip,
     boolean isOp,
@@ -271,7 +287,9 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     long lastPlayed,
     boolean isBanned,
     boolean isWhitelisted,
-    PlayerInventory inventory)
+    PlayerInventory inventory,
+    double levelProgress,
+    int port)
   {
     this();
     this.name = name;
@@ -284,8 +302,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     setIsSprintingIsSet(true);
     this.isInVehicle = isInVehicle;
     setIsInVehicleIsSet(true);
-    this.experience = experience;
-    setExperienceIsSet(true);
+    this.xpToNextLevel = xpToNextLevel;
+    setXpToNextLevelIsSet(true);
     this.level = level;
     setLevelIsSet(true);
     this.ip = ip;
@@ -306,6 +324,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     this.isWhitelisted = isWhitelisted;
     setIsWhitelistedIsSet(true);
     this.inventory = inventory;
+    this.levelProgress = levelProgress;
+    setLevelProgressIsSet(true);
+    this.port = port;
+    setPortIsSet(true);
   }
 
   /**
@@ -324,7 +346,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     this.isSneaking = other.isSneaking;
     this.isSprinting = other.isSprinting;
     this.isInVehicle = other.isInVehicle;
-    this.experience = other.experience;
+    this.xpToNextLevel = other.xpToNextLevel;
     this.level = other.level;
     if (other.isSetIp()) {
       this.ip = other.ip;
@@ -340,6 +362,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     if (other.isSetInventory()) {
       this.inventory = new PlayerInventory(other.inventory);
     }
+    this.levelProgress = other.levelProgress;
+    this.port = other.port;
   }
 
   public Player deepCopy() {
@@ -358,8 +382,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     this.isSprinting = false;
     setIsInVehicleIsSet(false);
     this.isInVehicle = false;
-    setExperienceIsSet(false);
-    this.experience = 0;
+    setXpToNextLevelIsSet(false);
+    this.xpToNextLevel = 0;
     setLevelIsSet(false);
     this.level = 0;
     this.ip = null;
@@ -380,6 +404,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     setIsWhitelistedIsSet(false);
     this.isWhitelisted = false;
     this.inventory = null;
+    setLevelProgressIsSet(false);
+    this.levelProgress = 0.0;
+    setPortIsSet(false);
+    this.port = 0;
   }
 
   public String getName() {
@@ -530,27 +558,27 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__ISINVEHICLE_ISSET_ID, value);
   }
 
-  public long getExperience() {
-    return this.experience;
+  public long getXpToNextLevel() {
+    return this.xpToNextLevel;
   }
 
-  public Player setExperience(long experience) {
-    this.experience = experience;
-    setExperienceIsSet(true);
+  public Player setXpToNextLevel(long xpToNextLevel) {
+    this.xpToNextLevel = xpToNextLevel;
+    setXpToNextLevelIsSet(true);
     return this;
   }
 
-  public void unsetExperience() {
-    __isset_bit_vector.clear(__EXPERIENCE_ISSET_ID);
+  public void unsetXpToNextLevel() {
+    __isset_bit_vector.clear(__XPTONEXTLEVEL_ISSET_ID);
   }
 
-  /** Returns true if field experience is set (has been assigned a value) and false otherwise */
-  public boolean isSetExperience() {
-    return __isset_bit_vector.get(__EXPERIENCE_ISSET_ID);
+  /** Returns true if field xpToNextLevel is set (has been assigned a value) and false otherwise */
+  public boolean isSetXpToNextLevel() {
+    return __isset_bit_vector.get(__XPTONEXTLEVEL_ISSET_ID);
   }
 
-  public void setExperienceIsSet(boolean value) {
-    __isset_bit_vector.set(__EXPERIENCE_ISSET_ID, value);
+  public void setXpToNextLevelIsSet(boolean value) {
+    __isset_bit_vector.set(__XPTONEXTLEVEL_ISSET_ID, value);
   }
 
   public int getLevel() {
@@ -808,6 +836,52 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     }
   }
 
+  public double getLevelProgress() {
+    return this.levelProgress;
+  }
+
+  public Player setLevelProgress(double levelProgress) {
+    this.levelProgress = levelProgress;
+    setLevelProgressIsSet(true);
+    return this;
+  }
+
+  public void unsetLevelProgress() {
+    __isset_bit_vector.clear(__LEVELPROGRESS_ISSET_ID);
+  }
+
+  /** Returns true if field levelProgress is set (has been assigned a value) and false otherwise */
+  public boolean isSetLevelProgress() {
+    return __isset_bit_vector.get(__LEVELPROGRESS_ISSET_ID);
+  }
+
+  public void setLevelProgressIsSet(boolean value) {
+    __isset_bit_vector.set(__LEVELPROGRESS_ISSET_ID, value);
+  }
+
+  public int getPort() {
+    return this.port;
+  }
+
+  public Player setPort(int port) {
+    this.port = port;
+    setPortIsSet(true);
+    return this;
+  }
+
+  public void unsetPort() {
+    __isset_bit_vector.clear(__PORT_ISSET_ID);
+  }
+
+  /** Returns true if field port is set (has been assigned a value) and false otherwise */
+  public boolean isSetPort() {
+    return __isset_bit_vector.get(__PORT_ISSET_ID);
+  }
+
+  public void setPortIsSet(boolean value) {
+    __isset_bit_vector.set(__PORT_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -858,11 +932,11 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       }
       break;
 
-    case EXPERIENCE:
+    case XP_TO_NEXT_LEVEL:
       if (value == null) {
-        unsetExperience();
+        unsetXpToNextLevel();
       } else {
-        setExperience((Long)value);
+        setXpToNextLevel((Long)value);
       }
       break;
 
@@ -954,6 +1028,22 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       }
       break;
 
+    case LEVEL_PROGRESS:
+      if (value == null) {
+        unsetLevelProgress();
+      } else {
+        setLevelProgress((Double)value);
+      }
+      break;
+
+    case PORT:
+      if (value == null) {
+        unsetPort();
+      } else {
+        setPort((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -977,8 +1067,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     case IS_IN_VEHICLE:
       return Boolean.valueOf(isIsInVehicle());
 
-    case EXPERIENCE:
-      return Long.valueOf(getExperience());
+    case XP_TO_NEXT_LEVEL:
+      return Long.valueOf(getXpToNextLevel());
 
     case LEVEL:
       return Integer.valueOf(getLevel());
@@ -1013,6 +1103,12 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     case INVENTORY:
       return getInventory();
 
+    case LEVEL_PROGRESS:
+      return Double.valueOf(getLevelProgress());
+
+    case PORT:
+      return Integer.valueOf(getPort());
+
     }
     throw new IllegalStateException();
   }
@@ -1036,8 +1132,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       return isSetIsSprinting();
     case IS_IN_VEHICLE:
       return isSetIsInVehicle();
-    case EXPERIENCE:
-      return isSetExperience();
+    case XP_TO_NEXT_LEVEL:
+      return isSetXpToNextLevel();
     case LEVEL:
       return isSetLevel();
     case IP:
@@ -1060,6 +1156,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       return isSetIsWhitelisted();
     case INVENTORY:
       return isSetInventory();
+    case LEVEL_PROGRESS:
+      return isSetLevelProgress();
+    case PORT:
+      return isSetPort();
     }
     throw new IllegalStateException();
   }
@@ -1131,12 +1231,12 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         return false;
     }
 
-    boolean this_present_experience = true;
-    boolean that_present_experience = true;
-    if (this_present_experience || that_present_experience) {
-      if (!(this_present_experience && that_present_experience))
+    boolean this_present_xpToNextLevel = true;
+    boolean that_present_xpToNextLevel = true;
+    if (this_present_xpToNextLevel || that_present_xpToNextLevel) {
+      if (!(this_present_xpToNextLevel && that_present_xpToNextLevel))
         return false;
-      if (this.experience != that.experience)
+      if (this.xpToNextLevel != that.xpToNextLevel)
         return false;
     }
 
@@ -1239,6 +1339,24 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         return false;
     }
 
+    boolean this_present_levelProgress = true;
+    boolean that_present_levelProgress = true;
+    if (this_present_levelProgress || that_present_levelProgress) {
+      if (!(this_present_levelProgress && that_present_levelProgress))
+        return false;
+      if (this.levelProgress != that.levelProgress)
+        return false;
+    }
+
+    boolean this_present_port = true;
+    boolean that_present_port = true;
+    if (this_present_port || that_present_port) {
+      if (!(this_present_port && that_present_port))
+        return false;
+      if (this.port != that.port)
+        return false;
+    }
+
     return true;
   }
 
@@ -1315,12 +1433,12 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetExperience()).compareTo(typedOther.isSetExperience());
+    lastComparison = Boolean.valueOf(isSetXpToNextLevel()).compareTo(typedOther.isSetXpToNextLevel());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetExperience()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.experience, typedOther.experience);
+    if (isSetXpToNextLevel()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.xpToNextLevel, typedOther.xpToNextLevel);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1435,6 +1553,26 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetLevelProgress()).compareTo(typedOther.isSetLevelProgress());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetLevelProgress()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.levelProgress, typedOther.levelProgress);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetPort()).compareTo(typedOther.isSetPort());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetPort()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.port, typedOther.port);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -1487,8 +1625,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     sb.append(this.isInVehicle);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("experience:");
-    sb.append(this.experience);
+    sb.append("xpToNextLevel:");
+    sb.append(this.xpToNextLevel);
     first = false;
     if (!first) sb.append(", ");
     sb.append("level:");
@@ -1541,6 +1679,14 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     } else {
       sb.append(this.inventory);
     }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("levelProgress:");
+    sb.append(this.levelProgress);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("port:");
+    sb.append(this.port);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -1634,10 +1780,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 7: // EXPERIENCE
+          case 7: // XP_TO_NEXT_LEVEL
             if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
-              struct.experience = iprot.readI64();
-              struct.setExperienceIsSet(true);
+              struct.xpToNextLevel = iprot.readI64();
+              struct.setXpToNextLevelIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -1731,6 +1877,22 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 19: // LEVEL_PROGRESS
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.levelProgress = iprot.readDouble();
+              struct.setLevelProgressIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 20: // PORT
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.port = iprot.readI32();
+              struct.setPortIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -1768,8 +1930,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       oprot.writeFieldBegin(IS_IN_VEHICLE_FIELD_DESC);
       oprot.writeBool(struct.isInVehicle);
       oprot.writeFieldEnd();
-      oprot.writeFieldBegin(EXPERIENCE_FIELD_DESC);
-      oprot.writeI64(struct.experience);
+      oprot.writeFieldBegin(XP_TO_NEXT_LEVEL_FIELD_DESC);
+      oprot.writeI64(struct.xpToNextLevel);
       oprot.writeFieldEnd();
       oprot.writeFieldBegin(LEVEL_FIELD_DESC);
       oprot.writeI32(struct.level);
@@ -1808,6 +1970,12 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         struct.inventory.write(oprot);
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldBegin(LEVEL_PROGRESS_FIELD_DESC);
+      oprot.writeDouble(struct.levelProgress);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(PORT_FIELD_DESC);
+      oprot.writeI32(struct.port);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -1844,7 +2012,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (struct.isSetIsInVehicle()) {
         optionals.set(5);
       }
-      if (struct.isSetExperience()) {
+      if (struct.isSetXpToNextLevel()) {
         optionals.set(6);
       }
       if (struct.isSetLevel()) {
@@ -1880,7 +2048,13 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (struct.isSetInventory()) {
         optionals.set(17);
       }
-      oprot.writeBitSet(optionals, 18);
+      if (struct.isSetLevelProgress()) {
+        optionals.set(18);
+      }
+      if (struct.isSetPort()) {
+        optionals.set(19);
+      }
+      oprot.writeBitSet(optionals, 20);
       if (struct.isSetName()) {
         oprot.writeString(struct.name);
       }
@@ -1899,8 +2073,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (struct.isSetIsInVehicle()) {
         oprot.writeBool(struct.isInVehicle);
       }
-      if (struct.isSetExperience()) {
-        oprot.writeI64(struct.experience);
+      if (struct.isSetXpToNextLevel()) {
+        oprot.writeI64(struct.xpToNextLevel);
       }
       if (struct.isSetLevel()) {
         oprot.writeI32(struct.level);
@@ -1935,12 +2109,18 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (struct.isSetInventory()) {
         struct.inventory.write(oprot);
       }
+      if (struct.isSetLevelProgress()) {
+        oprot.writeDouble(struct.levelProgress);
+      }
+      if (struct.isSetPort()) {
+        oprot.writeI32(struct.port);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, Player struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(18);
+      BitSet incoming = iprot.readBitSet(20);
       if (incoming.get(0)) {
         struct.name = iprot.readString();
         struct.setNameIsSet(true);
@@ -1966,8 +2146,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         struct.setIsInVehicleIsSet(true);
       }
       if (incoming.get(6)) {
-        struct.experience = iprot.readI64();
-        struct.setExperienceIsSet(true);
+        struct.xpToNextLevel = iprot.readI64();
+        struct.setXpToNextLevelIsSet(true);
       }
       if (incoming.get(7)) {
         struct.level = iprot.readI32();
@@ -2013,6 +2193,14 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         struct.inventory = new PlayerInventory();
         struct.inventory.read(iprot);
         struct.setInventoryIsSet(true);
+      }
+      if (incoming.get(18)) {
+        struct.levelProgress = iprot.readDouble();
+        struct.setLevelProgressIsSet(true);
+      }
+      if (incoming.get(19)) {
+        struct.port = iprot.readI32();
+        struct.setPortIsSet(true);
       }
     }
   }

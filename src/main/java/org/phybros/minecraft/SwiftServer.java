@@ -3,7 +3,9 @@ package org.phybros.minecraft;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.server.TServer;
@@ -11,9 +13,15 @@ import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 import org.bukkit.Bukkit;
+import org.bukkit.inventory.ItemStack;
 import org.phybros.thrift.EAuthException;
 import org.phybros.thrift.EDataException;
+import org.phybros.thrift.Enchantment;
 import org.phybros.thrift.ErrorCode;
+import org.phybros.thrift.GameMode;
+import org.phybros.thrift.Player;
+import org.phybros.thrift.PlayerArmor;
+import org.phybros.thrift.PlayerInventory;
 import org.phybros.thrift.Plugin;
 import org.phybros.thrift.SwiftApi;
 
@@ -29,10 +37,15 @@ public class SwiftServer {
 		 * Get a loaded server plugin by name
 		 * 
 		 * @throws TException
-		 *             , EDataException
+		 *             If something thrifty went wrong
+		 * @throws EDataException
+		 *             If the requested plugin was not found
+		 * @throws EAuthException
+		 *             If the method call was not correctly authenticated
 		 * @return Plugin The plugin
 		 * @see org.phybros.thrift.SwiftApi.Iface#getPlugins()
 		 */
+		@Override
 		public Plugin getPlugin(String authString, String name)
 				throws TException, EDataException, EAuthException {
 			logCall("getPlugin");
@@ -64,9 +77,13 @@ public class SwiftServer {
 		 * server.
 		 * 
 		 * @throws TException
+		 *             If something thrifty went wrong
+		 * @throws EAuthException
+		 *             If the method call was not correctly authenticated
 		 * @return List<Plugin> A list of the plugins on the server
-		 * @see org.phybros.thrift.SwiftApi.Iface#getPlugins()
+		 * @see org.phybros.thrift.SwiftApi.Iface#getPlugins(java.lang.String)
 		 */
+		@Override
 		public List<Plugin> getPlugins(String authString) throws TException,
 				EAuthException {
 			logCall("getPlugins");
@@ -91,6 +108,155 @@ public class SwiftServer {
 			return serverPlugins;
 		}
 
+		/**
+		 * Get a player by name
+		 * 
+		 * @throws TException
+		 *             , EDataException, TException
+		 * @return Player The requested player. If the player could not be
+		 *         found, and EDataException is thrown
+		 * @see org.phybros.thrift.SwiftApi.Iface#getPlugins(java.lang.String)
+		 */
+		@Override
+		public Player getPlayer(String authString, String name)
+				throws EAuthException, EDataException, TException {
+			logCall("getPlayer");
+			authenticate(authString, "getPlayer");
+			org.bukkit.entity.Player p = plugin.getServer().getPlayer(name);
+
+			if (p == null) {
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = "Player \"" + name + "\" not found";
+				throw e;
+			}
+
+			return convertBukkitPlayer(p);
+		}
+
+		/**
+		 * Get all online Players
+		 * 
+		 * @throws TException
+		 *             , TException
+		 * @return List<Player> A list of all currently online players
+		 * @see org.phybros.thrift.SwiftApi.Iface#getPlayers(java.lang.String)
+		 */
+		@Override
+		public List<Player> getPlayers(String authString)
+				throws EAuthException, TException {
+			logCall("getPlayers");
+			authenticate(authString, "getPlayers");
+			List<Player> players = new ArrayList<Player>();
+
+			for (org.bukkit.entity.Player bPlayer : plugin.getServer()
+					.getOnlinePlayers()) {
+				players.add(convertBukkitPlayer(bPlayer));
+			}
+
+			return players;
+		}
+
+		/**
+		 * This method converts an org.bukkit.entity.Player into an
+		 * org.phybros.thrift.Player.
+		 * 
+		 * @param bukkitPlayer
+		 *            The Bukkit Player object to convert.
+		 * @return org.phybros.thrift.Player The converted Player.
+		 */
+		private Player convertBukkitPlayer(org.bukkit.entity.Player bukkitPlayer) {
+			Player newPlayer = new Player();
+
+			newPlayer.name = bukkitPlayer.getName();
+			newPlayer.exhaustion = bukkitPlayer.getExhaustion();
+			newPlayer.xpToNextLevel = bukkitPlayer.getExpToLevel();
+			newPlayer.levelProgress = bukkitPlayer.getExp();
+			newPlayer.firstPlayed = bukkitPlayer.getFirstPlayed();
+			newPlayer.foodLevel = bukkitPlayer.getFoodLevel();
+
+			switch (bukkitPlayer.getGameMode()) {
+			case SURVIVAL:
+				newPlayer.gamemode = GameMode.SURVIVAL;
+				break;
+			case CREATIVE:
+				newPlayer.gamemode = GameMode.CREATIVE;
+				break;
+			case ADVENTURE:
+				newPlayer.gamemode = GameMode.ADVENTURE;
+				break;
+			default:
+				newPlayer.gamemode = GameMode.SURVIVAL;
+				break;
+			}
+			newPlayer.health = bukkitPlayer.getHealth();
+
+			newPlayer.inventory = convertBukkitPlayerInventory(bukkitPlayer
+					.getInventory());
+
+			newPlayer.ip = bukkitPlayer.getAddress().getHostName();
+			newPlayer.port = bukkitPlayer.getAddress().getPort();
+			newPlayer.isBanned = bukkitPlayer.isBanned();
+			newPlayer.isInVehicle = bukkitPlayer.isInsideVehicle();
+			newPlayer.isOp = bukkitPlayer.isOp();
+			// TODO: add bukkitPlayer.isFlying();
+			newPlayer.isSleeping = bukkitPlayer.isSleeping();
+			newPlayer.isSneaking = bukkitPlayer.isSneaking();
+			newPlayer.isSprinting = bukkitPlayer.isSprinting();
+			newPlayer.isWhitelisted = bukkitPlayer.isWhitelisted();
+			newPlayer.lastPlayed = bukkitPlayer.getLastPlayed();
+			newPlayer.level = bukkitPlayer.getLevel();
+
+			return newPlayer;
+		}
+
+		/**
+		 * Converts a bukkit PlayerInventory into a thrift-compatible version.
+		 * 
+		 * @param bukkitInventory
+		 *            The object to convert.
+		 * @return PlayerInventory The converted object.
+		 */
+		private PlayerInventory convertBukkitPlayerInventory(
+				org.bukkit.inventory.PlayerInventory bukkitInventory) {
+			// TODO: Finish inventory, armor etc.
+			PlayerInventory playerInventory = new PlayerInventory();
+			playerInventory.inventory = new ArrayList<org.phybros.thrift.ItemStack>();
+			playerInventory.armor = new PlayerArmor();
+			playerInventory.itemInHand = new org.phybros.thrift.ItemStack();
+
+			for (ItemStack i : bukkitInventory) {
+				org.phybros.thrift.ItemStack newItemStack = new org.phybros.thrift.ItemStack();
+
+				newItemStack.enchantments = new HashMap<Enchantment, Integer>();
+
+				if (i != null) {
+					newItemStack.amount = i.getAmount();
+					newItemStack.durability = i.getDurability();
+					newItemStack.typeId = i.getTypeId();
+
+					for (Map.Entry<org.bukkit.enchantments.Enchantment, Integer> entry : i
+							.getEnchantments().entrySet()) {
+						newItemStack.enchantments.put(
+								Enchantment.findByValue(entry.getValue()),
+								entry.getValue());
+					}
+				}
+
+				// add to the inventory
+				playerInventory.inventory.add(newItemStack);
+			}
+
+			return playerInventory;
+		}
+
+		/**
+		 * Log an API call. If the config option logMethodCalls is false, this
+		 * method does nothing.
+		 * 
+		 * @param methodName
+		 *            Name of the method that was called.
+		 */
 		private void logCall(String methodName) {
 			if (plugin.getConfig().getBoolean("logMethodCalls")) {
 				plugin.getLogger().info(
@@ -98,6 +264,16 @@ public class SwiftServer {
 			}
 		}
 
+		/**
+		 * Authenticate a method call.
+		 * 
+		 * @param authString
+		 *            The authString to check.
+		 * @param methodName
+		 *            The method that is being called.
+		 * @throws EAuthException
+		 *             This is thrown if the authString is invalid.
+		 */
 		private void authenticate(String authString, String methodName)
 				throws EAuthException {
 			String username = plugin.getConfig().getString("username");
@@ -111,8 +287,8 @@ public class SwiftServer {
 				MessageDigest md = MessageDigest.getInstance("SHA-256");
 				md.update(myAuthString.getBytes());
 				String hash = byteToString(md.digest());
-				plugin.getLogger().info("Expecting: " + hash);
-				plugin.getLogger().info("Received:  " + authString);
+				// plugin.getLogger().info("Expecting: " + hash);
+				// plugin.getLogger().info("Received:  " + authString);
 
 				if (!hash.equalsIgnoreCase(authString)) {
 					plugin.getLogger().info("Invalid Authentication received");
