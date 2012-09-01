@@ -12,3 +12,8 @@ port: 21111
 
 # Set to true to log every method call
 logMethodCalls: true
+
+# Various messages
+messages:
+    deOp: You have been deOpped
+    op: You have been opped

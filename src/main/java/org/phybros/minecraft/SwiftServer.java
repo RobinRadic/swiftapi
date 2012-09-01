@@ -169,16 +169,40 @@ public class SwiftServer {
 			return playerInventory;
 		}
 
+		/**
+		 * Converts a bukkit OfflinePlayer into a thrift-compatible version.
+		 * 
+		 * @param bukkitOfflinePlayer
+		 *            The object to convert.
+		 * @return org.phybros.thrift.OfflinePlayer The converted object.
+		 */
+		private org.phybros.thrift.OfflinePlayer convertBukkitOfflinePlayer(
+				OfflinePlayer bukkitOfflinePlayer) {
+			org.phybros.thrift.OfflinePlayer newPlayer = new org.phybros.thrift.OfflinePlayer();
+
+			newPlayer.firstPlayed = bukkitOfflinePlayer.getFirstPlayed();
+			newPlayer.lastPlayed = bukkitOfflinePlayer.getLastPlayed();
+			newPlayer.isOp = bukkitOfflinePlayer.isOp();
+			newPlayer.isWhitelisted = bukkitOfflinePlayer.isWhitelisted();
+			newPlayer.name = bukkitOfflinePlayer.getName();
+
+			if (bukkitOfflinePlayer.isOnline()) {
+				newPlayer.player = convertBukkitPlayer(bukkitOfflinePlayer
+						.getPlayer());
+			}
+
+			return newPlayer;
+		}
+
 		@Override
-		public boolean deOp(String authString, String name)
+		public boolean deOp(String authString, String name, boolean notifyPlayer)
 				throws EAuthException, EDataException, TException {
 			logCall("deOp");
 			authenticate(authString, "deOp");
 
-			org.bukkit.entity.Player player = plugin.getServer()
-					.getPlayer(name);
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
 
-			if (player == null) {
+			if (offPl == null) {
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
 				e.message = "Player \"" + name + "\" not found";
@@ -186,7 +210,11 @@ public class SwiftServer {
 			}
 
 			try {
-				player.setOp(false);
+				boolean wasOp = offPl.isOp();
+				offPl.setOp(false);
+				if(wasOp && notifyPlayer && offPl.isOnline()) {
+					offPl.getPlayer().sendMessage(plugin.getConfig().getString("messages.deOp"));
+				}
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -203,13 +231,13 @@ public class SwiftServer {
 		}
 
 		@Override
-		public Player getOfflinePlayer(String authString, String name)
-				throws EAuthException, EDataException, TException {
+		public org.phybros.thrift.OfflinePlayer getOfflinePlayer(
+				String authString, String name) throws EAuthException,
+				EDataException, TException {
 			logCall("getOfflinePlayer");
 			authenticate(authString, "getOfflinePlayer");
 
-			org.bukkit.entity.Player p = plugin.getServer().getOfflinePlayer(
-					name).getPlayer();
+			OfflinePlayer p = plugin.getServer().getOfflinePlayer(name);
 
 			if (p == null) {
 				EDataException e = new EDataException();
@@ -217,25 +245,23 @@ public class SwiftServer {
 				e.message = "Player \"" + name + "\" not found";
 				throw e;
 			}
-			
-			return convertBukkitPlayer(p);
+
+			return convertBukkitOfflinePlayer(p);
 		}
 
 		@Override
-		public List<Player> getOfflinePlayers(String authString)
-				throws EAuthException, TException {
+		public List<org.phybros.thrift.OfflinePlayer> getOfflinePlayers(
+				String authString) throws EAuthException, TException {
 			logCall("getOfflinePlayers");
 			authenticate(authString, "getOfflinePlayers");
 
-			List<Player> result = new ArrayList<Player>();
+			List<org.phybros.thrift.OfflinePlayer> result = new ArrayList<org.phybros.thrift.OfflinePlayer>();
 			OfflinePlayer[] players = plugin.getServer().getOfflinePlayers();
-			
-			for(OfflinePlayer p : players) {
-				if(!p.isOnline()) {
-					result.add(convertBukkitPlayer(p.getPlayer()));
-				}
+
+			for (OfflinePlayer p : players) {
+				result.add(convertBukkitOfflinePlayer(p));
 			}
-			
+
 			return result;
 		}
 
@@ -387,15 +413,14 @@ public class SwiftServer {
 		}
 
 		@Override
-		public boolean op(String authString, String name)
+		public boolean op(String authString, String name, boolean notifyPlayer)
 				throws EAuthException, EDataException, TException {
 			logCall("op");
 			authenticate(authString, "op");
 
-			org.bukkit.entity.Player player = plugin.getServer()
-					.getPlayer(name);
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
 
-			if (player == null) {
+			if (offPl == null) {
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
 				e.message = "Player \"" + name + "\" not found";
@@ -403,7 +428,11 @@ public class SwiftServer {
 			}
 
 			try {
-				player.setOp(true);
+				boolean wasOp = offPl.isOp();
+				offPl.setOp(true);
+				if(!wasOp && notifyPlayer && offPl.isOnline()) {
+					offPl.getPlayer().sendMessage(plugin.getConfig().getString("messages.op"));
+				}
 				return true;
 			} catch (Exception e) {
 				return false;

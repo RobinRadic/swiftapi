@@ -94,6 +94,17 @@ struct Player {
 	20: i32 port,
 }
 
+// Represents an offline player
+struct OfflinePlayer {
+	1: string name,
+	2: i64 firstPlayed,
+	3: i64 lastPlayed,
+	4: bool isOp,
+	5: bool isBanned,
+	6: bool isWhitelisted,
+	7: Player player,	
+}
+
 // Represents a server plugin
 struct Plugin {
 	1: string name,
@@ -106,15 +117,15 @@ struct Plugin {
 
 // The main service that provides all the methods
 service SwiftApi {
-	bool deOp(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
+	bool deOp(1:string authString, 2:string name, 3:bool notifyPlayer) throws (1:EAuthException aex, 2:EDataException dex),
 	string getBukkitVersion(1:string authString) throws (1:EAuthException aex),
-	Player getOfflinePlayer(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
-	list<Player> getOfflinePlayers(1:string authString) throws (1:EAuthException aex),
+	OfflinePlayer getOfflinePlayer(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
+	list<OfflinePlayer> getOfflinePlayers(1:string authString) throws (1:EAuthException aex),
 	Player getPlayer(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
 	list<Player> getPlayers(1:string authString) throws (1:EAuthException aex),
 	list<Plugin> getPlugins(1:string authString) throws (1:EAuthException aex),
 	Plugin getPlugin(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
 	string getServerVersion(1:string authString) throws (1:EAuthException aex),
-	bool op(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
+	bool op(1:string authString, 2:string name, 3:bool notifyPlayer) throws (1:EAuthException aex, 2:EDataException dex),
 	bool setGameMode(1:string authString, 2:string name, 3:GameMode mode) throws (1:EAuthException aex, 2:EDataException dex),
 }

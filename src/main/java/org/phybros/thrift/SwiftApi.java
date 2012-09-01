@@ -31,13 +31,13 @@ public class SwiftApi {
 
   public interface Iface {
 
-    public boolean deOp(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
+    public boolean deOp(String authString, String name, boolean notifyPlayer) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     public String getBukkitVersion(String authString) throws EAuthException, org.apache.thrift.TException;
 
-    public Player getOfflinePlayer(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
+    public OfflinePlayer getOfflinePlayer(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
 
-    public List<Player> getOfflinePlayers(String authString) throws EAuthException, org.apache.thrift.TException;
+    public List<OfflinePlayer> getOfflinePlayers(String authString) throws EAuthException, org.apache.thrift.TException;
 
     public Player getPlayer(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
 
@@ -49,7 +49,7 @@ public class SwiftApi {
 
     public String getServerVersion(String authString) throws EAuthException, org.apache.thrift.TException;
 
-    public boolean op(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
+    public boolean op(String authString, String name, boolean notifyPlayer) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     public boolean setGameMode(String authString, String name, GameMode mode) throws EAuthException, EDataException, org.apache.thrift.TException;
 
@@ -57,7 +57,7 @@ public class SwiftApi {
 
   public interface AsyncIface {
 
-    public void deOp(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.deOp_call> resultHandler) throws org.apache.thrift.TException;
+    public void deOp(String authString, String name, boolean notifyPlayer, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.deOp_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getBukkitVersion(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBukkitVersion_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -75,7 +75,7 @@ public class SwiftApi {
 
     public void getServerVersion(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getServerVersion_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void op(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.op_call> resultHandler) throws org.apache.thrift.TException;
+    public void op(String authString, String name, boolean notifyPlayer, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.op_call> resultHandler) throws org.apache.thrift.TException;
 
     public void setGameMode(String authString, String name, GameMode mode, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.setGameMode_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -101,17 +101,18 @@ public class SwiftApi {
       super(iprot, oprot);
     }
 
-    public boolean deOp(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
+    public boolean deOp(String authString, String name, boolean notifyPlayer) throws EAuthException, EDataException, org.apache.thrift.TException
     {
-      send_deOp(authString, name);
+      send_deOp(authString, name, notifyPlayer);
       return recv_deOp();
     }
 
-    public void send_deOp(String authString, String name) throws org.apache.thrift.TException
+    public void send_deOp(String authString, String name, boolean notifyPlayer) throws org.apache.thrift.TException
     {
       deOp_args args = new deOp_args();
       args.setAuthString(authString);
       args.setName(name);
+      args.setNotifyPlayer(notifyPlayer);
       sendBase("deOp", args);
     }
 
@@ -157,7 +158,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBukkitVersion failed: unknown result");
     }
 
-    public Player getOfflinePlayer(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
+    public OfflinePlayer getOfflinePlayer(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_getOfflinePlayer(authString, name);
       return recv_getOfflinePlayer();
@@ -171,7 +172,7 @@ public class SwiftApi {
       sendBase("getOfflinePlayer", args);
     }
 
-    public Player recv_getOfflinePlayer() throws EAuthException, EDataException, org.apache.thrift.TException
+    public OfflinePlayer recv_getOfflinePlayer() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       getOfflinePlayer_result result = new getOfflinePlayer_result();
       receiveBase(result, "getOfflinePlayer");
@@ -187,7 +188,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getOfflinePlayer failed: unknown result");
     }
 
-    public List<Player> getOfflinePlayers(String authString) throws EAuthException, org.apache.thrift.TException
+    public List<OfflinePlayer> getOfflinePlayers(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getOfflinePlayers(authString);
       return recv_getOfflinePlayers();
@@ -200,7 +201,7 @@ public class SwiftApi {
       sendBase("getOfflinePlayers", args);
     }
 
-    public List<Player> recv_getOfflinePlayers() throws EAuthException, org.apache.thrift.TException
+    public List<OfflinePlayer> recv_getOfflinePlayers() throws EAuthException, org.apache.thrift.TException
     {
       getOfflinePlayers_result result = new getOfflinePlayers_result();
       receiveBase(result, "getOfflinePlayers");
@@ -351,17 +352,18 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getServerVersion failed: unknown result");
     }
 
-    public boolean op(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
+    public boolean op(String authString, String name, boolean notifyPlayer) throws EAuthException, EDataException, org.apache.thrift.TException
     {
-      send_op(authString, name);
+      send_op(authString, name, notifyPlayer);
       return recv_op();
     }
 
-    public void send_op(String authString, String name) throws org.apache.thrift.TException
+    public void send_op(String authString, String name, boolean notifyPlayer) throws org.apache.thrift.TException
     {
       op_args args = new op_args();
       args.setAuthString(authString);
       args.setName(name);
+      args.setNotifyPlayer(notifyPlayer);
       sendBase("op", args);
     }
 
@@ -430,9 +432,9 @@ public class SwiftApi {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void deOp(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<deOp_call> resultHandler) throws org.apache.thrift.TException {
+    public void deOp(String authString, String name, boolean notifyPlayer, org.apache.thrift.async.AsyncMethodCallback<deOp_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      deOp_call method_call = new deOp_call(authString, name, resultHandler, this, ___protocolFactory, ___transport);
+      deOp_call method_call = new deOp_call(authString, name, notifyPlayer, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -440,10 +442,12 @@ public class SwiftApi {
     public static class deOp_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String authString;
       private String name;
-      public deOp_call(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<deOp_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private boolean notifyPlayer;
+      public deOp_call(String authString, String name, boolean notifyPlayer, org.apache.thrift.async.AsyncMethodCallback<deOp_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.authString = authString;
         this.name = name;
+        this.notifyPlayer = notifyPlayer;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
@@ -451,6 +455,7 @@ public class SwiftApi {
         deOp_args args = new deOp_args();
         args.setAuthString(authString);
         args.setName(name);
+        args.setNotifyPlayer(notifyPlayer);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -522,7 +527,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public Player getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
+      public OfflinePlayer getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -554,7 +559,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public List<Player> getResult() throws EAuthException, org.apache.thrift.TException {
+      public List<OfflinePlayer> getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -730,9 +735,9 @@ public class SwiftApi {
       }
     }
 
-    public void op(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<op_call> resultHandler) throws org.apache.thrift.TException {
+    public void op(String authString, String name, boolean notifyPlayer, org.apache.thrift.async.AsyncMethodCallback<op_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      op_call method_call = new op_call(authString, name, resultHandler, this, ___protocolFactory, ___transport);
+      op_call method_call = new op_call(authString, name, notifyPlayer, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -740,10 +745,12 @@ public class SwiftApi {
     public static class op_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String authString;
       private String name;
-      public op_call(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<op_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private boolean notifyPlayer;
+      public op_call(String authString, String name, boolean notifyPlayer, org.apache.thrift.async.AsyncMethodCallback<op_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.authString = authString;
         this.name = name;
+        this.notifyPlayer = notifyPlayer;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
@@ -751,6 +758,7 @@ public class SwiftApi {
         op_args args = new op_args();
         args.setAuthString(authString);
         args.setName(name);
+        args.setNotifyPlayer(notifyPlayer);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -842,7 +850,7 @@ public class SwiftApi {
       protected deOp_result getResult(I iface, deOp_args args) throws org.apache.thrift.TException {
         deOp_result result = new deOp_result();
         try {
-          result.success = iface.deOp(args.authString, args.name);
+          result.success = iface.deOp(args.authString, args.name, args.notifyPlayer);
           result.setSuccessIsSet(true);
         } catch (EAuthException aex) {
           result.aex = aex;
@@ -1031,7 +1039,7 @@ public class SwiftApi {
       protected op_result getResult(I iface, op_args args) throws org.apache.thrift.TException {
         op_result result = new op_result();
         try {
-          result.success = iface.op(args.authString, args.name);
+          result.success = iface.op(args.authString, args.name, args.notifyPlayer);
           result.setSuccessIsSet(true);
         } catch (EAuthException aex) {
           result.aex = aex;
@@ -1072,6 +1080,7 @@ public class SwiftApi {
 
     private static final org.apache.thrift.protocol.TField AUTH_STRING_FIELD_DESC = new org.apache.thrift.protocol.TField("authString", org.apache.thrift.protocol.TType.STRING, (short)1);
     private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)2);
+    private static final org.apache.thrift.protocol.TField NOTIFY_PLAYER_FIELD_DESC = new org.apache.thrift.protocol.TField("notifyPlayer", org.apache.thrift.protocol.TType.BOOL, (short)3);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -1081,11 +1090,13 @@ public class SwiftApi {
 
     public String authString; // required
     public String name; // required
+    public boolean notifyPlayer; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
       AUTH_STRING((short)1, "authString"),
-      NAME((short)2, "name");
+      NAME((short)2, "name"),
+      NOTIFY_PLAYER((short)3, "notifyPlayer");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1104,6 +1115,8 @@ public class SwiftApi {
             return AUTH_STRING;
           case 2: // NAME
             return NAME;
+          case 3: // NOTIFY_PLAYER
+            return NOTIFY_PLAYER;
           default:
             return null;
         }
@@ -1144,6 +1157,8 @@ public class SwiftApi {
     }
 
     // isset id assignments
+    private static final int __NOTIFYPLAYER_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -1151,6 +1166,8 @@ public class SwiftApi {
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.NOTIFY_PLAYER, new org.apache.thrift.meta_data.FieldMetaData("notifyPlayer", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(deOp_args.class, metaDataMap);
     }
@@ -1160,23 +1177,29 @@ public class SwiftApi {
 
     public deOp_args(
       String authString,
-      String name)
+      String name,
+      boolean notifyPlayer)
     {
       this();
       this.authString = authString;
       this.name = name;
+      this.notifyPlayer = notifyPlayer;
+      setNotifyPlayerIsSet(true);
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public deOp_args(deOp_args other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
       if (other.isSetAuthString()) {
         this.authString = other.authString;
       }
       if (other.isSetName()) {
         this.name = other.name;
       }
+      this.notifyPlayer = other.notifyPlayer;
     }
 
     public deOp_args deepCopy() {
@@ -1187,6 +1210,8 @@ public class SwiftApi {
     public void clear() {
       this.authString = null;
       this.name = null;
+      setNotifyPlayerIsSet(false);
+      this.notifyPlayer = false;
     }
 
     public String getAuthString() {
@@ -1237,6 +1262,29 @@ public class SwiftApi {
       }
     }
 
+    public boolean isNotifyPlayer() {
+      return this.notifyPlayer;
+    }
+
+    public deOp_args setNotifyPlayer(boolean notifyPlayer) {
+      this.notifyPlayer = notifyPlayer;
+      setNotifyPlayerIsSet(true);
+      return this;
+    }
+
+    public void unsetNotifyPlayer() {
+      __isset_bit_vector.clear(__NOTIFYPLAYER_ISSET_ID);
+    }
+
+    /** Returns true if field notifyPlayer is set (has been assigned a value) and false otherwise */
+    public boolean isSetNotifyPlayer() {
+      return __isset_bit_vector.get(__NOTIFYPLAYER_ISSET_ID);
+    }
+
+    public void setNotifyPlayerIsSet(boolean value) {
+      __isset_bit_vector.set(__NOTIFYPLAYER_ISSET_ID, value);
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case AUTH_STRING:
@@ -1255,6 +1303,14 @@ public class SwiftApi {
         }
         break;
 
+      case NOTIFY_PLAYER:
+        if (value == null) {
+          unsetNotifyPlayer();
+        } else {
+          setNotifyPlayer((Boolean)value);
+        }
+        break;
+
       }
     }
 
@@ -1265,6 +1321,9 @@ public class SwiftApi {
 
       case NAME:
         return getName();
+
+      case NOTIFY_PLAYER:
+        return Boolean.valueOf(isNotifyPlayer());
 
       }
       throw new IllegalStateException();
@@ -1281,6 +1340,8 @@ public class SwiftApi {
         return isSetAuthString();
       case NAME:
         return isSetName();
+      case NOTIFY_PLAYER:
+        return isSetNotifyPlayer();
       }
       throw new IllegalStateException();
     }
@@ -1313,6 +1374,15 @@ public class SwiftApi {
         if (!(this_present_name && that_present_name))
           return false;
         if (!this.name.equals(that.name))
+          return false;
+      }
+
+      boolean this_present_notifyPlayer = true;
+      boolean that_present_notifyPlayer = true;
+      if (this_present_notifyPlayer || that_present_notifyPlayer) {
+        if (!(this_present_notifyPlayer && that_present_notifyPlayer))
+          return false;
+        if (this.notifyPlayer != that.notifyPlayer)
           return false;
       }
 
@@ -1352,6 +1422,16 @@ public class SwiftApi {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetNotifyPlayer()).compareTo(typedOther.isSetNotifyPlayer());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetNotifyPlayer()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.notifyPlayer, typedOther.notifyPlayer);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -1387,6 +1467,10 @@ public class SwiftApi {
         sb.append(this.name);
       }
       first = false;
+      if (!first) sb.append(", ");
+      sb.append("notifyPlayer:");
+      sb.append(this.notifyPlayer);
+      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -1405,6 +1489,8 @@ public class SwiftApi {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bit_vector = new BitSet(1);
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -1445,6 +1531,14 @@ public class SwiftApi {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 3: // NOTIFY_PLAYER
+              if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+                struct.notifyPlayer = iprot.readBool();
+                struct.setNotifyPlayerIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -1470,6 +1564,9 @@ public class SwiftApi {
           oprot.writeString(struct.name);
           oprot.writeFieldEnd();
         }
+        oprot.writeFieldBegin(NOTIFY_PLAYER_FIELD_DESC);
+        oprot.writeBool(struct.notifyPlayer);
+        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
       }
@@ -1494,19 +1591,25 @@ public class SwiftApi {
         if (struct.isSetName()) {
           optionals.set(1);
         }
-        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetNotifyPlayer()) {
+          optionals.set(2);
+        }
+        oprot.writeBitSet(optionals, 3);
         if (struct.isSetAuthString()) {
           oprot.writeString(struct.authString);
         }
         if (struct.isSetName()) {
           oprot.writeString(struct.name);
         }
+        if (struct.isSetNotifyPlayer()) {
+          oprot.writeBool(struct.notifyPlayer);
+        }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, deOp_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(2);
+        BitSet incoming = iprot.readBitSet(3);
         if (incoming.get(0)) {
           struct.authString = iprot.readString();
           struct.setAuthStringIsSet(true);
@@ -1514,6 +1617,10 @@ public class SwiftApi {
         if (incoming.get(1)) {
           struct.name = iprot.readString();
           struct.setNameIsSet(true);
+        }
+        if (incoming.get(2)) {
+          struct.notifyPlayer = iprot.readBool();
+          struct.setNotifyPlayerIsSet(true);
         }
       }
     }
@@ -3348,7 +3455,7 @@ public class SwiftApi {
       schemes.put(TupleScheme.class, new getOfflinePlayer_resultTupleSchemeFactory());
     }
 
-    public Player success; // required
+    public OfflinePlayer success; // required
     public EAuthException aex; // required
     public EDataException dex; // required
 
@@ -3421,7 +3528,7 @@ public class SwiftApi {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Player.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, OfflinePlayer.class)));
       tmpMap.put(_Fields.AEX, new org.apache.thrift.meta_data.FieldMetaData("aex", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
       tmpMap.put(_Fields.DEX, new org.apache.thrift.meta_data.FieldMetaData("dex", org.apache.thrift.TFieldRequirementType.DEFAULT, 
@@ -3434,7 +3541,7 @@ public class SwiftApi {
     }
 
     public getOfflinePlayer_result(
-      Player success,
+      OfflinePlayer success,
       EAuthException aex,
       EDataException dex)
     {
@@ -3449,7 +3556,7 @@ public class SwiftApi {
      */
     public getOfflinePlayer_result(getOfflinePlayer_result other) {
       if (other.isSetSuccess()) {
-        this.success = new Player(other.success);
+        this.success = new OfflinePlayer(other.success);
       }
       if (other.isSetAex()) {
         this.aex = new EAuthException(other.aex);
@@ -3470,11 +3577,11 @@ public class SwiftApi {
       this.dex = null;
     }
 
-    public Player getSuccess() {
+    public OfflinePlayer getSuccess() {
       return this.success;
     }
 
-    public getOfflinePlayer_result setSuccess(Player success) {
+    public getOfflinePlayer_result setSuccess(OfflinePlayer success) {
       this.success = success;
       return this;
     }
@@ -3548,7 +3655,7 @@ public class SwiftApi {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((Player)value);
+          setSuccess((OfflinePlayer)value);
         }
         break;
 
@@ -3776,7 +3883,7 @@ public class SwiftApi {
           switch (schemeField.id) {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.success = new Player();
+                struct.success = new OfflinePlayer();
                 struct.success.read(iprot);
                 struct.setSuccessIsSet(true);
               } else { 
@@ -3875,7 +3982,7 @@ public class SwiftApi {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(3);
         if (incoming.get(0)) {
-          struct.success = new Player();
+          struct.success = new OfflinePlayer();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }
@@ -4259,7 +4366,7 @@ public class SwiftApi {
       schemes.put(TupleScheme.class, new getOfflinePlayers_resultTupleSchemeFactory());
     }
 
-    public List<Player> success; // required
+    public List<OfflinePlayer> success; // required
     public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -4329,7 +4436,7 @@ public class SwiftApi {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Player.class))));
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, OfflinePlayer.class))));
       tmpMap.put(_Fields.AEX, new org.apache.thrift.meta_data.FieldMetaData("aex", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -4340,7 +4447,7 @@ public class SwiftApi {
     }
 
     public getOfflinePlayers_result(
-      List<Player> success,
+      List<OfflinePlayer> success,
       EAuthException aex)
     {
       this();
@@ -4353,9 +4460,9 @@ public class SwiftApi {
      */
     public getOfflinePlayers_result(getOfflinePlayers_result other) {
       if (other.isSetSuccess()) {
-        List<Player> __this__success = new ArrayList<Player>();
-        for (Player other_element : other.success) {
-          __this__success.add(new Player(other_element));
+        List<OfflinePlayer> __this__success = new ArrayList<OfflinePlayer>();
+        for (OfflinePlayer other_element : other.success) {
+          __this__success.add(new OfflinePlayer(other_element));
         }
         this.success = __this__success;
       }
@@ -4378,22 +4485,22 @@ public class SwiftApi {
       return (this.success == null) ? 0 : this.success.size();
     }
 
-    public java.util.Iterator<Player> getSuccessIterator() {
+    public java.util.Iterator<OfflinePlayer> getSuccessIterator() {
       return (this.success == null) ? null : this.success.iterator();
     }
 
-    public void addToSuccess(Player elem) {
+    public void addToSuccess(OfflinePlayer elem) {
       if (this.success == null) {
-        this.success = new ArrayList<Player>();
+        this.success = new ArrayList<OfflinePlayer>();
       }
       this.success.add(elem);
     }
 
-    public List<Player> getSuccess() {
+    public List<OfflinePlayer> getSuccess() {
       return this.success;
     }
 
-    public getOfflinePlayers_result setSuccess(List<Player> success) {
+    public getOfflinePlayers_result setSuccess(List<OfflinePlayer> success) {
       this.success = success;
       return this;
     }
@@ -4443,7 +4550,7 @@ public class SwiftApi {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Player>)value);
+          setSuccess((List<OfflinePlayer>)value);
         }
         break;
 
@@ -4633,11 +4740,11 @@ public class SwiftApi {
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
                   org.apache.thrift.protocol.TList _list26 = iprot.readListBegin();
-                  struct.success = new ArrayList<Player>(_list26.size);
+                  struct.success = new ArrayList<OfflinePlayer>(_list26.size);
                   for (int _i27 = 0; _i27 < _list26.size; ++_i27)
                   {
-                    Player _elem28; // required
-                    _elem28 = new Player();
+                    OfflinePlayer _elem28; // required
+                    _elem28 = new OfflinePlayer();
                     _elem28.read(iprot);
                     struct.success.add(_elem28);
                   }
@@ -4676,7 +4783,7 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Player _iter29 : struct.success)
+            for (OfflinePlayer _iter29 : struct.success)
             {
               _iter29.write(oprot);
             }
@@ -4717,7 +4824,7 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Player _iter30 : struct.success)
+            for (OfflinePlayer _iter30 : struct.success)
             {
               _iter30.write(oprot);
             }
@@ -4735,11 +4842,11 @@ public class SwiftApi {
         if (incoming.get(0)) {
           {
             org.apache.thrift.protocol.TList _list31 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Player>(_list31.size);
+            struct.success = new ArrayList<OfflinePlayer>(_list31.size);
             for (int _i32 = 0; _i32 < _list31.size; ++_i32)
             {
-              Player _elem33; // required
-              _elem33 = new Player();
+              OfflinePlayer _elem33; // required
+              _elem33 = new OfflinePlayer();
               _elem33.read(iprot);
               struct.success.add(_elem33);
             }
@@ -9317,6 +9424,7 @@ public class SwiftApi {
 
     private static final org.apache.thrift.protocol.TField AUTH_STRING_FIELD_DESC = new org.apache.thrift.protocol.TField("authString", org.apache.thrift.protocol.TType.STRING, (short)1);
     private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)2);
+    private static final org.apache.thrift.protocol.TField NOTIFY_PLAYER_FIELD_DESC = new org.apache.thrift.protocol.TField("notifyPlayer", org.apache.thrift.protocol.TType.BOOL, (short)3);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -9326,11 +9434,13 @@ public class SwiftApi {
 
     public String authString; // required
     public String name; // required
+    public boolean notifyPlayer; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
       AUTH_STRING((short)1, "authString"),
-      NAME((short)2, "name");
+      NAME((short)2, "name"),
+      NOTIFY_PLAYER((short)3, "notifyPlayer");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -9349,6 +9459,8 @@ public class SwiftApi {
             return AUTH_STRING;
           case 2: // NAME
             return NAME;
+          case 3: // NOTIFY_PLAYER
+            return NOTIFY_PLAYER;
           default:
             return null;
         }
@@ -9389,6 +9501,8 @@ public class SwiftApi {
     }
 
     // isset id assignments
+    private static final int __NOTIFYPLAYER_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -9396,6 +9510,8 @@ public class SwiftApi {
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.NOTIFY_PLAYER, new org.apache.thrift.meta_data.FieldMetaData("notifyPlayer", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(op_args.class, metaDataMap);
     }
@@ -9405,23 +9521,29 @@ public class SwiftApi {
 
     public op_args(
       String authString,
-      String name)
+      String name,
+      boolean notifyPlayer)
     {
       this();
       this.authString = authString;
       this.name = name;
+      this.notifyPlayer = notifyPlayer;
+      setNotifyPlayerIsSet(true);
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public op_args(op_args other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
       if (other.isSetAuthString()) {
         this.authString = other.authString;
       }
       if (other.isSetName()) {
         this.name = other.name;
       }
+      this.notifyPlayer = other.notifyPlayer;
     }
 
     public op_args deepCopy() {
@@ -9432,6 +9554,8 @@ public class SwiftApi {
     public void clear() {
       this.authString = null;
       this.name = null;
+      setNotifyPlayerIsSet(false);
+      this.notifyPlayer = false;
     }
 
     public String getAuthString() {
@@ -9482,6 +9606,29 @@ public class SwiftApi {
       }
     }
 
+    public boolean isNotifyPlayer() {
+      return this.notifyPlayer;
+    }
+
+    public op_args setNotifyPlayer(boolean notifyPlayer) {
+      this.notifyPlayer = notifyPlayer;
+      setNotifyPlayerIsSet(true);
+      return this;
+    }
+
+    public void unsetNotifyPlayer() {
+      __isset_bit_vector.clear(__NOTIFYPLAYER_ISSET_ID);
+    }
+
+    /** Returns true if field notifyPlayer is set (has been assigned a value) and false otherwise */
+    public boolean isSetNotifyPlayer() {
+      return __isset_bit_vector.get(__NOTIFYPLAYER_ISSET_ID);
+    }
+
+    public void setNotifyPlayerIsSet(boolean value) {
+      __isset_bit_vector.set(__NOTIFYPLAYER_ISSET_ID, value);
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case AUTH_STRING:
@@ -9500,6 +9647,14 @@ public class SwiftApi {
         }
         break;
 
+      case NOTIFY_PLAYER:
+        if (value == null) {
+          unsetNotifyPlayer();
+        } else {
+          setNotifyPlayer((Boolean)value);
+        }
+        break;
+
       }
     }
 
@@ -9510,6 +9665,9 @@ public class SwiftApi {
 
       case NAME:
         return getName();
+
+      case NOTIFY_PLAYER:
+        return Boolean.valueOf(isNotifyPlayer());
 
       }
       throw new IllegalStateException();
@@ -9526,6 +9684,8 @@ public class SwiftApi {
         return isSetAuthString();
       case NAME:
         return isSetName();
+      case NOTIFY_PLAYER:
+        return isSetNotifyPlayer();
       }
       throw new IllegalStateException();
     }
@@ -9558,6 +9718,15 @@ public class SwiftApi {
         if (!(this_present_name && that_present_name))
           return false;
         if (!this.name.equals(that.name))
+          return false;
+      }
+
+      boolean this_present_notifyPlayer = true;
+      boolean that_present_notifyPlayer = true;
+      if (this_present_notifyPlayer || that_present_notifyPlayer) {
+        if (!(this_present_notifyPlayer && that_present_notifyPlayer))
+          return false;
+        if (this.notifyPlayer != that.notifyPlayer)
           return false;
       }
 
@@ -9597,6 +9766,16 @@ public class SwiftApi {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetNotifyPlayer()).compareTo(typedOther.isSetNotifyPlayer());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetNotifyPlayer()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.notifyPlayer, typedOther.notifyPlayer);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -9632,6 +9811,10 @@ public class SwiftApi {
         sb.append(this.name);
       }
       first = false;
+      if (!first) sb.append(", ");
+      sb.append("notifyPlayer:");
+      sb.append(this.notifyPlayer);
+      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -9650,6 +9833,8 @@ public class SwiftApi {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bit_vector = new BitSet(1);
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -9690,6 +9875,14 @@ public class SwiftApi {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 3: // NOTIFY_PLAYER
+              if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+                struct.notifyPlayer = iprot.readBool();
+                struct.setNotifyPlayerIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -9715,6 +9908,9 @@ public class SwiftApi {
           oprot.writeString(struct.name);
           oprot.writeFieldEnd();
         }
+        oprot.writeFieldBegin(NOTIFY_PLAYER_FIELD_DESC);
+        oprot.writeBool(struct.notifyPlayer);
+        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
       }
@@ -9739,19 +9935,25 @@ public class SwiftApi {
         if (struct.isSetName()) {
           optionals.set(1);
         }
-        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetNotifyPlayer()) {
+          optionals.set(2);
+        }
+        oprot.writeBitSet(optionals, 3);
         if (struct.isSetAuthString()) {
           oprot.writeString(struct.authString);
         }
         if (struct.isSetName()) {
           oprot.writeString(struct.name);
         }
+        if (struct.isSetNotifyPlayer()) {
+          oprot.writeBool(struct.notifyPlayer);
+        }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, op_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(2);
+        BitSet incoming = iprot.readBitSet(3);
         if (incoming.get(0)) {
           struct.authString = iprot.readString();
           struct.setAuthStringIsSet(true);
@@ -9759,6 +9961,10 @@ public class SwiftApi {
         if (incoming.get(1)) {
           struct.name = iprot.readString();
           struct.setNameIsSet(true);
+        }
+        if (incoming.get(2)) {
+          struct.notifyPlayer = iprot.readBool();
+          struct.setNotifyPlayerIsSet(true);
         }
       }
     }
