@@ -61,24 +61,25 @@ the generated files to keep your code and the generated code seperate.
 **3. Call some methods!**  
 Once you have included this generated code into your app, you can call API 
 methods like so:
-    ```csharp
-    TSocket socket = new TSocket("your.bukkitserver.org", 21111);
-    socket.Open();
 
-    TBinaryProtocol protocol = new TBinaryProtocol(new TBufferedTransport(socket));
-    SwiftApi.Client client = new SwiftApi.Client(protocol);
+```csharp
+TSocket socket = new TSocket("your.bukkitserver.org", 21111);
+socket.Open();
 
-    Console.WriteLine("Server Version: " + client.getServerVersion(authString));
+TBinaryProtocol protocol = new TBinaryProtocol(new TBufferedTransport(socket));
+SwiftApi.Client client = new SwiftApi.Client(protocol);
 
-    socket.Close();
-    ```
+Console.WriteLine("Server Version: " + client.getServerVersion(authString));
+
+socket.Close();
+```
     
 The variable `authString` is required by all API methods. The `authString` is 
 calculated like this:
 
-    ```csharp
-    authString = sha256(username + methodName + password + salt);
-    ```
+```csharp
+authString = sha256(username + methodName + password + salt);
+```
 
 Where the `username`, `password` and `salt` are the values you configured in the
 plugin's config.yml file at install time and `methodName` is the name of the 
