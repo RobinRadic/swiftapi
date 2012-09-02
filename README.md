@@ -48,7 +48,8 @@ You can generate the client library (example is in C#) by typing
     thrift -r --gen csharp SwiftApi.thrift
 
 The `-r` option tells the compiler to generate code for all files (including 
-ones that are referenced in `SwiftApi.thrift` with the `include` directive. 
+ones that are referenced in `SwiftApi.thrift` with the `include` directive.
+The `--gen csharp` option tells the compiler to generate C# code. 
 This command will leave you with a gen-csharp directory with all the code you 
 need to connect to a server running the SwiftApi plugin.
 
@@ -60,7 +61,7 @@ the generated files to keep your code and the generated code seperate.
 **3. Call some methods!**  
 Once you have included this generated code into your app, you can call API 
 methods like so:
-
+    ```csharp
     TSocket socket = new TSocket("your.bukkitserver.org", 21111);
     socket.Open();
 
@@ -70,11 +71,14 @@ methods like so:
     Console.WriteLine("Server Version: " + client.getServerVersion(authString));
 
     socket.Close();
-
+    ```
+    
 The variable `authString` is required by all API methods. The `authString` is 
 calculated like this:
 
+    ```csharp
     authString = sha256(username + methodName + password + salt);
+    ```
 
 Where the `username`, `password` and `salt` are the values you configured in the
 plugin's config.yml file at install time and `methodName` is the name of the 
