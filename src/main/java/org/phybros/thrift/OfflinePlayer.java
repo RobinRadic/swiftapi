@@ -29,6 +29,7 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
   private static final org.apache.thrift.protocol.TField IS_BANNED_FIELD_DESC = new org.apache.thrift.protocol.TField("isBanned", org.apache.thrift.protocol.TType.BOOL, (short)5);
   private static final org.apache.thrift.protocol.TField IS_WHITELISTED_FIELD_DESC = new org.apache.thrift.protocol.TField("isWhitelisted", org.apache.thrift.protocol.TType.BOOL, (short)6);
   private static final org.apache.thrift.protocol.TField PLAYER_FIELD_DESC = new org.apache.thrift.protocol.TField("player", org.apache.thrift.protocol.TType.STRUCT, (short)7);
+  private static final org.apache.thrift.protocol.TField HAS_PLAYED_BEFORE_FIELD_DESC = new org.apache.thrift.protocol.TField("hasPlayedBefore", org.apache.thrift.protocol.TType.BOOL, (short)8);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -43,6 +44,7 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
   public boolean isBanned; // required
   public boolean isWhitelisted; // required
   public Player player; // required
+  public boolean hasPlayedBefore; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -52,7 +54,8 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     IS_OP((short)4, "isOp"),
     IS_BANNED((short)5, "isBanned"),
     IS_WHITELISTED((short)6, "isWhitelisted"),
-    PLAYER((short)7, "player");
+    PLAYER((short)7, "player"),
+    HAS_PLAYED_BEFORE((short)8, "hasPlayedBefore");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -81,6 +84,8 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
           return IS_WHITELISTED;
         case 7: // PLAYER
           return PLAYER;
+        case 8: // HAS_PLAYED_BEFORE
+          return HAS_PLAYED_BEFORE;
         default:
           return null;
       }
@@ -126,7 +131,8 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
   private static final int __ISOP_ISSET_ID = 2;
   private static final int __ISBANNED_ISSET_ID = 3;
   private static final int __ISWHITELISTED_ISSET_ID = 4;
-  private BitSet __isset_bit_vector = new BitSet(5);
+  private static final int __HASPLAYEDBEFORE_ISSET_ID = 5;
+  private BitSet __isset_bit_vector = new BitSet(6);
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -144,6 +150,8 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.PLAYER, new org.apache.thrift.meta_data.FieldMetaData("player", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Player.class)));
+    tmpMap.put(_Fields.HAS_PLAYED_BEFORE, new org.apache.thrift.meta_data.FieldMetaData("hasPlayedBefore", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(OfflinePlayer.class, metaDataMap);
   }
@@ -158,7 +166,8 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     boolean isOp,
     boolean isBanned,
     boolean isWhitelisted,
-    Player player)
+    Player player,
+    boolean hasPlayedBefore)
   {
     this();
     this.name = name;
@@ -173,6 +182,8 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     this.isWhitelisted = isWhitelisted;
     setIsWhitelistedIsSet(true);
     this.player = player;
+    this.hasPlayedBefore = hasPlayedBefore;
+    setHasPlayedBeforeIsSet(true);
   }
 
   /**
@@ -192,6 +203,7 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     if (other.isSetPlayer()) {
       this.player = new Player(other.player);
     }
+    this.hasPlayedBefore = other.hasPlayedBefore;
   }
 
   public OfflinePlayer deepCopy() {
@@ -212,6 +224,8 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     setIsWhitelistedIsSet(false);
     this.isWhitelisted = false;
     this.player = null;
+    setHasPlayedBeforeIsSet(false);
+    this.hasPlayedBefore = false;
   }
 
   public String getName() {
@@ -377,6 +391,29 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     }
   }
 
+  public boolean isHasPlayedBefore() {
+    return this.hasPlayedBefore;
+  }
+
+  public OfflinePlayer setHasPlayedBefore(boolean hasPlayedBefore) {
+    this.hasPlayedBefore = hasPlayedBefore;
+    setHasPlayedBeforeIsSet(true);
+    return this;
+  }
+
+  public void unsetHasPlayedBefore() {
+    __isset_bit_vector.clear(__HASPLAYEDBEFORE_ISSET_ID);
+  }
+
+  /** Returns true if field hasPlayedBefore is set (has been assigned a value) and false otherwise */
+  public boolean isSetHasPlayedBefore() {
+    return __isset_bit_vector.get(__HASPLAYEDBEFORE_ISSET_ID);
+  }
+
+  public void setHasPlayedBeforeIsSet(boolean value) {
+    __isset_bit_vector.set(__HASPLAYEDBEFORE_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -435,6 +472,14 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
       }
       break;
 
+    case HAS_PLAYED_BEFORE:
+      if (value == null) {
+        unsetHasPlayedBefore();
+      } else {
+        setHasPlayedBefore((Boolean)value);
+      }
+      break;
+
     }
   }
 
@@ -461,6 +506,9 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     case PLAYER:
       return getPlayer();
 
+    case HAS_PLAYED_BEFORE:
+      return Boolean.valueOf(isHasPlayedBefore());
+
     }
     throw new IllegalStateException();
   }
@@ -486,6 +534,8 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
       return isSetIsWhitelisted();
     case PLAYER:
       return isSetPlayer();
+    case HAS_PLAYED_BEFORE:
+      return isSetHasPlayedBefore();
     }
     throw new IllegalStateException();
   }
@@ -563,6 +613,15 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
       if (!(this_present_player && that_present_player))
         return false;
       if (!this.player.equals(that.player))
+        return false;
+    }
+
+    boolean this_present_hasPlayedBefore = true;
+    boolean that_present_hasPlayedBefore = true;
+    if (this_present_hasPlayedBefore || that_present_hasPlayedBefore) {
+      if (!(this_present_hasPlayedBefore && that_present_hasPlayedBefore))
+        return false;
+      if (this.hasPlayedBefore != that.hasPlayedBefore)
         return false;
     }
 
@@ -652,6 +711,16 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetHasPlayedBefore()).compareTo(typedOther.isSetHasPlayedBefore());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetHasPlayedBefore()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.hasPlayedBefore, typedOther.hasPlayedBefore);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -706,6 +775,10 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     } else {
       sb.append(this.player);
     }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("hasPlayedBefore:");
+    sb.append(this.hasPlayedBefore);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -808,6 +881,14 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 8: // HAS_PLAYED_BEFORE
+            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+              struct.hasPlayedBefore = iprot.readBool();
+              struct.setHasPlayedBeforeIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -848,6 +929,9 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
         struct.player.write(oprot);
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldBegin(HAS_PLAYED_BEFORE_FIELD_DESC);
+      oprot.writeBool(struct.hasPlayedBefore);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -887,7 +971,10 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
       if (struct.isSetPlayer()) {
         optionals.set(6);
       }
-      oprot.writeBitSet(optionals, 7);
+      if (struct.isSetHasPlayedBefore()) {
+        optionals.set(7);
+      }
+      oprot.writeBitSet(optionals, 8);
       if (struct.isSetName()) {
         oprot.writeString(struct.name);
       }
@@ -909,12 +996,15 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
       if (struct.isSetPlayer()) {
         struct.player.write(oprot);
       }
+      if (struct.isSetHasPlayedBefore()) {
+        oprot.writeBool(struct.hasPlayedBefore);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, OfflinePlayer struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(7);
+      BitSet incoming = iprot.readBitSet(8);
       if (incoming.get(0)) {
         struct.name = iprot.readString();
         struct.setNameIsSet(true);
@@ -943,6 +1033,10 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
         struct.player = new Player();
         struct.player.read(iprot);
         struct.setPlayerIsSet(true);
+      }
+      if (incoming.get(7)) {
+        struct.hasPlayedBefore = iprot.readBool();
+        struct.setHasPlayedBeforeIsSet(true);
       }
     }
   }
