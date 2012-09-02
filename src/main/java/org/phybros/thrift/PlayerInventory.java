@@ -21,6 +21,9 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * Represents a player's inventory
+ */
 public class PlayerInventory implements org.apache.thrift.TBase<PlayerInventory, PlayerInventory._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("PlayerInventory");
 
@@ -34,14 +37,32 @@ public class PlayerInventory implements org.apache.thrift.TBase<PlayerInventory,
     schemes.put(TupleScheme.class, new PlayerInventoryTupleSchemeFactory());
   }
 
+  /**
+   * The items in the Player's inventory
+   */
   public List<ItemStack> inventory; // required
+  /**
+   * The item(s) that the player is currently holding
+   */
   public ItemStack itemInHand; // required
+  /**
+   * The armor that the player is currently wearing
+   */
   public PlayerArmor armor; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * The items in the Player's inventory
+     */
     INVENTORY((short)1, "inventory"),
+    /**
+     * The item(s) that the player is currently holding
+     */
     ITEM_IN_HAND((short)2, "itemInHand"),
+    /**
+     * The armor that the player is currently wearing
+     */
     ARMOR((short)3, "armor");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -176,10 +197,16 @@ public class PlayerInventory implements org.apache.thrift.TBase<PlayerInventory,
     this.inventory.add(elem);
   }
 
+  /**
+   * The items in the Player's inventory
+   */
   public List<ItemStack> getInventory() {
     return this.inventory;
   }
 
+  /**
+   * The items in the Player's inventory
+   */
   public PlayerInventory setInventory(List<ItemStack> inventory) {
     this.inventory = inventory;
     return this;
@@ -200,10 +227,16 @@ public class PlayerInventory implements org.apache.thrift.TBase<PlayerInventory,
     }
   }
 
+  /**
+   * The item(s) that the player is currently holding
+   */
   public ItemStack getItemInHand() {
     return this.itemInHand;
   }
 
+  /**
+   * The item(s) that the player is currently holding
+   */
   public PlayerInventory setItemInHand(ItemStack itemInHand) {
     this.itemInHand = itemInHand;
     return this;
@@ -224,10 +257,16 @@ public class PlayerInventory implements org.apache.thrift.TBase<PlayerInventory,
     }
   }
 
+  /**
+   * The armor that the player is currently wearing
+   */
   public PlayerArmor getArmor() {
     return this.armor;
   }
 
+  /**
+   * The armor that the player is currently wearing
+   */
   public PlayerInventory setArmor(PlayerArmor armor) {
     this.armor = armor;
     return this;

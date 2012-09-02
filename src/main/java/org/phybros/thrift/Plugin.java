@@ -21,6 +21,10 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * Represents a server plugin. All the values that are populated into this
+ * object are  taken from the Plugin's server-side configuration file.
+ */
 public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Plugin");
 
@@ -37,20 +41,56 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     schemes.put(TupleScheme.class, new PluginTupleSchemeFactory());
   }
 
+  /**
+   * The full name of the plugin
+   */
   public String name; // required
+  /**
+   * The description of the plugin
+   */
   public String description; // required
+  /**
+   * The installed version of the plugin
+   */
   public String version; // required
+  /**
+   * The website of the plugin
+   */
   public String website; // required
+  /**
+   * The authors of the plugin
+   */
   public List<String> authors; // required
+  /**
+   * Whether or not the plugin is enabled
+   */
   public boolean enabled; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * The full name of the plugin
+     */
     NAME((short)1, "name"),
+    /**
+     * The description of the plugin
+     */
     DESCRIPTION((short)2, "description"),
+    /**
+     * The installed version of the plugin
+     */
     VERSION((short)3, "version"),
+    /**
+     * The website of the plugin
+     */
     WEBSITE((short)4, "website"),
+    /**
+     * The authors of the plugin
+     */
     AUTHORS((short)5, "authors"),
+    /**
+     * Whether or not the plugin is enabled
+     */
     ENABLED((short)6, "enabled");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -204,10 +244,16 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     this.enabled = false;
   }
 
+  /**
+   * The full name of the plugin
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * The full name of the plugin
+   */
   public Plugin setName(String name) {
     this.name = name;
     return this;
@@ -228,10 +274,16 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     }
   }
 
+  /**
+   * The description of the plugin
+   */
   public String getDescription() {
     return this.description;
   }
 
+  /**
+   * The description of the plugin
+   */
   public Plugin setDescription(String description) {
     this.description = description;
     return this;
@@ -252,10 +304,16 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     }
   }
 
+  /**
+   * The installed version of the plugin
+   */
   public String getVersion() {
     return this.version;
   }
 
+  /**
+   * The installed version of the plugin
+   */
   public Plugin setVersion(String version) {
     this.version = version;
     return this;
@@ -276,10 +334,16 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     }
   }
 
+  /**
+   * The website of the plugin
+   */
   public String getWebsite() {
     return this.website;
   }
 
+  /**
+   * The website of the plugin
+   */
   public Plugin setWebsite(String website) {
     this.website = website;
     return this;
@@ -315,10 +379,16 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     this.authors.add(elem);
   }
 
+  /**
+   * The authors of the plugin
+   */
   public List<String> getAuthors() {
     return this.authors;
   }
 
+  /**
+   * The authors of the plugin
+   */
   public Plugin setAuthors(List<String> authors) {
     this.authors = authors;
     return this;
@@ -339,10 +409,16 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     }
   }
 
+  /**
+   * Whether or not the plugin is enabled
+   */
   public boolean isEnabled() {
     return this.enabled;
   }
 
+  /**
+   * Whether or not the plugin is enabled
+   */
   public Plugin setEnabled(boolean enabled) {
     this.enabled = enabled;
     setEnabledIsSet(true);

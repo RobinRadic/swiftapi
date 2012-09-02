@@ -8,6 +8,9 @@ package org.phybros.thrift;
 
 
 
+/**
+ * Various codes used for catching errors
+ */
 public enum ErrorCode implements org.apache.thrift.TEnum {
   INVALID_REQUEST(0),
   INVALID_AUTHSTRING(1),

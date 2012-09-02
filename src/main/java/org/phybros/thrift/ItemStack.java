@@ -19,6 +19,9 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * A stack of items
+ */
 public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ItemStack");
 
@@ -33,16 +36,40 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     schemes.put(TupleScheme.class, new ItemStackTupleSchemeFactory());
   }
 
+  /**
+   * How many of this item are currently in the stack
+   */
   public int amount; // required
+  /**
+   * The type ID of the item
+   */
   public int typeId; // required
+  /**
+   * The durability of the item
+   */
   public int durability; // required
+  /**
+   * The current enchantments in effect on this item
+   */
   public Map<Enchantment,Integer> enchantments; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * How many of this item are currently in the stack
+     */
     AMOUNT((short)1, "amount"),
+    /**
+     * The type ID of the item
+     */
     TYPE_ID((short)2, "typeId"),
+    /**
+     * The durability of the item
+     */
     DURABILITY((short)3, "durability"),
+    /**
+     * The current enchantments in effect on this item
+     */
     ENCHANTMENTS((short)4, "enchantments");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -187,10 +214,16 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     this.enchantments = null;
   }
 
+  /**
+   * How many of this item are currently in the stack
+   */
   public int getAmount() {
     return this.amount;
   }
 
+  /**
+   * How many of this item are currently in the stack
+   */
   public ItemStack setAmount(int amount) {
     this.amount = amount;
     setAmountIsSet(true);
@@ -210,10 +243,16 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     __isset_bit_vector.set(__AMOUNT_ISSET_ID, value);
   }
 
+  /**
+   * The type ID of the item
+   */
   public int getTypeId() {
     return this.typeId;
   }
 
+  /**
+   * The type ID of the item
+   */
   public ItemStack setTypeId(int typeId) {
     this.typeId = typeId;
     setTypeIdIsSet(true);
@@ -233,10 +272,16 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     __isset_bit_vector.set(__TYPEID_ISSET_ID, value);
   }
 
+  /**
+   * The durability of the item
+   */
   public int getDurability() {
     return this.durability;
   }
 
+  /**
+   * The durability of the item
+   */
   public ItemStack setDurability(int durability) {
     this.durability = durability;
     setDurabilityIsSet(true);
@@ -267,10 +312,16 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     this.enchantments.put(key, val);
   }
 
+  /**
+   * The current enchantments in effect on this item
+   */
   public Map<Enchantment,Integer> getEnchantments() {
     return this.enchantments;
   }
 
+  /**
+   * The current enchantments in effect on this item
+   */
   public ItemStack setEnchantments(Map<Enchantment,Integer> enchantments) {
     this.enchantments = enchantments;
     return this;

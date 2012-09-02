@@ -63,7 +63,7 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(
+				e.errorMessage = String.format(
 						plugin.getConfig().getString(
 								"errorMessages.playerNotFound"), name);
 				throw e;
@@ -110,7 +110,7 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(
+				e.errorMessage = String.format(
 						plugin.getConfig().getString(
 								"errorMessages.playerNotFound"), name);
 				throw e;
@@ -192,7 +192,7 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(
+				e.errorMessage = String.format(
 						plugin.getConfig().getString(
 								"errorMessages.playerNotFound"), name);
 				throw e;
@@ -274,7 +274,7 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(
+				e.errorMessage = String.format(
 						plugin.getConfig().getString(
 								"errorMessages.offlinePlayerNotFound"), name);
 				throw e;
@@ -349,7 +349,7 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(
+				e.errorMessage = String.format(
 						plugin.getConfig().getString(
 								"errorMessages.playerNotFound"), name);
 				throw e;
@@ -422,7 +422,7 @@ public class SwiftServer {
 				plugin.getLogger().info("Plugin not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(
+				e.errorMessage = String.format(
 						plugin.getConfig().getString(
 								"errorMessages.pluginNotFound"), name);
 				throw e;
@@ -541,7 +541,7 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(
+				e.errorMessage = String.format(
 						plugin.getConfig().getString(
 								"errorMessages.playerNotFound"), name);
 				throw e;
@@ -590,7 +590,7 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(
+				e.errorMessage = String.format(
 						plugin.getConfig().getString(
 								"errorMessages.playerNotFound"), name);
 				throw e;
@@ -646,7 +646,7 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(
+				e.errorMessage = String.format(
 						plugin.getConfig().getString(
 								"errorMessages.playerNotFound"), name);
 				throw e;
@@ -693,7 +693,7 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(
+				e.errorMessage = String.format(
 						plugin.getConfig().getString(
 								"errorMessages.playerNotFound"), name);
 				throw e;
@@ -771,7 +771,7 @@ public class SwiftServer {
 											methodName));
 					EAuthException e = new EAuthException();
 					e.code = ErrorCode.INVALID_AUTHSTRING;
-					e.message = plugin.getConfig().getString(
+					e.errorMessage = plugin.getConfig().getString(
 							"errorMessages.invalidAuthentication");
 					throw e;
 				}

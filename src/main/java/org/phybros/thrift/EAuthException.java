@@ -19,11 +19,14 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * Thrown when authentication fails, this is thrown
+ */
 public class EAuthException extends Exception implements org.apache.thrift.TBase<EAuthException, EAuthException._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("EAuthException");
 
   private static final org.apache.thrift.protocol.TField CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("code", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField ERROR_MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("errorMessage", org.apache.thrift.protocol.TType.STRING, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -32,20 +35,28 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
   }
 
   /**
+   * Detailed reason for the exception
    * 
    * @see ErrorCode
    */
   public ErrorCode code; // required
-  public String message; // required
+  /**
+   * A message that describes the exception
+   */
+  public String errorMessage; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     /**
+     * Detailed reason for the exception
      * 
      * @see ErrorCode
      */
     CODE((short)1, "code"),
-    MESSAGE((short)2, "message");
+    /**
+     * A message that describes the exception
+     */
+    ERROR_MESSAGE((short)2, "errorMessage");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -62,8 +73,8 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
       switch(fieldId) {
         case 1: // CODE
           return CODE;
-        case 2: // MESSAGE
-          return MESSAGE;
+        case 2: // ERROR_MESSAGE
+          return ERROR_MESSAGE;
         default:
           return null;
       }
@@ -109,7 +120,7 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.CODE, new org.apache.thrift.meta_data.FieldMetaData("code", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, ErrorCode.class)));
-    tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.ERROR_MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("errorMessage", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(EAuthException.class, metaDataMap);
@@ -120,11 +131,11 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
 
   public EAuthException(
     ErrorCode code,
-    String message)
+    String errorMessage)
   {
     this();
     this.code = code;
-    this.message = message;
+    this.errorMessage = errorMessage;
   }
 
   /**
@@ -134,8 +145,8 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
     if (other.isSetCode()) {
       this.code = other.code;
     }
-    if (other.isSetMessage()) {
-      this.message = other.message;
+    if (other.isSetErrorMessage()) {
+      this.errorMessage = other.errorMessage;
     }
   }
 
@@ -146,10 +157,11 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
   @Override
   public void clear() {
     this.code = null;
-    this.message = null;
+    this.errorMessage = null;
   }
 
   /**
+   * Detailed reason for the exception
    * 
    * @see ErrorCode
    */
@@ -158,6 +170,7 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
   }
 
   /**
+   * Detailed reason for the exception
    * 
    * @see ErrorCode
    */
@@ -181,27 +194,33 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
     }
   }
 
-  public String getMessage() {
-    return this.message;
+  /**
+   * A message that describes the exception
+   */
+  public String getErrorMessage() {
+    return this.errorMessage;
   }
 
-  public EAuthException setMessage(String message) {
-    this.message = message;
+  /**
+   * A message that describes the exception
+   */
+  public EAuthException setErrorMessage(String errorMessage) {
+    this.errorMessage = errorMessage;
     return this;
   }
 
-  public void unsetMessage() {
-    this.message = null;
+  public void unsetErrorMessage() {
+    this.errorMessage = null;
   }
 
-  /** Returns true if field message is set (has been assigned a value) and false otherwise */
-  public boolean isSetMessage() {
-    return this.message != null;
+  /** Returns true if field errorMessage is set (has been assigned a value) and false otherwise */
+  public boolean isSetErrorMessage() {
+    return this.errorMessage != null;
   }
 
-  public void setMessageIsSet(boolean value) {
+  public void setErrorMessageIsSet(boolean value) {
     if (!value) {
-      this.message = null;
+      this.errorMessage = null;
     }
   }
 
@@ -215,11 +234,11 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
       }
       break;
 
-    case MESSAGE:
+    case ERROR_MESSAGE:
       if (value == null) {
-        unsetMessage();
+        unsetErrorMessage();
       } else {
-        setMessage((String)value);
+        setErrorMessage((String)value);
       }
       break;
 
@@ -231,8 +250,8 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
     case CODE:
       return getCode();
 
-    case MESSAGE:
-      return getMessage();
+    case ERROR_MESSAGE:
+      return getErrorMessage();
 
     }
     throw new IllegalStateException();
@@ -247,8 +266,8 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
     switch (field) {
     case CODE:
       return isSetCode();
-    case MESSAGE:
-      return isSetMessage();
+    case ERROR_MESSAGE:
+      return isSetErrorMessage();
     }
     throw new IllegalStateException();
   }
@@ -275,12 +294,12 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
         return false;
     }
 
-    boolean this_present_message = true && this.isSetMessage();
-    boolean that_present_message = true && that.isSetMessage();
-    if (this_present_message || that_present_message) {
-      if (!(this_present_message && that_present_message))
+    boolean this_present_errorMessage = true && this.isSetErrorMessage();
+    boolean that_present_errorMessage = true && that.isSetErrorMessage();
+    if (this_present_errorMessage || that_present_errorMessage) {
+      if (!(this_present_errorMessage && that_present_errorMessage))
         return false;
-      if (!this.message.equals(that.message))
+      if (!this.errorMessage.equals(that.errorMessage))
         return false;
     }
 
@@ -310,12 +329,12 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetMessage()).compareTo(typedOther.isSetMessage());
+    lastComparison = Boolean.valueOf(isSetErrorMessage()).compareTo(typedOther.isSetErrorMessage());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetMessage()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.message, typedOther.message);
+    if (isSetErrorMessage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorMessage, typedOther.errorMessage);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -348,11 +367,11 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("message:");
-    if (this.message == null) {
+    sb.append("errorMessage:");
+    if (this.errorMessage == null) {
       sb.append("null");
     } else {
-      sb.append(this.message);
+      sb.append(this.errorMessage);
     }
     first = false;
     sb.append(")");
@@ -405,10 +424,10 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 2: // MESSAGE
+          case 2: // ERROR_MESSAGE
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.message = iprot.readString();
-              struct.setMessageIsSet(true);
+              struct.errorMessage = iprot.readString();
+              struct.setErrorMessageIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -433,9 +452,9 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
         oprot.writeI32(struct.code.getValue());
         oprot.writeFieldEnd();
       }
-      if (struct.message != null) {
-        oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-        oprot.writeString(struct.message);
+      if (struct.errorMessage != null) {
+        oprot.writeFieldBegin(ERROR_MESSAGE_FIELD_DESC);
+        oprot.writeString(struct.errorMessage);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -459,15 +478,15 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
       if (struct.isSetCode()) {
         optionals.set(0);
       }
-      if (struct.isSetMessage()) {
+      if (struct.isSetErrorMessage()) {
         optionals.set(1);
       }
       oprot.writeBitSet(optionals, 2);
       if (struct.isSetCode()) {
         oprot.writeI32(struct.code.getValue());
       }
-      if (struct.isSetMessage()) {
-        oprot.writeString(struct.message);
+      if (struct.isSetErrorMessage()) {
+        oprot.writeString(struct.errorMessage);
       }
     }
 
@@ -480,8 +499,8 @@ public class EAuthException extends Exception implements org.apache.thrift.TBase
         struct.setCodeIsSet(true);
       }
       if (incoming.get(1)) {
-        struct.message = iprot.readString();
-        struct.setMessageIsSet(true);
+        struct.errorMessage = iprot.readString();
+        struct.setErrorMessageIsSet(true);
       }
     }
   }

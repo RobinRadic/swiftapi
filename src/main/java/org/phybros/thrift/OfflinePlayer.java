@@ -19,6 +19,9 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * Represents an offline player (or one that has never joined this server)
+ */
 public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, OfflinePlayer._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("OfflinePlayer");
 
@@ -37,24 +40,72 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     schemes.put(TupleScheme.class, new OfflinePlayerTupleSchemeFactory());
   }
 
+  /**
+   * The player's name
+   */
   public String name; // required
+  /**
+   * The time/date the the player first joined (UNIX-timestamp style). 0 if never.
+   */
   public long firstPlayed; // required
+  /**
+   * The time/date the the player last joined (UNIX-timestamp style) 0 if never.
+   */
   public long lastPlayed; // required
+  /**
+   * If the player is currently opped
+   */
   public boolean isOp; // required
+  /**
+   * If the player is currently banned from the server
+   */
   public boolean isBanned; // required
+  /**
+   * If the player is currently on the server's whitelist
+   */
   public boolean isWhitelisted; // required
+  /**
+   * If the player is online, more information is held in this Player object
+   */
   public Player player; // required
+  /**
+   * If the player has joined the server at least once before now
+   */
   public boolean hasPlayedBefore; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * The player's name
+     */
     NAME((short)1, "name"),
+    /**
+     * The time/date the the player first joined (UNIX-timestamp style). 0 if never.
+     */
     FIRST_PLAYED((short)2, "firstPlayed"),
+    /**
+     * The time/date the the player last joined (UNIX-timestamp style) 0 if never.
+     */
     LAST_PLAYED((short)3, "lastPlayed"),
+    /**
+     * If the player is currently opped
+     */
     IS_OP((short)4, "isOp"),
+    /**
+     * If the player is currently banned from the server
+     */
     IS_BANNED((short)5, "isBanned"),
+    /**
+     * If the player is currently on the server's whitelist
+     */
     IS_WHITELISTED((short)6, "isWhitelisted"),
+    /**
+     * If the player is online, more information is held in this Player object
+     */
     PLAYER((short)7, "player"),
+    /**
+     * If the player has joined the server at least once before now
+     */
     HAS_PLAYED_BEFORE((short)8, "hasPlayedBefore");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -228,10 +279,16 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     this.hasPlayedBefore = false;
   }
 
+  /**
+   * The player's name
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * The player's name
+   */
   public OfflinePlayer setName(String name) {
     this.name = name;
     return this;
@@ -252,10 +309,16 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     }
   }
 
+  /**
+   * The time/date the the player first joined (UNIX-timestamp style). 0 if never.
+   */
   public long getFirstPlayed() {
     return this.firstPlayed;
   }
 
+  /**
+   * The time/date the the player first joined (UNIX-timestamp style). 0 if never.
+   */
   public OfflinePlayer setFirstPlayed(long firstPlayed) {
     this.firstPlayed = firstPlayed;
     setFirstPlayedIsSet(true);
@@ -275,10 +338,16 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     __isset_bit_vector.set(__FIRSTPLAYED_ISSET_ID, value);
   }
 
+  /**
+   * The time/date the the player last joined (UNIX-timestamp style) 0 if never.
+   */
   public long getLastPlayed() {
     return this.lastPlayed;
   }
 
+  /**
+   * The time/date the the player last joined (UNIX-timestamp style) 0 if never.
+   */
   public OfflinePlayer setLastPlayed(long lastPlayed) {
     this.lastPlayed = lastPlayed;
     setLastPlayedIsSet(true);
@@ -298,10 +367,16 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     __isset_bit_vector.set(__LASTPLAYED_ISSET_ID, value);
   }
 
+  /**
+   * If the player is currently opped
+   */
   public boolean isIsOp() {
     return this.isOp;
   }
 
+  /**
+   * If the player is currently opped
+   */
   public OfflinePlayer setIsOp(boolean isOp) {
     this.isOp = isOp;
     setIsOpIsSet(true);
@@ -321,10 +396,16 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     __isset_bit_vector.set(__ISOP_ISSET_ID, value);
   }
 
+  /**
+   * If the player is currently banned from the server
+   */
   public boolean isIsBanned() {
     return this.isBanned;
   }
 
+  /**
+   * If the player is currently banned from the server
+   */
   public OfflinePlayer setIsBanned(boolean isBanned) {
     this.isBanned = isBanned;
     setIsBannedIsSet(true);
@@ -344,10 +425,16 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     __isset_bit_vector.set(__ISBANNED_ISSET_ID, value);
   }
 
+  /**
+   * If the player is currently on the server's whitelist
+   */
   public boolean isIsWhitelisted() {
     return this.isWhitelisted;
   }
 
+  /**
+   * If the player is currently on the server's whitelist
+   */
   public OfflinePlayer setIsWhitelisted(boolean isWhitelisted) {
     this.isWhitelisted = isWhitelisted;
     setIsWhitelistedIsSet(true);
@@ -367,10 +454,16 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     __isset_bit_vector.set(__ISWHITELISTED_ISSET_ID, value);
   }
 
+  /**
+   * If the player is online, more information is held in this Player object
+   */
   public Player getPlayer() {
     return this.player;
   }
 
+  /**
+   * If the player is online, more information is held in this Player object
+   */
   public OfflinePlayer setPlayer(Player player) {
     this.player = player;
     return this;
@@ -391,10 +484,16 @@ public class OfflinePlayer implements org.apache.thrift.TBase<OfflinePlayer, Off
     }
   }
 
+  /**
+   * If the player has joined the server at least once before now
+   */
   public boolean isHasPlayedBefore() {
     return this.hasPlayedBefore;
   }
 
+  /**
+   * If the player has joined the server at least once before now
+   */
   public OfflinePlayer setHasPlayedBefore(boolean hasPlayedBefore) {
     this.hasPlayedBefore = hasPlayedBefore;
     setHasPlayedBeforeIsSet(true);

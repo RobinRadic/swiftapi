@@ -19,6 +19,9 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * Represents a player on the server
+ */
 public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Player");
 
@@ -49,56 +52,172 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     schemes.put(TupleScheme.class, new PlayerTupleSchemeFactory());
   }
 
+  /**
+   * The player's name
+   */
   public String name; // required
   /**
+   * The player's current gamemode
    * 
    * @see GameMode
    */
   public GameMode gamemode; // required
+  /**
+   * Whether the player is sleeping or not
+   */
   public boolean isSleeping; // required
+  /**
+   * Whether the player is sneaking or not
+   */
   public boolean isSneaking; // required
+  /**
+   * Whether the player is sprinting or not
+   */
   public boolean isSprinting; // required
+  /**
+   * Whether the player is currently in a vehicle (minecart, boat, pig etc.)
+   */
   public boolean isInVehicle; // required
+  /**
+   * How many XP the Player needs to reach the next Level
+   */
   public long xpToNextLevel; // required
+  /**
+   * The current Level of the player
+   */
   public int level; // required
+  /**
+   * The IP address the player's client is currently connected on
+   */
   public String ip; // required
+  /**
+   * Whether the Player is opped or not
+   */
   public boolean isOp; // required
+  /**
+   * How hungry the Player is in halves of chicken legs (max possible is 20)
+   */
   public int foodLevel; // required
+  /**
+   * How much health the Player has in halves of hearts (20 max)
+   */
   public int health; // required
+  /**
+   * How tired the player is (percentage value)
+   */
   public double exhaustion; // required
+  /**
+   * The time/date the the player first joined (UNIX-timestamp style)
+   */
   public long firstPlayed; // required
+  /**
+   * The time/date the the player last joined (UNIX-timestamp style)
+   */
   public long lastPlayed; // required
+  /**
+   * If the player is currently banned from the server
+   */
   public boolean isBanned; // required
+  /**
+   * If the player is currently on the server's whitelist
+   */
   public boolean isWhitelisted; // required
+  /**
+   * The current inventory of the player
+   */
   public PlayerInventory inventory; // required
+  /**
+   * Percentage progress to the next level
+   */
   public double levelProgress; // required
+  /**
+   * The port number that the player's client is currently connected on
+   */
   public int port; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * The player's name
+     */
     NAME((short)1, "name"),
     /**
+     * The player's current gamemode
      * 
      * @see GameMode
      */
     GAMEMODE((short)2, "gamemode"),
+    /**
+     * Whether the player is sleeping or not
+     */
     IS_SLEEPING((short)3, "isSleeping"),
+    /**
+     * Whether the player is sneaking or not
+     */
     IS_SNEAKING((short)4, "isSneaking"),
+    /**
+     * Whether the player is sprinting or not
+     */
     IS_SPRINTING((short)5, "isSprinting"),
+    /**
+     * Whether the player is currently in a vehicle (minecart, boat, pig etc.)
+     */
     IS_IN_VEHICLE((short)6, "isInVehicle"),
+    /**
+     * How many XP the Player needs to reach the next Level
+     */
     XP_TO_NEXT_LEVEL((short)7, "xpToNextLevel"),
+    /**
+     * The current Level of the player
+     */
     LEVEL((short)8, "level"),
+    /**
+     * The IP address the player's client is currently connected on
+     */
     IP((short)9, "ip"),
+    /**
+     * Whether the Player is opped or not
+     */
     IS_OP((short)10, "isOp"),
+    /**
+     * How hungry the Player is in halves of chicken legs (max possible is 20)
+     */
     FOOD_LEVEL((short)11, "foodLevel"),
+    /**
+     * How much health the Player has in halves of hearts (20 max)
+     */
     HEALTH((short)12, "health"),
+    /**
+     * How tired the player is (percentage value)
+     */
     EXHAUSTION((short)13, "exhaustion"),
+    /**
+     * The time/date the the player first joined (UNIX-timestamp style)
+     */
     FIRST_PLAYED((short)14, "firstPlayed"),
+    /**
+     * The time/date the the player last joined (UNIX-timestamp style)
+     */
     LAST_PLAYED((short)15, "lastPlayed"),
+    /**
+     * If the player is currently banned from the server
+     */
     IS_BANNED((short)16, "isBanned"),
+    /**
+     * If the player is currently on the server's whitelist
+     */
     IS_WHITELISTED((short)17, "isWhitelisted"),
+    /**
+     * The current inventory of the player
+     */
     INVENTORY((short)18, "inventory"),
+    /**
+     * Percentage progress to the next level
+     */
     LEVEL_PROGRESS((short)19, "levelProgress"),
+    /**
+     * The port number that the player's client is currently connected on
+     */
     PORT((short)20, "port");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -402,10 +521,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     this.port = 0;
   }
 
+  /**
+   * The player's name
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * The player's name
+   */
   public Player setName(String name) {
     this.name = name;
     return this;
@@ -427,6 +552,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   }
 
   /**
+   * The player's current gamemode
    * 
    * @see GameMode
    */
@@ -435,6 +561,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   }
 
   /**
+   * The player's current gamemode
    * 
    * @see GameMode
    */
@@ -458,10 +585,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     }
   }
 
+  /**
+   * Whether the player is sleeping or not
+   */
   public boolean isIsSleeping() {
     return this.isSleeping;
   }
 
+  /**
+   * Whether the player is sleeping or not
+   */
   public Player setIsSleeping(boolean isSleeping) {
     this.isSleeping = isSleeping;
     setIsSleepingIsSet(true);
@@ -481,10 +614,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__ISSLEEPING_ISSET_ID, value);
   }
 
+  /**
+   * Whether the player is sneaking or not
+   */
   public boolean isIsSneaking() {
     return this.isSneaking;
   }
 
+  /**
+   * Whether the player is sneaking or not
+   */
   public Player setIsSneaking(boolean isSneaking) {
     this.isSneaking = isSneaking;
     setIsSneakingIsSet(true);
@@ -504,10 +643,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__ISSNEAKING_ISSET_ID, value);
   }
 
+  /**
+   * Whether the player is sprinting or not
+   */
   public boolean isIsSprinting() {
     return this.isSprinting;
   }
 
+  /**
+   * Whether the player is sprinting or not
+   */
   public Player setIsSprinting(boolean isSprinting) {
     this.isSprinting = isSprinting;
     setIsSprintingIsSet(true);
@@ -527,10 +672,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__ISSPRINTING_ISSET_ID, value);
   }
 
+  /**
+   * Whether the player is currently in a vehicle (minecart, boat, pig etc.)
+   */
   public boolean isIsInVehicle() {
     return this.isInVehicle;
   }
 
+  /**
+   * Whether the player is currently in a vehicle (minecart, boat, pig etc.)
+   */
   public Player setIsInVehicle(boolean isInVehicle) {
     this.isInVehicle = isInVehicle;
     setIsInVehicleIsSet(true);
@@ -550,10 +701,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__ISINVEHICLE_ISSET_ID, value);
   }
 
+  /**
+   * How many XP the Player needs to reach the next Level
+   */
   public long getXpToNextLevel() {
     return this.xpToNextLevel;
   }
 
+  /**
+   * How many XP the Player needs to reach the next Level
+   */
   public Player setXpToNextLevel(long xpToNextLevel) {
     this.xpToNextLevel = xpToNextLevel;
     setXpToNextLevelIsSet(true);
@@ -573,10 +730,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__XPTONEXTLEVEL_ISSET_ID, value);
   }
 
+  /**
+   * The current Level of the player
+   */
   public int getLevel() {
     return this.level;
   }
 
+  /**
+   * The current Level of the player
+   */
   public Player setLevel(int level) {
     this.level = level;
     setLevelIsSet(true);
@@ -596,10 +759,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__LEVEL_ISSET_ID, value);
   }
 
+  /**
+   * The IP address the player's client is currently connected on
+   */
   public String getIp() {
     return this.ip;
   }
 
+  /**
+   * The IP address the player's client is currently connected on
+   */
   public Player setIp(String ip) {
     this.ip = ip;
     return this;
@@ -620,10 +789,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     }
   }
 
+  /**
+   * Whether the Player is opped or not
+   */
   public boolean isIsOp() {
     return this.isOp;
   }
 
+  /**
+   * Whether the Player is opped or not
+   */
   public Player setIsOp(boolean isOp) {
     this.isOp = isOp;
     setIsOpIsSet(true);
@@ -643,10 +818,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__ISOP_ISSET_ID, value);
   }
 
+  /**
+   * How hungry the Player is in halves of chicken legs (max possible is 20)
+   */
   public int getFoodLevel() {
     return this.foodLevel;
   }
 
+  /**
+   * How hungry the Player is in halves of chicken legs (max possible is 20)
+   */
   public Player setFoodLevel(int foodLevel) {
     this.foodLevel = foodLevel;
     setFoodLevelIsSet(true);
@@ -666,10 +847,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__FOODLEVEL_ISSET_ID, value);
   }
 
+  /**
+   * How much health the Player has in halves of hearts (20 max)
+   */
   public int getHealth() {
     return this.health;
   }
 
+  /**
+   * How much health the Player has in halves of hearts (20 max)
+   */
   public Player setHealth(int health) {
     this.health = health;
     setHealthIsSet(true);
@@ -689,10 +876,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__HEALTH_ISSET_ID, value);
   }
 
+  /**
+   * How tired the player is (percentage value)
+   */
   public double getExhaustion() {
     return this.exhaustion;
   }
 
+  /**
+   * How tired the player is (percentage value)
+   */
   public Player setExhaustion(double exhaustion) {
     this.exhaustion = exhaustion;
     setExhaustionIsSet(true);
@@ -712,10 +905,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__EXHAUSTION_ISSET_ID, value);
   }
 
+  /**
+   * The time/date the the player first joined (UNIX-timestamp style)
+   */
   public long getFirstPlayed() {
     return this.firstPlayed;
   }
 
+  /**
+   * The time/date the the player first joined (UNIX-timestamp style)
+   */
   public Player setFirstPlayed(long firstPlayed) {
     this.firstPlayed = firstPlayed;
     setFirstPlayedIsSet(true);
@@ -735,10 +934,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__FIRSTPLAYED_ISSET_ID, value);
   }
 
+  /**
+   * The time/date the the player last joined (UNIX-timestamp style)
+   */
   public long getLastPlayed() {
     return this.lastPlayed;
   }
 
+  /**
+   * The time/date the the player last joined (UNIX-timestamp style)
+   */
   public Player setLastPlayed(long lastPlayed) {
     this.lastPlayed = lastPlayed;
     setLastPlayedIsSet(true);
@@ -758,10 +963,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__LASTPLAYED_ISSET_ID, value);
   }
 
+  /**
+   * If the player is currently banned from the server
+   */
   public boolean isIsBanned() {
     return this.isBanned;
   }
 
+  /**
+   * If the player is currently banned from the server
+   */
   public Player setIsBanned(boolean isBanned) {
     this.isBanned = isBanned;
     setIsBannedIsSet(true);
@@ -781,10 +992,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__ISBANNED_ISSET_ID, value);
   }
 
+  /**
+   * If the player is currently on the server's whitelist
+   */
   public boolean isIsWhitelisted() {
     return this.isWhitelisted;
   }
 
+  /**
+   * If the player is currently on the server's whitelist
+   */
   public Player setIsWhitelisted(boolean isWhitelisted) {
     this.isWhitelisted = isWhitelisted;
     setIsWhitelistedIsSet(true);
@@ -804,10 +1021,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__ISWHITELISTED_ISSET_ID, value);
   }
 
+  /**
+   * The current inventory of the player
+   */
   public PlayerInventory getInventory() {
     return this.inventory;
   }
 
+  /**
+   * The current inventory of the player
+   */
   public Player setInventory(PlayerInventory inventory) {
     this.inventory = inventory;
     return this;
@@ -828,10 +1051,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     }
   }
 
+  /**
+   * Percentage progress to the next level
+   */
   public double getLevelProgress() {
     return this.levelProgress;
   }
 
+  /**
+   * Percentage progress to the next level
+   */
   public Player setLevelProgress(double levelProgress) {
     this.levelProgress = levelProgress;
     setLevelProgressIsSet(true);
@@ -851,10 +1080,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__LEVELPROGRESS_ISSET_ID, value);
   }
 
+  /**
+   * The port number that the player's client is currently connected on
+   */
   public int getPort() {
     return this.port;
   }
 
+  /**
+   * The port number that the player's client is currently connected on
+   */
   public Player setPort(int port) {
     this.port = port;
     setPortIsSet(true);

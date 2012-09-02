@@ -1,3 +1,5 @@
+namespace java org.phybros.thrift
+
 /**
  * Various codes used for catching errors
  */

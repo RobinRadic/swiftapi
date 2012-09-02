@@ -19,6 +19,9 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * Represents the armor that the player is wearing
+ */
 public class PlayerArmor implements org.apache.thrift.TBase<PlayerArmor, PlayerArmor._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("PlayerArmor");
 
@@ -33,16 +36,40 @@ public class PlayerArmor implements org.apache.thrift.TBase<PlayerArmor, PlayerA
     schemes.put(TupleScheme.class, new PlayerArmorTupleSchemeFactory());
   }
 
+  /**
+   * The item in the player's helmet armor slot
+   */
   public ItemStack helmet; // required
+  /**
+   * The item in the player's chestplate armor slot
+   */
   public ItemStack chestplate; // required
+  /**
+   * The item in the player's leggings armor slot
+   */
   public ItemStack leggings; // required
+  /**
+   * The item in the player's boots armor slot
+   */
   public ItemStack boots; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * The item in the player's helmet armor slot
+     */
     HELMET((short)1, "helmet"),
+    /**
+     * The item in the player's chestplate armor slot
+     */
     CHESTPLATE((short)2, "chestplate"),
+    /**
+     * The item in the player's leggings armor slot
+     */
     LEGGINGS((short)3, "leggings"),
+    /**
+     * The item in the player's boots armor slot
+     */
     BOOTS((short)4, "boots");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -167,10 +194,16 @@ public class PlayerArmor implements org.apache.thrift.TBase<PlayerArmor, PlayerA
     this.boots = null;
   }
 
+  /**
+   * The item in the player's helmet armor slot
+   */
   public ItemStack getHelmet() {
     return this.helmet;
   }
 
+  /**
+   * The item in the player's helmet armor slot
+   */
   public PlayerArmor setHelmet(ItemStack helmet) {
     this.helmet = helmet;
     return this;
@@ -191,10 +224,16 @@ public class PlayerArmor implements org.apache.thrift.TBase<PlayerArmor, PlayerA
     }
   }
 
+  /**
+   * The item in the player's chestplate armor slot
+   */
   public ItemStack getChestplate() {
     return this.chestplate;
   }
 
+  /**
+   * The item in the player's chestplate armor slot
+   */
   public PlayerArmor setChestplate(ItemStack chestplate) {
     this.chestplate = chestplate;
     return this;
@@ -215,10 +254,16 @@ public class PlayerArmor implements org.apache.thrift.TBase<PlayerArmor, PlayerA
     }
   }
 
+  /**
+   * The item in the player's leggings armor slot
+   */
   public ItemStack getLeggings() {
     return this.leggings;
   }
 
+  /**
+   * The item in the player's leggings armor slot
+   */
   public PlayerArmor setLeggings(ItemStack leggings) {
     this.leggings = leggings;
     return this;
@@ -239,10 +284,16 @@ public class PlayerArmor implements org.apache.thrift.TBase<PlayerArmor, PlayerA
     }
   }
 
+  /**
+   * The item in the player's boots armor slot
+   */
   public ItemStack getBoots() {
     return this.boots;
   }
 
+  /**
+   * The item in the player's boots armor slot
+   */
   public PlayerArmor setBoots(ItemStack boots) {
     this.boots = boots;
     return this;
