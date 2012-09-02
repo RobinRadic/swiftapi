@@ -7,9 +7,6 @@
 package org.phybros.thrift;
 
 
-import java.util.Map;
-import java.util.HashMap;
-import org.apache.thrift.TEnum;
 
 public enum ErrorCode implements org.apache.thrift.TEnum {
   INVALID_REQUEST(0),

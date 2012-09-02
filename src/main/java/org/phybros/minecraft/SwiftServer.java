@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
-import org.apache.thrift.server.TSimpleServer;
-import org.apache.thrift.transport.TServerSocket;
-import org.apache.thrift.transport.TServerTransport;
+import org.apache.thrift.transport.TNonblockingServerSocket;
+import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
@@ -57,10 +57,14 @@ public class SwiftServer {
 				// plugin.getLogger().info("Received:  " + authString);
 
 				if (!hash.equalsIgnoreCase(authString)) {
-					plugin.getLogger().info(String.format("Invalid Authentication received (method: %s)", methodName));
+					plugin.getLogger()
+							.info(String
+									.format("Invalid Authentication received (method: %s)",
+											methodName));
 					EAuthException e = new EAuthException();
 					e.code = ErrorCode.INVALID_AUTHSTRING;
-					e.message = plugin.getConfig().getString("errorMessages.invalidAuthentication");
+					e.message = plugin.getConfig().getString(
+							"errorMessages.invalidAuthentication");
 					throw e;
 				}
 			} catch (NoSuchAlgorithmException algex) {
@@ -206,15 +210,18 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(plugin.getConfig().getString("errorMessages.playerNotFound"), name);
+				e.message = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), name);
 				throw e;
 			}
 
 			try {
 				boolean wasOp = offPl.isOp();
 				offPl.setOp(false);
-				if(wasOp && notifyPlayer && offPl.isOnline()) {
-					offPl.getPlayer().sendMessage(plugin.getConfig().getString("messages.deOp"));
+				if (wasOp && notifyPlayer && offPl.isOnline()) {
+					offPl.getPlayer().sendMessage(
+							plugin.getConfig().getString("messages.deOp"));
 				}
 				return true;
 			} catch (Exception e) {
@@ -244,7 +251,9 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(plugin.getConfig().getString("errorMessages.offlinePlayerNotFound"), name);
+				e.message = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.offlinePlayerNotFound"), name);
 				throw e;
 			}
 
@@ -287,7 +296,9 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(plugin.getConfig().getString("errorMessages.playerNotFound"), name);
+				e.message = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), name);
 				throw e;
 			}
 
@@ -343,7 +354,9 @@ public class SwiftServer {
 				plugin.getLogger().info("Plugin not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(plugin.getConfig().getString("errorMessages.pluginNotFound"), name);
+				e.message = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.pluginNotFound"), name);
 				throw e;
 			}
 
@@ -428,15 +441,18 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(plugin.getConfig().getString("errorMessages.playerNotFound"), name);
+				e.message = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), name);
 				throw e;
 			}
 
 			try {
 				boolean wasOp = offPl.isOp();
 				offPl.setOp(true);
-				if(!wasOp && notifyPlayer && offPl.isOnline()) {
-					offPl.getPlayer().sendMessage(plugin.getConfig().getString("messages.op"));
+				if (!wasOp && notifyPlayer && offPl.isOnline()) {
+					offPl.getPlayer().sendMessage(
+							plugin.getConfig().getString("messages.op"));
 				}
 				return true;
 			} catch (Exception e) {
@@ -457,7 +473,9 @@ public class SwiftServer {
 				plugin.getLogger().info("Player not found");
 				EDataException e = new EDataException();
 				e.code = ErrorCode.NOT_FOUND;
-				e.message = String.format(plugin.getConfig().getString("errorMessages.playerNotFound"), name);
+				e.message = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), name);
 				throw e;
 			}
 
@@ -465,6 +483,139 @@ public class SwiftServer {
 				org.bukkit.GameMode m = org.bukkit.GameMode.getByValue(mode
 						.getValue());
 				player.setGameMode(m);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+
+		@Override
+		public boolean addToWhitelist(String authString, String name)
+				throws EAuthException, EDataException, TException {
+			logCall("addToWhitelist");
+			authenticate(authString, "addToWhitelist");
+
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+
+			if (offPl == null) {
+				plugin.getLogger().info("Player not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), name);
+				throw e;
+			}
+
+			try {
+				offPl.setWhitelisted(true);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+
+		@Override
+		public boolean ban(String authString, String name)
+				throws EAuthException, EDataException, TException {
+			logCall("ban");
+			authenticate(authString, "ban");
+
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+
+			if (offPl == null) {
+				plugin.getLogger().info("Player not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), name);
+				throw e;
+			}
+
+			try {
+				offPl.setBanned(true);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+
+		@Override
+		public boolean banIp(String authString, String ip)
+				throws EAuthException, EDataException, TException {
+			logCall("banIp");
+			authenticate(authString, "banIp");
+
+			try {
+				plugin.getServer().banIP(ip);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+
+		@Override
+		public boolean kick(String authString, String name, String message)
+				throws EAuthException, EDataException, TException {
+			logCall("kick");
+			authenticate(authString, "kick");
+
+			org.bukkit.entity.Player player = plugin.getServer()
+					.getPlayer(name);
+
+			if (player == null) {
+				plugin.getLogger().info("Player not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), name);
+				throw e;
+			}
+
+			try {
+				player.kickPlayer(message);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+
+		}
+
+		@Override
+		public boolean unBan(String authString, String name)
+				throws EAuthException, EDataException, TException {
+			logCall("unBan");
+			authenticate(authString, "unBan");
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+
+			if (offPl == null) {
+				plugin.getLogger().info("Player not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.message = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), name);
+				throw e;
+			}
+
+			try {
+				offPl.setBanned(false);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+
+		@Override
+		public boolean unBanIp(String authString, String ip)
+				throws EAuthException, EDataException, TException {
+			logCall("unBanIp");
+			authenticate(authString, "unBanIp");
+
+			try {
+				plugin.getServer().unbanIP(ip);
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -495,9 +646,9 @@ public class SwiftServer {
 					SwiftApi.Processor<SwiftApi.Iface> pro = new SwiftApi.Processor<SwiftApi.Iface>(
 							psh);
 
-					TServerTransport tst = new TServerSocket(port);
-					server = new TSimpleServer(
-							new TSimpleServer.Args(tst).processor(pro));
+					TNonblockingServerTransport tst = new TNonblockingServerSocket(port);
+					server = new TNonblockingServer(
+							new TNonblockingServer.Args(tst).processor(pro));
 					plugin.getLogger().info(
 							"Listening on port " + String.valueOf(port));
 					server.serve();

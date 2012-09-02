@@ -117,6 +117,9 @@ struct Plugin {
 
 // The main service that provides all the methods
 service SwiftApi {
+	bool addToWhitelist(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
+	bool ban(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
+	bool banIp(1:string authString, 2:string ip) throws (1:EAuthException aex, 2:EDataException dex),
 	bool deOp(1:string authString, 2:string name, 3:bool notifyPlayer) throws (1:EAuthException aex, 2:EDataException dex),
 	string getBukkitVersion(1:string authString) throws (1:EAuthException aex),
 	OfflinePlayer getOfflinePlayer(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
@@ -126,6 +129,9 @@ service SwiftApi {
 	list<Plugin> getPlugins(1:string authString) throws (1:EAuthException aex),
 	Plugin getPlugin(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
 	string getServerVersion(1:string authString) throws (1:EAuthException aex),
+	bool kick(1:string authString, 2:string name, 3:string message) throws (1:EAuthException aex, 2:EDataException dex),
 	bool op(1:string authString, 2:string name, 3:bool notifyPlayer) throws (1:EAuthException aex, 2:EDataException dex),
 	bool setGameMode(1:string authString, 2:string name, 3:GameMode mode) throws (1:EAuthException aex, 2:EDataException dex),
+	bool unBan(1:string authString, 2:string name) throws (1:EAuthException aex, 2:EDataException dex),
+	bool unBanIp(1:string authString, 2:string ip) throws (1:EAuthException aex, 2:EDataException dex),
 }
