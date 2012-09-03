@@ -1,4 +1,5 @@
 namespace java org.phybros.thrift
+namespace csharp org.phybros.thrift
 
 include "Errors.thrift"
 
@@ -252,7 +253,8 @@ struct Plugin {
 service SwiftApi {
 /**
  * Add a Player to the server's whitelist. The player can be offline, or
- * be a player that has never played on this server before
+ * be a player that has never played on this server before. If the player is
+ * already on the whitelist, this method does nothing.
  * 
  * @param authString
  *            The authentication hash
@@ -579,6 +581,33 @@ service SwiftApi {
 	bool op(1:string authString, 
 			2:string name, 3:bool notifyPlayer) 
 	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
+
+/**
+ * Remove a Player from the server's whitelist. The player can be offline, or
+ * be a player that has never played on this server before. If the player is not
+ * already on the whitelist, this method does nothing.
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param name
+ *            The name of the player to remove from the whitelist
+ * 
+ * @return boolean true on success, false on failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the player was not found
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool removeFromWhitelist(1:string authString,
+							 2:string name)
+	throws (1:Errors.EAuthException aex,
 			2:Errors.EDataException dex),
 	
 /**

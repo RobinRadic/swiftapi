@@ -7,6 +7,9 @@
   <version>0.2</version>
   <description>A bukkit plugin to expose functionality over an Apache Thrift interface</description>
   <url>https://github.com/phybros/swiftapi</url>
+  <scm>
+    <url>https://github.com/phybros/swiftapi</url>
+  </scm>
   <build>
     <pluginManagement>
       <plugins>
@@ -147,12 +150,6 @@
       <artifactId>craftbukkit</artifactId>
       <version>1.3.1-R2.0</version>
       <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
   <properties>

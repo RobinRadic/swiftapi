@@ -70,7 +70,10 @@ public class SwiftServer {
 			}
 
 			try {
-				offPl.setWhitelisted(true);
+				boolean wasWhitelisted = offPl.isWhitelisted();
+				if(!wasWhitelisted) {
+					offPl.setWhitelisted(true);
+				}
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -609,6 +612,56 @@ public class SwiftServer {
 			}
 		}
 
+		/**
+		 * Remove a Player from the server's whitelist. The player can be offline, or
+		 * be a player that has never played on this server before
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param name
+		 *            The name of the player to remove from the whitelist
+		 * 
+		 * @return boolean true on success, false on failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the player was not found
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean removeFromWhitelist(String authString, String name)
+				throws EAuthException, EDataException, TException {
+			logCall("addToWhitelist");
+			authenticate(authString, "addToWhitelist");
+
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+
+			if (offPl == null) {
+				plugin.getLogger().info("Player not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), name);
+				throw e;
+			}
+
+			try {
+				boolean wasWhitelisted = offPl.isWhitelisted();
+				if(wasWhitelisted) {
+					offPl.setWhitelisted(false);
+				}
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		
 		/**
 		 * Sets the gamemode of a player
 		 * 
