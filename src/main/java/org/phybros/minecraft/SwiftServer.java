@@ -490,6 +490,76 @@ public class SwiftServer {
 		}
 
 		/**
+		 * Get the current server. This object contains a large amount of
+		 * information about the server including player and plugin information,
+		 * as well as configuration information.
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @return Server An object containing server information
+		 * 
+		 */
+		@Override
+		public Server getServer(String authString) throws EAuthException,
+				TException {
+			logCall("getServer");
+			authenticate(authString, "getServer");
+
+			Server s = new Server();
+			org.bukkit.Server server = plugin.getServer();
+
+			s.allowEnd = server.getAllowEnd();
+			s.allowFlight = server.getAllowFlight();
+			s.allowNether = server.getAllowNether();
+			s.bannedIps = new ArrayList<String>(server.getIPBans());
+
+			s.bannedPlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
+			for (OfflinePlayer op : server.getBannedPlayers()) {
+				s.bannedPlayers.add(convertBukkitOfflinePlayer(op));
+			}
+
+			s.bukkitVersion = server.getBukkitVersion();
+			s.ip = server.getIp();
+			s.maxPlayers = server.getMaxPlayers();
+			s.name = server.getServerName();
+			s.offlinePlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
+
+			for (OfflinePlayer op : server.getOfflinePlayers()) {
+				s.offlinePlayers.add(convertBukkitOfflinePlayer(op));
+			}
+
+			s.onlinePlayers = new ArrayList<Player>();
+
+			for (org.bukkit.entity.Player p : server.getOnlinePlayers()) {
+				s.onlinePlayers.add(convertBukkitPlayer(p));
+			}
+
+			s.port = server.getPort();
+			s.version = server.getVersion();
+
+			s.whitelist = new ArrayList<org.phybros.thrift.OfflinePlayer>();
+
+			for (OfflinePlayer op : server.getWhitelistedPlayers()) {
+				s.whitelist.add(convertBukkitOfflinePlayer(op));
+			}
+
+			s.worlds = new ArrayList<World>();
+
+			for (org.bukkit.World w : server.getWorlds()) {
+				s.worlds.add(convertBukkitWorld(w));
+			}
+
+			return s;
+		}
+
+		/**
 		 * Get the current server version
 		 * 
 		 * @param authString
@@ -511,6 +581,35 @@ public class SwiftServer {
 			authenticate(authString, "getServerVersion");
 
 			return plugin.getServer().getVersion();
+		}
+
+		/**
+		 * Gets all the worlds on the server
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @return List<World> the worlds on the server
+		 * 
+		 */
+		@Override
+		public List<World> getWorlds(String authString) throws EAuthException,
+				TException {
+			logCall("getWorlds");
+			authenticate(authString, "getWorlds");
+			List<World> worlds = new ArrayList<World>();
+
+			for (org.bukkit.World w : plugin.getServer().getWorlds()) {
+				worlds.add(convertBukkitWorld(w));
+			}
+
+			return worlds;
 		}
 
 		/**
@@ -849,6 +948,27 @@ public class SwiftServer {
 		}
 
 		/**
+		 * Converts a bukkit Location object into a thrift Location object
+		 * 
+		 * @param bukkitLocation
+		 *            The location object to convert
+		 * @return Location a thrift-compatible location object
+		 */
+		private Location convertBukkitLocation(
+				org.bukkit.Location bukkitLocation) {
+			Location newLocation = new Location();
+
+			newLocation.x = bukkitLocation.getX();
+			newLocation.y = bukkitLocation.getY();
+			newLocation.z = bukkitLocation.getZ();
+
+			newLocation.pitch = bukkitLocation.getPitch();
+			newLocation.yaw = bukkitLocation.getYaw();
+
+			return newLocation;
+		}
+
+		/**
 		 * Converts a bukkit OfflinePlayer into a thrift-compatible version.
 		 * 
 		 * @param bukkitOfflinePlayer
@@ -930,27 +1050,6 @@ public class SwiftServer {
 		}
 
 		/**
-		 * Converts a bukkit Location object into a thrift Location object
-		 * 
-		 * @param bukkitLocation
-		 *            The location object to convert
-		 * @return Location a thrift-compatible location object
-		 */
-		private Location convertBukkitLocation(
-				org.bukkit.Location bukkitLocation) {
-			Location newLocation = new Location();
-
-			newLocation.x = bukkitLocation.getX();
-			newLocation.y = bukkitLocation.getY();
-			newLocation.z = bukkitLocation.getZ();
-
-			newLocation.pitch = bukkitLocation.getPitch();
-			newLocation.yaw = bukkitLocation.getYaw();
-
-			return newLocation;
-		}
-
-		/**
 		 * Converts a bukkit PlayerInventory into a thrift-compatible version.
 		 * 
 		 * @param bukkitInventory
@@ -1003,118 +1102,11 @@ public class SwiftServer {
 						"SwiftApi method called: " + methodName + "()");
 			}
 		}
-
-		/**
-		 * Get the current server. This object contains a large amount of
-		 * information about the server including player and plugin information,
-		 * as well as configuration information.
-		 * 
-		 * @param authString
-		 *            The authentication hash
-		 * 
-		 * @throws TException
-		 *             If something thrifty went wrong
-		 * 
-		 * @throws Errors.EAuthException
-		 *             If the method call was not correctly authenticated
-		 * 
-		 * @return Server An object containing server information
-		 * 
-		 */
-		@Override
-		public Server getServer(String authString) throws EAuthException,
-				TException {
-			logCall("getServer");
-			authenticate(authString, "getServer");
-
-			Server s = new Server();
-			org.bukkit.Server server = plugin.getServer();
-
-			s.allowEnd = server.getAllowEnd();
-			s.allowFlight = server.getAllowFlight();
-			s.allowNether = server.getAllowNether();
-			s.bannedIps = new ArrayList<String>(server.getIPBans());
-
-			s.bannedPlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
-			for (OfflinePlayer op : server.getBannedPlayers()) {
-				s.bannedPlayers.add(convertBukkitOfflinePlayer(op));
-			}
-
-			s.bukkitVersion = server.getBukkitVersion();
-			s.ip = server.getIp();
-			s.maxPlayers = server.getMaxPlayers();
-			s.name = server.getServerName();
-			s.offlinePlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
-
-			for (OfflinePlayer op : server.getOfflinePlayers()) {
-				s.offlinePlayers.add(convertBukkitOfflinePlayer(op));
-			}
-
-			s.onlinePlayers = new ArrayList<Player>();
-
-			for (org.bukkit.entity.Player p : server.getOnlinePlayers()) {
-				s.onlinePlayers.add(convertBukkitPlayer(p));
-			}
-
-			s.port = server.getPort();
-			s.version = server.getVersion();
-
-			s.whitelist = new ArrayList<org.phybros.thrift.OfflinePlayer>();
-
-			for (OfflinePlayer op : server.getWhitelistedPlayers()) {
-				s.whitelist.add(convertBukkitOfflinePlayer(op));
-			}
-
-			s.worlds = new ArrayList<World>();
-
-			for (org.bukkit.World w : server.getWorlds()) {
-				s.worlds.add(convertBukkitWorld(w));
-			}
-
-			return s;
-		}
-
-		/**
-		 * Gets all the worlds on the server
-		 * 
-		 * @param authString
-		 *            The authentication hash
-		 * 
-		 * @throws TException
-		 *             If something thrifty went wrong
-		 * 
-		 * @throws Errors.EAuthException
-		 *             If the method call was not correctly authenticated
-		 * 
-		 * @return List<World> the worlds on the server
-		 * 
-		 */
-		@Override
-		public List<World> getWorlds(String authString) throws EAuthException,
-				TException {
-			logCall("getWorlds");
-			authenticate(authString, "getWorlds");
-			List<World> worlds = new ArrayList<World>();
-
-			for (org.bukkit.World w : plugin.getServer().getWorlds()) {
-				worlds.add(convertBukkitWorld(w));
-			}
-
-			return worlds;
-		}
-	}
-
-	private World convertBukkitWorld(org.bukkit.World bukkitWorld) {
-		World newWorld = new World();
-
-		newWorld.name = bukkitWorld.getName();
-
-		return newWorld;
 	}
 
 	private int port;
-	private TServer server;
 
+	private TServer server;
 	private SwiftApiPlugin plugin;
 
 	public SwiftServer(SwiftApiPlugin plugin) {
@@ -1128,6 +1120,14 @@ public class SwiftServer {
 		plugin.getLogger().info("Stopping server...");
 		server.stop();
 		plugin.getLogger().info("Server stopped successfully");
+	}
+
+	private World convertBukkitWorld(org.bukkit.World bukkitWorld) {
+		World newWorld = new World();
+
+		newWorld.name = bukkitWorld.getName();
+
+		return newWorld;
 	}
 
 	private void start() {
