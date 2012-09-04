@@ -24,7 +24,9 @@ import org.phybros.thrift.Player;
 import org.phybros.thrift.PlayerArmor;
 import org.phybros.thrift.PlayerInventory;
 import org.phybros.thrift.Plugin;
+import org.phybros.thrift.Server;
 import org.phybros.thrift.SwiftApi;
+import org.phybros.thrift.World;
 
 public class SwiftServer {
 
@@ -973,8 +975,86 @@ public class SwiftServer {
 						"SwiftApi method called: " + methodName + "()");
 			}
 		}
+		
+		/**
+		 * Get the current server. This object contains a large amount of information
+		 * about the server including player and plugin information, as well as configuration
+		 * information.
+		 *
+		 * @param authString
+		 *            The authentication hash
+		 *
+		 * @throws TException
+		 *			  If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *			  If the method call was not correctly authenticated
+		 *
+		 * @return Server An object containing server information
+		 * 
+		 */
+		@Override
+		public Server getServer(String authString) throws EAuthException,
+				TException {
+			logCall("getServer");
+			authenticate(authString, "getServer");
+			
+			Server s = new Server();
+			org.bukkit.Server server = plugin.getServer();
+			
+			s.allowEnd = server.getAllowEnd();
+			s.allowFlight = server.getAllowFlight();
+			s.allowNether = server.getAllowNether();
+			s.bannedIps = new ArrayList<String>(server.getIPBans());
+			
+			s.bannedPlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
+			for(OfflinePlayer op : server.getBannedPlayers()) {
+				s.bannedPlayers.add(convertBukkitOfflinePlayer(op));
+			}
+			
+			s.bukkitVersion = server.getBukkitVersion();
+			s.ip = server.getIp();
+			s.maxPlayers = server.getMaxPlayers();
+			s.name = server.getServerName();
+			s.offlinePlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
+			
+			for(OfflinePlayer op : server.getOfflinePlayers()) {
+				s.offlinePlayers.add(convertBukkitOfflinePlayer(op));
+			}
+			
+			s.onlinePlayers = new ArrayList<Player>();
+			
+			for(org.bukkit.entity.Player p : server.getOnlinePlayers()) {
+				s.onlinePlayers.add(convertBukkitPlayer(p));
+			}
+
+			s.port = server.getPort();
+			s.version = server.getVersion();
+			
+			s.whitelist = new ArrayList<org.phybros.thrift.OfflinePlayer>();
+			
+			for(OfflinePlayer op : server.getWhitelistedPlayers()) {
+				s.whitelist.add(convertBukkitOfflinePlayer(op));
+			}
+			
+			s.worlds = new ArrayList<World>();
+			
+			for(org.bukkit.World w : server.getWorlds()) {
+				s.worlds.add(convertBukkitWorld(w));
+			}
+			
+			return s;
+		}
 	}
 
+	private World convertBukkitWorld(org.bukkit.World bukkitWorld) {
+		World newWorld = new World();
+		
+		newWorld.name = bukkitWorld.getName();
+		
+		return newWorld;
+	}
+	
 	private int port;
 	private TServer server;
 

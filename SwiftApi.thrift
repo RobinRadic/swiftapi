@@ -250,6 +250,37 @@ struct Plugin {
 	6: bool enabled,
 }
 
+/*
+ * Represents a game world
+ */
+struct World {
+	1: string name,
+}
+
+/*
+ * Represents the game server.
+ */
+struct Server {
+/*
+ * The name of the server
+ */
+	1: string name,
+	2: list<OfflinePlayer> offlinePlayers,
+	3: list<Player> onlinePlayers,
+	4: string version,
+	5: string bukkitVersion,
+	6: i32 maxPlayers,
+	7: string ip,
+	8: i32 port,
+	9: bool allowFlight,
+	10: bool allowNether,
+	11: bool allowEnd,
+	12: list<OfflinePlayer> whitelist,
+	13: list<OfflinePlayer> bannedPlayers,
+	14: list<string> bannedIps,
+	15: list<World> worlds,
+}
+
 service SwiftApi {
 /**
  * Add a Player to the server's whitelist. The player can be offline, or
@@ -507,7 +538,25 @@ service SwiftApi {
  * 
  */
 	list<Plugin> getPlugins(1:string authString) throws (1:Errors.EAuthException aex),
-	
+
+/**
+ * Get the current server. This object contains a large amount of information
+ * about the server including player and plugin information, as well as configuration
+ * information.
+ *
+ * @param authString
+ *            The authentication hash
+ *
+ * @throws TException
+ *			  If something thrifty went wrong
+ * 
+ * @throws Errors.EAuthException
+ *			  If the method call was not correctly authenticated
+ *
+ * @return Server An object containing server information
+ * 
+ */
+ 	Server getServer(1:string authString) throws (1:Errors.EAuthException aex),
 /**
  * Get the current server version
  * 
