@@ -557,6 +557,7 @@ service SwiftApi {
  * 
  */
  	Server getServer(1:string authString) throws (1:Errors.EAuthException aex),
+
 /**
  * Get the current server version
  * 
@@ -573,7 +574,24 @@ service SwiftApi {
  * 
  */
 	string getServerVersion(1:string authString) throws (1:Errors.EAuthException aex),
-	
+
+/**
+ * Gets all the worlds on the server
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @throws TException
+ *             If something thrifty went wrong
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @return List<World> the worlds on the server
+ * 
+ */
+	list<World> getWorlds(1:string authString) throws (1:Errors.EAuthException aex),
+		
 /**
  * Kick a currently online Player from the server with a specific custom
  * message
