@@ -3,109 +3,109 @@ namespace csharp org.phybros.thrift
 
 include "Errors.thrift"
 
-/*
+/**
  * Valid game modes
  */
 enum GameMode {
-/*
+/**
  * Survival Mode
  */
 	SURVIVAL = 0,
-/*
+/**
  * Creative Mode
  */
 	CREATIVE = 1,
-/*
+/**
  * Adventure Mode
  */
 	ADVENTURE = 2,
 }
 
-/*
+/**
  * All enchantments
  */
 enum Enchantment {
-/*
+/**
  * Protection
  */
 	PROTECTION_ENVIRONMENTAL = 0,
-/*
+/**
  * Fire Protection
  */
     PROTECTION_FIRE = 1,
-/*
+/**
  * Feather Falling
  */
     PROTECTION_FALL = 2,
-/*
+/**
  * Blast Protection
  */
     PROTECTION_EXPLOSIONS = 3,
-/*
+/**
  * Projectile Protection
  */
     PROTECTION_PROJECTILE = 4,
-/*
+/**
  * Respiration
  */
     OXYGEN = 5,
-/*
+/**
  * Aqua Afiinity
  */
     WATER_WORKER = 6,
-/*
+/**
  * Sharpness
  */
     DAMAGE_ALL = 16,
-/*
+/**
  * Smite
  */
     DAMAGE_UNDEAD = 17,
-/*
+/**
  * Bane of Arthropods
  */
     DAMAGE_ARTHROPODS = 18,
-/*
+/**
  * Knockback
  */
     KNOCKBACK = 19,
-/*
+/**
  * Fire Aspect
  */
     FIRE_ASPECT = 20,
-/*
+/**
  * Looting
  */
     LOOT_BONUS_MOBS = 21,
-/*
+/**
  * Efficiency
  */
     DIG_SPEED = 32,
-/*
+/**
  * Silk Touch
  */
     SILK_TOUCH = 33,
-/*
+/**
  * Unbreaking
  */
     DURABILITY = 34,
-/*
+/**
  * Fortune
  */
     LOOT_BONUS_BLOCKS = 35,
-/*
+/**
  * Power
  */
     ARROW_DAMAGE = 48,
-/*
+/**
  * Punch
  */
     ARROW_KNOCKBACK = 49,
-/*
+/**
  * Flame
  */
     ARROW_FIRE = 50,
-/*
+/**
  * Infinity
  */
     ARROW_INFINITE = 51,
@@ -115,23 +115,23 @@ enum Enchantment {
  * An object that represents a location in the game world
  */
 struct Location {
-/*
+/**
  * The X coordinate
  */
 	1: double x,
-/*
+/**
  * The Y coordinate (height)
  */
 	2: double y,
-/*
+/**
  * The Z coordinate
  */
 	3: double z,
-/*
+/**
  * The pitch (vertical rotation)
  */
 	4: double pitch,
-/*
+/**
  * The yaw (lateral rotation)
  */
 	5: double yaw,
@@ -358,77 +358,77 @@ struct Plugin {
 	6: bool enabled,
 }
 
-/*
+/**
  * Represents a game world
  */
 struct World {
-/*
+/**
  * The name of the world
  */
 	1: string name,
 }
 
-/*
+/**
  * Represents the game server.
  */
 struct Server {
-/*
+/**
  * The name of the server
  */
 	1: string name,
-/*
+/**
  * A list of all players who have ever played on this server.
  */
 	2: list<OfflinePlayer> offlinePlayers,
-/*
+/**
  * A list of players who are currently online
  */
 	3: list<Player> onlinePlayers,
-/*
+/**
  * The version of the server
  */
 	4: string version,
-/*
+/**
  * The version of CraftBukkit that is running
  */
 	5: string bukkitVersion,
-/*
+/**
  * The max players allowed on the server
  */
 	6: i32 maxPlayers,
-/*
+/**
  * The IP of the server (if set)
  */
 	7: string ip,
-/*
+/**
  * The port the server is listening on
  */
 	8: i32 port,
-/*
+/**
  * Whether flight is allowed
  */
 	9: bool allowFlight,
-/*
+/**
  * Whether the nether is allowed
  */
 	10: bool allowNether,
-/*
+/**
  * Whether the End is allowed
  */
 	11: bool allowEnd,
-/*
+/**
  * A list of players on the server's whitelist
  */
 	12: list<OfflinePlayer> whitelist,
-/*
+/**
  * A list of currently banned players
  */
 	13: list<OfflinePlayer> bannedPlayers,
-/*
+/**
  * A list of currently banned IP addresses
  */
 	14: list<string> bannedIps,
-/*
+/**
  * A list of worlds currently running on the server
  */
 	15: list<World> worlds,
