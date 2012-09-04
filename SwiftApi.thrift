@@ -33,6 +33,15 @@ enum Enchantment {
     ARROW_INFINITE = 51,
 }
 
+
+struct Location {
+	1: double x,
+	2: double y,
+	3: double z,
+	4: double pitch,
+	5: double yaw,
+}
+
 /**
  * A stack of items
  */
@@ -179,6 +188,10 @@ struct Player {
  * The port number that the player's client is currently connected on
  */
 	20: i32 port,
+/**
+ * The current location of the player
+ */
+	21: Location location,	
 }
 
 /**

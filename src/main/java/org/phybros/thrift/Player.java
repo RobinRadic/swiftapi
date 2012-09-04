@@ -45,6 +45,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   private static final org.apache.thrift.protocol.TField INVENTORY_FIELD_DESC = new org.apache.thrift.protocol.TField("inventory", org.apache.thrift.protocol.TType.STRUCT, (short)18);
   private static final org.apache.thrift.protocol.TField LEVEL_PROGRESS_FIELD_DESC = new org.apache.thrift.protocol.TField("levelProgress", org.apache.thrift.protocol.TType.DOUBLE, (short)19);
   private static final org.apache.thrift.protocol.TField PORT_FIELD_DESC = new org.apache.thrift.protocol.TField("port", org.apache.thrift.protocol.TType.I32, (short)20);
+  private static final org.apache.thrift.protocol.TField LOCATION_FIELD_DESC = new org.apache.thrift.protocol.TField("location", org.apache.thrift.protocol.TType.STRUCT, (short)21);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -134,6 +135,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
    * The port number that the player's client is currently connected on
    */
   public int port; // required
+  /**
+   * The current location of the player
+   */
+  public Location location; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -218,7 +223,11 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     /**
      * The port number that the player's client is currently connected on
      */
-    PORT((short)20, "port");
+    PORT((short)20, "port"),
+    /**
+     * The current location of the player
+     */
+    LOCATION((short)21, "location");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -273,6 +282,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
           return LEVEL_PROGRESS;
         case 20: // PORT
           return PORT;
+        case 21: // LOCATION
+          return LOCATION;
         default:
           return null;
       }
@@ -373,6 +384,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.PORT, new org.apache.thrift.meta_data.FieldMetaData("port", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.LOCATION, new org.apache.thrift.meta_data.FieldMetaData("location", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Player.class, metaDataMap);
   }
@@ -400,7 +413,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     boolean isWhitelisted,
     PlayerInventory inventory,
     double levelProgress,
-    int port)
+    int port,
+    Location location)
   {
     this();
     this.name = name;
@@ -439,6 +453,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     setLevelProgressIsSet(true);
     this.port = port;
     setPortIsSet(true);
+    this.location = location;
   }
 
   /**
@@ -475,6 +490,9 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     }
     this.levelProgress = other.levelProgress;
     this.port = other.port;
+    if (other.isSetLocation()) {
+      this.location = new Location(other.location);
+    }
   }
 
   public Player deepCopy() {
@@ -519,6 +537,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     this.levelProgress = 0.0;
     setPortIsSet(false);
     this.port = 0;
+    this.location = null;
   }
 
   /**
@@ -1109,6 +1128,36 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     __isset_bit_vector.set(__PORT_ISSET_ID, value);
   }
 
+  /**
+   * The current location of the player
+   */
+  public Location getLocation() {
+    return this.location;
+  }
+
+  /**
+   * The current location of the player
+   */
+  public Player setLocation(Location location) {
+    this.location = location;
+    return this;
+  }
+
+  public void unsetLocation() {
+    this.location = null;
+  }
+
+  /** Returns true if field location is set (has been assigned a value) and false otherwise */
+  public boolean isSetLocation() {
+    return this.location != null;
+  }
+
+  public void setLocationIsSet(boolean value) {
+    if (!value) {
+      this.location = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -1271,6 +1320,14 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       }
       break;
 
+    case LOCATION:
+      if (value == null) {
+        unsetLocation();
+      } else {
+        setLocation((Location)value);
+      }
+      break;
+
     }
   }
 
@@ -1336,6 +1393,9 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     case PORT:
       return Integer.valueOf(getPort());
 
+    case LOCATION:
+      return getLocation();
+
     }
     throw new IllegalStateException();
   }
@@ -1387,6 +1447,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       return isSetLevelProgress();
     case PORT:
       return isSetPort();
+    case LOCATION:
+      return isSetLocation();
     }
     throw new IllegalStateException();
   }
@@ -1581,6 +1643,15 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (!(this_present_port && that_present_port))
         return false;
       if (this.port != that.port)
+        return false;
+    }
+
+    boolean this_present_location = true && this.isSetLocation();
+    boolean that_present_location = true && that.isSetLocation();
+    if (this_present_location || that_present_location) {
+      if (!(this_present_location && that_present_location))
+        return false;
+      if (!this.location.equals(that.location))
         return false;
     }
 
@@ -1800,6 +1871,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetLocation()).compareTo(typedOther.isSetLocation());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetLocation()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.location, typedOther.location);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -1914,6 +1995,14 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     if (!first) sb.append(", ");
     sb.append("port:");
     sb.append(this.port);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("location:");
+    if (this.location == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.location);
+    }
     first = false;
     sb.append(")");
     return sb.toString();
@@ -2120,6 +2209,15 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 21: // LOCATION
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+              struct.location = new Location();
+              struct.location.read(iprot);
+              struct.setLocationIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -2203,6 +2301,11 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       oprot.writeFieldBegin(PORT_FIELD_DESC);
       oprot.writeI32(struct.port);
       oprot.writeFieldEnd();
+      if (struct.location != null) {
+        oprot.writeFieldBegin(LOCATION_FIELD_DESC);
+        struct.location.write(oprot);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -2281,7 +2384,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (struct.isSetPort()) {
         optionals.set(19);
       }
-      oprot.writeBitSet(optionals, 20);
+      if (struct.isSetLocation()) {
+        optionals.set(20);
+      }
+      oprot.writeBitSet(optionals, 21);
       if (struct.isSetName()) {
         oprot.writeString(struct.name);
       }
@@ -2342,12 +2448,15 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (struct.isSetPort()) {
         oprot.writeI32(struct.port);
       }
+      if (struct.isSetLocation()) {
+        struct.location.write(oprot);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, Player struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(20);
+      BitSet incoming = iprot.readBitSet(21);
       if (incoming.get(0)) {
         struct.name = iprot.readString();
         struct.setNameIsSet(true);
@@ -2428,6 +2537,11 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (incoming.get(19)) {
         struct.port = iprot.readI32();
         struct.setPortIsSet(true);
+      }
+      if (incoming.get(20)) {
+        struct.location = new Location();
+        struct.location.read(iprot);
+        struct.setLocationIsSet(true);
       }
     }
   }

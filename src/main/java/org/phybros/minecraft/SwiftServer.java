@@ -20,6 +20,7 @@ import org.phybros.thrift.EDataException;
 import org.phybros.thrift.Enchantment;
 import org.phybros.thrift.ErrorCode;
 import org.phybros.thrift.GameMode;
+import org.phybros.thrift.Location;
 import org.phybros.thrift.Player;
 import org.phybros.thrift.PlayerArmor;
 import org.phybros.thrift.PlayerInventory;
@@ -30,6 +31,10 @@ import org.phybros.thrift.World;
 
 public class SwiftServer {
 
+	/**
+	 * @author wwarren
+	 * 
+	 */
 	public class SwiftApiHandler implements SwiftApi.Iface {
 
 		/**
@@ -919,7 +924,30 @@ public class SwiftServer {
 			newPlayer.lastPlayed = bukkitPlayer.getLastPlayed();
 			newPlayer.level = bukkitPlayer.getLevel();
 
+			newPlayer.location = convertBukkitLocation(bukkitPlayer.getLocation());
+			
 			return newPlayer;
+		}
+
+		/**
+		 * Converts a bukkit Location object into a thrift Location object
+		 * 
+		 * @param bukkitLocation
+		 *            The location object to convert
+		 * @return Location a thrift-compatible location object
+		 */
+		private Location convertBukkitLocation(
+				org.bukkit.Location bukkitLocation) {
+			Location newLocation = new Location();
+
+			newLocation.x = bukkitLocation.getX();
+			newLocation.y = bukkitLocation.getY();
+			newLocation.z = bukkitLocation.getZ();
+
+			newLocation.pitch = bukkitLocation.getPitch();
+			newLocation.yaw = bukkitLocation.getYaw();
+
+			return newLocation;
 		}
 
 		/**
@@ -1071,7 +1099,7 @@ public class SwiftServer {
 			for (org.bukkit.World w : plugin.getServer().getWorlds()) {
 				worlds.add(convertBukkitWorld(w));
 			}
-			
+
 			return worlds;
 		}
 	}
