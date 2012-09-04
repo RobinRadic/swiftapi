@@ -3,9 +3,7 @@ package org.phybros.minecraft;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.server.TNonblockingServer;
@@ -14,16 +12,11 @@ import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.ItemStack;
 import org.phybros.thrift.EAuthException;
 import org.phybros.thrift.EDataException;
-import org.phybros.thrift.Enchantment;
 import org.phybros.thrift.ErrorCode;
 import org.phybros.thrift.GameMode;
-import org.phybros.thrift.Location;
 import org.phybros.thrift.Player;
-import org.phybros.thrift.PlayerArmor;
-import org.phybros.thrift.PlayerInventory;
 import org.phybros.thrift.Plugin;
 import org.phybros.thrift.Server;
 import org.phybros.thrift.SwiftApi;
@@ -290,7 +283,7 @@ public class SwiftServer {
 				throw e;
 			}
 
-			return convertBukkitOfflinePlayer(p);
+			return BukkitConverter.convertBukkitOfflinePlayer(p);
 		}
 
 		/**
@@ -319,7 +312,7 @@ public class SwiftServer {
 			OfflinePlayer[] players = plugin.getServer().getOfflinePlayers();
 
 			for (OfflinePlayer p : players) {
-				result.add(convertBukkitOfflinePlayer(p));
+				result.add(BukkitConverter.convertBukkitOfflinePlayer(p));
 			}
 
 			return result;
@@ -365,7 +358,7 @@ public class SwiftServer {
 				throw e;
 			}
 
-			return convertBukkitPlayer(p);
+			return BukkitConverter.convertBukkitPlayer(p);
 		}
 
 		/**
@@ -391,7 +384,7 @@ public class SwiftServer {
 
 			for (org.bukkit.entity.Player bPlayer : plugin.getServer()
 					.getOnlinePlayers()) {
-				players.add(convertBukkitPlayer(bPlayer));
+				players.add(BukkitConverter.convertBukkitPlayer(bPlayer));
 			}
 
 			return players;
@@ -522,7 +515,7 @@ public class SwiftServer {
 
 			s.bannedPlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
 			for (OfflinePlayer op : server.getBannedPlayers()) {
-				s.bannedPlayers.add(convertBukkitOfflinePlayer(op));
+				s.bannedPlayers.add(BukkitConverter.convertBukkitOfflinePlayer(op));
 			}
 
 			s.bukkitVersion = server.getBukkitVersion();
@@ -532,13 +525,13 @@ public class SwiftServer {
 			s.offlinePlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
 
 			for (OfflinePlayer op : server.getOfflinePlayers()) {
-				s.offlinePlayers.add(convertBukkitOfflinePlayer(op));
+				s.offlinePlayers.add(BukkitConverter.convertBukkitOfflinePlayer(op));
 			}
 
 			s.onlinePlayers = new ArrayList<Player>();
 
 			for (org.bukkit.entity.Player p : server.getOnlinePlayers()) {
-				s.onlinePlayers.add(convertBukkitPlayer(p));
+				s.onlinePlayers.add(BukkitConverter.convertBukkitPlayer(p));
 			}
 
 			s.port = server.getPort();
@@ -547,7 +540,7 @@ public class SwiftServer {
 			s.whitelist = new ArrayList<org.phybros.thrift.OfflinePlayer>();
 
 			for (OfflinePlayer op : server.getWhitelistedPlayers()) {
-				s.whitelist.add(convertBukkitOfflinePlayer(op));
+				s.whitelist.add(BukkitConverter.convertBukkitOfflinePlayer(op));
 			}
 
 			s.worlds = new ArrayList<World>();
@@ -945,148 +938,6 @@ public class SwiftServer {
 				result += String.format("%02x", bytes[i]);
 			}
 			return result;
-		}
-
-		/**
-		 * Converts a bukkit Location object into a thrift Location object
-		 * 
-		 * @param bukkitLocation
-		 *            The location object to convert
-		 * @return Location a thrift-compatible location object
-		 */
-		private Location convertBukkitLocation(
-				org.bukkit.Location bukkitLocation) {
-			Location newLocation = new Location();
-
-			newLocation.x = bukkitLocation.getX();
-			newLocation.y = bukkitLocation.getY();
-			newLocation.z = bukkitLocation.getZ();
-
-			newLocation.pitch = bukkitLocation.getPitch();
-			newLocation.yaw = bukkitLocation.getYaw();
-
-			return newLocation;
-		}
-
-		/**
-		 * Converts a bukkit OfflinePlayer into a thrift-compatible version.
-		 * 
-		 * @param bukkitOfflinePlayer
-		 *            The object to convert.
-		 * @return org.phybros.thrift.OfflinePlayer The converted object.
-		 */
-		private org.phybros.thrift.OfflinePlayer convertBukkitOfflinePlayer(
-				OfflinePlayer bukkitOfflinePlayer) {
-			org.phybros.thrift.OfflinePlayer newPlayer = new org.phybros.thrift.OfflinePlayer();
-
-			newPlayer.firstPlayed = bukkitOfflinePlayer.getFirstPlayed();
-			newPlayer.lastPlayed = bukkitOfflinePlayer.getLastPlayed();
-			newPlayer.isOp = bukkitOfflinePlayer.isOp();
-			newPlayer.isWhitelisted = bukkitOfflinePlayer.isWhitelisted();
-			newPlayer.name = bukkitOfflinePlayer.getName();
-			newPlayer.hasPlayedBefore = bukkitOfflinePlayer.hasPlayedBefore();
-
-			if (bukkitOfflinePlayer.isOnline()) {
-				newPlayer.player = convertBukkitPlayer(bukkitOfflinePlayer
-						.getPlayer());
-			}
-
-			return newPlayer;
-		}
-
-		/**
-		 * This method converts an org.bukkit.entity.Player into an
-		 * org.phybros.thrift.Player.
-		 * 
-		 * @param bukkitPlayer
-		 *            The Bukkit Player object to convert.
-		 * @return org.phybros.thrift.Player The converted Player.
-		 */
-		private Player convertBukkitPlayer(org.bukkit.entity.Player bukkitPlayer) {
-			Player newPlayer = new Player();
-
-			newPlayer.name = bukkitPlayer.getName();
-			newPlayer.exhaustion = bukkitPlayer.getExhaustion();
-			newPlayer.xpToNextLevel = bukkitPlayer.getExpToLevel();
-			newPlayer.levelProgress = bukkitPlayer.getExp();
-			newPlayer.firstPlayed = bukkitPlayer.getFirstPlayed();
-			newPlayer.foodLevel = bukkitPlayer.getFoodLevel();
-
-			switch (bukkitPlayer.getGameMode()) {
-			case SURVIVAL:
-				newPlayer.gamemode = GameMode.SURVIVAL;
-				break;
-			case CREATIVE:
-				newPlayer.gamemode = GameMode.CREATIVE;
-				break;
-			case ADVENTURE:
-				newPlayer.gamemode = GameMode.ADVENTURE;
-				break;
-			default:
-				newPlayer.gamemode = GameMode.SURVIVAL;
-				break;
-			}
-			newPlayer.health = bukkitPlayer.getHealth();
-
-			newPlayer.inventory = convertBukkitPlayerInventory(bukkitPlayer
-					.getInventory());
-
-			newPlayer.ip = bukkitPlayer.getAddress().getHostName();
-			newPlayer.port = bukkitPlayer.getAddress().getPort();
-			newPlayer.isBanned = bukkitPlayer.isBanned();
-			newPlayer.isInVehicle = bukkitPlayer.isInsideVehicle();
-			newPlayer.isOp = bukkitPlayer.isOp();
-			// TODO: add bukkitPlayer.isFlying();
-			newPlayer.isSleeping = bukkitPlayer.isSleeping();
-			newPlayer.isSneaking = bukkitPlayer.isSneaking();
-			newPlayer.isSprinting = bukkitPlayer.isSprinting();
-			newPlayer.isWhitelisted = bukkitPlayer.isWhitelisted();
-			newPlayer.lastPlayed = bukkitPlayer.getLastPlayed();
-			newPlayer.level = bukkitPlayer.getLevel();
-
-			newPlayer.location = convertBukkitLocation(bukkitPlayer.getLocation());
-			
-			return newPlayer;
-		}
-
-		/**
-		 * Converts a bukkit PlayerInventory into a thrift-compatible version.
-		 * 
-		 * @param bukkitInventory
-		 *            The object to convert.
-		 * @return PlayerInventory The converted object.
-		 */
-		private PlayerInventory convertBukkitPlayerInventory(
-				org.bukkit.inventory.PlayerInventory bukkitInventory) {
-			// TODO: Finish inventory, armor etc.
-			PlayerInventory playerInventory = new PlayerInventory();
-			playerInventory.inventory = new ArrayList<org.phybros.thrift.ItemStack>();
-			playerInventory.armor = new PlayerArmor();
-			playerInventory.itemInHand = new org.phybros.thrift.ItemStack();
-
-			for (ItemStack i : bukkitInventory) {
-				org.phybros.thrift.ItemStack newItemStack = new org.phybros.thrift.ItemStack();
-
-				newItemStack.enchantments = new HashMap<Enchantment, Integer>();
-
-				if (i != null) {
-					newItemStack.amount = i.getAmount();
-					newItemStack.durability = i.getDurability();
-					newItemStack.typeId = i.getTypeId();
-
-					for (Map.Entry<org.bukkit.enchantments.Enchantment, Integer> entry : i
-							.getEnchantments().entrySet()) {
-						newItemStack.enchantments.put(
-								Enchantment.findByValue(entry.getValue()),
-								entry.getValue());
-					}
-				}
-
-				// add to the inventory
-				playerInventory.inventory.add(newItemStack);
-			}
-
-			return playerInventory;
 		}
 
 		/**
