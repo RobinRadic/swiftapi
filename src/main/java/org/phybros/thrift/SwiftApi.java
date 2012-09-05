@@ -415,21 +415,10 @@ public class SwiftApi {
     public boolean op(String authString, String name, boolean notifyPlayer) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
 
     /**
-     * Reloads the server. This call does not respond (for obvious reasons)
+     * Reloads the server. This call does not send a response (for obvious reasons)
      * 
      * @param authString
      *            The authentication hash
-     * 
-     * @return boolean true on success, false on failure
-     * 
-     * @throws Errors.EAuthException
-     *             If the method call was not correctly authenticated
-     * 
-     * @throws Errors.EDataException
-     *             If the player was not found
-     * 
-     * @throws org.apache.thrift.TException
-     *             If something went wrong with Thrift
      * 
      * @param authString
      */
