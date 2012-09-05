@@ -1,10 +1,18 @@
 package org.phybros.minecraft;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.thrift.TException;
 import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
@@ -24,10 +32,6 @@ import org.phybros.thrift.World;
 
 public class SwiftServer {
 
-	/**
-	 * @author wwarren
-	 * 
-	 */
 	public class SwiftApiHandler implements SwiftApi.Iface {
 
 		/**
@@ -515,7 +519,8 @@ public class SwiftServer {
 
 			s.bannedPlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
 			for (OfflinePlayer op : server.getBannedPlayers()) {
-				s.bannedPlayers.add(BukkitConverter.convertBukkitOfflinePlayer(op));
+				s.bannedPlayers.add(BukkitConverter
+						.convertBukkitOfflinePlayer(op));
 			}
 
 			s.bukkitVersion = server.getBukkitVersion();
@@ -525,7 +530,8 @@ public class SwiftServer {
 			s.offlinePlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
 
 			for (OfflinePlayer op : server.getOfflinePlayers()) {
-				s.offlinePlayers.add(BukkitConverter.convertBukkitOfflinePlayer(op));
+				s.offlinePlayers.add(BukkitConverter
+						.convertBukkitOfflinePlayer(op));
 			}
 
 			s.onlinePlayers = new ArrayList<Player>();
@@ -709,6 +715,25 @@ public class SwiftServer {
 			} catch (Exception e) {
 				return false;
 			}
+		}
+
+		/**
+		 * Reloads the server. This call does not send a response (for obvious
+		 * reasons)
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 */
+		@Override
+		public void reloadServer(String authString) throws TException {
+			logCall("reloadServer");
+			try {
+				authenticate(authString, "reloadServer");
+			} catch (Exception e) {
+				plugin.getLogger().severe(e.getMessage());
+			}
+
+			plugin.getServer().reload();
 		}
 
 		/**
@@ -932,6 +957,22 @@ public class SwiftServer {
 			}
 		}
 
+		private byte[] createChecksum(String filename) throws Exception {
+			InputStream fis = new FileInputStream(filename);
+
+			byte[] buffer = new byte[1024];
+			MessageDigest complete = MessageDigest.getInstance("MD5");
+			int numRead;
+			do {
+				numRead = fis.read(buffer);
+				if (numRead > 0) {
+					complete.update(buffer, 0, numRead);
+				}
+			} while (numRead != -1);
+			fis.close();
+			return complete.digest();
+		}
+
 		private String byteToString(byte[] bytes) {
 			String result = "";
 			for (int i = 0; i < bytes.length; i++) {
@@ -953,23 +994,60 @@ public class SwiftServer {
 						"SwiftApi method called: " + methodName + "()");
 			}
 		}
-		
-		/**
-		 * Reloads the server. This call does not send a response (for obvious reasons)
-		 * 
-		 * @param authString
-		 *            The authentication hash
-		 */
+
 		@Override
-		public void reloadServer(String authString) throws TException {
-			logCall("reloadServer");
+		public boolean downloadFile(String authString, String url, String md5)
+				throws EAuthException, EDataException, TException {
+			logCall("downloadFile");
+			authenticate(authString, "downloadFile");
+
+			String stagingPath = plugin.getDataFolder().getPath() + "/stage";
+			// this will create the holding area if it doesn't exist
+			File holdingArea = new File(stagingPath);
+
+			if (!holdingArea.exists()) {
+				plugin.getLogger().info(
+						"Staging directory doesn't exist. Creating dir: "
+								+ stagingPath);
+				// try and create the directory
+				if (!holdingArea.mkdir()) {
+					plugin.getLogger().severe(
+							"Could not create staging directory!");
+					return false;
+				}
+			}
+
+			// at this point, we can assume that "stage" exists...in theory
 			try {
-				authenticate(authString, "reloadServer");				
-			} catch(Exception e) {
+				plugin.getLogger().info(
+						"Downloading file from: " + url + " ...");
+				URL dl = new URL(url);
+				FileUtils.copyURLToFile(dl, new File(stagingPath + "/"
+						+ FilenameUtils.getName(dl.getPath())), 5000, 60000);
+
+				File downloadedFile = new File(stagingPath + "/" + FilenameUtils.getName(dl.getPath()));
+				plugin.getLogger().info("Download complete. Verifying md5.");
+
+				String calculatedHash = byteToString(createChecksum(downloadedFile.getPath()));
+				plugin.getLogger().info("Calculated hash: " + calculatedHash);
+
+				if (md5.equalsIgnoreCase(calculatedHash)) {
+					plugin.getLogger().info("Hashes match");
+					return true;
+				} else {
+					plugin.getLogger()
+							.severe("Downloaded file hash does not match provided hash. Deleting file.");
+					downloadedFile.delete();
+					return false;
+				}
+			} catch (MalformedURLException e) {
+				plugin.getLogger().severe(e.getMessage());
+			} catch (IOException e) {
+				plugin.getLogger().severe(e.getMessage());
+			} catch (Exception e) {
 				plugin.getLogger().severe(e.getMessage());
 			}
-					
-			plugin.getServer().reload();
+			return false;
 		}
 	}
 

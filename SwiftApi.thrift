@@ -592,6 +592,37 @@ service SwiftApi {
  *             If something went wrong with Thrift
  */
 	bool banIp(1:string authString, 2:string ip) throws (1:Errors.EAuthException aex),
+
+/**
+ * Downloads a file from the internet into the plugin's "Holding Area".
+ * This method is to be used for downloading plugin files only.
+ *
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param url
+ *            The URL of the file to be downloaded
+ * 
+ * @param md5
+ *            The md5 hash of the file that is being downloaded
+ * 
+ * @return boolean true on success false on failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If something went wrong during the file download,
+ *				or the computed hash does not match the provided hash.
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool downloadFile(1:string authString,
+					  2:string url,
+					  3:string md5)
+	throws (1:Errors.EAuthException aex, 
+ 			2:Errors.EDataException dex),
 	
 /**
  * Takes "op" (operator) privileges away from a player. If the player is
