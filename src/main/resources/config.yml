@@ -34,3 +34,12 @@ errorMessages:
     # Requested world was not found
     # Use %s to represent the requested world name
     worldNotFound: World "%s" was not found
+    
+    # Could not create the plugin staging directory
+    createStagingError: Could not create the staging directory
+    
+    # The requested download URl was invalid
+    malformedUrl: The requested download URL was invalid
+
+    # The requested file was not found
+    fileNotFound: The requested file was not found

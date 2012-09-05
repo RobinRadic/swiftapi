@@ -12,9 +12,26 @@ package org.phybros.thrift;
  * Various codes used for catching errors
  */
 public enum ErrorCode implements org.apache.thrift.TEnum {
+  /**
+   * If a parameter was invalid
+   */
   INVALID_REQUEST(0),
+  /**
+   * Authentication failed
+   */
   INVALID_AUTHSTRING(1),
-  NOT_FOUND(2);
+  /**
+   * Requested data could not be found
+   */
+  NOT_FOUND(2),
+  /**
+   * Something went wrong during a download operation
+   */
+  DOWNLOAD_ERROR(3),
+  /**
+   * Something went wrong during a file operation
+   */
+  FILE_ERROR(4);
 
   private final int value;
 
@@ -41,6 +58,10 @@ public enum ErrorCode implements org.apache.thrift.TEnum {
         return INVALID_AUTHSTRING;
       case 2:
         return NOT_FOUND;
+      case 3:
+        return DOWNLOAD_ERROR;
+      case 4:
+        return FILE_ERROR;
       default:
         return null;
     }

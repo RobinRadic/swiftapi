@@ -34,6 +34,10 @@ public class SwiftServer {
 
 	public class SwiftApiHandler implements SwiftApi.Iface {
 
+		private String stagingPath = plugin.getDataFolder().getPath()
+				+ "/stage";
+		private String pluginsPath = plugin.getDataFolder().getParent();
+
 		/**
 		 * Add a Player to the server's whitelist. The player can be offline, or
 		 * be a player that has never played on this server before
@@ -218,13 +222,97 @@ public class SwiftServer {
 			}
 		}
 
+		/**
+		 * Copies a file into the plugins directory on the server
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param filename
+		 *            The name of the file to move (must exist in the staging
+		 *            directory)
+		 * 
+		 * @return boolean true on success false on failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If something went wrong during the file copy
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean copyPlugin(String authString, String fileName)
+				throws EAuthException, EDataException, TException {
+			logCall("copyPlugin");
+			authenticate(authString, "copyPlugin");
+
+			File pluginToCopy = new File(stagingPath + "/" + fileName);
+			if (!pluginToCopy.exists()) {
+				plugin.getLogger().severe(
+						plugin.getConfig().getString(
+								"errorMessages.fileNotFound"));
+				EDataException fileNotFoundEx = new EDataException();
+				fileNotFoundEx.code = ErrorCode.FILE_ERROR;
+				fileNotFoundEx.errorMessage = plugin.getConfig().getString(
+						"errorMessages.fileNotFound");
+				throw fileNotFoundEx;
+			}
+
+			try {
+				String newPluginPath = pluginsPath + "/"
+						+ pluginToCopy.getName();
+
+				plugin.getLogger().info(
+						"Copying file " + pluginToCopy + " to " + newPluginPath
+								+ "...");
+				FileUtils.copyFile(pluginToCopy, new File(newPluginPath));
+				plugin.getLogger().info("File copied.");
+			} catch (IOException e) {
+				plugin.getLogger().severe(e.getMessage());
+				EDataException ioEx = new EDataException();
+				ioEx.code = ErrorCode.FILE_ERROR;
+				ioEx.errorMessage = ioEx.getMessage();
+				throw ioEx;
+			}
+
+			return false;
+		}
+
+		/**
+		 * Downloads a file from the internet into the plugin's "Holding Area".
+		 * This method is to be used for downloading plugin files only.
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param url
+		 *            The URL of the file to be downloaded
+		 * 
+		 * @param md5
+		 *            The md5 hash of the file that is being downloaded (for
+		 *            security reasons)
+		 * 
+		 * @return boolean true on success false on failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If something went wrong during the file download, or the
+		 *             computed hash does not match the provided hash.
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
 		@Override
 		public boolean downloadFile(String authString, String url, String md5)
 				throws EAuthException, EDataException, TException {
 			logCall("downloadFile");
 			authenticate(authString, "downloadFile");
 
-			String stagingPath = plugin.getDataFolder().getPath() + "/stage";
 			// this will create the holding area if it doesn't exist
 			File holdingArea = new File(stagingPath);
 
@@ -236,7 +324,11 @@ public class SwiftServer {
 				if (!holdingArea.mkdir()) {
 					plugin.getLogger().severe(
 							"Could not create staging directory!");
-					return false;
+					EDataException e = new EDataException();
+					e.code = ErrorCode.FILE_ERROR;
+					e.errorMessage = plugin.getConfig().getString(
+							"errorMessages.createStagingError");
+					throw e;
 				}
 			}
 
@@ -248,10 +340,12 @@ public class SwiftServer {
 				FileUtils.copyURLToFile(dl, new File(stagingPath + "/"
 						+ FilenameUtils.getName(dl.getPath())), 5000, 60000);
 
-				File downloadedFile = new File(stagingPath + "/" + FilenameUtils.getName(dl.getPath()));
+				File downloadedFile = new File(stagingPath + "/"
+						+ FilenameUtils.getName(dl.getPath()));
 				plugin.getLogger().info("Download complete. Verifying md5.");
 
-				String calculatedHash = byteToString(createChecksum(downloadedFile.getPath()));
+				String calculatedHash = byteToString(createChecksum(downloadedFile
+						.getPath()));
 				plugin.getLogger().info("Calculated hash: " + calculatedHash);
 
 				if (md5.equalsIgnoreCase(calculatedHash)) {
@@ -265,12 +359,21 @@ public class SwiftServer {
 				}
 			} catch (MalformedURLException e) {
 				plugin.getLogger().severe(e.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.DOWNLOAD_ERROR;
+				e1.errorMessage = plugin.getConfig().getString(
+						"errorMessages.malformedUrl");
+				throw e1;
 			} catch (IOException e) {
 				plugin.getLogger().severe(e.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = e.getMessage();
+				throw e1;
 			} catch (Exception e) {
 				plugin.getLogger().severe(e.getMessage());
+				return false;
 			}
-			return false;
 		}
 
 		/**
@@ -490,7 +593,6 @@ public class SwiftServer {
 				throw e;
 			}
 
-			
 			newPlugin.authors = p.getDescription().getAuthors();
 			newPlugin.description = p.getDescription().getDescription();
 			newPlugin.enabled = p.isEnabled();

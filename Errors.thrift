@@ -5,18 +5,26 @@ namespace csharp org.phybros.thrift
  * Various codes used for catching errors
  */
 enum ErrorCode {
-/*
+/**
  * If a parameter was invalid
  */
 	INVALID_REQUEST = 0,
-/*
+/**
  * Authentication failed
  */
 	INVALID_AUTHSTRING = 1,
-/*
+/**
  * Requested data could not be found
  */
 	NOT_FOUND = 2,
+/**
+ *	Something went wrong during a download operation
+ */
+ 	DOWNLOAD_ERROR = 3,
+/**
+ *	Something went wrong during a file operation
+ */
+ 	FILE_ERROR = 4,
 }
 
 /**

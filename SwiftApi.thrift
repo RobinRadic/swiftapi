@@ -594,6 +594,31 @@ service SwiftApi {
 	bool banIp(1:string authString, 2:string ip) throws (1:Errors.EAuthException aex),
 
 /**
+ * Copies a file into the plugins directory on the server
+ *
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param filename
+ *			  The name of the file to move (must exist in the staging directory)
+ * 
+ * @return boolean true on success false on failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If something went wrong during the file copy
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool copyPlugin(1:string authString,
+				    2:string fileName)
+	throws (1:Errors.EAuthException aex, 
+ 			2:Errors.EDataException dex),
+
+/**
  * Downloads a file from the internet into the plugin's "Holding Area".
  * This method is to be used for downloading plugin files only.
  *
