@@ -890,6 +890,26 @@ service SwiftApi {
 			2:Errors.EDataException dex),
 
 /**
+ * Reloads the server. This call does not respond (for obvious reasons)
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @return boolean true on success, false on failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the player was not found
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	oneway void reloadServer(1:string authString)
+	throws (1:Errors.EAuthException aex),
+
+/**
  * Remove a Player from the server's whitelist. The player can be offline, or
  * be a player that has never played on this server before. If the player is not
  * already on the whitelist, this method does nothing.
