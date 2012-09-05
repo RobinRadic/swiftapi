@@ -907,7 +907,6 @@ service SwiftApi {
  *             If something went wrong with Thrift
  */
 	oneway void reloadServer(1:string authString)
-	throws (1:Errors.EAuthException aex),
 
 /**
  * Remove a Player from the server's whitelist. The player can be offline, or

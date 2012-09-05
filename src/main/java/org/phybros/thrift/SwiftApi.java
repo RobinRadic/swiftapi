@@ -415,6 +415,27 @@ public class SwiftApi {
     public boolean op(String authString, String name, boolean notifyPlayer) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
 
     /**
+     * Reloads the server. This call does not respond (for obvious reasons)
+     * 
+     * @param authString
+     *            The authentication hash
+     * 
+     * @return boolean true on success, false on failure
+     * 
+     * @throws Errors.EAuthException
+     *             If the method call was not correctly authenticated
+     * 
+     * @throws Errors.EDataException
+     *             If the player was not found
+     * 
+     * @throws org.apache.thrift.TException
+     *             If something went wrong with Thrift
+     * 
+     * @param authString
+     */
+    public void reloadServer(String authString) throws org.apache.thrift.TException;
+
+    /**
      * Remove a Player from the server's whitelist. The player can be offline, or
      * be a player that has never played on this server before. If the player is not
      * already on the whitelist, this method does nothing.
@@ -553,6 +574,8 @@ public class SwiftApi {
     public void kick(String authString, String name, String message, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.kick_call> resultHandler) throws org.apache.thrift.TException;
 
     public void op(String authString, String name, boolean notifyPlayer, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.op_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void reloadServer(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.reloadServer_call> resultHandler) throws org.apache.thrift.TException;
 
     public void removeFromWhitelist(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.removeFromWhitelist_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -1034,6 +1057,18 @@ public class SwiftApi {
         throw result.dex;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "op failed: unknown result");
+    }
+
+    public void reloadServer(String authString) throws org.apache.thrift.TException
+    {
+      send_reloadServer(authString);
+    }
+
+    public void send_reloadServer(String authString) throws org.apache.thrift.TException
+    {
+      reloadServer_args args = new reloadServer_args();
+      args.setAuthString(authString);
+      sendBase("reloadServer", args);
     }
 
     public boolean removeFromWhitelist(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
@@ -1723,6 +1758,37 @@ public class SwiftApi {
       }
     }
 
+    public void reloadServer(String authString, org.apache.thrift.async.AsyncMethodCallback<reloadServer_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      reloadServer_call method_call = new reloadServer_call(authString, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class reloadServer_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String authString;
+      public reloadServer_call(String authString, org.apache.thrift.async.AsyncMethodCallback<reloadServer_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, true);
+        this.authString = authString;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("reloadServer", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        reloadServer_args args = new reloadServer_args();
+        args.setAuthString(authString);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public void getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+      }
+    }
+
     public void removeFromWhitelist(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<removeFromWhitelist_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       removeFromWhitelist_call method_call = new removeFromWhitelist_call(authString, name, resultHandler, this, ___protocolFactory, ___transport);
@@ -1895,6 +1961,7 @@ public class SwiftApi {
       processMap.put("getWorlds", new getWorlds());
       processMap.put("kick", new kick());
       processMap.put("op", new op());
+      processMap.put("reloadServer", new reloadServer());
       processMap.put("removeFromWhitelist", new removeFromWhitelist());
       processMap.put("setGameMode", new setGameMode());
       processMap.put("unBan", new unBan());
@@ -2241,6 +2308,21 @@ public class SwiftApi {
           result.dex = dex;
         }
         return result;
+      }
+    }
+
+    private static class reloadServer<I extends Iface> extends org.apache.thrift.ProcessFunction<I, reloadServer_args> {
+      public reloadServer() {
+        super("reloadServer");
+      }
+
+      protected reloadServer_args getEmptyArgsInstance() {
+        return new reloadServer_args();
+      }
+
+      protected org.apache.thrift.TBase getResult(I iface, reloadServer_args args) throws org.apache.thrift.TException {
+        iface.reloadServer(args.authString);
+        return null;
       }
     }
 
@@ -17480,6 +17562,359 @@ public class SwiftApi {
           struct.dex = new org.phybros.thrift.EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class reloadServer_args implements org.apache.thrift.TBase<reloadServer_args, reloadServer_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("reloadServer_args");
+
+    private static final org.apache.thrift.protocol.TField AUTH_STRING_FIELD_DESC = new org.apache.thrift.protocol.TField("authString", org.apache.thrift.protocol.TType.STRING, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new reloadServer_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new reloadServer_argsTupleSchemeFactory());
+    }
+
+    public String authString; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      AUTH_STRING((short)1, "authString");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // AUTH_STRING
+            return AUTH_STRING;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.AUTH_STRING, new org.apache.thrift.meta_data.FieldMetaData("authString", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(reloadServer_args.class, metaDataMap);
+    }
+
+    public reloadServer_args() {
+    }
+
+    public reloadServer_args(
+      String authString)
+    {
+      this();
+      this.authString = authString;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public reloadServer_args(reloadServer_args other) {
+      if (other.isSetAuthString()) {
+        this.authString = other.authString;
+      }
+    }
+
+    public reloadServer_args deepCopy() {
+      return new reloadServer_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.authString = null;
+    }
+
+    public String getAuthString() {
+      return this.authString;
+    }
+
+    public reloadServer_args setAuthString(String authString) {
+      this.authString = authString;
+      return this;
+    }
+
+    public void unsetAuthString() {
+      this.authString = null;
+    }
+
+    /** Returns true if field authString is set (has been assigned a value) and false otherwise */
+    public boolean isSetAuthString() {
+      return this.authString != null;
+    }
+
+    public void setAuthStringIsSet(boolean value) {
+      if (!value) {
+        this.authString = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case AUTH_STRING:
+        if (value == null) {
+          unsetAuthString();
+        } else {
+          setAuthString((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case AUTH_STRING:
+        return getAuthString();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case AUTH_STRING:
+        return isSetAuthString();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof reloadServer_args)
+        return this.equals((reloadServer_args)that);
+      return false;
+    }
+
+    public boolean equals(reloadServer_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_authString = true && this.isSetAuthString();
+      boolean that_present_authString = true && that.isSetAuthString();
+      if (this_present_authString || that_present_authString) {
+        if (!(this_present_authString && that_present_authString))
+          return false;
+        if (!this.authString.equals(that.authString))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(reloadServer_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      reloadServer_args typedOther = (reloadServer_args)other;
+
+      lastComparison = Boolean.valueOf(isSetAuthString()).compareTo(typedOther.isSetAuthString());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetAuthString()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.authString, typedOther.authString);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("reloadServer_args(");
+      boolean first = true;
+
+      sb.append("authString:");
+      if (this.authString == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.authString);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class reloadServer_argsStandardSchemeFactory implements SchemeFactory {
+      public reloadServer_argsStandardScheme getScheme() {
+        return new reloadServer_argsStandardScheme();
+      }
+    }
+
+    private static class reloadServer_argsStandardScheme extends StandardScheme<reloadServer_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, reloadServer_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // AUTH_STRING
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.authString = iprot.readString();
+                struct.setAuthStringIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, reloadServer_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.authString != null) {
+          oprot.writeFieldBegin(AUTH_STRING_FIELD_DESC);
+          oprot.writeString(struct.authString);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class reloadServer_argsTupleSchemeFactory implements SchemeFactory {
+      public reloadServer_argsTupleScheme getScheme() {
+        return new reloadServer_argsTupleScheme();
+      }
+    }
+
+    private static class reloadServer_argsTupleScheme extends TupleScheme<reloadServer_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, reloadServer_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetAuthString()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetAuthString()) {
+          oprot.writeString(struct.authString);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, reloadServer_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.authString = iprot.readString();
+          struct.setAuthStringIsSet(true);
         }
       }
     }

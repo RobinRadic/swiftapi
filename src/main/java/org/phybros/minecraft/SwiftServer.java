@@ -953,6 +953,24 @@ public class SwiftServer {
 						"SwiftApi method called: " + methodName + "()");
 			}
 		}
+		
+		/**
+		 * Reloads the server. This call does not send a response (for obvious reasons)
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 */
+		@Override
+		public void reloadServer(String authString) throws TException {
+			logCall("reloadServer");
+			try {
+				authenticate(authString, "reloadServer");				
+			} catch(Exception e) {
+				plugin.getLogger().severe(e.getMessage());
+			}
+					
+			plugin.getServer().reload();
+		}
 	}
 
 	private int port;
@@ -977,8 +995,6 @@ public class SwiftServer {
 		(new Thread(new Runnable() {
 
 			public void run() {
-				// TODO Auto-generated method stub
-
 				try {
 					SwiftApiHandler psh = new SwiftApiHandler();
 					SwiftApi.Processor<SwiftApi.Iface> pro = new SwiftApi.Processor<SwiftApi.Iface>(
