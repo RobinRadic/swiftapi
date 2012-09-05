@@ -218,6 +218,61 @@ public class SwiftServer {
 			}
 		}
 
+		@Override
+		public boolean downloadFile(String authString, String url, String md5)
+				throws EAuthException, EDataException, TException {
+			logCall("downloadFile");
+			authenticate(authString, "downloadFile");
+
+			String stagingPath = plugin.getDataFolder().getPath() + "/stage";
+			// this will create the holding area if it doesn't exist
+			File holdingArea = new File(stagingPath);
+
+			if (!holdingArea.exists()) {
+				plugin.getLogger().info(
+						"Staging directory doesn't exist. Creating dir: "
+								+ stagingPath);
+				// try and create the directory
+				if (!holdingArea.mkdir()) {
+					plugin.getLogger().severe(
+							"Could not create staging directory!");
+					return false;
+				}
+			}
+
+			// at this point, we can assume that "stage" exists...in theory
+			try {
+				plugin.getLogger().info(
+						"Downloading file from: " + url + " ...");
+				URL dl = new URL(url);
+				FileUtils.copyURLToFile(dl, new File(stagingPath + "/"
+						+ FilenameUtils.getName(dl.getPath())), 5000, 60000);
+
+				File downloadedFile = new File(stagingPath + "/" + FilenameUtils.getName(dl.getPath()));
+				plugin.getLogger().info("Download complete. Verifying md5.");
+
+				String calculatedHash = byteToString(createChecksum(downloadedFile.getPath()));
+				plugin.getLogger().info("Calculated hash: " + calculatedHash);
+
+				if (md5.equalsIgnoreCase(calculatedHash)) {
+					plugin.getLogger().info("Hashes match");
+					return true;
+				} else {
+					plugin.getLogger()
+							.severe("Downloaded file hash does not match provided hash. Deleting file.");
+					downloadedFile.delete();
+					return false;
+				}
+			} catch (MalformedURLException e) {
+				plugin.getLogger().severe(e.getMessage());
+			} catch (IOException e) {
+				plugin.getLogger().severe(e.getMessage());
+			} catch (Exception e) {
+				plugin.getLogger().severe(e.getMessage());
+			}
+			return false;
+		}
+
 		/**
 		 * Get the current bukkit version
 		 * 
@@ -435,10 +490,11 @@ public class SwiftServer {
 				throw e;
 			}
 
+			
 			newPlugin.authors = p.getDescription().getAuthors();
 			newPlugin.description = p.getDescription().getDescription();
 			newPlugin.enabled = p.isEnabled();
-			newPlugin.name = p.getDescription().getName();
+			newPlugin.name = p.getDescription().getFullName();
 			newPlugin.version = p.getDescription().getVersion();
 			newPlugin.website = p.getDescription().getWebsite();
 
@@ -957,6 +1013,14 @@ public class SwiftServer {
 			}
 		}
 
+		private String byteToString(byte[] bytes) {
+			String result = "";
+			for (int i = 0; i < bytes.length; i++) {
+				result += String.format("%02x", bytes[i]);
+			}
+			return result;
+		}
+
 		private byte[] createChecksum(String filename) throws Exception {
 			InputStream fis = new FileInputStream(filename);
 
@@ -973,14 +1037,6 @@ public class SwiftServer {
 			return complete.digest();
 		}
 
-		private String byteToString(byte[] bytes) {
-			String result = "";
-			for (int i = 0; i < bytes.length; i++) {
-				result += String.format("%02x", bytes[i]);
-			}
-			return result;
-		}
-
 		/**
 		 * Log an API call. If the config option logMethodCalls is false, this
 		 * method does nothing.
@@ -993,61 +1049,6 @@ public class SwiftServer {
 				plugin.getLogger().info(
 						"SwiftApi method called: " + methodName + "()");
 			}
-		}
-
-		@Override
-		public boolean downloadFile(String authString, String url, String md5)
-				throws EAuthException, EDataException, TException {
-			logCall("downloadFile");
-			authenticate(authString, "downloadFile");
-
-			String stagingPath = plugin.getDataFolder().getPath() + "/stage";
-			// this will create the holding area if it doesn't exist
-			File holdingArea = new File(stagingPath);
-
-			if (!holdingArea.exists()) {
-				plugin.getLogger().info(
-						"Staging directory doesn't exist. Creating dir: "
-								+ stagingPath);
-				// try and create the directory
-				if (!holdingArea.mkdir()) {
-					plugin.getLogger().severe(
-							"Could not create staging directory!");
-					return false;
-				}
-			}
-
-			// at this point, we can assume that "stage" exists...in theory
-			try {
-				plugin.getLogger().info(
-						"Downloading file from: " + url + " ...");
-				URL dl = new URL(url);
-				FileUtils.copyURLToFile(dl, new File(stagingPath + "/"
-						+ FilenameUtils.getName(dl.getPath())), 5000, 60000);
-
-				File downloadedFile = new File(stagingPath + "/" + FilenameUtils.getName(dl.getPath()));
-				plugin.getLogger().info("Download complete. Verifying md5.");
-
-				String calculatedHash = byteToString(createChecksum(downloadedFile.getPath()));
-				plugin.getLogger().info("Calculated hash: " + calculatedHash);
-
-				if (md5.equalsIgnoreCase(calculatedHash)) {
-					plugin.getLogger().info("Hashes match");
-					return true;
-				} else {
-					plugin.getLogger()
-							.severe("Downloaded file hash does not match provided hash. Deleting file.");
-					downloadedFile.delete();
-					return false;
-				}
-			} catch (MalformedURLException e) {
-				plugin.getLogger().severe(e.getMessage());
-			} catch (IOException e) {
-				plugin.getLogger().severe(e.getMessage());
-			} catch (Exception e) {
-				plugin.getLogger().severe(e.getMessage());
-			}
-			return false;
 		}
 	}
 
