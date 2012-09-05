@@ -4,6 +4,44 @@ namespace csharp org.phybros.thrift
 include "Errors.thrift"
 
 /**
+ * Game difficulties
+ */
+enum Difficulty {
+/**
+ * Players regain health over time, hostile mobs don't spawn, 
+ * the hunger bar does not deplete.
+ */
+	PEACEFUL = 0,
+/**
+ * Hostile mobs spawn, enemies deal less damage than on 
+ * normal difficulty, the hunger bar does deplete and starving 
+ * deals up to 5 hearts of damage.
+ */
+	EASY = 1,
+/**
+ * Hostile mobs spawn, enemies deal normal amounts of damage, 
+ * the hunger bar does deplete and starving deals up to 9.5 
+ * hearts of damage.
+ */
+	NORMAL = 2,
+/**
+ * Hostile mobs spawn, enemies deal greater damage than on 
+ * normal difficulty, the hunger bar does deplete and starving 
+ * can kill players.
+ */
+	HARD = 3,
+}
+
+/**
+ * Represents various map environment types that a world may be
+ */
+enum Environment {
+	NETHER = 0,
+	NORMAL = 1,
+	THE_END = 2,
+}
+
+/**
  * Valid game modes
  */
 enum GameMode {
@@ -366,6 +404,54 @@ struct World {
  * The name of the world
  */
 	1: string name,
+/**
+ * The time of day
+ */
+	2: i64 time,
+/**
+ * Whether or not there is a storm
+ */
+	3: bool hasStorm,
+/**
+ * If there is thunder
+ */
+	4: bool isThundering,
+/**
+ * Whether or not structures are being generated
+ */
+	5: bool canGenerateStructures,
+/**
+ * Whether or not animals will spawn
+ */
+	6: bool allowAnimals,
+/**
+ * Whether or not monsters will spawn
+ */
+	7: bool allowMonsters,
+/**
+ * The difficulty of the world
+ */
+	8: Difficulty difficulty,
+/**
+ * The environment of the world
+ */
+	9: Environment environment,
+/**
+ * Gets the full in-game time on this world
+ */
+	10: i64 fullTime,
+/**
+ * The remaining time in ticks of the current conditions.
+ */
+	11: i64 weatherDuration,
+/**
+ * She Seed for this world.
+ */
+	12: i64 seed,
+/**
+ * The current PVP setting for this world.
+ */
+	13: bool isPvp,
 }
 
 /**

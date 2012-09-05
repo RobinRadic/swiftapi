@@ -9,25 +9,16 @@ package org.phybros.thrift;
 
 
 /**
- * Valid game modes
+ * Represents various map environment types that a world may be
  */
-public enum GameMode implements org.apache.thrift.TEnum {
-  /**
-   * Survival Mode
-   */
-  SURVIVAL(0),
-  /**
-   * Creative Mode
-   */
-  CREATIVE(1),
-  /**
-   * Adventure Mode
-   */
-  ADVENTURE(2);
+public enum Environment implements org.apache.thrift.TEnum {
+  NETHER(0),
+  NORMAL(1),
+  THE_END(2);
 
   private final int value;
 
-  private GameMode(int value) {
+  private Environment(int value) {
     this.value = value;
   }
 
@@ -42,14 +33,14 @@ public enum GameMode implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static GameMode findByValue(int value) { 
+  public static Environment findByValue(int value) { 
     switch (value) {
       case 0:
-        return SURVIVAL;
+        return NETHER;
       case 1:
-        return CREATIVE;
+        return NORMAL;
       case 2:
-        return ADVENTURE;
+        return THE_END;
       default:
         return null;
     }

@@ -19,10 +19,25 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * Represents a game world
+ */
 public class World implements org.apache.thrift.TBase<World, World._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("World");
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("time", org.apache.thrift.protocol.TType.I64, (short)2);
+  private static final org.apache.thrift.protocol.TField HAS_STORM_FIELD_DESC = new org.apache.thrift.protocol.TField("hasStorm", org.apache.thrift.protocol.TType.BOOL, (short)3);
+  private static final org.apache.thrift.protocol.TField IS_THUNDERING_FIELD_DESC = new org.apache.thrift.protocol.TField("isThundering", org.apache.thrift.protocol.TType.BOOL, (short)4);
+  private static final org.apache.thrift.protocol.TField CAN_GENERATE_STRUCTURES_FIELD_DESC = new org.apache.thrift.protocol.TField("canGenerateStructures", org.apache.thrift.protocol.TType.BOOL, (short)5);
+  private static final org.apache.thrift.protocol.TField ALLOW_ANIMALS_FIELD_DESC = new org.apache.thrift.protocol.TField("allowAnimals", org.apache.thrift.protocol.TType.BOOL, (short)6);
+  private static final org.apache.thrift.protocol.TField ALLOW_MONSTERS_FIELD_DESC = new org.apache.thrift.protocol.TField("allowMonsters", org.apache.thrift.protocol.TType.BOOL, (short)7);
+  private static final org.apache.thrift.protocol.TField DIFFICULTY_FIELD_DESC = new org.apache.thrift.protocol.TField("difficulty", org.apache.thrift.protocol.TType.I32, (short)8);
+  private static final org.apache.thrift.protocol.TField ENVIRONMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("environment", org.apache.thrift.protocol.TType.I32, (short)9);
+  private static final org.apache.thrift.protocol.TField FULL_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("fullTime", org.apache.thrift.protocol.TType.I64, (short)10);
+  private static final org.apache.thrift.protocol.TField WEATHER_DURATION_FIELD_DESC = new org.apache.thrift.protocol.TField("weatherDuration", org.apache.thrift.protocol.TType.I64, (short)11);
+  private static final org.apache.thrift.protocol.TField SEED_FIELD_DESC = new org.apache.thrift.protocol.TField("seed", org.apache.thrift.protocol.TType.I64, (short)12);
+  private static final org.apache.thrift.protocol.TField IS_PVP_FIELD_DESC = new org.apache.thrift.protocol.TField("isPvp", org.apache.thrift.protocol.TType.BOOL, (short)13);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -30,11 +45,121 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     schemes.put(TupleScheme.class, new WorldTupleSchemeFactory());
   }
 
+  /**
+   * The name of the world
+   */
   public String name; // required
+  /**
+   * The time of day
+   */
+  public long time; // required
+  /**
+   * Whether or not there is a storm
+   */
+  public boolean hasStorm; // required
+  /**
+   * If there is thunder
+   */
+  public boolean isThundering; // required
+  /**
+   * Whether or not structures are being generated
+   */
+  public boolean canGenerateStructures; // required
+  /**
+   * Whether or not animals will spawn
+   */
+  public boolean allowAnimals; // required
+  /**
+   * Whether or not monsters will spawn
+   */
+  public boolean allowMonsters; // required
+  /**
+   * The difficulty of the world
+   * 
+   * @see Difficulty
+   */
+  public Difficulty difficulty; // required
+  /**
+   * The environment of the world
+   * 
+   * @see Environment
+   */
+  public Environment environment; // required
+  /**
+   * Gets the full in-game time on this world
+   */
+  public long fullTime; // required
+  /**
+   * The remaining time in ticks of the current conditions.
+   */
+  public long weatherDuration; // required
+  /**
+   * She Seed for this world.
+   */
+  public long seed; // required
+  /**
+   * The current PVP setting for this world.
+   */
+  public boolean isPvp; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    NAME((short)1, "name");
+    /**
+     * The name of the world
+     */
+    NAME((short)1, "name"),
+    /**
+     * The time of day
+     */
+    TIME((short)2, "time"),
+    /**
+     * Whether or not there is a storm
+     */
+    HAS_STORM((short)3, "hasStorm"),
+    /**
+     * If there is thunder
+     */
+    IS_THUNDERING((short)4, "isThundering"),
+    /**
+     * Whether or not structures are being generated
+     */
+    CAN_GENERATE_STRUCTURES((short)5, "canGenerateStructures"),
+    /**
+     * Whether or not animals will spawn
+     */
+    ALLOW_ANIMALS((short)6, "allowAnimals"),
+    /**
+     * Whether or not monsters will spawn
+     */
+    ALLOW_MONSTERS((short)7, "allowMonsters"),
+    /**
+     * The difficulty of the world
+     * 
+     * @see Difficulty
+     */
+    DIFFICULTY((short)8, "difficulty"),
+    /**
+     * The environment of the world
+     * 
+     * @see Environment
+     */
+    ENVIRONMENT((short)9, "environment"),
+    /**
+     * Gets the full in-game time on this world
+     */
+    FULL_TIME((short)10, "fullTime"),
+    /**
+     * The remaining time in ticks of the current conditions.
+     */
+    WEATHER_DURATION((short)11, "weatherDuration"),
+    /**
+     * She Seed for this world.
+     */
+    SEED((short)12, "seed"),
+    /**
+     * The current PVP setting for this world.
+     */
+    IS_PVP((short)13, "isPvp");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -51,6 +176,30 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       switch(fieldId) {
         case 1: // NAME
           return NAME;
+        case 2: // TIME
+          return TIME;
+        case 3: // HAS_STORM
+          return HAS_STORM;
+        case 4: // IS_THUNDERING
+          return IS_THUNDERING;
+        case 5: // CAN_GENERATE_STRUCTURES
+          return CAN_GENERATE_STRUCTURES;
+        case 6: // ALLOW_ANIMALS
+          return ALLOW_ANIMALS;
+        case 7: // ALLOW_MONSTERS
+          return ALLOW_MONSTERS;
+        case 8: // DIFFICULTY
+          return DIFFICULTY;
+        case 9: // ENVIRONMENT
+          return ENVIRONMENT;
+        case 10: // FULL_TIME
+          return FULL_TIME;
+        case 11: // WEATHER_DURATION
+          return WEATHER_DURATION;
+        case 12: // SEED
+          return SEED;
+        case 13: // IS_PVP
+          return IS_PVP;
         default:
           return null;
       }
@@ -91,11 +240,46 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
   }
 
   // isset id assignments
+  private static final int __TIME_ISSET_ID = 0;
+  private static final int __HASSTORM_ISSET_ID = 1;
+  private static final int __ISTHUNDERING_ISSET_ID = 2;
+  private static final int __CANGENERATESTRUCTURES_ISSET_ID = 3;
+  private static final int __ALLOWANIMALS_ISSET_ID = 4;
+  private static final int __ALLOWMONSTERS_ISSET_ID = 5;
+  private static final int __FULLTIME_ISSET_ID = 6;
+  private static final int __WEATHERDURATION_ISSET_ID = 7;
+  private static final int __SEED_ISSET_ID = 8;
+  private static final int __ISPVP_ISSET_ID = 9;
+  private BitSet __isset_bit_vector = new BitSet(10);
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.TIME, new org.apache.thrift.meta_data.FieldMetaData("time", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+    tmpMap.put(_Fields.HAS_STORM, new org.apache.thrift.meta_data.FieldMetaData("hasStorm", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.IS_THUNDERING, new org.apache.thrift.meta_data.FieldMetaData("isThundering", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.CAN_GENERATE_STRUCTURES, new org.apache.thrift.meta_data.FieldMetaData("canGenerateStructures", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.ALLOW_ANIMALS, new org.apache.thrift.meta_data.FieldMetaData("allowAnimals", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.ALLOW_MONSTERS, new org.apache.thrift.meta_data.FieldMetaData("allowMonsters", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.DIFFICULTY, new org.apache.thrift.meta_data.FieldMetaData("difficulty", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, Difficulty.class)));
+    tmpMap.put(_Fields.ENVIRONMENT, new org.apache.thrift.meta_data.FieldMetaData("environment", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, Environment.class)));
+    tmpMap.put(_Fields.FULL_TIME, new org.apache.thrift.meta_data.FieldMetaData("fullTime", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+    tmpMap.put(_Fields.WEATHER_DURATION, new org.apache.thrift.meta_data.FieldMetaData("weatherDuration", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+    tmpMap.put(_Fields.SEED, new org.apache.thrift.meta_data.FieldMetaData("seed", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+    tmpMap.put(_Fields.IS_PVP, new org.apache.thrift.meta_data.FieldMetaData("isPvp", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(World.class, metaDataMap);
   }
@@ -104,19 +288,71 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
   }
 
   public World(
-    String name)
+    String name,
+    long time,
+    boolean hasStorm,
+    boolean isThundering,
+    boolean canGenerateStructures,
+    boolean allowAnimals,
+    boolean allowMonsters,
+    Difficulty difficulty,
+    Environment environment,
+    long fullTime,
+    long weatherDuration,
+    long seed,
+    boolean isPvp)
   {
     this();
     this.name = name;
+    this.time = time;
+    setTimeIsSet(true);
+    this.hasStorm = hasStorm;
+    setHasStormIsSet(true);
+    this.isThundering = isThundering;
+    setIsThunderingIsSet(true);
+    this.canGenerateStructures = canGenerateStructures;
+    setCanGenerateStructuresIsSet(true);
+    this.allowAnimals = allowAnimals;
+    setAllowAnimalsIsSet(true);
+    this.allowMonsters = allowMonsters;
+    setAllowMonstersIsSet(true);
+    this.difficulty = difficulty;
+    this.environment = environment;
+    this.fullTime = fullTime;
+    setFullTimeIsSet(true);
+    this.weatherDuration = weatherDuration;
+    setWeatherDurationIsSet(true);
+    this.seed = seed;
+    setSeedIsSet(true);
+    this.isPvp = isPvp;
+    setIsPvpIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public World(World other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetName()) {
       this.name = other.name;
     }
+    this.time = other.time;
+    this.hasStorm = other.hasStorm;
+    this.isThundering = other.isThundering;
+    this.canGenerateStructures = other.canGenerateStructures;
+    this.allowAnimals = other.allowAnimals;
+    this.allowMonsters = other.allowMonsters;
+    if (other.isSetDifficulty()) {
+      this.difficulty = other.difficulty;
+    }
+    if (other.isSetEnvironment()) {
+      this.environment = other.environment;
+    }
+    this.fullTime = other.fullTime;
+    this.weatherDuration = other.weatherDuration;
+    this.seed = other.seed;
+    this.isPvp = other.isPvp;
   }
 
   public World deepCopy() {
@@ -126,12 +362,40 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
   @Override
   public void clear() {
     this.name = null;
+    setTimeIsSet(false);
+    this.time = 0;
+    setHasStormIsSet(false);
+    this.hasStorm = false;
+    setIsThunderingIsSet(false);
+    this.isThundering = false;
+    setCanGenerateStructuresIsSet(false);
+    this.canGenerateStructures = false;
+    setAllowAnimalsIsSet(false);
+    this.allowAnimals = false;
+    setAllowMonstersIsSet(false);
+    this.allowMonsters = false;
+    this.difficulty = null;
+    this.environment = null;
+    setFullTimeIsSet(false);
+    this.fullTime = 0;
+    setWeatherDurationIsSet(false);
+    this.weatherDuration = 0;
+    setSeedIsSet(false);
+    this.seed = 0;
+    setIsPvpIsSet(false);
+    this.isPvp = false;
   }
 
+  /**
+   * The name of the world
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * The name of the world
+   */
   public World setName(String name) {
     this.name = name;
     return this;
@@ -152,6 +416,364 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     }
   }
 
+  /**
+   * The time of day
+   */
+  public long getTime() {
+    return this.time;
+  }
+
+  /**
+   * The time of day
+   */
+  public World setTime(long time) {
+    this.time = time;
+    setTimeIsSet(true);
+    return this;
+  }
+
+  public void unsetTime() {
+    __isset_bit_vector.clear(__TIME_ISSET_ID);
+  }
+
+  /** Returns true if field time is set (has been assigned a value) and false otherwise */
+  public boolean isSetTime() {
+    return __isset_bit_vector.get(__TIME_ISSET_ID);
+  }
+
+  public void setTimeIsSet(boolean value) {
+    __isset_bit_vector.set(__TIME_ISSET_ID, value);
+  }
+
+  /**
+   * Whether or not there is a storm
+   */
+  public boolean isHasStorm() {
+    return this.hasStorm;
+  }
+
+  /**
+   * Whether or not there is a storm
+   */
+  public World setHasStorm(boolean hasStorm) {
+    this.hasStorm = hasStorm;
+    setHasStormIsSet(true);
+    return this;
+  }
+
+  public void unsetHasStorm() {
+    __isset_bit_vector.clear(__HASSTORM_ISSET_ID);
+  }
+
+  /** Returns true if field hasStorm is set (has been assigned a value) and false otherwise */
+  public boolean isSetHasStorm() {
+    return __isset_bit_vector.get(__HASSTORM_ISSET_ID);
+  }
+
+  public void setHasStormIsSet(boolean value) {
+    __isset_bit_vector.set(__HASSTORM_ISSET_ID, value);
+  }
+
+  /**
+   * If there is thunder
+   */
+  public boolean isIsThundering() {
+    return this.isThundering;
+  }
+
+  /**
+   * If there is thunder
+   */
+  public World setIsThundering(boolean isThundering) {
+    this.isThundering = isThundering;
+    setIsThunderingIsSet(true);
+    return this;
+  }
+
+  public void unsetIsThundering() {
+    __isset_bit_vector.clear(__ISTHUNDERING_ISSET_ID);
+  }
+
+  /** Returns true if field isThundering is set (has been assigned a value) and false otherwise */
+  public boolean isSetIsThundering() {
+    return __isset_bit_vector.get(__ISTHUNDERING_ISSET_ID);
+  }
+
+  public void setIsThunderingIsSet(boolean value) {
+    __isset_bit_vector.set(__ISTHUNDERING_ISSET_ID, value);
+  }
+
+  /**
+   * Whether or not structures are being generated
+   */
+  public boolean isCanGenerateStructures() {
+    return this.canGenerateStructures;
+  }
+
+  /**
+   * Whether or not structures are being generated
+   */
+  public World setCanGenerateStructures(boolean canGenerateStructures) {
+    this.canGenerateStructures = canGenerateStructures;
+    setCanGenerateStructuresIsSet(true);
+    return this;
+  }
+
+  public void unsetCanGenerateStructures() {
+    __isset_bit_vector.clear(__CANGENERATESTRUCTURES_ISSET_ID);
+  }
+
+  /** Returns true if field canGenerateStructures is set (has been assigned a value) and false otherwise */
+  public boolean isSetCanGenerateStructures() {
+    return __isset_bit_vector.get(__CANGENERATESTRUCTURES_ISSET_ID);
+  }
+
+  public void setCanGenerateStructuresIsSet(boolean value) {
+    __isset_bit_vector.set(__CANGENERATESTRUCTURES_ISSET_ID, value);
+  }
+
+  /**
+   * Whether or not animals will spawn
+   */
+  public boolean isAllowAnimals() {
+    return this.allowAnimals;
+  }
+
+  /**
+   * Whether or not animals will spawn
+   */
+  public World setAllowAnimals(boolean allowAnimals) {
+    this.allowAnimals = allowAnimals;
+    setAllowAnimalsIsSet(true);
+    return this;
+  }
+
+  public void unsetAllowAnimals() {
+    __isset_bit_vector.clear(__ALLOWANIMALS_ISSET_ID);
+  }
+
+  /** Returns true if field allowAnimals is set (has been assigned a value) and false otherwise */
+  public boolean isSetAllowAnimals() {
+    return __isset_bit_vector.get(__ALLOWANIMALS_ISSET_ID);
+  }
+
+  public void setAllowAnimalsIsSet(boolean value) {
+    __isset_bit_vector.set(__ALLOWANIMALS_ISSET_ID, value);
+  }
+
+  /**
+   * Whether or not monsters will spawn
+   */
+  public boolean isAllowMonsters() {
+    return this.allowMonsters;
+  }
+
+  /**
+   * Whether or not monsters will spawn
+   */
+  public World setAllowMonsters(boolean allowMonsters) {
+    this.allowMonsters = allowMonsters;
+    setAllowMonstersIsSet(true);
+    return this;
+  }
+
+  public void unsetAllowMonsters() {
+    __isset_bit_vector.clear(__ALLOWMONSTERS_ISSET_ID);
+  }
+
+  /** Returns true if field allowMonsters is set (has been assigned a value) and false otherwise */
+  public boolean isSetAllowMonsters() {
+    return __isset_bit_vector.get(__ALLOWMONSTERS_ISSET_ID);
+  }
+
+  public void setAllowMonstersIsSet(boolean value) {
+    __isset_bit_vector.set(__ALLOWMONSTERS_ISSET_ID, value);
+  }
+
+  /**
+   * The difficulty of the world
+   * 
+   * @see Difficulty
+   */
+  public Difficulty getDifficulty() {
+    return this.difficulty;
+  }
+
+  /**
+   * The difficulty of the world
+   * 
+   * @see Difficulty
+   */
+  public World setDifficulty(Difficulty difficulty) {
+    this.difficulty = difficulty;
+    return this;
+  }
+
+  public void unsetDifficulty() {
+    this.difficulty = null;
+  }
+
+  /** Returns true if field difficulty is set (has been assigned a value) and false otherwise */
+  public boolean isSetDifficulty() {
+    return this.difficulty != null;
+  }
+
+  public void setDifficultyIsSet(boolean value) {
+    if (!value) {
+      this.difficulty = null;
+    }
+  }
+
+  /**
+   * The environment of the world
+   * 
+   * @see Environment
+   */
+  public Environment getEnvironment() {
+    return this.environment;
+  }
+
+  /**
+   * The environment of the world
+   * 
+   * @see Environment
+   */
+  public World setEnvironment(Environment environment) {
+    this.environment = environment;
+    return this;
+  }
+
+  public void unsetEnvironment() {
+    this.environment = null;
+  }
+
+  /** Returns true if field environment is set (has been assigned a value) and false otherwise */
+  public boolean isSetEnvironment() {
+    return this.environment != null;
+  }
+
+  public void setEnvironmentIsSet(boolean value) {
+    if (!value) {
+      this.environment = null;
+    }
+  }
+
+  /**
+   * Gets the full in-game time on this world
+   */
+  public long getFullTime() {
+    return this.fullTime;
+  }
+
+  /**
+   * Gets the full in-game time on this world
+   */
+  public World setFullTime(long fullTime) {
+    this.fullTime = fullTime;
+    setFullTimeIsSet(true);
+    return this;
+  }
+
+  public void unsetFullTime() {
+    __isset_bit_vector.clear(__FULLTIME_ISSET_ID);
+  }
+
+  /** Returns true if field fullTime is set (has been assigned a value) and false otherwise */
+  public boolean isSetFullTime() {
+    return __isset_bit_vector.get(__FULLTIME_ISSET_ID);
+  }
+
+  public void setFullTimeIsSet(boolean value) {
+    __isset_bit_vector.set(__FULLTIME_ISSET_ID, value);
+  }
+
+  /**
+   * The remaining time in ticks of the current conditions.
+   */
+  public long getWeatherDuration() {
+    return this.weatherDuration;
+  }
+
+  /**
+   * The remaining time in ticks of the current conditions.
+   */
+  public World setWeatherDuration(long weatherDuration) {
+    this.weatherDuration = weatherDuration;
+    setWeatherDurationIsSet(true);
+    return this;
+  }
+
+  public void unsetWeatherDuration() {
+    __isset_bit_vector.clear(__WEATHERDURATION_ISSET_ID);
+  }
+
+  /** Returns true if field weatherDuration is set (has been assigned a value) and false otherwise */
+  public boolean isSetWeatherDuration() {
+    return __isset_bit_vector.get(__WEATHERDURATION_ISSET_ID);
+  }
+
+  public void setWeatherDurationIsSet(boolean value) {
+    __isset_bit_vector.set(__WEATHERDURATION_ISSET_ID, value);
+  }
+
+  /**
+   * She Seed for this world.
+   */
+  public long getSeed() {
+    return this.seed;
+  }
+
+  /**
+   * She Seed for this world.
+   */
+  public World setSeed(long seed) {
+    this.seed = seed;
+    setSeedIsSet(true);
+    return this;
+  }
+
+  public void unsetSeed() {
+    __isset_bit_vector.clear(__SEED_ISSET_ID);
+  }
+
+  /** Returns true if field seed is set (has been assigned a value) and false otherwise */
+  public boolean isSetSeed() {
+    return __isset_bit_vector.get(__SEED_ISSET_ID);
+  }
+
+  public void setSeedIsSet(boolean value) {
+    __isset_bit_vector.set(__SEED_ISSET_ID, value);
+  }
+
+  /**
+   * The current PVP setting for this world.
+   */
+  public boolean isIsPvp() {
+    return this.isPvp;
+  }
+
+  /**
+   * The current PVP setting for this world.
+   */
+  public World setIsPvp(boolean isPvp) {
+    this.isPvp = isPvp;
+    setIsPvpIsSet(true);
+    return this;
+  }
+
+  public void unsetIsPvp() {
+    __isset_bit_vector.clear(__ISPVP_ISSET_ID);
+  }
+
+  /** Returns true if field isPvp is set (has been assigned a value) and false otherwise */
+  public boolean isSetIsPvp() {
+    return __isset_bit_vector.get(__ISPVP_ISSET_ID);
+  }
+
+  public void setIsPvpIsSet(boolean value) {
+    __isset_bit_vector.set(__ISPVP_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -162,6 +784,102 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       }
       break;
 
+    case TIME:
+      if (value == null) {
+        unsetTime();
+      } else {
+        setTime((Long)value);
+      }
+      break;
+
+    case HAS_STORM:
+      if (value == null) {
+        unsetHasStorm();
+      } else {
+        setHasStorm((Boolean)value);
+      }
+      break;
+
+    case IS_THUNDERING:
+      if (value == null) {
+        unsetIsThundering();
+      } else {
+        setIsThundering((Boolean)value);
+      }
+      break;
+
+    case CAN_GENERATE_STRUCTURES:
+      if (value == null) {
+        unsetCanGenerateStructures();
+      } else {
+        setCanGenerateStructures((Boolean)value);
+      }
+      break;
+
+    case ALLOW_ANIMALS:
+      if (value == null) {
+        unsetAllowAnimals();
+      } else {
+        setAllowAnimals((Boolean)value);
+      }
+      break;
+
+    case ALLOW_MONSTERS:
+      if (value == null) {
+        unsetAllowMonsters();
+      } else {
+        setAllowMonsters((Boolean)value);
+      }
+      break;
+
+    case DIFFICULTY:
+      if (value == null) {
+        unsetDifficulty();
+      } else {
+        setDifficulty((Difficulty)value);
+      }
+      break;
+
+    case ENVIRONMENT:
+      if (value == null) {
+        unsetEnvironment();
+      } else {
+        setEnvironment((Environment)value);
+      }
+      break;
+
+    case FULL_TIME:
+      if (value == null) {
+        unsetFullTime();
+      } else {
+        setFullTime((Long)value);
+      }
+      break;
+
+    case WEATHER_DURATION:
+      if (value == null) {
+        unsetWeatherDuration();
+      } else {
+        setWeatherDuration((Long)value);
+      }
+      break;
+
+    case SEED:
+      if (value == null) {
+        unsetSeed();
+      } else {
+        setSeed((Long)value);
+      }
+      break;
+
+    case IS_PVP:
+      if (value == null) {
+        unsetIsPvp();
+      } else {
+        setIsPvp((Boolean)value);
+      }
+      break;
+
     }
   }
 
@@ -169,6 +887,42 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     switch (field) {
     case NAME:
       return getName();
+
+    case TIME:
+      return Long.valueOf(getTime());
+
+    case HAS_STORM:
+      return Boolean.valueOf(isHasStorm());
+
+    case IS_THUNDERING:
+      return Boolean.valueOf(isIsThundering());
+
+    case CAN_GENERATE_STRUCTURES:
+      return Boolean.valueOf(isCanGenerateStructures());
+
+    case ALLOW_ANIMALS:
+      return Boolean.valueOf(isAllowAnimals());
+
+    case ALLOW_MONSTERS:
+      return Boolean.valueOf(isAllowMonsters());
+
+    case DIFFICULTY:
+      return getDifficulty();
+
+    case ENVIRONMENT:
+      return getEnvironment();
+
+    case FULL_TIME:
+      return Long.valueOf(getFullTime());
+
+    case WEATHER_DURATION:
+      return Long.valueOf(getWeatherDuration());
+
+    case SEED:
+      return Long.valueOf(getSeed());
+
+    case IS_PVP:
+      return Boolean.valueOf(isIsPvp());
 
     }
     throw new IllegalStateException();
@@ -183,6 +937,30 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     switch (field) {
     case NAME:
       return isSetName();
+    case TIME:
+      return isSetTime();
+    case HAS_STORM:
+      return isSetHasStorm();
+    case IS_THUNDERING:
+      return isSetIsThundering();
+    case CAN_GENERATE_STRUCTURES:
+      return isSetCanGenerateStructures();
+    case ALLOW_ANIMALS:
+      return isSetAllowAnimals();
+    case ALLOW_MONSTERS:
+      return isSetAllowMonsters();
+    case DIFFICULTY:
+      return isSetDifficulty();
+    case ENVIRONMENT:
+      return isSetEnvironment();
+    case FULL_TIME:
+      return isSetFullTime();
+    case WEATHER_DURATION:
+      return isSetWeatherDuration();
+    case SEED:
+      return isSetSeed();
+    case IS_PVP:
+      return isSetIsPvp();
     }
     throw new IllegalStateException();
   }
@@ -209,6 +987,114 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
         return false;
     }
 
+    boolean this_present_time = true;
+    boolean that_present_time = true;
+    if (this_present_time || that_present_time) {
+      if (!(this_present_time && that_present_time))
+        return false;
+      if (this.time != that.time)
+        return false;
+    }
+
+    boolean this_present_hasStorm = true;
+    boolean that_present_hasStorm = true;
+    if (this_present_hasStorm || that_present_hasStorm) {
+      if (!(this_present_hasStorm && that_present_hasStorm))
+        return false;
+      if (this.hasStorm != that.hasStorm)
+        return false;
+    }
+
+    boolean this_present_isThundering = true;
+    boolean that_present_isThundering = true;
+    if (this_present_isThundering || that_present_isThundering) {
+      if (!(this_present_isThundering && that_present_isThundering))
+        return false;
+      if (this.isThundering != that.isThundering)
+        return false;
+    }
+
+    boolean this_present_canGenerateStructures = true;
+    boolean that_present_canGenerateStructures = true;
+    if (this_present_canGenerateStructures || that_present_canGenerateStructures) {
+      if (!(this_present_canGenerateStructures && that_present_canGenerateStructures))
+        return false;
+      if (this.canGenerateStructures != that.canGenerateStructures)
+        return false;
+    }
+
+    boolean this_present_allowAnimals = true;
+    boolean that_present_allowAnimals = true;
+    if (this_present_allowAnimals || that_present_allowAnimals) {
+      if (!(this_present_allowAnimals && that_present_allowAnimals))
+        return false;
+      if (this.allowAnimals != that.allowAnimals)
+        return false;
+    }
+
+    boolean this_present_allowMonsters = true;
+    boolean that_present_allowMonsters = true;
+    if (this_present_allowMonsters || that_present_allowMonsters) {
+      if (!(this_present_allowMonsters && that_present_allowMonsters))
+        return false;
+      if (this.allowMonsters != that.allowMonsters)
+        return false;
+    }
+
+    boolean this_present_difficulty = true && this.isSetDifficulty();
+    boolean that_present_difficulty = true && that.isSetDifficulty();
+    if (this_present_difficulty || that_present_difficulty) {
+      if (!(this_present_difficulty && that_present_difficulty))
+        return false;
+      if (!this.difficulty.equals(that.difficulty))
+        return false;
+    }
+
+    boolean this_present_environment = true && this.isSetEnvironment();
+    boolean that_present_environment = true && that.isSetEnvironment();
+    if (this_present_environment || that_present_environment) {
+      if (!(this_present_environment && that_present_environment))
+        return false;
+      if (!this.environment.equals(that.environment))
+        return false;
+    }
+
+    boolean this_present_fullTime = true;
+    boolean that_present_fullTime = true;
+    if (this_present_fullTime || that_present_fullTime) {
+      if (!(this_present_fullTime && that_present_fullTime))
+        return false;
+      if (this.fullTime != that.fullTime)
+        return false;
+    }
+
+    boolean this_present_weatherDuration = true;
+    boolean that_present_weatherDuration = true;
+    if (this_present_weatherDuration || that_present_weatherDuration) {
+      if (!(this_present_weatherDuration && that_present_weatherDuration))
+        return false;
+      if (this.weatherDuration != that.weatherDuration)
+        return false;
+    }
+
+    boolean this_present_seed = true;
+    boolean that_present_seed = true;
+    if (this_present_seed || that_present_seed) {
+      if (!(this_present_seed && that_present_seed))
+        return false;
+      if (this.seed != that.seed)
+        return false;
+    }
+
+    boolean this_present_isPvp = true;
+    boolean that_present_isPvp = true;
+    if (this_present_isPvp || that_present_isPvp) {
+      if (!(this_present_isPvp && that_present_isPvp))
+        return false;
+      if (this.isPvp != that.isPvp)
+        return false;
+    }
+
     return true;
   }
 
@@ -231,6 +1117,126 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     }
     if (isSetName()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.name, typedOther.name);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetTime()).compareTo(typedOther.isSetTime());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetTime()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.time, typedOther.time);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetHasStorm()).compareTo(typedOther.isSetHasStorm());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetHasStorm()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.hasStorm, typedOther.hasStorm);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIsThundering()).compareTo(typedOther.isSetIsThundering());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIsThundering()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isThundering, typedOther.isThundering);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetCanGenerateStructures()).compareTo(typedOther.isSetCanGenerateStructures());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetCanGenerateStructures()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.canGenerateStructures, typedOther.canGenerateStructures);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetAllowAnimals()).compareTo(typedOther.isSetAllowAnimals());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAllowAnimals()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.allowAnimals, typedOther.allowAnimals);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetAllowMonsters()).compareTo(typedOther.isSetAllowMonsters());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAllowMonsters()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.allowMonsters, typedOther.allowMonsters);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetDifficulty()).compareTo(typedOther.isSetDifficulty());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetDifficulty()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.difficulty, typedOther.difficulty);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetEnvironment()).compareTo(typedOther.isSetEnvironment());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetEnvironment()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.environment, typedOther.environment);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetFullTime()).compareTo(typedOther.isSetFullTime());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetFullTime()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.fullTime, typedOther.fullTime);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetWeatherDuration()).compareTo(typedOther.isSetWeatherDuration());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetWeatherDuration()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.weatherDuration, typedOther.weatherDuration);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSeed()).compareTo(typedOther.isSetSeed());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSeed()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.seed, typedOther.seed);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIsPvp()).compareTo(typedOther.isSetIsPvp());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIsPvp()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isPvp, typedOther.isPvp);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -262,6 +1268,62 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       sb.append(this.name);
     }
     first = false;
+    if (!first) sb.append(", ");
+    sb.append("time:");
+    sb.append(this.time);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("hasStorm:");
+    sb.append(this.hasStorm);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("isThundering:");
+    sb.append(this.isThundering);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("canGenerateStructures:");
+    sb.append(this.canGenerateStructures);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("allowAnimals:");
+    sb.append(this.allowAnimals);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("allowMonsters:");
+    sb.append(this.allowMonsters);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("difficulty:");
+    if (this.difficulty == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.difficulty);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("environment:");
+    if (this.environment == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.environment);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("fullTime:");
+    sb.append(this.fullTime);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("weatherDuration:");
+    sb.append(this.weatherDuration);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("seed:");
+    sb.append(this.seed);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("isPvp:");
+    sb.append(this.isPvp);
+    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -280,6 +1342,8 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
@@ -312,6 +1376,102 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 2: // TIME
+            if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+              struct.time = iprot.readI64();
+              struct.setTimeIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 3: // HAS_STORM
+            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+              struct.hasStorm = iprot.readBool();
+              struct.setHasStormIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 4: // IS_THUNDERING
+            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+              struct.isThundering = iprot.readBool();
+              struct.setIsThunderingIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 5: // CAN_GENERATE_STRUCTURES
+            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+              struct.canGenerateStructures = iprot.readBool();
+              struct.setCanGenerateStructuresIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 6: // ALLOW_ANIMALS
+            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+              struct.allowAnimals = iprot.readBool();
+              struct.setAllowAnimalsIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 7: // ALLOW_MONSTERS
+            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+              struct.allowMonsters = iprot.readBool();
+              struct.setAllowMonstersIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 8: // DIFFICULTY
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.difficulty = Difficulty.findByValue(iprot.readI32());
+              struct.setDifficultyIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 9: // ENVIRONMENT
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.environment = Environment.findByValue(iprot.readI32());
+              struct.setEnvironmentIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 10: // FULL_TIME
+            if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+              struct.fullTime = iprot.readI64();
+              struct.setFullTimeIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 11: // WEATHER_DURATION
+            if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+              struct.weatherDuration = iprot.readI64();
+              struct.setWeatherDurationIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 12: // SEED
+            if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+              struct.seed = iprot.readI64();
+              struct.setSeedIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 13: // IS_PVP
+            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+              struct.isPvp = iprot.readBool();
+              struct.setIsPvpIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -332,6 +1492,46 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
         oprot.writeString(struct.name);
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldBegin(TIME_FIELD_DESC);
+      oprot.writeI64(struct.time);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(HAS_STORM_FIELD_DESC);
+      oprot.writeBool(struct.hasStorm);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(IS_THUNDERING_FIELD_DESC);
+      oprot.writeBool(struct.isThundering);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(CAN_GENERATE_STRUCTURES_FIELD_DESC);
+      oprot.writeBool(struct.canGenerateStructures);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(ALLOW_ANIMALS_FIELD_DESC);
+      oprot.writeBool(struct.allowAnimals);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(ALLOW_MONSTERS_FIELD_DESC);
+      oprot.writeBool(struct.allowMonsters);
+      oprot.writeFieldEnd();
+      if (struct.difficulty != null) {
+        oprot.writeFieldBegin(DIFFICULTY_FIELD_DESC);
+        oprot.writeI32(struct.difficulty.getValue());
+        oprot.writeFieldEnd();
+      }
+      if (struct.environment != null) {
+        oprot.writeFieldBegin(ENVIRONMENT_FIELD_DESC);
+        oprot.writeI32(struct.environment.getValue());
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(FULL_TIME_FIELD_DESC);
+      oprot.writeI64(struct.fullTime);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(WEATHER_DURATION_FIELD_DESC);
+      oprot.writeI64(struct.weatherDuration);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(SEED_FIELD_DESC);
+      oprot.writeI64(struct.seed);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(IS_PVP_FIELD_DESC);
+      oprot.writeBool(struct.isPvp);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -353,19 +1553,139 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       if (struct.isSetName()) {
         optionals.set(0);
       }
-      oprot.writeBitSet(optionals, 1);
+      if (struct.isSetTime()) {
+        optionals.set(1);
+      }
+      if (struct.isSetHasStorm()) {
+        optionals.set(2);
+      }
+      if (struct.isSetIsThundering()) {
+        optionals.set(3);
+      }
+      if (struct.isSetCanGenerateStructures()) {
+        optionals.set(4);
+      }
+      if (struct.isSetAllowAnimals()) {
+        optionals.set(5);
+      }
+      if (struct.isSetAllowMonsters()) {
+        optionals.set(6);
+      }
+      if (struct.isSetDifficulty()) {
+        optionals.set(7);
+      }
+      if (struct.isSetEnvironment()) {
+        optionals.set(8);
+      }
+      if (struct.isSetFullTime()) {
+        optionals.set(9);
+      }
+      if (struct.isSetWeatherDuration()) {
+        optionals.set(10);
+      }
+      if (struct.isSetSeed()) {
+        optionals.set(11);
+      }
+      if (struct.isSetIsPvp()) {
+        optionals.set(12);
+      }
+      oprot.writeBitSet(optionals, 13);
       if (struct.isSetName()) {
         oprot.writeString(struct.name);
+      }
+      if (struct.isSetTime()) {
+        oprot.writeI64(struct.time);
+      }
+      if (struct.isSetHasStorm()) {
+        oprot.writeBool(struct.hasStorm);
+      }
+      if (struct.isSetIsThundering()) {
+        oprot.writeBool(struct.isThundering);
+      }
+      if (struct.isSetCanGenerateStructures()) {
+        oprot.writeBool(struct.canGenerateStructures);
+      }
+      if (struct.isSetAllowAnimals()) {
+        oprot.writeBool(struct.allowAnimals);
+      }
+      if (struct.isSetAllowMonsters()) {
+        oprot.writeBool(struct.allowMonsters);
+      }
+      if (struct.isSetDifficulty()) {
+        oprot.writeI32(struct.difficulty.getValue());
+      }
+      if (struct.isSetEnvironment()) {
+        oprot.writeI32(struct.environment.getValue());
+      }
+      if (struct.isSetFullTime()) {
+        oprot.writeI64(struct.fullTime);
+      }
+      if (struct.isSetWeatherDuration()) {
+        oprot.writeI64(struct.weatherDuration);
+      }
+      if (struct.isSetSeed()) {
+        oprot.writeI64(struct.seed);
+      }
+      if (struct.isSetIsPvp()) {
+        oprot.writeBool(struct.isPvp);
       }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, World struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(1);
+      BitSet incoming = iprot.readBitSet(13);
       if (incoming.get(0)) {
         struct.name = iprot.readString();
         struct.setNameIsSet(true);
+      }
+      if (incoming.get(1)) {
+        struct.time = iprot.readI64();
+        struct.setTimeIsSet(true);
+      }
+      if (incoming.get(2)) {
+        struct.hasStorm = iprot.readBool();
+        struct.setHasStormIsSet(true);
+      }
+      if (incoming.get(3)) {
+        struct.isThundering = iprot.readBool();
+        struct.setIsThunderingIsSet(true);
+      }
+      if (incoming.get(4)) {
+        struct.canGenerateStructures = iprot.readBool();
+        struct.setCanGenerateStructuresIsSet(true);
+      }
+      if (incoming.get(5)) {
+        struct.allowAnimals = iprot.readBool();
+        struct.setAllowAnimalsIsSet(true);
+      }
+      if (incoming.get(6)) {
+        struct.allowMonsters = iprot.readBool();
+        struct.setAllowMonstersIsSet(true);
+      }
+      if (incoming.get(7)) {
+        struct.difficulty = Difficulty.findByValue(iprot.readI32());
+        struct.setDifficultyIsSet(true);
+      }
+      if (incoming.get(8)) {
+        struct.environment = Environment.findByValue(iprot.readI32());
+        struct.setEnvironmentIsSet(true);
+      }
+      if (incoming.get(9)) {
+        struct.fullTime = iprot.readI64();
+        struct.setFullTimeIsSet(true);
+      }
+      if (incoming.get(10)) {
+        struct.weatherDuration = iprot.readI64();
+        struct.setWeatherDurationIsSet(true);
+      }
+      if (incoming.get(11)) {
+        struct.seed = iprot.readI64();
+        struct.setSeedIsSet(true);
+      }
+      if (incoming.get(12)) {
+        struct.isPvp = iprot.readBool();
+        struct.setIsPvpIsSet(true);
       }
     }
   }

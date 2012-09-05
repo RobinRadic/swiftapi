@@ -6,12 +6,15 @@ import java.util.Map;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
+import org.phybros.thrift.Difficulty;
 import org.phybros.thrift.Enchantment;
+import org.phybros.thrift.Environment;
 import org.phybros.thrift.GameMode;
 import org.phybros.thrift.Location;
 import org.phybros.thrift.Player;
 import org.phybros.thrift.PlayerArmor;
 import org.phybros.thrift.PlayerInventory;
+import org.phybros.thrift.World;
 
 public class BukkitConverter {
 	/**
@@ -154,5 +157,27 @@ public class BukkitConverter {
 		}
 
 		return playerInventory;
+	}
+	
+
+	public static World convertBukkitWorld(org.bukkit.World bukkitWorld) {
+		World newWorld = new World();
+
+		newWorld.allowAnimals = bukkitWorld.getAllowAnimals();
+		newWorld.allowMonsters = bukkitWorld.getAllowMonsters();
+		newWorld.canGenerateStructures = bukkitWorld.canGenerateStructures();
+		newWorld.difficulty = Difficulty.findByValue(bukkitWorld.getDifficulty().getValue());
+		//subtract 1 from the value to get the right enum value (thrift doesnt allow negative numbers)
+		newWorld.environment = Environment.findByValue(bukkitWorld.getEnvironment().getId() - 1);
+		newWorld.fullTime = bukkitWorld.getFullTime();
+		newWorld.hasStorm = bukkitWorld.hasStorm();
+		newWorld.isPvp = bukkitWorld.getPVP();
+		newWorld.isThundering = bukkitWorld.isThundering();
+		newWorld.seed = bukkitWorld.getSeed();
+		newWorld.time = bukkitWorld.getTime();
+		newWorld.weatherDuration = bukkitWorld.getWeatherDuration();
+		newWorld.name = bukkitWorld.getName();
+
+		return newWorld;
 	}
 }

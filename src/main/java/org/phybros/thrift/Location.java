@@ -19,6 +19,9 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * An object that represents a location in the game world
+ */
 public class Location implements org.apache.thrift.TBase<Location, Location._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Location");
 
@@ -34,18 +37,48 @@ public class Location implements org.apache.thrift.TBase<Location, Location._Fie
     schemes.put(TupleScheme.class, new LocationTupleSchemeFactory());
   }
 
+  /**
+   * The X coordinate
+   */
   public double x; // required
+  /**
+   * The Y coordinate (height)
+   */
   public double y; // required
+  /**
+   * The Z coordinate
+   */
   public double z; // required
+  /**
+   * The pitch (vertical rotation)
+   */
   public double pitch; // required
+  /**
+   * The yaw (lateral rotation)
+   */
   public double yaw; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * The X coordinate
+     */
     X((short)1, "x"),
+    /**
+     * The Y coordinate (height)
+     */
     Y((short)2, "y"),
+    /**
+     * The Z coordinate
+     */
     Z((short)3, "z"),
+    /**
+     * The pitch (vertical rotation)
+     */
     PITCH((short)4, "pitch"),
+    /**
+     * The yaw (lateral rotation)
+     */
     YAW((short)5, "yaw");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -188,10 +221,16 @@ public class Location implements org.apache.thrift.TBase<Location, Location._Fie
     this.yaw = 0.0;
   }
 
+  /**
+   * The X coordinate
+   */
   public double getX() {
     return this.x;
   }
 
+  /**
+   * The X coordinate
+   */
   public Location setX(double x) {
     this.x = x;
     setXIsSet(true);
@@ -211,10 +250,16 @@ public class Location implements org.apache.thrift.TBase<Location, Location._Fie
     __isset_bit_vector.set(__X_ISSET_ID, value);
   }
 
+  /**
+   * The Y coordinate (height)
+   */
   public double getY() {
     return this.y;
   }
 
+  /**
+   * The Y coordinate (height)
+   */
   public Location setY(double y) {
     this.y = y;
     setYIsSet(true);
@@ -234,10 +279,16 @@ public class Location implements org.apache.thrift.TBase<Location, Location._Fie
     __isset_bit_vector.set(__Y_ISSET_ID, value);
   }
 
+  /**
+   * The Z coordinate
+   */
   public double getZ() {
     return this.z;
   }
 
+  /**
+   * The Z coordinate
+   */
   public Location setZ(double z) {
     this.z = z;
     setZIsSet(true);
@@ -257,10 +308,16 @@ public class Location implements org.apache.thrift.TBase<Location, Location._Fie
     __isset_bit_vector.set(__Z_ISSET_ID, value);
   }
 
+  /**
+   * The pitch (vertical rotation)
+   */
   public double getPitch() {
     return this.pitch;
   }
 
+  /**
+   * The pitch (vertical rotation)
+   */
   public Location setPitch(double pitch) {
     this.pitch = pitch;
     setPitchIsSet(true);
@@ -280,10 +337,16 @@ public class Location implements org.apache.thrift.TBase<Location, Location._Fie
     __isset_bit_vector.set(__PITCH_ISSET_ID, value);
   }
 
+  /**
+   * The yaw (lateral rotation)
+   */
   public double getYaw() {
     return this.yaw;
   }
 
+  /**
+   * The yaw (lateral rotation)
+   */
   public Location setYaw(double yaw) {
     this.yaw = yaw;
     setYawIsSet(true);

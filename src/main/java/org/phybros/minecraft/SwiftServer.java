@@ -546,7 +546,7 @@ public class SwiftServer {
 			s.worlds = new ArrayList<World>();
 
 			for (org.bukkit.World w : server.getWorlds()) {
-				s.worlds.add(convertBukkitWorld(w));
+				s.worlds.add(BukkitConverter.convertBukkitWorld(w));
 			}
 
 			return s;
@@ -599,7 +599,7 @@ public class SwiftServer {
 			List<World> worlds = new ArrayList<World>();
 
 			for (org.bukkit.World w : plugin.getServer().getWorlds()) {
-				worlds.add(convertBukkitWorld(w));
+				worlds.add(BukkitConverter.convertBukkitWorld(w));
 			}
 
 			return worlds;
@@ -971,14 +971,6 @@ public class SwiftServer {
 		plugin.getLogger().info("Stopping server...");
 		server.stop();
 		plugin.getLogger().info("Server stopped successfully");
-	}
-
-	private World convertBukkitWorld(org.bukkit.World bukkitWorld) {
-		World newWorld = new World();
-
-		newWorld.name = bukkitWorld.getName();
-
-		return newWorld;
 	}
 
 	private void start() {

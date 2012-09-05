@@ -21,6 +21,9 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * Represents the game server.
+ */
 public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Server");
 
@@ -46,38 +49,128 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     schemes.put(TupleScheme.class, new ServerTupleSchemeFactory());
   }
 
+  /**
+   * The name of the server
+   */
   public String name; // required
+  /**
+   * A list of all players who have ever played on this server.
+   */
   public List<OfflinePlayer> offlinePlayers; // required
+  /**
+   * A list of players who are currently online
+   */
   public List<Player> onlinePlayers; // required
+  /**
+   * The version of the server
+   */
   public String version; // required
+  /**
+   * The version of CraftBukkit that is running
+   */
   public String bukkitVersion; // required
+  /**
+   * The max players allowed on the server
+   */
   public int maxPlayers; // required
+  /**
+   * The IP of the server (if set)
+   */
   public String ip; // required
+  /**
+   * The port the server is listening on
+   */
   public int port; // required
+  /**
+   * Whether flight is allowed
+   */
   public boolean allowFlight; // required
+  /**
+   * Whether the nether is allowed
+   */
   public boolean allowNether; // required
+  /**
+   * Whether the End is allowed
+   */
   public boolean allowEnd; // required
+  /**
+   * A list of players on the server's whitelist
+   */
   public List<OfflinePlayer> whitelist; // required
+  /**
+   * A list of currently banned players
+   */
   public List<OfflinePlayer> bannedPlayers; // required
+  /**
+   * A list of currently banned IP addresses
+   */
   public List<String> bannedIps; // required
+  /**
+   * A list of worlds currently running on the server
+   */
   public List<World> worlds; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * The name of the server
+     */
     NAME((short)1, "name"),
+    /**
+     * A list of all players who have ever played on this server.
+     */
     OFFLINE_PLAYERS((short)2, "offlinePlayers"),
+    /**
+     * A list of players who are currently online
+     */
     ONLINE_PLAYERS((short)3, "onlinePlayers"),
+    /**
+     * The version of the server
+     */
     VERSION((short)4, "version"),
+    /**
+     * The version of CraftBukkit that is running
+     */
     BUKKIT_VERSION((short)5, "bukkitVersion"),
+    /**
+     * The max players allowed on the server
+     */
     MAX_PLAYERS((short)6, "maxPlayers"),
+    /**
+     * The IP of the server (if set)
+     */
     IP((short)7, "ip"),
+    /**
+     * The port the server is listening on
+     */
     PORT((short)8, "port"),
+    /**
+     * Whether flight is allowed
+     */
     ALLOW_FLIGHT((short)9, "allowFlight"),
+    /**
+     * Whether the nether is allowed
+     */
     ALLOW_NETHER((short)10, "allowNether"),
+    /**
+     * Whether the End is allowed
+     */
     ALLOW_END((short)11, "allowEnd"),
+    /**
+     * A list of players on the server's whitelist
+     */
     WHITELIST((short)12, "whitelist"),
+    /**
+     * A list of currently banned players
+     */
     BANNED_PLAYERS((short)13, "bannedPlayers"),
+    /**
+     * A list of currently banned IP addresses
+     */
     BANNED_IPS((short)14, "bannedIps"),
+    /**
+     * A list of worlds currently running on the server
+     */
     WORLDS((short)15, "worlds");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -350,10 +443,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     this.worlds = null;
   }
 
+  /**
+   * The name of the server
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * The name of the server
+   */
   public Server setName(String name) {
     this.name = name;
     return this;
@@ -389,10 +488,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     this.offlinePlayers.add(elem);
   }
 
+  /**
+   * A list of all players who have ever played on this server.
+   */
   public List<OfflinePlayer> getOfflinePlayers() {
     return this.offlinePlayers;
   }
 
+  /**
+   * A list of all players who have ever played on this server.
+   */
   public Server setOfflinePlayers(List<OfflinePlayer> offlinePlayers) {
     this.offlinePlayers = offlinePlayers;
     return this;
@@ -428,10 +533,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     this.onlinePlayers.add(elem);
   }
 
+  /**
+   * A list of players who are currently online
+   */
   public List<Player> getOnlinePlayers() {
     return this.onlinePlayers;
   }
 
+  /**
+   * A list of players who are currently online
+   */
   public Server setOnlinePlayers(List<Player> onlinePlayers) {
     this.onlinePlayers = onlinePlayers;
     return this;
@@ -452,10 +563,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     }
   }
 
+  /**
+   * The version of the server
+   */
   public String getVersion() {
     return this.version;
   }
 
+  /**
+   * The version of the server
+   */
   public Server setVersion(String version) {
     this.version = version;
     return this;
@@ -476,10 +593,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     }
   }
 
+  /**
+   * The version of CraftBukkit that is running
+   */
   public String getBukkitVersion() {
     return this.bukkitVersion;
   }
 
+  /**
+   * The version of CraftBukkit that is running
+   */
   public Server setBukkitVersion(String bukkitVersion) {
     this.bukkitVersion = bukkitVersion;
     return this;
@@ -500,10 +623,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     }
   }
 
+  /**
+   * The max players allowed on the server
+   */
   public int getMaxPlayers() {
     return this.maxPlayers;
   }
 
+  /**
+   * The max players allowed on the server
+   */
   public Server setMaxPlayers(int maxPlayers) {
     this.maxPlayers = maxPlayers;
     setMaxPlayersIsSet(true);
@@ -523,10 +652,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     __isset_bit_vector.set(__MAXPLAYERS_ISSET_ID, value);
   }
 
+  /**
+   * The IP of the server (if set)
+   */
   public String getIp() {
     return this.ip;
   }
 
+  /**
+   * The IP of the server (if set)
+   */
   public Server setIp(String ip) {
     this.ip = ip;
     return this;
@@ -547,10 +682,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     }
   }
 
+  /**
+   * The port the server is listening on
+   */
   public int getPort() {
     return this.port;
   }
 
+  /**
+   * The port the server is listening on
+   */
   public Server setPort(int port) {
     this.port = port;
     setPortIsSet(true);
@@ -570,10 +711,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     __isset_bit_vector.set(__PORT_ISSET_ID, value);
   }
 
+  /**
+   * Whether flight is allowed
+   */
   public boolean isAllowFlight() {
     return this.allowFlight;
   }
 
+  /**
+   * Whether flight is allowed
+   */
   public Server setAllowFlight(boolean allowFlight) {
     this.allowFlight = allowFlight;
     setAllowFlightIsSet(true);
@@ -593,10 +740,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     __isset_bit_vector.set(__ALLOWFLIGHT_ISSET_ID, value);
   }
 
+  /**
+   * Whether the nether is allowed
+   */
   public boolean isAllowNether() {
     return this.allowNether;
   }
 
+  /**
+   * Whether the nether is allowed
+   */
   public Server setAllowNether(boolean allowNether) {
     this.allowNether = allowNether;
     setAllowNetherIsSet(true);
@@ -616,10 +769,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     __isset_bit_vector.set(__ALLOWNETHER_ISSET_ID, value);
   }
 
+  /**
+   * Whether the End is allowed
+   */
   public boolean isAllowEnd() {
     return this.allowEnd;
   }
 
+  /**
+   * Whether the End is allowed
+   */
   public Server setAllowEnd(boolean allowEnd) {
     this.allowEnd = allowEnd;
     setAllowEndIsSet(true);
@@ -654,10 +813,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     this.whitelist.add(elem);
   }
 
+  /**
+   * A list of players on the server's whitelist
+   */
   public List<OfflinePlayer> getWhitelist() {
     return this.whitelist;
   }
 
+  /**
+   * A list of players on the server's whitelist
+   */
   public Server setWhitelist(List<OfflinePlayer> whitelist) {
     this.whitelist = whitelist;
     return this;
@@ -693,10 +858,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     this.bannedPlayers.add(elem);
   }
 
+  /**
+   * A list of currently banned players
+   */
   public List<OfflinePlayer> getBannedPlayers() {
     return this.bannedPlayers;
   }
 
+  /**
+   * A list of currently banned players
+   */
   public Server setBannedPlayers(List<OfflinePlayer> bannedPlayers) {
     this.bannedPlayers = bannedPlayers;
     return this;
@@ -732,10 +903,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     this.bannedIps.add(elem);
   }
 
+  /**
+   * A list of currently banned IP addresses
+   */
   public List<String> getBannedIps() {
     return this.bannedIps;
   }
 
+  /**
+   * A list of currently banned IP addresses
+   */
   public Server setBannedIps(List<String> bannedIps) {
     this.bannedIps = bannedIps;
     return this;
@@ -771,10 +948,16 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
     this.worlds.add(elem);
   }
 
+  /**
+   * A list of worlds currently running on the server
+   */
   public List<World> getWorlds() {
     return this.worlds;
   }
 
+  /**
+   * A list of worlds currently running on the server
+   */
   public Server setWorlds(List<World> worlds) {
     this.worlds = worlds;
     return this;

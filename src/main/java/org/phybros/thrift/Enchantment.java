@@ -8,27 +8,93 @@ package org.phybros.thrift;
 
 
 
+/**
+ * All enchantments
+ */
 public enum Enchantment implements org.apache.thrift.TEnum {
+  /**
+   * Protection
+   */
   PROTECTION_ENVIRONMENTAL(0),
+  /**
+   * Fire Protection
+   */
   PROTECTION_FIRE(1),
+  /**
+   * Feather Falling
+   */
   PROTECTION_FALL(2),
+  /**
+   * Blast Protection
+   */
   PROTECTION_EXPLOSIONS(3),
+  /**
+   * Projectile Protection
+   */
   PROTECTION_PROJECTILE(4),
+  /**
+   * Respiration
+   */
   OXYGEN(5),
+  /**
+   * Aqua Afiinity
+   */
   WATER_WORKER(6),
+  /**
+   * Sharpness
+   */
   DAMAGE_ALL(16),
+  /**
+   * Smite
+   */
   DAMAGE_UNDEAD(17),
+  /**
+   * Bane of Arthropods
+   */
   DAMAGE_ARTHROPODS(18),
+  /**
+   * Knockback
+   */
   KNOCKBACK(19),
+  /**
+   * Fire Aspect
+   */
   FIRE_ASPECT(20),
+  /**
+   * Looting
+   */
   LOOT_BONUS_MOBS(21),
+  /**
+   * Efficiency
+   */
   DIG_SPEED(32),
+  /**
+   * Silk Touch
+   */
   SILK_TOUCH(33),
+  /**
+   * Unbreaking
+   */
   DURABILITY(34),
+  /**
+   * Fortune
+   */
   LOOT_BONUS_BLOCKS(35),
+  /**
+   * Power
+   */
   ARROW_DAMAGE(48),
+  /**
+   * Punch
+   */
   ARROW_KNOCKBACK(49),
+  /**
+   * Flame
+   */
   ARROW_FIRE(50),
+  /**
+   * Infinity
+   */
   ARROW_INFINITE(51);
 
   private final int value;
