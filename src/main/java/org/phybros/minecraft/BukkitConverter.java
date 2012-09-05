@@ -167,8 +167,8 @@ public class BukkitConverter {
 		newWorld.allowMonsters = bukkitWorld.getAllowMonsters();
 		newWorld.canGenerateStructures = bukkitWorld.canGenerateStructures();
 		newWorld.difficulty = Difficulty.findByValue(bukkitWorld.getDifficulty().getValue());
-		//subtract 1 from the value to get the right enum value (thrift doesnt allow negative numbers)
-		newWorld.environment = Environment.findByValue(bukkitWorld.getEnvironment().getId() - 1);
+		//add 1 to the value to get the right enum value (thrift doesnt allow negative numbers)
+		newWorld.environment = Environment.findByValue(bukkitWorld.getEnvironment().getId() + 1);
 		newWorld.fullTime = bukkitWorld.getFullTime();
 		newWorld.hasStorm = bukkitWorld.hasStorm();
 		newWorld.isPvp = bukkitWorld.getPVP();
