@@ -1,5 +1,7 @@
 package org.phybros.minecraft;
 
+import java.io.File;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,7 @@ import org.phybros.thrift.Location;
 import org.phybros.thrift.Player;
 import org.phybros.thrift.PlayerArmor;
 import org.phybros.thrift.PlayerInventory;
+import org.phybros.thrift.Plugin;
 import org.phybros.thrift.World;
 
 public class BukkitConverter {
@@ -72,7 +75,8 @@ public class BukkitConverter {
 	 *            The Bukkit Player object to convert.
 	 * @return org.phybros.thrift.Player The converted Player.
 	 */
-	public static Player convertBukkitPlayer(org.bukkit.entity.Player bukkitPlayer) {
+	public static Player convertBukkitPlayer(
+			org.bukkit.entity.Player bukkitPlayer) {
 		Player newPlayer = new Player();
 
 		newPlayer.name = bukkitPlayer.getName();
@@ -115,7 +119,7 @@ public class BukkitConverter {
 		newPlayer.level = bukkitPlayer.getLevel();
 
 		newPlayer.location = convertBukkitLocation(bukkitPlayer.getLocation());
-		
+
 		return newPlayer;
 	}
 
@@ -158,17 +162,26 @@ public class BukkitConverter {
 
 		return playerInventory;
 	}
-	
 
+	/**
+	 * Converts a bukkit world object into a thrift-compatible world object
+	 * 
+	 * @param bukkitWorld
+	 *            The world to convert
+	 * @return World the converted world
+	 */
 	public static World convertBukkitWorld(org.bukkit.World bukkitWorld) {
 		World newWorld = new World();
 
 		newWorld.allowAnimals = bukkitWorld.getAllowAnimals();
 		newWorld.allowMonsters = bukkitWorld.getAllowMonsters();
 		newWorld.canGenerateStructures = bukkitWorld.canGenerateStructures();
-		newWorld.difficulty = Difficulty.findByValue(bukkitWorld.getDifficulty().getValue());
-		//add 1 to the value to get the right enum value (thrift doesnt allow negative numbers)
-		newWorld.environment = Environment.findByValue(bukkitWorld.getEnvironment().getId() + 1);
+		newWorld.difficulty = Difficulty.findByValue(bukkitWorld
+				.getDifficulty().getValue());
+		// add 1 to the value to get the right enum value (thrift doesnt allow
+		// negative numbers)
+		newWorld.environment = Environment.findByValue(bukkitWorld
+				.getEnvironment().getId() + 1);
 		newWorld.fullTime = bukkitWorld.getFullTime();
 		newWorld.hasStorm = bukkitWorld.hasStorm();
 		newWorld.isPvp = bukkitWorld.getPVP();
@@ -179,5 +192,29 @@ public class BukkitConverter {
 		newWorld.name = bukkitWorld.getName();
 
 		return newWorld;
+	}
+
+	public static Plugin convertBukkitPlugin(
+			org.bukkit.plugin.Plugin bukkitPlugin) {
+
+		Plugin newPlugin = new Plugin();
+		
+		newPlugin.authors = bukkitPlugin.getDescription().getAuthors();
+		newPlugin.description = bukkitPlugin.getDescription().getDescription();
+		newPlugin.enabled = bukkitPlugin.isEnabled();
+		newPlugin.name = bukkitPlugin.getDescription().getFullName();
+		newPlugin.version = bukkitPlugin.getDescription().getVersion();
+		newPlugin.website = bukkitPlugin.getDescription().getWebsite();
+		
+		try {
+			ProtectionDomain p = bukkitPlugin.getClass().getProtectionDomain();
+			File f = new File(p.getCodeSource().getLocation().toString());
+			newPlugin.fileName = f.getName();
+		} catch(Exception e) {
+			
+		}
+		
+		return newPlugin;
+		
 	}
 }

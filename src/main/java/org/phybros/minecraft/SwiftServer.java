@@ -579,7 +579,6 @@ public class SwiftServer {
 			logCall("getPlugin");
 			authenticate(authString, "getPlugin");
 
-			Plugin newPlugin = new Plugin();
 			org.bukkit.plugin.Plugin p = plugin.getServer().getPluginManager()
 					.getPlugin(name);
 
@@ -593,14 +592,7 @@ public class SwiftServer {
 				throw e;
 			}
 
-			newPlugin.authors = p.getDescription().getAuthors();
-			newPlugin.description = p.getDescription().getDescription();
-			newPlugin.enabled = p.isEnabled();
-			newPlugin.name = p.getDescription().getFullName();
-			newPlugin.version = p.getDescription().getVersion();
-			newPlugin.website = p.getDescription().getWebsite();
-
-			return newPlugin;
+			return BukkitConverter.convertBukkitPlugin(p);
 		}
 
 		/**
@@ -629,16 +621,8 @@ public class SwiftServer {
 
 			for (org.bukkit.plugin.Plugin p : plugin.getServer()
 					.getPluginManager().getPlugins()) {
-				Plugin newPlugin = new Plugin();
 
-				newPlugin.authors = p.getDescription().getAuthors();
-				newPlugin.description = p.getDescription().getDescription();
-				newPlugin.enabled = p.isEnabled();
-				newPlugin.name = p.getDescription().getName();
-				newPlugin.version = p.getDescription().getVersion();
-				newPlugin.website = p.getDescription().getWebsite();
-
-				serverPlugins.add(newPlugin);
+				serverPlugins.add(BukkitConverter.convertBukkitPlugin(p));
 			}
 
 			return serverPlugins;
@@ -891,7 +875,13 @@ public class SwiftServer {
 				plugin.getLogger().severe(e.getMessage());
 			}
 
-			plugin.getServer().reload();
+			try {
+				plugin.getServer().reload();				
+			} catch (Exception e) {
+				// the TNonBlockingServer throws an NPE here, this should mask it
+				plugin.getLogger().info("Error while reloading: " + e.getMessage());				
+			}
+			
 		}
 
 		/**
@@ -1151,6 +1141,15 @@ public class SwiftServer {
 				plugin.getLogger().info(
 						"SwiftApi method called: " + methodName + "()");
 			}
+		}
+
+		@Override
+		public String getConsoleLines(String authString) throws EAuthException,
+				TException {
+			logCall("getConsoleLines");
+			authenticate(authString, "getConsoleLines");
+			
+			return "test";
 		}
 	}
 

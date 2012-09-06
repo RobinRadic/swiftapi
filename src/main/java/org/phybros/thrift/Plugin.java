@@ -34,6 +34,7 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
   private static final org.apache.thrift.protocol.TField WEBSITE_FIELD_DESC = new org.apache.thrift.protocol.TField("website", org.apache.thrift.protocol.TType.STRING, (short)4);
   private static final org.apache.thrift.protocol.TField AUTHORS_FIELD_DESC = new org.apache.thrift.protocol.TField("authors", org.apache.thrift.protocol.TType.LIST, (short)5);
   private static final org.apache.thrift.protocol.TField ENABLED_FIELD_DESC = new org.apache.thrift.protocol.TField("enabled", org.apache.thrift.protocol.TType.BOOL, (short)6);
+  private static final org.apache.thrift.protocol.TField FILE_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("fileName", org.apache.thrift.protocol.TType.STRING, (short)7);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -65,6 +66,10 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
    * Whether or not the plugin is enabled
    */
   public boolean enabled; // required
+  /**
+   * The name of the JAR file that this plugin was loaded from
+   */
+  public String fileName; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -91,7 +96,11 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     /**
      * Whether or not the plugin is enabled
      */
-    ENABLED((short)6, "enabled");
+    ENABLED((short)6, "enabled"),
+    /**
+     * The name of the JAR file that this plugin was loaded from
+     */
+    FILE_NAME((short)7, "fileName");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -118,6 +127,8 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
           return AUTHORS;
         case 6: // ENABLED
           return ENABLED;
+        case 7: // FILE_NAME
+          return FILE_NAME;
         default:
           return null;
       }
@@ -176,6 +187,8 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.ENABLED, new org.apache.thrift.meta_data.FieldMetaData("enabled", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.FILE_NAME, new org.apache.thrift.meta_data.FieldMetaData("fileName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Plugin.class, metaDataMap);
   }
@@ -189,7 +202,8 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     String version,
     String website,
     List<String> authors,
-    boolean enabled)
+    boolean enabled,
+    String fileName)
   {
     this();
     this.name = name;
@@ -199,6 +213,7 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     this.authors = authors;
     this.enabled = enabled;
     setEnabledIsSet(true);
+    this.fileName = fileName;
   }
 
   /**
@@ -227,6 +242,9 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       this.authors = __this__authors;
     }
     this.enabled = other.enabled;
+    if (other.isSetFileName()) {
+      this.fileName = other.fileName;
+    }
   }
 
   public Plugin deepCopy() {
@@ -242,6 +260,7 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     this.authors = null;
     setEnabledIsSet(false);
     this.enabled = false;
+    this.fileName = null;
   }
 
   /**
@@ -438,6 +457,36 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     __isset_bit_vector.set(__ENABLED_ISSET_ID, value);
   }
 
+  /**
+   * The name of the JAR file that this plugin was loaded from
+   */
+  public String getFileName() {
+    return this.fileName;
+  }
+
+  /**
+   * The name of the JAR file that this plugin was loaded from
+   */
+  public Plugin setFileName(String fileName) {
+    this.fileName = fileName;
+    return this;
+  }
+
+  public void unsetFileName() {
+    this.fileName = null;
+  }
+
+  /** Returns true if field fileName is set (has been assigned a value) and false otherwise */
+  public boolean isSetFileName() {
+    return this.fileName != null;
+  }
+
+  public void setFileNameIsSet(boolean value) {
+    if (!value) {
+      this.fileName = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -488,6 +537,14 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       }
       break;
 
+    case FILE_NAME:
+      if (value == null) {
+        unsetFileName();
+      } else {
+        setFileName((String)value);
+      }
+      break;
+
     }
   }
 
@@ -510,6 +567,9 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
 
     case ENABLED:
       return Boolean.valueOf(isEnabled());
+
+    case FILE_NAME:
+      return getFileName();
 
     }
     throw new IllegalStateException();
@@ -534,6 +594,8 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       return isSetAuthors();
     case ENABLED:
       return isSetEnabled();
+    case FILE_NAME:
+      return isSetFileName();
     }
     throw new IllegalStateException();
   }
@@ -602,6 +664,15 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       if (!(this_present_enabled && that_present_enabled))
         return false;
       if (this.enabled != that.enabled)
+        return false;
+    }
+
+    boolean this_present_fileName = true && this.isSetFileName();
+    boolean that_present_fileName = true && that.isSetFileName();
+    if (this_present_fileName || that_present_fileName) {
+      if (!(this_present_fileName && that_present_fileName))
+        return false;
+      if (!this.fileName.equals(that.fileName))
         return false;
     }
 
@@ -681,6 +752,16 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetFileName()).compareTo(typedOther.isSetFileName());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetFileName()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.fileName, typedOther.fileName);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -743,6 +824,14 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
     if (!first) sb.append(", ");
     sb.append("enabled:");
     sb.append(this.enabled);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("fileName:");
+    if (this.fileName == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.fileName);
+    }
     first = false;
     sb.append(")");
     return sb.toString();
@@ -846,6 +935,14 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 7: // FILE_NAME
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.fileName = iprot.readString();
+              struct.setFileNameIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -896,6 +993,11 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       oprot.writeFieldBegin(ENABLED_FIELD_DESC);
       oprot.writeBool(struct.enabled);
       oprot.writeFieldEnd();
+      if (struct.fileName != null) {
+        oprot.writeFieldBegin(FILE_NAME_FIELD_DESC);
+        oprot.writeString(struct.fileName);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -932,7 +1034,10 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       if (struct.isSetEnabled()) {
         optionals.set(5);
       }
-      oprot.writeBitSet(optionals, 6);
+      if (struct.isSetFileName()) {
+        optionals.set(6);
+      }
+      oprot.writeBitSet(optionals, 7);
       if (struct.isSetName()) {
         oprot.writeString(struct.name);
       }
@@ -957,12 +1062,15 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       if (struct.isSetEnabled()) {
         oprot.writeBool(struct.enabled);
       }
+      if (struct.isSetFileName()) {
+        oprot.writeString(struct.fileName);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, Plugin struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(6);
+      BitSet incoming = iprot.readBitSet(7);
       if (incoming.get(0)) {
         struct.name = iprot.readString();
         struct.setNameIsSet(true);
@@ -995,6 +1103,10 @@ public class Plugin implements org.apache.thrift.TBase<Plugin, Plugin._Fields>, 
       if (incoming.get(5)) {
         struct.enabled = iprot.readBool();
         struct.setEnabledIsSet(true);
+      }
+      if (incoming.get(6)) {
+        struct.fileName = iprot.readString();
+        struct.setFileNameIsSet(true);
       }
     }
   }

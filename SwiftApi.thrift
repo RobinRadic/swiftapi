@@ -394,6 +394,10 @@ struct Plugin {
  * Whether or not the plugin is enabled
  */
 	6: bool enabled,
+/**
+ * The name of the JAR file that this plugin was loaded from
+ */
+	7: string fileName
 }
 
 /**
@@ -1056,4 +1060,6 @@ service SwiftApi {
 				 2:string ip) 
 	throws (1:Errors.EAuthException aex, 
 			2:Errors.EDataException dex),
+
+	string getConsoleLines(1:string authString) throws (1:Errors.EAuthException aex),
 }
