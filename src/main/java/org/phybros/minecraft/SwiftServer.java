@@ -12,6 +12,7 @@ import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.phybros.thrift.ConsoleLine;
 import org.phybros.thrift.EAuthException;
 import org.phybros.thrift.EDataException;
 import org.phybros.thrift.ErrorCode;
@@ -953,6 +954,20 @@ public class SwiftServer {
 						"SwiftApi method called: " + methodName + "()");
 			}
 		}
+
+		@Override
+		public List<ConsoleLine> getConsoleMessages(String authString)
+				throws EAuthException, TException {
+			return plugin.last500;
+		}
+
+		@Override
+		public boolean runConsoleCommand(String authString, String command)
+				throws EAuthException, TException {
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
+			return true;
+		}
+
 	}
 
 	private int port;

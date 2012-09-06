@@ -149,6 +149,11 @@ enum Enchantment {
     ARROW_INFINITE = 51,
 }
 
+struct ConsoleLine {
+	1:i64 timestamp,
+	2:string message
+}
+
 /**
  * An object that represents a location in the game world
  */
@@ -992,4 +997,7 @@ service SwiftApi {
 				 2:string ip) 
 	throws (1:Errors.EAuthException aex, 
 			2:Errors.EDataException dex),
+			
+list<ConsoleLine> getConsoleMessages(1:string authString) throws (1:Errors.EAuthException aex),
+bool runConsoleCommand(1:string authString, 2:string command) throws (1:Errors.EAuthException aex),
 }
