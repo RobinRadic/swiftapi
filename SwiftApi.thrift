@@ -1035,4 +1035,21 @@ service SwiftApi {
  */	
 	bool runConsoleCommand(1:string authString, 2:string command) 
 	throws (1:Errors.EAuthException aex),
+	
+/**
+ * Just a keepalive method to test authentication in clients
+ *
+ * @param authString
+ *            The authentication hash
+ * 
+ * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool ping(1:string authString) throws (1:Errors.EAuthException aex),
+ 
 }

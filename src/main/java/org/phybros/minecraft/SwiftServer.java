@@ -737,6 +737,29 @@ public class SwiftServer {
 				return false;
 			}
 		}
+		
+		/**
+		 * Just a keepalive method to test authentication in clients
+		 *
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean ping(String authString) throws EAuthException,
+				TException {
+			logCall("ping");
+			authenticate(authString, "ping");
+			
+			return true;
+		}
 
 		/**
 		 * Remove a Player from the server's whitelist. The player can be
@@ -966,9 +989,13 @@ public class SwiftServer {
 
 			// build the pre-hashed string
 			String myAuthString = username + methodName + password + salt;
-
+			MessageDigest md= null;
+			
 			try {
-				MessageDigest md = MessageDigest.getInstance("SHA-256");
+				md = MessageDigest.getInstance("SHA-256");
+			} catch (NoSuchAlgorithmException algex) {
+				plugin.getLogger().severe(algex.getMessage());
+			}
 				md.update(myAuthString.getBytes());
 				String hash = byteToString(md.digest());
 				// plugin.getLogger().info("Expecting: " + hash);
@@ -983,11 +1010,9 @@ public class SwiftServer {
 					e.code = ErrorCode.INVALID_AUTHSTRING;
 					e.errorMessage = plugin.getConfig().getString(
 							"errorMessages.invalidAuthentication");
+					plugin.getLogger().info(e.toString());
 					throw e;
 				}
-			} catch (NoSuchAlgorithmException algex) {
-				plugin.getLogger().severe(algex.getMessage());
-			}
 		}
 
 		private String byteToString(byte[] bytes) {
