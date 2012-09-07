@@ -997,7 +997,42 @@ service SwiftApi {
 				 2:string ip) 
 	throws (1:Errors.EAuthException aex, 
 			2:Errors.EDataException dex),
-			
-list<ConsoleLine> getConsoleMessages(1:string authString) throws (1:Errors.EAuthException aex),
-bool runConsoleCommand(1:string authString, 2:string command) throws (1:Errors.EAuthException aex),
+
+/**
+ * Get the last 500 console messages. This method may change in the future to 
+ * include a "count" parameter so that you can specify how many lines to get, 
+ * but I'm unaware how much memory it would consume to keep ALL logs (since 
+ * restart or reload of plugin). Therefore it is capped at 500 for now.
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */			
+	list<ConsoleLine> getConsoleMessages(1:string authString) 
+	throws (1:Errors.EAuthException aex),
+
+/**
+ * Executes a command as if you were to type it directly into the console 
+ * (no need for leading forward-slash "/").
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */	
+	bool runConsoleCommand(1:string authString, 2:string command) 
+	throws (1:Errors.EAuthException aex),
 }

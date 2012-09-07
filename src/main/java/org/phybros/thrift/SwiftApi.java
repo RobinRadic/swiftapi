@@ -6,24 +6,21 @@
  */
 package org.phybros.thrift;
 
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TTupleProtocol;
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
-
 import org.apache.thrift.scheme.TupleScheme;
-import org.apache.thrift.protocol.TTupleProtocol;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.EnumSet;
-import java.util.Collections;
-import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -521,8 +518,45 @@ public class SwiftApi {
      */
     public boolean unBanIp(String authString, String ip) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
 
+    /**
+     * Get the last 500 console messages. This method may change in the future to
+     * include a "count" parameter so that you can specify how many lines to get,
+     * but I'm unaware how much memory it would consume to keep ALL logs (since
+     * restart or reload of plugin). Therefore it is capped at 500 for now.
+     * 
+     * @param authString
+     *            The authentication hash
+     * 
+     * @return boolean true on success false on serious failure
+     * 
+     * @throws Errors.EAuthException
+     *             If the method call was not correctly authenticated
+     * 
+     * @throws org.apache.thrift.TException
+     *             If something went wrong with Thrift
+     * 
+     * @param authString
+     */
     public List<ConsoleLine> getConsoleMessages(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
 
+    /**
+     * Executes a command as if you were to type it directly into the console
+     * (no need for leading forward-slash "/").
+     * 
+     * @param authString
+     *            The authentication hash
+     * 
+     * @return boolean true on success false on serious failure
+     * 
+     * @throws Errors.EAuthException
+     *             If the method call was not correctly authenticated
+     * 
+     * @throws org.apache.thrift.TException
+     *             If something went wrong with Thrift
+     * 
+     * @param authString
+     * @param command
+     */
     public boolean runConsoleCommand(String authString, String command) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
 
   }

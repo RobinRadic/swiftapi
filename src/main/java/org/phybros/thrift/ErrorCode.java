@@ -7,9 +7,6 @@
 package org.phybros.thrift;
 
 
-import java.util.Map;
-import java.util.HashMap;
-import org.apache.thrift.TEnum;
 
 /**
  * Various codes used for catching errors

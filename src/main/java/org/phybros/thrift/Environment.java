@@ -7,9 +7,6 @@
 package org.phybros.thrift;
 
 
-import java.util.Map;
-import java.util.HashMap;
-import org.apache.thrift.TEnum;
 
 /**
  * Represents various map environment types that a world may be

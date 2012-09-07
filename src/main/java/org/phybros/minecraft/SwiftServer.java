@@ -25,10 +25,6 @@ import org.phybros.thrift.World;
 
 public class SwiftServer {
 
-	/**
-	 * @author wwarren
-	 * 
-	 */
 	public class SwiftApiHandler implements SwiftApi.Iface {
 
 		/**
@@ -237,6 +233,34 @@ public class SwiftServer {
 			authenticate(authString, "getBukkitVersion");
 
 			return plugin.getServer().getBukkitVersion();
+		}
+
+		/**
+		 * Get the last 500 console messages. This method may change in the
+		 * future to include a "count" parameter so that you can specify how
+		 * many lines to get, but I'm unaware how much memory it would consume
+		 * to keep ALL logs (since restart or reload of plugin). Therefore it is
+		 * capped at 500 for now.
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public List<ConsoleLine> getConsoleMessages(String authString)
+				throws EAuthException, TException {
+			// This produces some serious log spam
+			// logCall("getConsoleMessages");
+			authenticate(authString, "getConsoleMessages");
+
+			return plugin.last500;
 		}
 
 		/**
@@ -516,7 +540,8 @@ public class SwiftServer {
 
 			s.bannedPlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
 			for (OfflinePlayer op : server.getBannedPlayers()) {
-				s.bannedPlayers.add(BukkitConverter.convertBukkitOfflinePlayer(op));
+				s.bannedPlayers.add(BukkitConverter
+						.convertBukkitOfflinePlayer(op));
 			}
 
 			s.bukkitVersion = server.getBukkitVersion();
@@ -526,7 +551,8 @@ public class SwiftServer {
 			s.offlinePlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
 
 			for (OfflinePlayer op : server.getOfflinePlayers()) {
-				s.offlinePlayers.add(BukkitConverter.convertBukkitOfflinePlayer(op));
+				s.offlinePlayers.add(BukkitConverter
+						.convertBukkitOfflinePlayer(op));
 			}
 
 			s.onlinePlayers = new ArrayList<Player>();
@@ -763,6 +789,37 @@ public class SwiftServer {
 		}
 
 		/**
+		 * Executes a command as if you were to type it directly into the
+		 * console (no need for leading forward-slash "/").
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean runConsoleCommand(String authString, String command)
+				throws EAuthException, TException {
+			logCall("runConsoleCommand");
+			authenticate(authString, "runConsoleCommand");
+
+			try {
+				Bukkit.getServer().dispatchCommand(
+						Bukkit.getServer().getConsoleSender(), command);
+				return true;
+			} catch (Exception e) {
+				plugin.getLogger().severe(e.getMessage());
+				return false;
+			}
+		}
+
+		/**
 		 * Sets the gamemode of a player
 		 * 
 		 * @param authString
@@ -955,19 +1012,6 @@ public class SwiftServer {
 			}
 		}
 
-		@Override
-		public List<ConsoleLine> getConsoleMessages(String authString)
-				throws EAuthException, TException {
-			return plugin.last500;
-		}
-
-		@Override
-		public boolean runConsoleCommand(String authString, String command)
-				throws EAuthException, TException {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
-			return true;
-		}
-
 	}
 
 	private int port;
@@ -983,17 +1027,20 @@ public class SwiftServer {
 	}
 
 	public void stop() {
-		plugin.getLogger().info("Stopping server...");
-		server.stop();
-		plugin.getLogger().info("Server stopped successfully");
+		try {
+			plugin.getLogger().info("Stopping server...");
+			server.stop();
+			plugin.getLogger().info("Server stopped successfully");
+		} catch (Exception e) {
+			plugin.getLogger().severe(
+					"Error while stopping server: " + e.getMessage());
+		}
 	}
 
 	private void start() {
 		(new Thread(new Runnable() {
 
 			public void run() {
-				// TODO Auto-generated method stub
-
 				try {
 					SwiftApiHandler psh = new SwiftApiHandler();
 					SwiftApi.Processor<SwiftApi.Iface> pro = new SwiftApi.Processor<SwiftApi.Iface>(
@@ -1007,7 +1054,7 @@ public class SwiftServer {
 							"Listening on port " + String.valueOf(port));
 					server.serve();
 				} catch (Exception e) {
-					Bukkit.getLogger().severe(e.getMessage());
+					plugin.getLogger().severe(e.getMessage());
 				}
 			}
 
