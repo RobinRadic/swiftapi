@@ -20,6 +20,7 @@ import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.phybros.thrift.ConsoleLine;
 import org.phybros.thrift.EAuthException;
 import org.phybros.thrift.EDataException;
 import org.phybros.thrift.ErrorCode;
@@ -398,6 +399,34 @@ public class SwiftServer {
 			authenticate(authString, "getBukkitVersion");
 
 			return plugin.getServer().getBukkitVersion();
+		}
+
+		/**
+		 * Get the last 500 console messages. This method may change in the
+		 * future to include a "count" parameter so that you can specify how
+		 * many lines to get, but I'm unaware how much memory it would consume
+		 * to keep ALL logs (since restart or reload of plugin). Therefore it is
+		 * capped at 500 for now.
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public List<ConsoleLine> getConsoleMessages(String authString)
+				throws EAuthException, TException {
+			// This produces some serious log spam
+			// logCall("getConsoleMessages");
+			authenticate(authString, "getConsoleMessages");
+
+			return plugin.last500;
 		}
 
 		/**
@@ -858,6 +887,29 @@ public class SwiftServer {
 				return false;
 			}
 		}
+		
+		/**
+		 * Just a keepalive method to test authentication in clients
+		 *
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean ping(String authString) throws EAuthException,
+				TException {
+			logCall("ping");
+			authenticate(authString, "ping");
+			
+			return true;
+		}
 
 		/**
 		 * Reloads the server. This call does not send a response (for obvious
@@ -930,6 +982,37 @@ public class SwiftServer {
 				}
 				return true;
 			} catch (Exception e) {
+				return false;
+			}
+		}
+
+		/**
+		 * Executes a command as if you were to type it directly into the
+		 * console (no need for leading forward-slash "/").
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean runConsoleCommand(String authString, String command)
+				throws EAuthException, TException {
+			logCall("runConsoleCommand");
+			authenticate(authString, "runConsoleCommand");
+
+			try {
+				Bukkit.getServer().dispatchCommand(
+						Bukkit.getServer().getConsoleSender(), command);
+				return true;
+			} catch (Exception e) {
+				plugin.getLogger().severe(e.getMessage());
 				return false;
 			}
 		}
@@ -1081,9 +1164,13 @@ public class SwiftServer {
 
 			// build the pre-hashed string
 			String myAuthString = username + methodName + password + salt;
-
+			MessageDigest md= null;
+			
 			try {
-				MessageDigest md = MessageDigest.getInstance("SHA-256");
+				md = MessageDigest.getInstance("SHA-256");
+			} catch (NoSuchAlgorithmException algex) {
+				plugin.getLogger().severe(algex.getMessage());
+			}
 				md.update(myAuthString.getBytes());
 				String hash = byteToString(md.digest());
 				// plugin.getLogger().info("Expecting: " + hash);
@@ -1098,11 +1185,9 @@ public class SwiftServer {
 					e.code = ErrorCode.INVALID_AUTHSTRING;
 					e.errorMessage = plugin.getConfig().getString(
 							"errorMessages.invalidAuthentication");
+					plugin.getLogger().info(e.toString());
 					throw e;
 				}
-			} catch (NoSuchAlgorithmException algex) {
-				plugin.getLogger().severe(algex.getMessage());
-			}
 		}
 
 		private String byteToString(byte[] bytes) {
@@ -1143,14 +1228,6 @@ public class SwiftServer {
 			}
 		}
 
-		@Override
-		public String getConsoleLines(String authString) throws EAuthException,
-				TException {
-			logCall("getConsoleLines");
-			authenticate(authString, "getConsoleLines");
-			
-			return "test";
-		}
 	}
 
 	private int port;
@@ -1166,9 +1243,14 @@ public class SwiftServer {
 	}
 
 	public void stop() {
-		plugin.getLogger().info("Stopping server...");
-		server.stop();
-		plugin.getLogger().info("Server stopped successfully");
+		try {
+			plugin.getLogger().info("Stopping server...");
+			server.stop();
+			plugin.getLogger().info("Server stopped successfully");
+		} catch (Exception e) {
+			plugin.getLogger().severe(
+					"Error while stopping server: " + e.getMessage());
+		}
 	}
 
 	private void start() {
@@ -1188,7 +1270,7 @@ public class SwiftServer {
 							"Listening on port " + String.valueOf(port));
 					server.serve();
 				} catch (Exception e) {
-					Bukkit.getLogger().severe(e.getMessage());
+					plugin.getLogger().severe(e.getMessage());
 				}
 			}
 
