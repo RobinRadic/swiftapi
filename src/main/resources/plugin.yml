@@ -1,5 +1,5 @@
 name: SwiftApi
 description: A plugin that exposes bukkit functionality over an Apache Thrift interface
 main: org.phybros.minecraft.SwiftApiPlugin
-version: 0.3
+version: 0.4
 author: phybros
