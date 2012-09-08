@@ -202,14 +202,16 @@ public class BukkitConverter {
 		newPlugin.authors = bukkitPlugin.getDescription().getAuthors();
 		newPlugin.description = bukkitPlugin.getDescription().getDescription();
 		newPlugin.enabled = bukkitPlugin.isEnabled();
-		newPlugin.name = bukkitPlugin.getDescription().getFullName();
+		newPlugin.name = bukkitPlugin.getDescription().getName();
 		newPlugin.version = bukkitPlugin.getDescription().getVersion();
 		newPlugin.website = bukkitPlugin.getDescription().getWebsite();
 		
 		try {
 			ProtectionDomain p = bukkitPlugin.getClass().getProtectionDomain();
 			File f = new File(p.getCodeSource().getLocation().toString());
-			newPlugin.fileName = f.getName();
+			if(f.isFile()) {
+				newPlugin.fileName = f.getName();
+			}
 		} catch(Exception e) {
 			
 		}
