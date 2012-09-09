@@ -1095,8 +1095,8 @@ public class SwiftServer {
 		@Override
 		public boolean removeFromWhitelist(String authString, String name)
 				throws EAuthException, EDataException, TException {
-			logCall("addToWhitelist");
-			authenticate(authString, "addToWhitelist");
+			logCall("removeFromWhitelist");
+			authenticate(authString, "removeFromWhitelist");
 
 			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
 
