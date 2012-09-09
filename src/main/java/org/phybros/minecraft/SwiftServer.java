@@ -83,6 +83,9 @@ public class SwiftServer {
 				boolean wasWhitelisted = offPl.isWhitelisted();
 				if (!wasWhitelisted) {
 					offPl.setWhitelisted(true);
+					plugin.getLogger().info("Whitelisted player " + offPl.getName());
+				} else {
+					plugin.getLogger().info("Player " + offPl.getName() + " is already whitelisted");
 				}
 				return true;
 			} catch (Exception e) {
@@ -131,6 +134,7 @@ public class SwiftServer {
 
 			try {
 				offPl.setBanned(true);
+				plugin.getLogger().info("Banned player " + offPl.getName());
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -162,6 +166,7 @@ public class SwiftServer {
 
 			try {
 				plugin.getServer().banIP(ip);
+				plugin.getLogger().info("Banned IP address " + ip);
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -276,6 +281,7 @@ public class SwiftServer {
 				if (wasOp && notifyPlayer && offPl.isOnline()) {
 					offPl.getPlayer().sendMessage(
 							plugin.getConfig().getString("messages.deOp"));
+					plugin.getLogger().info("Deopped " + offPl.getName());
 				}
 				return true;
 			} catch (Exception e) {
@@ -953,6 +959,7 @@ public class SwiftServer {
 
 			try {
 				player.kickPlayer(message);
+				plugin.getLogger().info("Kicked " + player.getName() + " with message \"" + message + "\"");
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -1006,6 +1013,7 @@ public class SwiftServer {
 				if (!wasOp && notifyPlayer && offPl.isOnline()) {
 					offPl.getPlayer().sendMessage(
 							plugin.getConfig().getString("messages.op"));
+					plugin.getLogger().info("Opped " + offPl.getName());
 				}
 				return true;
 			} catch (Exception e) {
@@ -1106,6 +1114,9 @@ public class SwiftServer {
 				boolean wasWhitelisted = offPl.isWhitelisted();
 				if (wasWhitelisted) {
 					offPl.setWhitelisted(false);
+					plugin.getLogger().info("Removed player " + offPl.getName() + " from the whitelist");
+				} else {
+					plugin.getLogger().info("Player " + offPl.getName() + " is not on the whitelist");
 				}
 				return true;
 			} catch (Exception e) {
@@ -1192,6 +1203,7 @@ public class SwiftServer {
 				org.bukkit.GameMode m = org.bukkit.GameMode.getByValue(mode
 						.getValue());
 				player.setGameMode(m);
+				plugin.getLogger().info("Set gamemode to " + String.valueOf(m.getValue()) + " for " + player.getName());
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -1237,6 +1249,7 @@ public class SwiftServer {
 
 			try {
 				offPl.setBanned(false);
+				plugin.getLogger().info("Un banned player " + offPl.getName());
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -1268,6 +1281,7 @@ public class SwiftServer {
 
 			try {
 				plugin.getServer().unbanIP(ip);
+				plugin.getLogger().info("Un banned IP address " + ip);
 				return true;
 			} catch (Exception e) {
 				return false;

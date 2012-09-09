@@ -20,7 +20,7 @@ public class ConsoleHandler extends Handler {
 		}
 		
 		ConsoleLine line = new ConsoleLine();
-		line.message = record.getMessage();
+		line.message = "[" + record.getLevel().getName() + "] " + record.getMessage();
 		line.timestamp = record.getMillis();
 		
 		plugin.last500.add(line);
