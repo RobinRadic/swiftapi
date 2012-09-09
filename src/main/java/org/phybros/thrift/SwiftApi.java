@@ -191,6 +191,44 @@ public class SwiftApi {
     public boolean deOp(String authString, String name, boolean notifyPlayer) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
 
     /**
+     * Gets the IP addresses currently banned from joining this server
+     * 
+     * @param authString
+     *            The authentication hash
+     * 
+     * @throws TException
+     *             If something thrifty went wrong
+     * 
+     * @throws Errors.EAuthException
+     *             If the method call was not correctly authenticated
+     * 
+     * @return List<String> The banned IPs
+     * 
+     * 
+     * @param authString
+     */
+    public List<String> getBannedIps(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+
+    /**
+     * Gets the players currently banned from this server
+     * 
+     * @param authString
+     *            The authentication hash
+     * 
+     * @throws TException
+     *             If something thrifty went wrong
+     * 
+     * @throws Errors.EAuthException
+     *             If the method call was not correctly authenticated
+     * 
+     * @return List<OfflinePlayer> The banned players
+     * 
+     * 
+     * @param authString
+     */
+    public List<OfflinePlayer> getBannedPlayers(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+
+    /**
      * Get the current bukkit version
      * 
      * @param authString
@@ -259,6 +297,26 @@ public class SwiftApi {
      * @param authString
      */
     public List<OfflinePlayer> getOfflinePlayers(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+
+    /**
+     * Gets a list of all players who are Opped on this server
+     * 
+     * @param authString
+     *            The authentication hash
+     * 
+     * @throws TException
+     *             If something thrifty went wrong
+     * 
+     * @throws Errors.EAuthException
+     *             If the method call was not correctly authenticated
+     * 
+     * @return List<OfflinePlayer> A list of all players who are opped
+     *         on this server
+     * 
+     * 
+     * @param authString
+     */
+    public List<OfflinePlayer> getOps(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
 
     /**
      * Get a player by name. Throws an Errors.EDataException if the player is
@@ -391,6 +449,25 @@ public class SwiftApi {
      * @param authString
      */
     public String getServerVersion(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+
+    /**
+     * Gets all whitelisted players
+     * 
+     * @param authString
+     *            The authentication hash
+     * 
+     * @throws TException
+     *             If something thrifty went wrong
+     * 
+     * @throws Errors.EAuthException
+     *             If the method call was not correctly authenticated
+     * 
+     * @return List<OfflinePlayer> The players on the server's whitelist
+     * 
+     * 
+     * @param authString
+     */
+    public List<OfflinePlayer> getWhitelist(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
 
     /**
      * Gets all the worlds on the server
@@ -659,11 +736,17 @@ public class SwiftApi {
 
     public void deOp(String authString, String name, boolean notifyPlayer, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.deOp_call> resultHandler) throws org.apache.thrift.TException;
 
+    public void getBannedIps(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBannedIps_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getBannedPlayers(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBannedPlayers_call> resultHandler) throws org.apache.thrift.TException;
+
     public void getBukkitVersion(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBukkitVersion_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getOfflinePlayer(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getOfflinePlayer_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getOfflinePlayers(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getOfflinePlayers_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getOps(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getOps_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getPlayer(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getPlayer_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -676,6 +759,8 @@ public class SwiftApi {
     public void getServer(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getServer_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getServerVersion(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getServerVersion_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getWhitelist(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getWhitelist_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getWorlds(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getWorlds_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -900,6 +985,58 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "deOp failed: unknown result");
     }
 
+    public List<String> getBannedIps(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    {
+      send_getBannedIps(authString);
+      return recv_getBannedIps();
+    }
+
+    public void send_getBannedIps(String authString) throws org.apache.thrift.TException
+    {
+      getBannedIps_args args = new getBannedIps_args();
+      args.setAuthString(authString);
+      sendBase("getBannedIps", args);
+    }
+
+    public List<String> recv_getBannedIps() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    {
+      getBannedIps_result result = new getBannedIps_result();
+      receiveBase(result, "getBannedIps");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      if (result.aex != null) {
+        throw result.aex;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBannedIps failed: unknown result");
+    }
+
+    public List<OfflinePlayer> getBannedPlayers(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    {
+      send_getBannedPlayers(authString);
+      return recv_getBannedPlayers();
+    }
+
+    public void send_getBannedPlayers(String authString) throws org.apache.thrift.TException
+    {
+      getBannedPlayers_args args = new getBannedPlayers_args();
+      args.setAuthString(authString);
+      sendBase("getBannedPlayers", args);
+    }
+
+    public List<OfflinePlayer> recv_getBannedPlayers() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    {
+      getBannedPlayers_result result = new getBannedPlayers_result();
+      receiveBase(result, "getBannedPlayers");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      if (result.aex != null) {
+        throw result.aex;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBannedPlayers failed: unknown result");
+    }
+
     public String getBukkitVersion(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
     {
       send_getBukkitVersion(authString);
@@ -980,6 +1117,32 @@ public class SwiftApi {
         throw result.aex;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getOfflinePlayers failed: unknown result");
+    }
+
+    public List<OfflinePlayer> getOps(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    {
+      send_getOps(authString);
+      return recv_getOps();
+    }
+
+    public void send_getOps(String authString) throws org.apache.thrift.TException
+    {
+      getOps_args args = new getOps_args();
+      args.setAuthString(authString);
+      sendBase("getOps", args);
+    }
+
+    public List<OfflinePlayer> recv_getOps() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    {
+      getOps_result result = new getOps_result();
+      receiveBase(result, "getOps");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      if (result.aex != null) {
+        throw result.aex;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getOps failed: unknown result");
     }
 
     public Player getPlayer(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
@@ -1144,6 +1307,32 @@ public class SwiftApi {
         throw result.aex;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getServerVersion failed: unknown result");
+    }
+
+    public List<OfflinePlayer> getWhitelist(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    {
+      send_getWhitelist(authString);
+      return recv_getWhitelist();
+    }
+
+    public void send_getWhitelist(String authString) throws org.apache.thrift.TException
+    {
+      getWhitelist_args args = new getWhitelist_args();
+      args.setAuthString(authString);
+      sendBase("getWhitelist", args);
+    }
+
+    public List<OfflinePlayer> recv_getWhitelist() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    {
+      getWhitelist_result result = new getWhitelist_result();
+      receiveBase(result, "getWhitelist");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      if (result.aex != null) {
+        throw result.aex;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getWhitelist failed: unknown result");
     }
 
     public List<World> getWorlds(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
@@ -1680,6 +1869,70 @@ public class SwiftApi {
       }
     }
 
+    public void getBannedIps(String authString, org.apache.thrift.async.AsyncMethodCallback<getBannedIps_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getBannedIps_call method_call = new getBannedIps_call(authString, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getBannedIps_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String authString;
+      public getBannedIps_call(String authString, org.apache.thrift.async.AsyncMethodCallback<getBannedIps_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.authString = authString;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getBannedIps", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getBannedIps_args args = new getBannedIps_args();
+        args.setAuthString(authString);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<String> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getBannedIps();
+      }
+    }
+
+    public void getBannedPlayers(String authString, org.apache.thrift.async.AsyncMethodCallback<getBannedPlayers_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getBannedPlayers_call method_call = new getBannedPlayers_call(authString, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getBannedPlayers_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String authString;
+      public getBannedPlayers_call(String authString, org.apache.thrift.async.AsyncMethodCallback<getBannedPlayers_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.authString = authString;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getBannedPlayers", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getBannedPlayers_args args = new getBannedPlayers_args();
+        args.setAuthString(authString);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<OfflinePlayer> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getBannedPlayers();
+      }
+    }
+
     public void getBukkitVersion(String authString, org.apache.thrift.async.AsyncMethodCallback<getBukkitVersion_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       getBukkitVersion_call method_call = new getBukkitVersion_call(authString, resultHandler, this, ___protocolFactory, ___transport);
@@ -1776,6 +2029,38 @@ public class SwiftApi {
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_getOfflinePlayers();
+      }
+    }
+
+    public void getOps(String authString, org.apache.thrift.async.AsyncMethodCallback<getOps_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getOps_call method_call = new getOps_call(authString, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getOps_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String authString;
+      public getOps_call(String authString, org.apache.thrift.async.AsyncMethodCallback<getOps_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.authString = authString;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getOps", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getOps_args args = new getOps_args();
+        args.setAuthString(authString);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<OfflinePlayer> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getOps();
       }
     }
 
@@ -1974,6 +2259,38 @@ public class SwiftApi {
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_getServerVersion();
+      }
+    }
+
+    public void getWhitelist(String authString, org.apache.thrift.async.AsyncMethodCallback<getWhitelist_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getWhitelist_call method_call = new getWhitelist_call(authString, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getWhitelist_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String authString;
+      public getWhitelist_call(String authString, org.apache.thrift.async.AsyncMethodCallback<getWhitelist_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.authString = authString;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getWhitelist", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getWhitelist_args args = new getWhitelist_args();
+        args.setAuthString(authString);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<OfflinePlayer> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getWhitelist();
       }
     }
 
@@ -2377,15 +2694,19 @@ public class SwiftApi {
       processMap.put("copyPlugin", new copyPlugin());
       processMap.put("downloadFile", new downloadFile());
       processMap.put("deOp", new deOp());
+      processMap.put("getBannedIps", new getBannedIps());
+      processMap.put("getBannedPlayers", new getBannedPlayers());
       processMap.put("getBukkitVersion", new getBukkitVersion());
       processMap.put("getOfflinePlayer", new getOfflinePlayer());
       processMap.put("getOfflinePlayers", new getOfflinePlayers());
+      processMap.put("getOps", new getOps());
       processMap.put("getPlayer", new getPlayer());
       processMap.put("getPlayers", new getPlayers());
       processMap.put("getPlugin", new getPlugin());
       processMap.put("getPlugins", new getPlugins());
       processMap.put("getServer", new getServer());
       processMap.put("getServerVersion", new getServerVersion());
+      processMap.put("getWhitelist", new getWhitelist());
       processMap.put("getWorlds", new getWorlds());
       processMap.put("kick", new kick());
       processMap.put("op", new op());
@@ -2536,6 +2857,46 @@ public class SwiftApi {
       }
     }
 
+    private static class getBannedIps<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getBannedIps_args> {
+      public getBannedIps() {
+        super("getBannedIps");
+      }
+
+      protected getBannedIps_args getEmptyArgsInstance() {
+        return new getBannedIps_args();
+      }
+
+      protected getBannedIps_result getResult(I iface, getBannedIps_args args) throws org.apache.thrift.TException {
+        getBannedIps_result result = new getBannedIps_result();
+        try {
+          result.success = iface.getBannedIps(args.authString);
+        } catch (org.phybros.thrift.EAuthException aex) {
+          result.aex = aex;
+        }
+        return result;
+      }
+    }
+
+    private static class getBannedPlayers<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getBannedPlayers_args> {
+      public getBannedPlayers() {
+        super("getBannedPlayers");
+      }
+
+      protected getBannedPlayers_args getEmptyArgsInstance() {
+        return new getBannedPlayers_args();
+      }
+
+      protected getBannedPlayers_result getResult(I iface, getBannedPlayers_args args) throws org.apache.thrift.TException {
+        getBannedPlayers_result result = new getBannedPlayers_result();
+        try {
+          result.success = iface.getBannedPlayers(args.authString);
+        } catch (org.phybros.thrift.EAuthException aex) {
+          result.aex = aex;
+        }
+        return result;
+      }
+    }
+
     private static class getBukkitVersion<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getBukkitVersion_args> {
       public getBukkitVersion() {
         super("getBukkitVersion");
@@ -2591,6 +2952,26 @@ public class SwiftApi {
         getOfflinePlayers_result result = new getOfflinePlayers_result();
         try {
           result.success = iface.getOfflinePlayers(args.authString);
+        } catch (org.phybros.thrift.EAuthException aex) {
+          result.aex = aex;
+        }
+        return result;
+      }
+    }
+
+    private static class getOps<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getOps_args> {
+      public getOps() {
+        super("getOps");
+      }
+
+      protected getOps_args getEmptyArgsInstance() {
+        return new getOps_args();
+      }
+
+      protected getOps_result getResult(I iface, getOps_args args) throws org.apache.thrift.TException {
+        getOps_result result = new getOps_result();
+        try {
+          result.success = iface.getOps(args.authString);
         } catch (org.phybros.thrift.EAuthException aex) {
           result.aex = aex;
         }
@@ -2715,6 +3096,26 @@ public class SwiftApi {
         getServerVersion_result result = new getServerVersion_result();
         try {
           result.success = iface.getServerVersion(args.authString);
+        } catch (org.phybros.thrift.EAuthException aex) {
+          result.aex = aex;
+        }
+        return result;
+      }
+    }
+
+    private static class getWhitelist<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getWhitelist_args> {
+      public getWhitelist() {
+        super("getWhitelist");
+      }
+
+      protected getWhitelist_args getEmptyArgsInstance() {
+        return new getWhitelist_args();
+      }
+
+      protected getWhitelist_result getResult(I iface, getWhitelist_args args) throws org.apache.thrift.TException {
+        getWhitelist_result result = new getWhitelist_result();
+        try {
+          result.success = iface.getWhitelist(args.authString);
         } catch (org.phybros.thrift.EAuthException aex) {
           result.aex = aex;
         }
@@ -9098,6 +9499,1728 @@ public class SwiftApi {
 
   }
 
+  public static class getBannedIps_args implements org.apache.thrift.TBase<getBannedIps_args, getBannedIps_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBannedIps_args");
+
+    private static final org.apache.thrift.protocol.TField AUTH_STRING_FIELD_DESC = new org.apache.thrift.protocol.TField("authString", org.apache.thrift.protocol.TType.STRING, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getBannedIps_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getBannedIps_argsTupleSchemeFactory());
+    }
+
+    public String authString; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      AUTH_STRING((short)1, "authString");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // AUTH_STRING
+            return AUTH_STRING;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.AUTH_STRING, new org.apache.thrift.meta_data.FieldMetaData("authString", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBannedIps_args.class, metaDataMap);
+    }
+
+    public getBannedIps_args() {
+    }
+
+    public getBannedIps_args(
+      String authString)
+    {
+      this();
+      this.authString = authString;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getBannedIps_args(getBannedIps_args other) {
+      if (other.isSetAuthString()) {
+        this.authString = other.authString;
+      }
+    }
+
+    public getBannedIps_args deepCopy() {
+      return new getBannedIps_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.authString = null;
+    }
+
+    public String getAuthString() {
+      return this.authString;
+    }
+
+    public getBannedIps_args setAuthString(String authString) {
+      this.authString = authString;
+      return this;
+    }
+
+    public void unsetAuthString() {
+      this.authString = null;
+    }
+
+    /** Returns true if field authString is set (has been assigned a value) and false otherwise */
+    public boolean isSetAuthString() {
+      return this.authString != null;
+    }
+
+    public void setAuthStringIsSet(boolean value) {
+      if (!value) {
+        this.authString = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case AUTH_STRING:
+        if (value == null) {
+          unsetAuthString();
+        } else {
+          setAuthString((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case AUTH_STRING:
+        return getAuthString();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case AUTH_STRING:
+        return isSetAuthString();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getBannedIps_args)
+        return this.equals((getBannedIps_args)that);
+      return false;
+    }
+
+    public boolean equals(getBannedIps_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_authString = true && this.isSetAuthString();
+      boolean that_present_authString = true && that.isSetAuthString();
+      if (this_present_authString || that_present_authString) {
+        if (!(this_present_authString && that_present_authString))
+          return false;
+        if (!this.authString.equals(that.authString))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getBannedIps_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getBannedIps_args typedOther = (getBannedIps_args)other;
+
+      lastComparison = Boolean.valueOf(isSetAuthString()).compareTo(typedOther.isSetAuthString());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetAuthString()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.authString, typedOther.authString);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getBannedIps_args(");
+      boolean first = true;
+
+      sb.append("authString:");
+      if (this.authString == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.authString);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getBannedIps_argsStandardSchemeFactory implements SchemeFactory {
+      public getBannedIps_argsStandardScheme getScheme() {
+        return new getBannedIps_argsStandardScheme();
+      }
+    }
+
+    private static class getBannedIps_argsStandardScheme extends StandardScheme<getBannedIps_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getBannedIps_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // AUTH_STRING
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.authString = iprot.readString();
+                struct.setAuthStringIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getBannedIps_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.authString != null) {
+          oprot.writeFieldBegin(AUTH_STRING_FIELD_DESC);
+          oprot.writeString(struct.authString);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getBannedIps_argsTupleSchemeFactory implements SchemeFactory {
+      public getBannedIps_argsTupleScheme getScheme() {
+        return new getBannedIps_argsTupleScheme();
+      }
+    }
+
+    private static class getBannedIps_argsTupleScheme extends TupleScheme<getBannedIps_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getBannedIps_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetAuthString()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetAuthString()) {
+          oprot.writeString(struct.authString);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getBannedIps_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.authString = iprot.readString();
+          struct.setAuthStringIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getBannedIps_result implements org.apache.thrift.TBase<getBannedIps_result, getBannedIps_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBannedIps_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField AEX_FIELD_DESC = new org.apache.thrift.protocol.TField("aex", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getBannedIps_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getBannedIps_resultTupleSchemeFactory());
+    }
+
+    public List<String> success; // required
+    public org.phybros.thrift.EAuthException aex; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success"),
+      AEX((short)1, "aex");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          case 1: // AEX
+            return AEX;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+      tmpMap.put(_Fields.AEX, new org.apache.thrift.meta_data.FieldMetaData("aex", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBannedIps_result.class, metaDataMap);
+    }
+
+    public getBannedIps_result() {
+    }
+
+    public getBannedIps_result(
+      List<String> success,
+      org.phybros.thrift.EAuthException aex)
+    {
+      this();
+      this.success = success;
+      this.aex = aex;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getBannedIps_result(getBannedIps_result other) {
+      if (other.isSetSuccess()) {
+        List<String> __this__success = new ArrayList<String>();
+        for (String other_element : other.success) {
+          __this__success.add(other_element);
+        }
+        this.success = __this__success;
+      }
+      if (other.isSetAex()) {
+        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+      }
+    }
+
+    public getBannedIps_result deepCopy() {
+      return new getBannedIps_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+      this.aex = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<String> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(String elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<String>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<String> getSuccess() {
+      return this.success;
+    }
+
+    public getBannedIps_result setSuccess(List<String> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public org.phybros.thrift.EAuthException getAex() {
+      return this.aex;
+    }
+
+    public getBannedIps_result setAex(org.phybros.thrift.EAuthException aex) {
+      this.aex = aex;
+      return this;
+    }
+
+    public void unsetAex() {
+      this.aex = null;
+    }
+
+    /** Returns true if field aex is set (has been assigned a value) and false otherwise */
+    public boolean isSetAex() {
+      return this.aex != null;
+    }
+
+    public void setAexIsSet(boolean value) {
+      if (!value) {
+        this.aex = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<String>)value);
+        }
+        break;
+
+      case AEX:
+        if (value == null) {
+          unsetAex();
+        } else {
+          setAex((org.phybros.thrift.EAuthException)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      case AEX:
+        return getAex();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      case AEX:
+        return isSetAex();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getBannedIps_result)
+        return this.equals((getBannedIps_result)that);
+      return false;
+    }
+
+    public boolean equals(getBannedIps_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      boolean this_present_aex = true && this.isSetAex();
+      boolean that_present_aex = true && that.isSetAex();
+      if (this_present_aex || that_present_aex) {
+        if (!(this_present_aex && that_present_aex))
+          return false;
+        if (!this.aex.equals(that.aex))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getBannedIps_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getBannedIps_result typedOther = (getBannedIps_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetAex()).compareTo(typedOther.isSetAex());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetAex()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aex, typedOther.aex);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getBannedIps_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("aex:");
+      if (this.aex == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.aex);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getBannedIps_resultStandardSchemeFactory implements SchemeFactory {
+      public getBannedIps_resultStandardScheme getScheme() {
+        return new getBannedIps_resultStandardScheme();
+      }
+    }
+
+    private static class getBannedIps_resultStandardScheme extends StandardScheme<getBannedIps_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getBannedIps_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list74 = iprot.readListBegin();
+                  struct.success = new ArrayList<String>(_list74.size);
+                  for (int _i75 = 0; _i75 < _list74.size; ++_i75)
+                  {
+                    String _elem76; // required
+                    _elem76 = iprot.readString();
+                    struct.success.add(_elem76);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 1: // AEX
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex.read(iprot);
+                struct.setAexIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getBannedIps_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.success.size()));
+            for (String _iter77 : struct.success)
+            {
+              oprot.writeString(_iter77);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        if (struct.aex != null) {
+          oprot.writeFieldBegin(AEX_FIELD_DESC);
+          struct.aex.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getBannedIps_resultTupleSchemeFactory implements SchemeFactory {
+      public getBannedIps_resultTupleScheme getScheme() {
+        return new getBannedIps_resultTupleScheme();
+      }
+    }
+
+    private static class getBannedIps_resultTupleScheme extends TupleScheme<getBannedIps_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getBannedIps_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        if (struct.isSetAex()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (String _iter78 : struct.success)
+            {
+              oprot.writeString(_iter78);
+            }
+          }
+        }
+        if (struct.isSetAex()) {
+          struct.aex.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getBannedIps_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list79 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new ArrayList<String>(_list79.size);
+            for (int _i80 = 0; _i80 < _list79.size; ++_i80)
+            {
+              String _elem81; // required
+              _elem81 = iprot.readString();
+              struct.success.add(_elem81);
+            }
+          }
+          struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex.read(iprot);
+          struct.setAexIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getBannedPlayers_args implements org.apache.thrift.TBase<getBannedPlayers_args, getBannedPlayers_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBannedPlayers_args");
+
+    private static final org.apache.thrift.protocol.TField AUTH_STRING_FIELD_DESC = new org.apache.thrift.protocol.TField("authString", org.apache.thrift.protocol.TType.STRING, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getBannedPlayers_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getBannedPlayers_argsTupleSchemeFactory());
+    }
+
+    public String authString; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      AUTH_STRING((short)1, "authString");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // AUTH_STRING
+            return AUTH_STRING;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.AUTH_STRING, new org.apache.thrift.meta_data.FieldMetaData("authString", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBannedPlayers_args.class, metaDataMap);
+    }
+
+    public getBannedPlayers_args() {
+    }
+
+    public getBannedPlayers_args(
+      String authString)
+    {
+      this();
+      this.authString = authString;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getBannedPlayers_args(getBannedPlayers_args other) {
+      if (other.isSetAuthString()) {
+        this.authString = other.authString;
+      }
+    }
+
+    public getBannedPlayers_args deepCopy() {
+      return new getBannedPlayers_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.authString = null;
+    }
+
+    public String getAuthString() {
+      return this.authString;
+    }
+
+    public getBannedPlayers_args setAuthString(String authString) {
+      this.authString = authString;
+      return this;
+    }
+
+    public void unsetAuthString() {
+      this.authString = null;
+    }
+
+    /** Returns true if field authString is set (has been assigned a value) and false otherwise */
+    public boolean isSetAuthString() {
+      return this.authString != null;
+    }
+
+    public void setAuthStringIsSet(boolean value) {
+      if (!value) {
+        this.authString = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case AUTH_STRING:
+        if (value == null) {
+          unsetAuthString();
+        } else {
+          setAuthString((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case AUTH_STRING:
+        return getAuthString();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case AUTH_STRING:
+        return isSetAuthString();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getBannedPlayers_args)
+        return this.equals((getBannedPlayers_args)that);
+      return false;
+    }
+
+    public boolean equals(getBannedPlayers_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_authString = true && this.isSetAuthString();
+      boolean that_present_authString = true && that.isSetAuthString();
+      if (this_present_authString || that_present_authString) {
+        if (!(this_present_authString && that_present_authString))
+          return false;
+        if (!this.authString.equals(that.authString))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getBannedPlayers_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getBannedPlayers_args typedOther = (getBannedPlayers_args)other;
+
+      lastComparison = Boolean.valueOf(isSetAuthString()).compareTo(typedOther.isSetAuthString());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetAuthString()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.authString, typedOther.authString);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getBannedPlayers_args(");
+      boolean first = true;
+
+      sb.append("authString:");
+      if (this.authString == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.authString);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getBannedPlayers_argsStandardSchemeFactory implements SchemeFactory {
+      public getBannedPlayers_argsStandardScheme getScheme() {
+        return new getBannedPlayers_argsStandardScheme();
+      }
+    }
+
+    private static class getBannedPlayers_argsStandardScheme extends StandardScheme<getBannedPlayers_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getBannedPlayers_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // AUTH_STRING
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.authString = iprot.readString();
+                struct.setAuthStringIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getBannedPlayers_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.authString != null) {
+          oprot.writeFieldBegin(AUTH_STRING_FIELD_DESC);
+          oprot.writeString(struct.authString);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getBannedPlayers_argsTupleSchemeFactory implements SchemeFactory {
+      public getBannedPlayers_argsTupleScheme getScheme() {
+        return new getBannedPlayers_argsTupleScheme();
+      }
+    }
+
+    private static class getBannedPlayers_argsTupleScheme extends TupleScheme<getBannedPlayers_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getBannedPlayers_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetAuthString()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetAuthString()) {
+          oprot.writeString(struct.authString);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getBannedPlayers_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.authString = iprot.readString();
+          struct.setAuthStringIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getBannedPlayers_result implements org.apache.thrift.TBase<getBannedPlayers_result, getBannedPlayers_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBannedPlayers_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField AEX_FIELD_DESC = new org.apache.thrift.protocol.TField("aex", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getBannedPlayers_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getBannedPlayers_resultTupleSchemeFactory());
+    }
+
+    public List<OfflinePlayer> success; // required
+    public org.phybros.thrift.EAuthException aex; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success"),
+      AEX((short)1, "aex");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          case 1: // AEX
+            return AEX;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, OfflinePlayer.class))));
+      tmpMap.put(_Fields.AEX, new org.apache.thrift.meta_data.FieldMetaData("aex", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBannedPlayers_result.class, metaDataMap);
+    }
+
+    public getBannedPlayers_result() {
+    }
+
+    public getBannedPlayers_result(
+      List<OfflinePlayer> success,
+      org.phybros.thrift.EAuthException aex)
+    {
+      this();
+      this.success = success;
+      this.aex = aex;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getBannedPlayers_result(getBannedPlayers_result other) {
+      if (other.isSetSuccess()) {
+        List<OfflinePlayer> __this__success = new ArrayList<OfflinePlayer>();
+        for (OfflinePlayer other_element : other.success) {
+          __this__success.add(new OfflinePlayer(other_element));
+        }
+        this.success = __this__success;
+      }
+      if (other.isSetAex()) {
+        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+      }
+    }
+
+    public getBannedPlayers_result deepCopy() {
+      return new getBannedPlayers_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+      this.aex = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<OfflinePlayer> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(OfflinePlayer elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<OfflinePlayer>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<OfflinePlayer> getSuccess() {
+      return this.success;
+    }
+
+    public getBannedPlayers_result setSuccess(List<OfflinePlayer> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public org.phybros.thrift.EAuthException getAex() {
+      return this.aex;
+    }
+
+    public getBannedPlayers_result setAex(org.phybros.thrift.EAuthException aex) {
+      this.aex = aex;
+      return this;
+    }
+
+    public void unsetAex() {
+      this.aex = null;
+    }
+
+    /** Returns true if field aex is set (has been assigned a value) and false otherwise */
+    public boolean isSetAex() {
+      return this.aex != null;
+    }
+
+    public void setAexIsSet(boolean value) {
+      if (!value) {
+        this.aex = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<OfflinePlayer>)value);
+        }
+        break;
+
+      case AEX:
+        if (value == null) {
+          unsetAex();
+        } else {
+          setAex((org.phybros.thrift.EAuthException)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      case AEX:
+        return getAex();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      case AEX:
+        return isSetAex();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getBannedPlayers_result)
+        return this.equals((getBannedPlayers_result)that);
+      return false;
+    }
+
+    public boolean equals(getBannedPlayers_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      boolean this_present_aex = true && this.isSetAex();
+      boolean that_present_aex = true && that.isSetAex();
+      if (this_present_aex || that_present_aex) {
+        if (!(this_present_aex && that_present_aex))
+          return false;
+        if (!this.aex.equals(that.aex))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getBannedPlayers_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getBannedPlayers_result typedOther = (getBannedPlayers_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetAex()).compareTo(typedOther.isSetAex());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetAex()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aex, typedOther.aex);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getBannedPlayers_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("aex:");
+      if (this.aex == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.aex);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getBannedPlayers_resultStandardSchemeFactory implements SchemeFactory {
+      public getBannedPlayers_resultStandardScheme getScheme() {
+        return new getBannedPlayers_resultStandardScheme();
+      }
+    }
+
+    private static class getBannedPlayers_resultStandardScheme extends StandardScheme<getBannedPlayers_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getBannedPlayers_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list82 = iprot.readListBegin();
+                  struct.success = new ArrayList<OfflinePlayer>(_list82.size);
+                  for (int _i83 = 0; _i83 < _list82.size; ++_i83)
+                  {
+                    OfflinePlayer _elem84; // required
+                    _elem84 = new OfflinePlayer();
+                    _elem84.read(iprot);
+                    struct.success.add(_elem84);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 1: // AEX
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex.read(iprot);
+                struct.setAexIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getBannedPlayers_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
+            for (OfflinePlayer _iter85 : struct.success)
+            {
+              _iter85.write(oprot);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        if (struct.aex != null) {
+          oprot.writeFieldBegin(AEX_FIELD_DESC);
+          struct.aex.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getBannedPlayers_resultTupleSchemeFactory implements SchemeFactory {
+      public getBannedPlayers_resultTupleScheme getScheme() {
+        return new getBannedPlayers_resultTupleScheme();
+      }
+    }
+
+    private static class getBannedPlayers_resultTupleScheme extends TupleScheme<getBannedPlayers_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getBannedPlayers_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        if (struct.isSetAex()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (OfflinePlayer _iter86 : struct.success)
+            {
+              _iter86.write(oprot);
+            }
+          }
+        }
+        if (struct.isSetAex()) {
+          struct.aex.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getBannedPlayers_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list87 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<OfflinePlayer>(_list87.size);
+            for (int _i88 = 0; _i88 < _list87.size; ++_i88)
+            {
+              OfflinePlayer _elem89; // required
+              _elem89 = new OfflinePlayer();
+              _elem89.read(iprot);
+              struct.success.add(_elem89);
+            }
+          }
+          struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex.read(iprot);
+          struct.setAexIsSet(true);
+        }
+      }
+    }
+
+  }
+
   public static class getBukkitVersion_args implements org.apache.thrift.TBase<getBukkitVersion_args, getBukkitVersion_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBukkitVersion_args");
 
@@ -11656,14 +13779,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list74 = iprot.readListBegin();
-                  struct.success = new ArrayList<OfflinePlayer>(_list74.size);
-                  for (int _i75 = 0; _i75 < _list74.size; ++_i75)
+                  org.apache.thrift.protocol.TList _list90 = iprot.readListBegin();
+                  struct.success = new ArrayList<OfflinePlayer>(_list90.size);
+                  for (int _i91 = 0; _i91 < _list90.size; ++_i91)
                   {
-                    OfflinePlayer _elem76; // required
-                    _elem76 = new OfflinePlayer();
-                    _elem76.read(iprot);
-                    struct.success.add(_elem76);
+                    OfflinePlayer _elem92; // required
+                    _elem92 = new OfflinePlayer();
+                    _elem92.read(iprot);
+                    struct.success.add(_elem92);
                   }
                   iprot.readListEnd();
                 }
@@ -11700,9 +13823,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (OfflinePlayer _iter77 : struct.success)
+            for (OfflinePlayer _iter93 : struct.success)
             {
-              _iter77.write(oprot);
+              _iter93.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -11741,9 +13864,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (OfflinePlayer _iter78 : struct.success)
+            for (OfflinePlayer _iter94 : struct.success)
             {
-              _iter78.write(oprot);
+              _iter94.write(oprot);
             }
           }
         }
@@ -11758,14 +13881,876 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list79 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<OfflinePlayer>(_list79.size);
-            for (int _i80 = 0; _i80 < _list79.size; ++_i80)
+            org.apache.thrift.protocol.TList _list95 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<OfflinePlayer>(_list95.size);
+            for (int _i96 = 0; _i96 < _list95.size; ++_i96)
             {
-              OfflinePlayer _elem81; // required
-              _elem81 = new OfflinePlayer();
-              _elem81.read(iprot);
-              struct.success.add(_elem81);
+              OfflinePlayer _elem97; // required
+              _elem97 = new OfflinePlayer();
+              _elem97.read(iprot);
+              struct.success.add(_elem97);
+            }
+          }
+          struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex.read(iprot);
+          struct.setAexIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getOps_args implements org.apache.thrift.TBase<getOps_args, getOps_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getOps_args");
+
+    private static final org.apache.thrift.protocol.TField AUTH_STRING_FIELD_DESC = new org.apache.thrift.protocol.TField("authString", org.apache.thrift.protocol.TType.STRING, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getOps_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getOps_argsTupleSchemeFactory());
+    }
+
+    public String authString; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      AUTH_STRING((short)1, "authString");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // AUTH_STRING
+            return AUTH_STRING;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.AUTH_STRING, new org.apache.thrift.meta_data.FieldMetaData("authString", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getOps_args.class, metaDataMap);
+    }
+
+    public getOps_args() {
+    }
+
+    public getOps_args(
+      String authString)
+    {
+      this();
+      this.authString = authString;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getOps_args(getOps_args other) {
+      if (other.isSetAuthString()) {
+        this.authString = other.authString;
+      }
+    }
+
+    public getOps_args deepCopy() {
+      return new getOps_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.authString = null;
+    }
+
+    public String getAuthString() {
+      return this.authString;
+    }
+
+    public getOps_args setAuthString(String authString) {
+      this.authString = authString;
+      return this;
+    }
+
+    public void unsetAuthString() {
+      this.authString = null;
+    }
+
+    /** Returns true if field authString is set (has been assigned a value) and false otherwise */
+    public boolean isSetAuthString() {
+      return this.authString != null;
+    }
+
+    public void setAuthStringIsSet(boolean value) {
+      if (!value) {
+        this.authString = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case AUTH_STRING:
+        if (value == null) {
+          unsetAuthString();
+        } else {
+          setAuthString((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case AUTH_STRING:
+        return getAuthString();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case AUTH_STRING:
+        return isSetAuthString();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getOps_args)
+        return this.equals((getOps_args)that);
+      return false;
+    }
+
+    public boolean equals(getOps_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_authString = true && this.isSetAuthString();
+      boolean that_present_authString = true && that.isSetAuthString();
+      if (this_present_authString || that_present_authString) {
+        if (!(this_present_authString && that_present_authString))
+          return false;
+        if (!this.authString.equals(that.authString))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getOps_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getOps_args typedOther = (getOps_args)other;
+
+      lastComparison = Boolean.valueOf(isSetAuthString()).compareTo(typedOther.isSetAuthString());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetAuthString()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.authString, typedOther.authString);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getOps_args(");
+      boolean first = true;
+
+      sb.append("authString:");
+      if (this.authString == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.authString);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getOps_argsStandardSchemeFactory implements SchemeFactory {
+      public getOps_argsStandardScheme getScheme() {
+        return new getOps_argsStandardScheme();
+      }
+    }
+
+    private static class getOps_argsStandardScheme extends StandardScheme<getOps_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getOps_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // AUTH_STRING
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.authString = iprot.readString();
+                struct.setAuthStringIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getOps_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.authString != null) {
+          oprot.writeFieldBegin(AUTH_STRING_FIELD_DESC);
+          oprot.writeString(struct.authString);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getOps_argsTupleSchemeFactory implements SchemeFactory {
+      public getOps_argsTupleScheme getScheme() {
+        return new getOps_argsTupleScheme();
+      }
+    }
+
+    private static class getOps_argsTupleScheme extends TupleScheme<getOps_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getOps_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetAuthString()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetAuthString()) {
+          oprot.writeString(struct.authString);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getOps_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.authString = iprot.readString();
+          struct.setAuthStringIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getOps_result implements org.apache.thrift.TBase<getOps_result, getOps_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getOps_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField AEX_FIELD_DESC = new org.apache.thrift.protocol.TField("aex", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getOps_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getOps_resultTupleSchemeFactory());
+    }
+
+    public List<OfflinePlayer> success; // required
+    public org.phybros.thrift.EAuthException aex; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success"),
+      AEX((short)1, "aex");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          case 1: // AEX
+            return AEX;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, OfflinePlayer.class))));
+      tmpMap.put(_Fields.AEX, new org.apache.thrift.meta_data.FieldMetaData("aex", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getOps_result.class, metaDataMap);
+    }
+
+    public getOps_result() {
+    }
+
+    public getOps_result(
+      List<OfflinePlayer> success,
+      org.phybros.thrift.EAuthException aex)
+    {
+      this();
+      this.success = success;
+      this.aex = aex;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getOps_result(getOps_result other) {
+      if (other.isSetSuccess()) {
+        List<OfflinePlayer> __this__success = new ArrayList<OfflinePlayer>();
+        for (OfflinePlayer other_element : other.success) {
+          __this__success.add(new OfflinePlayer(other_element));
+        }
+        this.success = __this__success;
+      }
+      if (other.isSetAex()) {
+        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+      }
+    }
+
+    public getOps_result deepCopy() {
+      return new getOps_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+      this.aex = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<OfflinePlayer> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(OfflinePlayer elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<OfflinePlayer>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<OfflinePlayer> getSuccess() {
+      return this.success;
+    }
+
+    public getOps_result setSuccess(List<OfflinePlayer> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public org.phybros.thrift.EAuthException getAex() {
+      return this.aex;
+    }
+
+    public getOps_result setAex(org.phybros.thrift.EAuthException aex) {
+      this.aex = aex;
+      return this;
+    }
+
+    public void unsetAex() {
+      this.aex = null;
+    }
+
+    /** Returns true if field aex is set (has been assigned a value) and false otherwise */
+    public boolean isSetAex() {
+      return this.aex != null;
+    }
+
+    public void setAexIsSet(boolean value) {
+      if (!value) {
+        this.aex = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<OfflinePlayer>)value);
+        }
+        break;
+
+      case AEX:
+        if (value == null) {
+          unsetAex();
+        } else {
+          setAex((org.phybros.thrift.EAuthException)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      case AEX:
+        return getAex();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      case AEX:
+        return isSetAex();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getOps_result)
+        return this.equals((getOps_result)that);
+      return false;
+    }
+
+    public boolean equals(getOps_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      boolean this_present_aex = true && this.isSetAex();
+      boolean that_present_aex = true && that.isSetAex();
+      if (this_present_aex || that_present_aex) {
+        if (!(this_present_aex && that_present_aex))
+          return false;
+        if (!this.aex.equals(that.aex))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getOps_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getOps_result typedOther = (getOps_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetAex()).compareTo(typedOther.isSetAex());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetAex()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aex, typedOther.aex);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getOps_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("aex:");
+      if (this.aex == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.aex);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getOps_resultStandardSchemeFactory implements SchemeFactory {
+      public getOps_resultStandardScheme getScheme() {
+        return new getOps_resultStandardScheme();
+      }
+    }
+
+    private static class getOps_resultStandardScheme extends StandardScheme<getOps_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getOps_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list98 = iprot.readListBegin();
+                  struct.success = new ArrayList<OfflinePlayer>(_list98.size);
+                  for (int _i99 = 0; _i99 < _list98.size; ++_i99)
+                  {
+                    OfflinePlayer _elem100; // required
+                    _elem100 = new OfflinePlayer();
+                    _elem100.read(iprot);
+                    struct.success.add(_elem100);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 1: // AEX
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex.read(iprot);
+                struct.setAexIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getOps_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
+            for (OfflinePlayer _iter101 : struct.success)
+            {
+              _iter101.write(oprot);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        if (struct.aex != null) {
+          oprot.writeFieldBegin(AEX_FIELD_DESC);
+          struct.aex.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getOps_resultTupleSchemeFactory implements SchemeFactory {
+      public getOps_resultTupleScheme getScheme() {
+        return new getOps_resultTupleScheme();
+      }
+    }
+
+    private static class getOps_resultTupleScheme extends TupleScheme<getOps_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getOps_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        if (struct.isSetAex()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (OfflinePlayer _iter102 : struct.success)
+            {
+              _iter102.write(oprot);
+            }
+          }
+        }
+        if (struct.isSetAex()) {
+          struct.aex.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getOps_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list103 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<OfflinePlayer>(_list103.size);
+            for (int _i104 = 0; _i104 < _list103.size; ++_i104)
+            {
+              OfflinePlayer _elem105; // required
+              _elem105 = new OfflinePlayer();
+              _elem105.read(iprot);
+              struct.success.add(_elem105);
             }
           }
           struct.setSuccessIsSet(true);
@@ -13530,14 +16515,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list82 = iprot.readListBegin();
-                  struct.success = new ArrayList<Player>(_list82.size);
-                  for (int _i83 = 0; _i83 < _list82.size; ++_i83)
+                  org.apache.thrift.protocol.TList _list106 = iprot.readListBegin();
+                  struct.success = new ArrayList<Player>(_list106.size);
+                  for (int _i107 = 0; _i107 < _list106.size; ++_i107)
                   {
-                    Player _elem84; // required
-                    _elem84 = new Player();
-                    _elem84.read(iprot);
-                    struct.success.add(_elem84);
+                    Player _elem108; // required
+                    _elem108 = new Player();
+                    _elem108.read(iprot);
+                    struct.success.add(_elem108);
                   }
                   iprot.readListEnd();
                 }
@@ -13574,9 +16559,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Player _iter85 : struct.success)
+            for (Player _iter109 : struct.success)
             {
-              _iter85.write(oprot);
+              _iter109.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -13615,9 +16600,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Player _iter86 : struct.success)
+            for (Player _iter110 : struct.success)
             {
-              _iter86.write(oprot);
+              _iter110.write(oprot);
             }
           }
         }
@@ -13632,14 +16617,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list87 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Player>(_list87.size);
-            for (int _i88 = 0; _i88 < _list87.size; ++_i88)
+            org.apache.thrift.protocol.TList _list111 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Player>(_list111.size);
+            for (int _i112 = 0; _i112 < _list111.size; ++_i112)
             {
-              Player _elem89; // required
-              _elem89 = new Player();
-              _elem89.read(iprot);
-              struct.success.add(_elem89);
+              Player _elem113; // required
+              _elem113 = new Player();
+              _elem113.read(iprot);
+              struct.success.add(_elem113);
             }
           }
           struct.setSuccessIsSet(true);
@@ -15404,14 +18389,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list90 = iprot.readListBegin();
-                  struct.success = new ArrayList<Plugin>(_list90.size);
-                  for (int _i91 = 0; _i91 < _list90.size; ++_i91)
+                  org.apache.thrift.protocol.TList _list114 = iprot.readListBegin();
+                  struct.success = new ArrayList<Plugin>(_list114.size);
+                  for (int _i115 = 0; _i115 < _list114.size; ++_i115)
                   {
-                    Plugin _elem92; // required
-                    _elem92 = new Plugin();
-                    _elem92.read(iprot);
-                    struct.success.add(_elem92);
+                    Plugin _elem116; // required
+                    _elem116 = new Plugin();
+                    _elem116.read(iprot);
+                    struct.success.add(_elem116);
                   }
                   iprot.readListEnd();
                 }
@@ -15448,9 +18433,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Plugin _iter93 : struct.success)
+            for (Plugin _iter117 : struct.success)
             {
-              _iter93.write(oprot);
+              _iter117.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -15489,9 +18474,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Plugin _iter94 : struct.success)
+            for (Plugin _iter118 : struct.success)
             {
-              _iter94.write(oprot);
+              _iter118.write(oprot);
             }
           }
         }
@@ -15506,14 +18491,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list95 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Plugin>(_list95.size);
-            for (int _i96 = 0; _i96 < _list95.size; ++_i96)
+            org.apache.thrift.protocol.TList _list119 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Plugin>(_list119.size);
+            for (int _i120 = 0; _i120 < _list119.size; ++_i120)
             {
-              Plugin _elem97; // required
-              _elem97 = new Plugin();
-              _elem97.read(iprot);
-              struct.success.add(_elem97);
+              Plugin _elem121; // required
+              _elem121 = new Plugin();
+              _elem121.read(iprot);
+              struct.success.add(_elem121);
             }
           }
           struct.setSuccessIsSet(true);
@@ -17146,6 +20131,868 @@ public class SwiftApi {
 
   }
 
+  public static class getWhitelist_args implements org.apache.thrift.TBase<getWhitelist_args, getWhitelist_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getWhitelist_args");
+
+    private static final org.apache.thrift.protocol.TField AUTH_STRING_FIELD_DESC = new org.apache.thrift.protocol.TField("authString", org.apache.thrift.protocol.TType.STRING, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getWhitelist_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getWhitelist_argsTupleSchemeFactory());
+    }
+
+    public String authString; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      AUTH_STRING((short)1, "authString");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // AUTH_STRING
+            return AUTH_STRING;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.AUTH_STRING, new org.apache.thrift.meta_data.FieldMetaData("authString", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getWhitelist_args.class, metaDataMap);
+    }
+
+    public getWhitelist_args() {
+    }
+
+    public getWhitelist_args(
+      String authString)
+    {
+      this();
+      this.authString = authString;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getWhitelist_args(getWhitelist_args other) {
+      if (other.isSetAuthString()) {
+        this.authString = other.authString;
+      }
+    }
+
+    public getWhitelist_args deepCopy() {
+      return new getWhitelist_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.authString = null;
+    }
+
+    public String getAuthString() {
+      return this.authString;
+    }
+
+    public getWhitelist_args setAuthString(String authString) {
+      this.authString = authString;
+      return this;
+    }
+
+    public void unsetAuthString() {
+      this.authString = null;
+    }
+
+    /** Returns true if field authString is set (has been assigned a value) and false otherwise */
+    public boolean isSetAuthString() {
+      return this.authString != null;
+    }
+
+    public void setAuthStringIsSet(boolean value) {
+      if (!value) {
+        this.authString = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case AUTH_STRING:
+        if (value == null) {
+          unsetAuthString();
+        } else {
+          setAuthString((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case AUTH_STRING:
+        return getAuthString();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case AUTH_STRING:
+        return isSetAuthString();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getWhitelist_args)
+        return this.equals((getWhitelist_args)that);
+      return false;
+    }
+
+    public boolean equals(getWhitelist_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_authString = true && this.isSetAuthString();
+      boolean that_present_authString = true && that.isSetAuthString();
+      if (this_present_authString || that_present_authString) {
+        if (!(this_present_authString && that_present_authString))
+          return false;
+        if (!this.authString.equals(that.authString))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getWhitelist_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getWhitelist_args typedOther = (getWhitelist_args)other;
+
+      lastComparison = Boolean.valueOf(isSetAuthString()).compareTo(typedOther.isSetAuthString());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetAuthString()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.authString, typedOther.authString);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getWhitelist_args(");
+      boolean first = true;
+
+      sb.append("authString:");
+      if (this.authString == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.authString);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getWhitelist_argsStandardSchemeFactory implements SchemeFactory {
+      public getWhitelist_argsStandardScheme getScheme() {
+        return new getWhitelist_argsStandardScheme();
+      }
+    }
+
+    private static class getWhitelist_argsStandardScheme extends StandardScheme<getWhitelist_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getWhitelist_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // AUTH_STRING
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.authString = iprot.readString();
+                struct.setAuthStringIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getWhitelist_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.authString != null) {
+          oprot.writeFieldBegin(AUTH_STRING_FIELD_DESC);
+          oprot.writeString(struct.authString);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getWhitelist_argsTupleSchemeFactory implements SchemeFactory {
+      public getWhitelist_argsTupleScheme getScheme() {
+        return new getWhitelist_argsTupleScheme();
+      }
+    }
+
+    private static class getWhitelist_argsTupleScheme extends TupleScheme<getWhitelist_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getWhitelist_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetAuthString()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetAuthString()) {
+          oprot.writeString(struct.authString);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getWhitelist_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.authString = iprot.readString();
+          struct.setAuthStringIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getWhitelist_result implements org.apache.thrift.TBase<getWhitelist_result, getWhitelist_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getWhitelist_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField AEX_FIELD_DESC = new org.apache.thrift.protocol.TField("aex", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getWhitelist_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getWhitelist_resultTupleSchemeFactory());
+    }
+
+    public List<OfflinePlayer> success; // required
+    public org.phybros.thrift.EAuthException aex; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success"),
+      AEX((short)1, "aex");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          case 1: // AEX
+            return AEX;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, OfflinePlayer.class))));
+      tmpMap.put(_Fields.AEX, new org.apache.thrift.meta_data.FieldMetaData("aex", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getWhitelist_result.class, metaDataMap);
+    }
+
+    public getWhitelist_result() {
+    }
+
+    public getWhitelist_result(
+      List<OfflinePlayer> success,
+      org.phybros.thrift.EAuthException aex)
+    {
+      this();
+      this.success = success;
+      this.aex = aex;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getWhitelist_result(getWhitelist_result other) {
+      if (other.isSetSuccess()) {
+        List<OfflinePlayer> __this__success = new ArrayList<OfflinePlayer>();
+        for (OfflinePlayer other_element : other.success) {
+          __this__success.add(new OfflinePlayer(other_element));
+        }
+        this.success = __this__success;
+      }
+      if (other.isSetAex()) {
+        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+      }
+    }
+
+    public getWhitelist_result deepCopy() {
+      return new getWhitelist_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+      this.aex = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<OfflinePlayer> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(OfflinePlayer elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<OfflinePlayer>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<OfflinePlayer> getSuccess() {
+      return this.success;
+    }
+
+    public getWhitelist_result setSuccess(List<OfflinePlayer> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public org.phybros.thrift.EAuthException getAex() {
+      return this.aex;
+    }
+
+    public getWhitelist_result setAex(org.phybros.thrift.EAuthException aex) {
+      this.aex = aex;
+      return this;
+    }
+
+    public void unsetAex() {
+      this.aex = null;
+    }
+
+    /** Returns true if field aex is set (has been assigned a value) and false otherwise */
+    public boolean isSetAex() {
+      return this.aex != null;
+    }
+
+    public void setAexIsSet(boolean value) {
+      if (!value) {
+        this.aex = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<OfflinePlayer>)value);
+        }
+        break;
+
+      case AEX:
+        if (value == null) {
+          unsetAex();
+        } else {
+          setAex((org.phybros.thrift.EAuthException)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      case AEX:
+        return getAex();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      case AEX:
+        return isSetAex();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getWhitelist_result)
+        return this.equals((getWhitelist_result)that);
+      return false;
+    }
+
+    public boolean equals(getWhitelist_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      boolean this_present_aex = true && this.isSetAex();
+      boolean that_present_aex = true && that.isSetAex();
+      if (this_present_aex || that_present_aex) {
+        if (!(this_present_aex && that_present_aex))
+          return false;
+        if (!this.aex.equals(that.aex))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getWhitelist_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getWhitelist_result typedOther = (getWhitelist_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetAex()).compareTo(typedOther.isSetAex());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetAex()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aex, typedOther.aex);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getWhitelist_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("aex:");
+      if (this.aex == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.aex);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getWhitelist_resultStandardSchemeFactory implements SchemeFactory {
+      public getWhitelist_resultStandardScheme getScheme() {
+        return new getWhitelist_resultStandardScheme();
+      }
+    }
+
+    private static class getWhitelist_resultStandardScheme extends StandardScheme<getWhitelist_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getWhitelist_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list122 = iprot.readListBegin();
+                  struct.success = new ArrayList<OfflinePlayer>(_list122.size);
+                  for (int _i123 = 0; _i123 < _list122.size; ++_i123)
+                  {
+                    OfflinePlayer _elem124; // required
+                    _elem124 = new OfflinePlayer();
+                    _elem124.read(iprot);
+                    struct.success.add(_elem124);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 1: // AEX
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex.read(iprot);
+                struct.setAexIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getWhitelist_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
+            for (OfflinePlayer _iter125 : struct.success)
+            {
+              _iter125.write(oprot);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        if (struct.aex != null) {
+          oprot.writeFieldBegin(AEX_FIELD_DESC);
+          struct.aex.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getWhitelist_resultTupleSchemeFactory implements SchemeFactory {
+      public getWhitelist_resultTupleScheme getScheme() {
+        return new getWhitelist_resultTupleScheme();
+      }
+    }
+
+    private static class getWhitelist_resultTupleScheme extends TupleScheme<getWhitelist_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getWhitelist_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        if (struct.isSetAex()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (OfflinePlayer _iter126 : struct.success)
+            {
+              _iter126.write(oprot);
+            }
+          }
+        }
+        if (struct.isSetAex()) {
+          struct.aex.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getWhitelist_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list127 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<OfflinePlayer>(_list127.size);
+            for (int _i128 = 0; _i128 < _list127.size; ++_i128)
+            {
+              OfflinePlayer _elem129; // required
+              _elem129 = new OfflinePlayer();
+              _elem129.read(iprot);
+              struct.success.add(_elem129);
+            }
+          }
+          struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex.read(iprot);
+          struct.setAexIsSet(true);
+        }
+      }
+    }
+
+  }
+
   public static class getWorlds_args implements org.apache.thrift.TBase<getWorlds_args, getWorlds_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getWorlds_args");
 
@@ -17884,14 +21731,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list98 = iprot.readListBegin();
-                  struct.success = new ArrayList<World>(_list98.size);
-                  for (int _i99 = 0; _i99 < _list98.size; ++_i99)
+                  org.apache.thrift.protocol.TList _list130 = iprot.readListBegin();
+                  struct.success = new ArrayList<World>(_list130.size);
+                  for (int _i131 = 0; _i131 < _list130.size; ++_i131)
                   {
-                    World _elem100; // required
-                    _elem100 = new World();
-                    _elem100.read(iprot);
-                    struct.success.add(_elem100);
+                    World _elem132; // required
+                    _elem132 = new World();
+                    _elem132.read(iprot);
+                    struct.success.add(_elem132);
                   }
                   iprot.readListEnd();
                 }
@@ -17928,9 +21775,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (World _iter101 : struct.success)
+            for (World _iter133 : struct.success)
             {
-              _iter101.write(oprot);
+              _iter133.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -17969,9 +21816,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (World _iter102 : struct.success)
+            for (World _iter134 : struct.success)
             {
-              _iter102.write(oprot);
+              _iter134.write(oprot);
             }
           }
         }
@@ -17986,14 +21833,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list103 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<World>(_list103.size);
-            for (int _i104 = 0; _i104 < _list103.size; ++_i104)
+            org.apache.thrift.protocol.TList _list135 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<World>(_list135.size);
+            for (int _i136 = 0; _i136 < _list135.size; ++_i136)
             {
-              World _elem105; // required
-              _elem105 = new World();
-              _elem105.read(iprot);
-              struct.success.add(_elem105);
+              World _elem137; // required
+              _elem137 = new World();
+              _elem137.read(iprot);
+              struct.success.add(_elem137);
             }
           }
           struct.setSuccessIsSet(true);
@@ -25456,14 +29303,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list106 = iprot.readListBegin();
-                  struct.success = new ArrayList<ConsoleLine>(_list106.size);
-                  for (int _i107 = 0; _i107 < _list106.size; ++_i107)
+                  org.apache.thrift.protocol.TList _list138 = iprot.readListBegin();
+                  struct.success = new ArrayList<ConsoleLine>(_list138.size);
+                  for (int _i139 = 0; _i139 < _list138.size; ++_i139)
                   {
-                    ConsoleLine _elem108; // required
-                    _elem108 = new ConsoleLine();
-                    _elem108.read(iprot);
-                    struct.success.add(_elem108);
+                    ConsoleLine _elem140; // required
+                    _elem140 = new ConsoleLine();
+                    _elem140.read(iprot);
+                    struct.success.add(_elem140);
                   }
                   iprot.readListEnd();
                 }
@@ -25500,9 +29347,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (ConsoleLine _iter109 : struct.success)
+            for (ConsoleLine _iter141 : struct.success)
             {
-              _iter109.write(oprot);
+              _iter141.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -25541,9 +29388,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (ConsoleLine _iter110 : struct.success)
+            for (ConsoleLine _iter142 : struct.success)
             {
-              _iter110.write(oprot);
+              _iter142.write(oprot);
             }
           }
         }
@@ -25558,14 +29405,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list111 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<ConsoleLine>(_list111.size);
-            for (int _i112 = 0; _i112 < _list111.size; ++_i112)
+            org.apache.thrift.protocol.TList _list143 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<ConsoleLine>(_list143.size);
+            for (int _i144 = 0; _i144 < _list143.size; ++_i144)
             {
-              ConsoleLine _elem113; // required
-              _elem113 = new ConsoleLine();
-              _elem113.read(iprot);
-              struct.success.add(_elem113);
+              ConsoleLine _elem145; // required
+              _elem145 = new ConsoleLine();
+              _elem145.read(iprot);
+              struct.success.add(_elem145);
             }
           }
           struct.setSuccessIsSet(true);

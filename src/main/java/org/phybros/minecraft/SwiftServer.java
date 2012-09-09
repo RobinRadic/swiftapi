@@ -169,62 +169,6 @@ public class SwiftServer {
 		}
 
 		/**
-		 * Takes "op" (operator) privileges away from a player. If the player is
-		 * already deopped, then this method does nothing
-		 * 
-		 * @param authString
-		 *            The authentication hash
-		 * 
-		 * @param name
-		 *            The player to deop
-		 * 
-		 * @param notifyPlayer
-		 *            Whether or not to tell the player that they were deopped
-		 * 
-		 * @throws TException
-		 *             If something thrifty went wrong
-		 * 
-		 * @throws EAuthException
-		 *             If the method call was not correctly authenticated
-		 * 
-		 * @throws EDataException
-		 *             If the Player was not found
-		 * 
-		 * @return String the current bukkit version
-		 * 
-		 */
-		@Override
-		public boolean deOp(String authString, String name, boolean notifyPlayer)
-				throws EAuthException, EDataException, TException {
-			logCall("deOp");
-			authenticate(authString, "deOp");
-
-			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
-
-			if (offPl == null) {
-				plugin.getLogger().info("Player not found");
-				EDataException e = new EDataException();
-				e.code = ErrorCode.NOT_FOUND;
-				e.errorMessage = String.format(
-						plugin.getConfig().getString(
-								"errorMessages.playerNotFound"), name);
-				throw e;
-			}
-
-			try {
-				boolean wasOp = offPl.isOp();
-				offPl.setOp(false);
-				if (wasOp && notifyPlayer && offPl.isOnline()) {
-					offPl.getPlayer().sendMessage(
-							plugin.getConfig().getString("messages.deOp"));
-				}
-				return true;
-			} catch (Exception e) {
-				return false;
-			}
-		}
-
-		/**
 		 * Copies a file into the plugins directory on the server
 		 * 
 		 * @param authString
@@ -281,6 +225,62 @@ public class SwiftServer {
 			}
 
 			return false;
+		}
+
+		/**
+		 * Takes "op" (operator) privileges away from a player. If the player is
+		 * already deopped, then this method does nothing
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param name
+		 *            The player to deop
+		 * 
+		 * @param notifyPlayer
+		 *            Whether or not to tell the player that they were deopped
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws EDataException
+		 *             If the Player was not found
+		 * 
+		 * @return String the current bukkit version
+		 * 
+		 */
+		@Override
+		public boolean deOp(String authString, String name, boolean notifyPlayer)
+				throws EAuthException, EDataException, TException {
+			logCall("deOp");
+			authenticate(authString, "deOp");
+
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+
+			if (offPl == null) {
+				plugin.getLogger().info("Player not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), name);
+				throw e;
+			}
+
+			try {
+				boolean wasOp = offPl.isOp();
+				offPl.setOp(false);
+				if (wasOp && notifyPlayer && offPl.isOnline()) {
+					offPl.getPlayer().sendMessage(
+							plugin.getConfig().getString("messages.deOp"));
+				}
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
 		}
 
 		/**
@@ -376,6 +376,65 @@ public class SwiftServer {
 				plugin.getLogger().severe(e.getMessage());
 				return false;
 			}
+		}
+
+		/**
+		 * Gets the IP addresses currently banned from joining this server
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @return List<String> The banned IPs
+		 * 
+		 */
+		@Override
+		public List<String> getBannedIps(String authString)
+				throws EAuthException, TException {
+			logCall("getBannedIps");
+			authenticate(authString, "getBannedIps");
+			
+			List<String> bannedIps = new ArrayList<String>();
+			
+			bannedIps = new ArrayList<String>(plugin.getServer().getIPBans());
+			return bannedIps;
+		}
+
+		/**
+		 * Gets the players currently banned from this server
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @return List<OfflinePlayer> The banned players
+		 * 
+		 */
+		@Override
+		public List<org.phybros.thrift.OfflinePlayer> getBannedPlayers(
+				String authString) throws EAuthException, TException {
+			logCall("getBannedPlayers");
+			authenticate(authString, "getBannedPlayers");
+			
+			List<org.phybros.thrift.OfflinePlayer> bannedPlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
+			
+			List<OfflinePlayer> bukkitPlayers = new ArrayList<OfflinePlayer>(plugin.getServer().getBannedPlayers());
+			
+			for(OfflinePlayer bukkitPlayer : bukkitPlayers) {
+				bannedPlayers.add(BukkitConverter.convertBukkitOfflinePlayer(bukkitPlayer));
+			}
+			
+			return bannedPlayers;
 		}
 
 		/**
@@ -508,6 +567,39 @@ public class SwiftServer {
 			}
 
 			return result;
+		}
+
+		/**
+		 * Gets a list of all players who are Opped on this server
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @return List<OfflinePlayer> A list of all players who are opped
+		 *         on this server
+		 * 
+		 */
+		@Override
+		public List<org.phybros.thrift.OfflinePlayer> getOps(String authString)
+				throws EAuthException, TException {
+			logCall("getOps");
+			authenticate(authString, "getOps");
+			
+			List<org.phybros.thrift.OfflinePlayer> ops = new ArrayList<org.phybros.thrift.OfflinePlayer>();
+			
+			List<OfflinePlayer> bukkitPlayers = new ArrayList<OfflinePlayer>(plugin.getServer().getOperators());
+			
+			for(OfflinePlayer bukkitPlayer : bukkitPlayers) {
+				ops.add(BukkitConverter.convertBukkitOfflinePlayer(bukkitPlayer));
+			}
+			
+			return ops;
 		}
 
 		/**
@@ -752,6 +844,38 @@ public class SwiftServer {
 			authenticate(authString, "getServerVersion");
 
 			return plugin.getServer().getVersion();
+		}
+
+		/**
+		 * Gets all whitelisted players
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @return List<OfflinePlayer> The players on the server's whitelist
+		 * 
+		 */
+		@Override
+		public List<org.phybros.thrift.OfflinePlayer> getWhitelist(
+				String authString) throws EAuthException, TException {
+			logCall("getWhitelist");
+			authenticate(authString, "getWhitelist");
+			
+			List<org.phybros.thrift.OfflinePlayer> whitelist = new ArrayList<org.phybros.thrift.OfflinePlayer>();
+			
+			List<OfflinePlayer> bukkitPlayers = new ArrayList<OfflinePlayer>(plugin.getServer().getWhitelistedPlayers());
+			
+			for(OfflinePlayer bukkitPlayer : bukkitPlayers) {
+				whitelist.add(BukkitConverter.convertBukkitOfflinePlayer(bukkitPlayer));
+			}
+			
+			return whitelist;
 		}
 
 		/**

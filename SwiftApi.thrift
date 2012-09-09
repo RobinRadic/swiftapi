@@ -689,6 +689,40 @@ service SwiftApi {
 			2:Errors.EDataException dex),
 	
 /**
+ * Gets the IP addresses currently banned from joining this server
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @throws TException
+ *             If something thrifty went wrong
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @return List<String> The banned IPs
+ * 
+ */
+	list<string> getBannedIps(1:string authString) throws (1:Errors.EAuthException aex),
+	
+/**
+ * Gets the players currently banned from this server
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @throws TException
+ *             If something thrifty went wrong
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @return List<OfflinePlayer> The banned players
+ * 
+ */
+	list<OfflinePlayer> getBannedPlayers(1:string authString) throws (1:Errors.EAuthException aex),
+	
+/**
  * Get the current bukkit version
  * 
  * @param authString
@@ -753,6 +787,25 @@ service SwiftApi {
  * 
  */
 	list<OfflinePlayer> getOfflinePlayers(1:string authString) 
+	throws (1:Errors.EAuthException aex),
+	
+/**
+ * Gets a list of all players who are Opped on this server
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @throws TException
+ *             If something thrifty went wrong
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @return List<OfflinePlayer> A list of all players who are opped
+ *         on this server
+ * 
+ */
+	list<OfflinePlayer> getOps(1:string authString) 
 	throws (1:Errors.EAuthException aex),
 	
 /**
@@ -879,6 +932,23 @@ service SwiftApi {
  */
 	string getServerVersion(1:string authString) throws (1:Errors.EAuthException aex),
 
+/**
+ * Gets all whitelisted players
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @throws TException
+ *             If something thrifty went wrong
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @return List<OfflinePlayer> The players on the server's whitelist
+ * 
+ */
+	list<OfflinePlayer> getWhitelist(1:string authString) throws (1:Errors.EAuthException aex),
+	
 /**
  * Gets all the worlds on the server
  * 
