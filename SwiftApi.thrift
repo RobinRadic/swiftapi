@@ -1101,8 +1101,7 @@ service SwiftApi {
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */	
-	bool runConsoleCommand(1:string authString, 2:string command) 
-	throws (1:Errors.EAuthException aex),
+	bool runConsoleCommand(1:string authString, 2:string command) throws (1:Errors.EAuthException aex),
 	
 /**
  * Just a keepalive method to test authentication in clients

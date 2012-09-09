@@ -14,10 +14,11 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.thrift.TException;
-import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
-import org.apache.thrift.transport.TNonblockingServerSocket;
-import org.apache.thrift.transport.TNonblockingServerTransport;
+import org.apache.thrift.server.TSimpleServer;
+import org.apache.thrift.transport.TServerSocket;
+import org.apache.thrift.transport.TServerTransport;
+import org.apache.thrift.transport.TSocket;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.phybros.thrift.ConsoleLine;
@@ -887,10 +888,10 @@ public class SwiftServer {
 				return false;
 			}
 		}
-		
+
 		/**
 		 * Just a keepalive method to test authentication in clients
-		 *
+		 * 
 		 * @param authString
 		 *            The authentication hash
 		 * 
@@ -907,7 +908,7 @@ public class SwiftServer {
 				TException {
 			logCall("ping");
 			authenticate(authString, "ping");
-			
+
 			return true;
 		}
 
@@ -928,12 +929,14 @@ public class SwiftServer {
 			}
 
 			try {
-				plugin.getServer().reload();				
+				plugin.getServer().reload();
 			} catch (Exception e) {
-				// the TNonBlockingServer throws an NPE here, this should mask it
-				plugin.getLogger().info("Error while reloading: " + e.getMessage());				
+				// the TNonBlockingServer throws an NPE here, this should mask
+				// it
+				plugin.getLogger().info(
+						"Error while reloading: " + e.getMessage());
 			}
-			
+
 		}
 
 		/**
@@ -1013,8 +1016,9 @@ public class SwiftServer {
 				return true;
 			} catch (Exception e) {
 				plugin.getLogger().severe(e.getMessage());
-				return false;
 			}
+
+			return false;
 		}
 
 		/**
@@ -1164,30 +1168,30 @@ public class SwiftServer {
 
 			// build the pre-hashed string
 			String myAuthString = username + methodName + password + salt;
-			MessageDigest md= null;
-			
+			MessageDigest md = null;
+
 			try {
 				md = MessageDigest.getInstance("SHA-256");
 			} catch (NoSuchAlgorithmException algex) {
 				plugin.getLogger().severe(algex.getMessage());
 			}
-				md.update(myAuthString.getBytes());
-				String hash = byteToString(md.digest());
-				// plugin.getLogger().info("Expecting: " + hash);
-				// plugin.getLogger().info("Received:  " + authString);
+			md.update(myAuthString.getBytes());
+			String hash = byteToString(md.digest());
+			// plugin.getLogger().info("Expecting: " + hash);
+			// plugin.getLogger().info("Received:  " + authString);
 
-				if (!hash.equalsIgnoreCase(authString)) {
-					plugin.getLogger()
-							.info(String
-									.format("Invalid Authentication received (method: %s)",
-											methodName));
-					EAuthException e = new EAuthException();
-					e.code = ErrorCode.INVALID_AUTHSTRING;
-					e.errorMessage = plugin.getConfig().getString(
-							"errorMessages.invalidAuthentication");
-					plugin.getLogger().info(e.toString());
-					throw e;
-				}
+			if (!hash.equalsIgnoreCase(authString)) {
+				plugin.getLogger().info(
+						String.format(
+								"Invalid Authentication received (method: %s)",
+								methodName));
+				EAuthException e = new EAuthException();
+				e.code = ErrorCode.INVALID_AUTHSTRING;
+				e.errorMessage = plugin.getConfig().getString(
+						"errorMessages.invalidAuthentication");
+				plugin.getLogger().info(e.toString());
+				throw e;
+			}
 		}
 
 		private String byteToString(byte[] bytes) {
@@ -1235,7 +1239,7 @@ public class SwiftServer {
 	private TServer server;
 	private SwiftApiPlugin plugin;
 
-	public SwiftServer(SwiftApiPlugin plugin) {
+	public SwiftServer(SwiftApiPlugin plugin) throws InterruptedException {
 		this.plugin = plugin;
 		this.port = plugin.getConfig().getInt("port");
 
@@ -1258,14 +1262,26 @@ public class SwiftServer {
 
 			public void run() {
 				try {
+
+					plugin.getLogger().info(
+							"Sleeping for 2 seconds before starting up...");
+					Thread.sleep(2000);
+
 					SwiftApiHandler psh = new SwiftApiHandler();
 					SwiftApi.Processor<SwiftApi.Iface> pro = new SwiftApi.Processor<SwiftApi.Iface>(
 							psh);
 
-					TNonblockingServerTransport tst = new TNonblockingServerSocket(
-							port);
-					server = new TNonblockingServer(
-							new TNonblockingServer.Args(tst).processor(pro));
+					/*
+					 * TNonblockingServerTransport tst = new
+					 * TNonblockingServerSocket( port); server = new
+					 * TNonblockingServer( new
+					 * TNonblockingServer.Args(tst).processor(pro));
+					 * plugin.getLogger().info( "Listening on port " +
+					 * String.valueOf(port)); server.serve();
+					 */
+					TServerTransport tst = new TServerSocket(port);
+					server = new TSimpleServer(
+							new TSimpleServer.Args(tst).processor(pro));
 					plugin.getLogger().info(
 							"Listening on port " + String.valueOf(port));
 					server.serve();
