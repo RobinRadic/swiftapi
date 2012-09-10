@@ -1233,17 +1233,23 @@ public class SwiftServer {
 
 				plugin.getLogger().info(
 						"Backing up old JAR file to " + destination);
-				FileUtils.copyFile(new File(pluginsPath + "/" + f.getName()),
-						new File(destination), false);
+				File oldPlugin = new File(pluginsPath + "/" + f.getName());
+				FileUtils.copyFile(oldPlugin, new File(destination), false);
+
+				if (downloadedFile.getName().compareTo(f.getName()) != 0) {
+					plugin.getLogger().warning(
+							"The new jar file for plugin " + p.getName()
+									+ " will still be " + f.getName());
+				}
 
 				plugin.getLogger().info("Installing new JAR file..");
 				// copy the downloaded file to the plugins DIR
 				String newDownloadedPluginPath = pluginsPath + "/"
 						+ downloadedFile.getName();
-				FileUtils.copyFile(downloadedFileObject, new File(
-						newDownloadedPluginPath));
+				FileUtils.copyFile(downloadedFileObject, oldPlugin);
 
-				plugin.getLogger().info("Plugin replacement complete");
+				plugin.getLogger().info(
+						"Plugin replacement complete, reloading");
 				return true;
 			} catch (MalformedURLException e) {
 				plugin.getLogger().severe(e.getMessage());
