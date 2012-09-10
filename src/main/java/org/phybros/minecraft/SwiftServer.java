@@ -1070,7 +1070,8 @@ public class SwiftServer {
 		 * This method will replace a given plugin's .jar file with a new
 		 * version downloaded from the internet. The old .jar file will be moved
 		 * to a folder inside the SwiftApi Plugin's data folder called
-		 * "oldPlugins/" under the name <PluginName><Timestamp>.jar.old
+		 * "oldPlugins/" under the name
+		 * <PluginName>_<Version>-<Timestamp>.jar.old
 		 * 
 		 * @param authString
 		 *            The authentication hash
@@ -1184,15 +1185,19 @@ public class SwiftServer {
 				// this returns the "classes/" directory when debugging
 				ProtectionDomain pd = p.getClass().getProtectionDomain();
 				File f = new File(pd.getCodeSource().getLocation().toString());
-				if (f.isFile()) {
-					jarFileName = f.getName();
-				} else {
+				plugin.getLogger().info(
+						"Finding original JAR file..." + f.getPath());
+				if (f.isDirectory()) {
 					EDataException e = new EDataException();
 					e.code = ErrorCode.FILE_ERROR;
 					e.errorMessage = String
 							.format(plugin.getConfig().getString(
 									"errorMessages.jarNotFound"), pluginName);
 					throw e;
+				} else {
+					jarFileName = f.getName();
+					plugin.getLogger().info(
+							"Located original JAR file: " + f.getName());
 				}
 
 				// move the current jarfile to the oldPlugins directory
@@ -1218,17 +1223,27 @@ public class SwiftServer {
 				}
 
 				// copy the plugin to the backup directory
-				String destination = oldPluginsPath + "/" + p.getName()
-						+ String.valueOf(System.currentTimeMillis())
+				// Format: <PluginName>_<Version>-<Timestamp>.jar.old
+				String destination = oldPluginsPath
+						+ "/"
+						+ (p.getName() + "_" + p.getDescription().getVersion()
+								+ "-" + String.valueOf(System
+								.currentTimeMillis())).replaceAll("\\W+", "-")
 						+ ".jar.old";
-				FileUtils.copyFile(f, new File(destination));
 
+				plugin.getLogger().info(
+						"Backing up old JAR file to " + destination);
+				FileUtils.copyFile(new File(pluginsPath + "/" + f.getName()),
+						new File(destination), false);
+
+				plugin.getLogger().info("Installing new JAR file..");
 				// copy the downloaded file to the plugins DIR
 				String newDownloadedPluginPath = pluginsPath + "/"
 						+ downloadedFile.getName();
 				FileUtils.copyFile(downloadedFileObject, new File(
 						newDownloadedPluginPath));
 
+				plugin.getLogger().info("Plugin replacement complete");
 				return true;
 			} catch (MalformedURLException e) {
 				plugin.getLogger().severe(e.getMessage());

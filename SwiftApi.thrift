@@ -1161,16 +1161,17 @@ service SwiftApi {
 	throws (1:Errors.EAuthException aex),
 
 /**
- * This method will replace a given plugin's .jar file with a new version downloaded 
- * from the internet. The old .jar file will be moved to a folder inside the 
- * SwiftApi Plugin's data folder called "oldPlugins/" under the name 
- * <PluginName><Timestamp>.jar.old
- *
+ * This method will replace a given plugin's .jar file with a new
+ * version downloaded from the internet. The old .jar file will be moved
+ * to a folder inside the SwiftApi Plugin's data folder called
+ * "oldPlugins/" under the name
+ * <PluginName>_<Version>-<Timestamp>.jar.old
+ * 
  * @param authString
  *            The authentication hash
- *
+ * 
  * @param pluginName
- *			  The name of the plugin to replace
+ *            The name of the plugin to replace
  * 
  * @param downloadUrl
  *            The URL of the file to be downloaded
@@ -1184,9 +1185,9 @@ service SwiftApi {
  *             If the method call was not correctly authenticated
  * 
  * @throws Errors.EDataException
- *             If something went wrong during the file download,
- *				or the computed hash does not match the provided hash
- *				or the requested plugin could not be found.
+ *             If something went wrong during the file download, or the
+ *             computed hash does not match the provided hash or the
+ *             requested plugin could not be found.
  * 
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
