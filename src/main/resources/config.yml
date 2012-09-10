@@ -35,11 +35,17 @@ errorMessages:
     # Use %s to represent the requested world name
     worldNotFound: World "%s" was not found
     
-    # Could not create the plugin staging directory
-    createStagingError: Could not create the staging directory
+    # Could not create a directory
+    createDirectoryError: Could not create directory
     
     # The requested download URl was invalid
     malformedUrl: The requested download URL was invalid
 
     # The requested file was not found
     fileNotFound: The requested file was not found
+    
+    # Hash verification
+    hashMismatch: The provided hash did not match the hash of the downloaded file
+    
+    # Could not get the JAR file of a specific plugin
+    jarNotFound: Could not find the plugin's JAR file

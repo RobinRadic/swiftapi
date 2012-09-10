@@ -2,12 +2,14 @@ package org.phybros.minecraft;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,8 @@ public class SwiftServer {
 
 		private String stagingPath = plugin.getDataFolder().getPath()
 				+ "/stage";
+		private String oldPluginsPath = plugin.getDataFolder().getPath()
+				+ "/oldPlugins";
 		private String pluginsPath = plugin.getDataFolder().getParent();
 
 		/**
@@ -83,9 +87,12 @@ public class SwiftServer {
 				boolean wasWhitelisted = offPl.isWhitelisted();
 				if (!wasWhitelisted) {
 					offPl.setWhitelisted(true);
-					plugin.getLogger().info("Whitelisted player " + offPl.getName());
+					plugin.getLogger().info(
+							"Whitelisted player " + offPl.getName());
 				} else {
-					plugin.getLogger().info("Player " + offPl.getName() + " is already whitelisted");
+					plugin.getLogger().info(
+							"Player " + offPl.getName()
+									+ " is already whitelisted");
 				}
 				return true;
 			} catch (Exception e) {
@@ -173,64 +180,34 @@ public class SwiftServer {
 			}
 		}
 
-		/**
-		 * Copies a file into the plugins directory on the server
+		/*
+		 * code to be reused
 		 * 
-		 * @param authString
-		 *            The authentication hash
+		 * @Override public boolean copyPlugin(String authString, String
+		 * fileName) throws EAuthException, EDataException, TException {
+		 * logCall("copyPlugin"); authenticate(authString, "copyPlugin");
 		 * 
-		 * @param filename
-		 *            The name of the file to move (must exist in the staging
-		 *            directory)
+		 * File pluginToCopy = new File(stagingPath + "/" + fileName); if
+		 * (!pluginToCopy.exists()) { plugin.getLogger().severe(
+		 * plugin.getConfig().getString( "errorMessages.fileNotFound"));
+		 * EDataException fileNotFoundEx = new EDataException();
+		 * fileNotFoundEx.code = ErrorCode.FILE_ERROR;
+		 * fileNotFoundEx.errorMessage = plugin.getConfig().getString(
+		 * "errorMessages.fileNotFound"); throw fileNotFoundEx; }
 		 * 
-		 * @return boolean true on success false on failure
+		 * try { String newPluginPath = pluginsPath + "/" +
+		 * pluginToCopy.getName();
 		 * 
-		 * @throws Errors.EAuthException
-		 *             If the method call was not correctly authenticated
+		 * plugin.getLogger().info( "Copying file " + pluginToCopy + " to " +
+		 * newPluginPath + "..."); FileUtils.copyFile(pluginToCopy, new
+		 * File(newPluginPath)); plugin.getLogger().info("File copied."); }
+		 * catch (IOException e) { plugin.getLogger().severe(e.getMessage());
+		 * EDataException ioEx = new EDataException(); ioEx.code =
+		 * ErrorCode.FILE_ERROR; ioEx.errorMessage = ioEx.getMessage(); throw
+		 * ioEx; }
 		 * 
-		 * @throws Errors.EDataException
-		 *             If something went wrong during the file copy
-		 * 
-		 * @throws org.apache.thrift.TException
-		 *             If something went wrong with Thrift
+		 * return false; }
 		 */
-		@Override
-		public boolean copyPlugin(String authString, String fileName)
-				throws EAuthException, EDataException, TException {
-			logCall("copyPlugin");
-			authenticate(authString, "copyPlugin");
-
-			File pluginToCopy = new File(stagingPath + "/" + fileName);
-			if (!pluginToCopy.exists()) {
-				plugin.getLogger().severe(
-						plugin.getConfig().getString(
-								"errorMessages.fileNotFound"));
-				EDataException fileNotFoundEx = new EDataException();
-				fileNotFoundEx.code = ErrorCode.FILE_ERROR;
-				fileNotFoundEx.errorMessage = plugin.getConfig().getString(
-						"errorMessages.fileNotFound");
-				throw fileNotFoundEx;
-			}
-
-			try {
-				String newPluginPath = pluginsPath + "/"
-						+ pluginToCopy.getName();
-
-				plugin.getLogger().info(
-						"Copying file " + pluginToCopy + " to " + newPluginPath
-								+ "...");
-				FileUtils.copyFile(pluginToCopy, new File(newPluginPath));
-				plugin.getLogger().info("File copied.");
-			} catch (IOException e) {
-				plugin.getLogger().severe(e.getMessage());
-				EDataException ioEx = new EDataException();
-				ioEx.code = ErrorCode.FILE_ERROR;
-				ioEx.errorMessage = ioEx.getMessage();
-				throw ioEx;
-			}
-
-			return false;
-		}
 
 		/**
 		 * Takes "op" (operator) privileges away from a player. If the player is
@@ -289,100 +266,53 @@ public class SwiftServer {
 			}
 		}
 
-		/**
-		 * Downloads a file from the internet into the plugin's "Holding Area".
-		 * This method is to be used for downloading plugin files only.
+		/*
+		 * code to be reused
 		 * 
-		 * @param authString
-		 *            The authentication hash
+		 * @Override public boolean downloadFile(String authString, String url,
+		 * String md5) throws EAuthException, EDataException, TException {
+		 * logCall("downloadFile"); authenticate(authString, "downloadFile");
 		 * 
-		 * @param url
-		 *            The URL of the file to be downloaded
+		 * // this will create the holding area if it doesn't exist File
+		 * holdingArea = new File(stagingPath);
 		 * 
-		 * @param md5
-		 *            The md5 hash of the file that is being downloaded (for
-		 *            security reasons)
+		 * if (!holdingArea.exists()) { plugin.getLogger().info(
+		 * "Staging directory doesn't exist. Creating dir: " + stagingPath); //
+		 * try and create the directory if (!holdingArea.mkdir()) {
+		 * plugin.getLogger().severe( "Could not create staging directory!");
+		 * EDataException e = new EDataException(); e.code =
+		 * ErrorCode.FILE_ERROR; e.errorMessage = plugin.getConfig().getString(
+		 * "errorMessages.createStagingError"); throw e; } }
 		 * 
-		 * @return boolean true on success false on failure
+		 * // at this point, we can assume that "stage" exists...in theory try {
+		 * plugin.getLogger().info( "Downloading file from: " + url + " ...");
+		 * URL dl = new URL(url); FileUtils.copyURLToFile(dl, new
+		 * File(stagingPath + "/" + FilenameUtils.getName(dl.getPath())), 5000,
+		 * 60000);
 		 * 
-		 * @throws Errors.EAuthException
-		 *             If the method call was not correctly authenticated
+		 * File downloadedFile = new File(stagingPath + "/" +
+		 * FilenameUtils.getName(dl.getPath()));
+		 * plugin.getLogger().info("Download complete. Verifying md5.");
 		 * 
-		 * @throws Errors.EDataException
-		 *             If something went wrong during the file download, or the
-		 *             computed hash does not match the provided hash.
+		 * String calculatedHash = byteToString(createChecksum(downloadedFile
+		 * .getPath())); plugin.getLogger().info("Calculated hash: " +
+		 * calculatedHash);
 		 * 
-		 * @throws org.apache.thrift.TException
-		 *             If something went wrong with Thrift
+		 * if (md5.equalsIgnoreCase(calculatedHash)) {
+		 * plugin.getLogger().info("Hashes match"); return true; } else {
+		 * plugin.getLogger() .severe(
+		 * "Downloaded file hash does not match provided hash. Deleting file.");
+		 * downloadedFile.delete(); return false; } } catch
+		 * (MalformedURLException e) {
+		 * plugin.getLogger().severe(e.getMessage()); EDataException e1 = new
+		 * EDataException(); e1.code = ErrorCode.DOWNLOAD_ERROR; e1.errorMessage
+		 * = plugin.getConfig().getString( "errorMessages.malformedUrl"); throw
+		 * e1; } catch (IOException e) {
+		 * plugin.getLogger().severe(e.getMessage()); EDataException e1 = new
+		 * EDataException(); e1.code = ErrorCode.FILE_ERROR; e1.errorMessage =
+		 * e.getMessage(); throw e1; } catch (Exception e) {
+		 * plugin.getLogger().severe(e.getMessage()); return false; } }
 		 */
-		@Override
-		public boolean downloadFile(String authString, String url, String md5)
-				throws EAuthException, EDataException, TException {
-			logCall("downloadFile");
-			authenticate(authString, "downloadFile");
-
-			// this will create the holding area if it doesn't exist
-			File holdingArea = new File(stagingPath);
-
-			if (!holdingArea.exists()) {
-				plugin.getLogger().info(
-						"Staging directory doesn't exist. Creating dir: "
-								+ stagingPath);
-				// try and create the directory
-				if (!holdingArea.mkdir()) {
-					plugin.getLogger().severe(
-							"Could not create staging directory!");
-					EDataException e = new EDataException();
-					e.code = ErrorCode.FILE_ERROR;
-					e.errorMessage = plugin.getConfig().getString(
-							"errorMessages.createStagingError");
-					throw e;
-				}
-			}
-
-			// at this point, we can assume that "stage" exists...in theory
-			try {
-				plugin.getLogger().info(
-						"Downloading file from: " + url + " ...");
-				URL dl = new URL(url);
-				FileUtils.copyURLToFile(dl, new File(stagingPath + "/"
-						+ FilenameUtils.getName(dl.getPath())), 5000, 60000);
-
-				File downloadedFile = new File(stagingPath + "/"
-						+ FilenameUtils.getName(dl.getPath()));
-				plugin.getLogger().info("Download complete. Verifying md5.");
-
-				String calculatedHash = byteToString(createChecksum(downloadedFile
-						.getPath()));
-				plugin.getLogger().info("Calculated hash: " + calculatedHash);
-
-				if (md5.equalsIgnoreCase(calculatedHash)) {
-					plugin.getLogger().info("Hashes match");
-					return true;
-				} else {
-					plugin.getLogger()
-							.severe("Downloaded file hash does not match provided hash. Deleting file.");
-					downloadedFile.delete();
-					return false;
-				}
-			} catch (MalformedURLException e) {
-				plugin.getLogger().severe(e.getMessage());
-				EDataException e1 = new EDataException();
-				e1.code = ErrorCode.DOWNLOAD_ERROR;
-				e1.errorMessage = plugin.getConfig().getString(
-						"errorMessages.malformedUrl");
-				throw e1;
-			} catch (IOException e) {
-				plugin.getLogger().severe(e.getMessage());
-				EDataException e1 = new EDataException();
-				e1.code = ErrorCode.FILE_ERROR;
-				e1.errorMessage = e.getMessage();
-				throw e1;
-			} catch (Exception e) {
-				plugin.getLogger().severe(e.getMessage());
-				return false;
-			}
-		}
 
 		/**
 		 * Gets the IP addresses currently banned from joining this server
@@ -404,9 +334,9 @@ public class SwiftServer {
 				throws EAuthException, TException {
 			logCall("getBannedIps");
 			authenticate(authString, "getBannedIps");
-			
+
 			List<String> bannedIps = new ArrayList<String>();
-			
+
 			bannedIps = new ArrayList<String>(plugin.getServer().getIPBans());
 			return bannedIps;
 		}
@@ -431,15 +361,17 @@ public class SwiftServer {
 				String authString) throws EAuthException, TException {
 			logCall("getBannedPlayers");
 			authenticate(authString, "getBannedPlayers");
-			
+
 			List<org.phybros.thrift.OfflinePlayer> bannedPlayers = new ArrayList<org.phybros.thrift.OfflinePlayer>();
-			
-			List<OfflinePlayer> bukkitPlayers = new ArrayList<OfflinePlayer>(plugin.getServer().getBannedPlayers());
-			
-			for(OfflinePlayer bukkitPlayer : bukkitPlayers) {
-				bannedPlayers.add(BukkitConverter.convertBukkitOfflinePlayer(bukkitPlayer));
+
+			List<OfflinePlayer> bukkitPlayers = new ArrayList<OfflinePlayer>(
+					plugin.getServer().getBannedPlayers());
+
+			for (OfflinePlayer bukkitPlayer : bukkitPlayers) {
+				bannedPlayers.add(BukkitConverter
+						.convertBukkitOfflinePlayer(bukkitPlayer));
 			}
-			
+
 			return bannedPlayers;
 		}
 
@@ -587,8 +519,8 @@ public class SwiftServer {
 		 * @throws Errors.EAuthException
 		 *             If the method call was not correctly authenticated
 		 * 
-		 * @return List<OfflinePlayer> A list of all players who are opped
-		 *         on this server
+		 * @return List<OfflinePlayer> A list of all players who are opped on
+		 *         this server
 		 * 
 		 */
 		@Override
@@ -596,15 +528,17 @@ public class SwiftServer {
 				throws EAuthException, TException {
 			logCall("getOps");
 			authenticate(authString, "getOps");
-			
+
 			List<org.phybros.thrift.OfflinePlayer> ops = new ArrayList<org.phybros.thrift.OfflinePlayer>();
-			
-			List<OfflinePlayer> bukkitPlayers = new ArrayList<OfflinePlayer>(plugin.getServer().getOperators());
-			
-			for(OfflinePlayer bukkitPlayer : bukkitPlayers) {
-				ops.add(BukkitConverter.convertBukkitOfflinePlayer(bukkitPlayer));
+
+			List<OfflinePlayer> bukkitPlayers = new ArrayList<OfflinePlayer>(
+					plugin.getServer().getOperators());
+
+			for (OfflinePlayer bukkitPlayer : bukkitPlayers) {
+				ops.add(BukkitConverter
+						.convertBukkitOfflinePlayer(bukkitPlayer));
 			}
-			
+
 			return ops;
 		}
 
@@ -872,15 +806,17 @@ public class SwiftServer {
 				String authString) throws EAuthException, TException {
 			logCall("getWhitelist");
 			authenticate(authString, "getWhitelist");
-			
+
 			List<org.phybros.thrift.OfflinePlayer> whitelist = new ArrayList<org.phybros.thrift.OfflinePlayer>();
-			
-			List<OfflinePlayer> bukkitPlayers = new ArrayList<OfflinePlayer>(plugin.getServer().getWhitelistedPlayers());
-			
-			for(OfflinePlayer bukkitPlayer : bukkitPlayers) {
-				whitelist.add(BukkitConverter.convertBukkitOfflinePlayer(bukkitPlayer));
+
+			List<OfflinePlayer> bukkitPlayers = new ArrayList<OfflinePlayer>(
+					plugin.getServer().getWhitelistedPlayers());
+
+			for (OfflinePlayer bukkitPlayer : bukkitPlayers) {
+				whitelist.add(BukkitConverter
+						.convertBukkitOfflinePlayer(bukkitPlayer));
 			}
-			
+
 			return whitelist;
 		}
 
@@ -959,7 +895,9 @@ public class SwiftServer {
 
 			try {
 				player.kickPlayer(message);
-				plugin.getLogger().info("Kicked " + player.getName() + " with message \"" + message + "\"");
+				plugin.getLogger().info(
+						"Kicked " + player.getName() + " with message \""
+								+ message + "\"");
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -1114,13 +1052,209 @@ public class SwiftServer {
 				boolean wasWhitelisted = offPl.isWhitelisted();
 				if (wasWhitelisted) {
 					offPl.setWhitelisted(false);
-					plugin.getLogger().info("Removed player " + offPl.getName() + " from the whitelist");
+					plugin.getLogger().info(
+							"Removed player " + offPl.getName()
+									+ " from the whitelist");
 				} else {
-					plugin.getLogger().info("Player " + offPl.getName() + " is not on the whitelist");
+					plugin.getLogger().info(
+							"Player " + offPl.getName()
+									+ " is not on the whitelist");
 				}
 				return true;
 			} catch (Exception e) {
 				return false;
+			}
+		}
+
+		/**
+		 * This method will replace a given plugin's .jar file with a new
+		 * version downloaded from the internet. The old .jar file will be moved
+		 * to a folder inside the SwiftApi Plugin's data folder called
+		 * "oldPlugins/" under the name <PluginName><Timestamp>.jar.old
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param pluginName
+		 *            The name of the plugin to replace
+		 * 
+		 * @param downloadUrl
+		 *            The URL of the file to be downloaded
+		 * 
+		 * @param md5
+		 *            The md5 hash of the file that is being downloaded
+		 * 
+		 * @return boolean true on success false on failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If something went wrong during the file download, or the
+		 *             computed hash does not match the provided hash or the
+		 *             requested plugin could not be found.
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean replacePlugin(String authString, String pluginName,
+				String downloadUrl, String md5) throws EAuthException,
+				EDataException, TException {
+			logCall("replacePlugin");
+			authenticate(authString, "replacePlugin");
+
+			// get the plugin
+			org.bukkit.plugin.Plugin p = plugin.getServer().getPluginManager()
+					.getPlugin(pluginName);
+
+			// throw an EDataException if the plugin was not found
+			if (p == null) {
+				plugin.getLogger().info("Plugin not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.pluginNotFound"), pluginName);
+				throw e;
+			}
+
+			// this will create the holding area if it doesn't exist
+			File holdingArea = new File(stagingPath);
+
+			// if the staging directory doesn't exist, then create it
+			if (!holdingArea.exists()) {
+				plugin.getLogger().info(
+						"Staging directory doesn't exist. Creating dir: "
+								+ stagingPath);
+				// try and create the directory
+				if (!holdingArea.mkdir()) {
+					plugin.getLogger().severe(
+							"Could not create staging directory!");
+					EDataException e = new EDataException();
+					e.code = ErrorCode.FILE_ERROR;
+					e.errorMessage = plugin.getConfig().getString(
+							"errorMessages.createDirectoryError");
+					throw e;
+				}
+			}
+
+			// at this point, we can assume that "stage" exists...in theory
+
+			plugin.getLogger().info(
+					"Downloading file from: " + downloadUrl + " ...");
+
+			try {
+				URL dl = new URL(downloadUrl);
+
+				// create a locatio to download the file to
+				File downloadedFileObject = new File(stagingPath + "/"
+						+ FilenameUtils.getName(dl.getPath()));
+
+				// download the file
+				FileUtils.copyURLToFile(dl, downloadedFileObject, 5000, 60000);
+
+				File downloadedFile = new File(stagingPath + "/"
+						+ FilenameUtils.getName(dl.getPath()));
+				plugin.getLogger().info("Download complete. Verifying md5.");
+
+				// figure out the MD5 hash of the downloaded file
+				String calculatedHash = byteToString(createChecksum(downloadedFile
+						.getPath()));
+				plugin.getLogger().info("Calculated hash: " + calculatedHash);
+
+				if (md5.equalsIgnoreCase(calculatedHash)) {
+					plugin.getLogger().info("Hashes match");
+				} else {
+					plugin.getLogger()
+							.severe("Downloaded file hash does not match provided hash. Deleting file.");
+					downloadedFile.delete();
+
+					EDataException e = new EDataException();
+					e.code = ErrorCode.DOWNLOAD_ERROR;
+					e.errorMessage = String.format(plugin.getConfig()
+							.getString("errorMessages.hashMismatch"),
+							pluginName);
+					throw e;
+				}
+
+				// get the plugin's JAR file name
+				String jarFileName = "";
+
+				// this returns the "classes/" directory when debugging
+				ProtectionDomain pd = p.getClass().getProtectionDomain();
+				File f = new File(pd.getCodeSource().getLocation().toString());
+				if (f.isFile()) {
+					jarFileName = f.getName();
+				} else {
+					EDataException e = new EDataException();
+					e.code = ErrorCode.FILE_ERROR;
+					e.errorMessage = String
+							.format(plugin.getConfig().getString(
+									"errorMessages.jarNotFound"), pluginName);
+					throw e;
+				}
+
+				// move the current jarfile to the oldPlugins directory
+
+				// this will create the oldPlugins area if it doesn't exist
+				File oldPlugins = new File(oldPluginsPath);
+
+				// if the staging directory doesn't exist, then create it
+				if (!oldPlugins.exists()) {
+					plugin.getLogger().info(
+							"Old Plugins directory doesn't exist. Creating dir: "
+									+ oldPluginsPath);
+					// try and create the directory
+					if (!oldPlugins.mkdir()) {
+						plugin.getLogger().severe(
+								"Could not create Old Plugins directory!");
+						EDataException e = new EDataException();
+						e.code = ErrorCode.FILE_ERROR;
+						e.errorMessage = plugin.getConfig().getString(
+								"errorMessages.createDirectoryError");
+						throw e;
+					}
+				}
+
+				// copy the plugin to the backup directory
+				String destination = oldPluginsPath + "/" + p.getName()
+						+ String.valueOf(System.currentTimeMillis())
+						+ ".jar.old";
+				FileUtils.copyFile(f, new File(destination));
+
+				// copy the downloaded file to the plugins DIR
+				String newDownloadedPluginPath = pluginsPath + "/"
+						+ downloadedFile.getName();
+				FileUtils.copyFile(downloadedFileObject, new File(
+						newDownloadedPluginPath));
+
+				return true;
+			} catch (MalformedURLException e) {
+				plugin.getLogger().severe(e.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.DOWNLOAD_ERROR;
+				e1.errorMessage = plugin.getConfig().getString(
+						"errorMessages.malformedUrl");
+				throw e1;
+			} catch (FileNotFoundException e) {
+				plugin.getLogger().severe(e.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = e.getMessage();
+				throw e1;
+			} catch (IOException e) {
+				plugin.getLogger().severe(e.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = e.getMessage();
+				throw e1;
+			} catch (NoSuchAlgorithmException e) {
+				plugin.getLogger().severe(e.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = e.getMessage();
+				throw e1;
 			}
 		}
 
@@ -1203,7 +1337,9 @@ public class SwiftServer {
 				org.bukkit.GameMode m = org.bukkit.GameMode.getByValue(mode
 						.getValue());
 				player.setGameMode(m);
-				plugin.getLogger().info("Set gamemode to " + String.valueOf(m.getValue()) + " for " + player.getName());
+				plugin.getLogger().info(
+						"Set gamemode to " + String.valueOf(m.getValue())
+								+ " for " + player.getName());
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -1340,7 +1476,9 @@ public class SwiftServer {
 			return result;
 		}
 
-		private byte[] createChecksum(String filename) throws Exception {
+		private byte[] createChecksum(String filename)
+				throws NoSuchAlgorithmException, FileNotFoundException,
+				IOException {
 			InputStream fis = new FileInputStream(filename);
 
 			byte[] buffer = new byte[1024];

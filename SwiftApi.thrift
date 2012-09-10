@@ -622,10 +622,12 @@ service SwiftApi {
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */
+/* replacing this with the "replacePlugin" method
 	bool copyPlugin(1:string authString,
 				    2:string fileName)
 	throws (1:Errors.EAuthException aex, 
  			2:Errors.EDataException dex),
+*/
 
 /**
  * Downloads a file from the internet into the plugin's "Holding Area".
@@ -652,12 +654,14 @@ service SwiftApi {
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */
+/* replacing this with the "replacePlugin" method
 	bool downloadFile(1:string authString,
 					  2:string url,
 					  3:string md5)
 	throws (1:Errors.EAuthException aex, 
  			2:Errors.EDataException dex),
-	
+*/
+
 /**
  * Takes "op" (operator) privileges away from a player. If the player is
  * already deopped, then this method does nothing
@@ -1155,6 +1159,44 @@ service SwiftApi {
  */			
 	list<ConsoleLine> getConsoleMessages(1:string authString) 
 	throws (1:Errors.EAuthException aex),
+
+/**
+ * This method will replace a given plugin's .jar file with a new version downloaded 
+ * from the internet. The old .jar file will be moved to a folder inside the 
+ * SwiftApi Plugin's data folder called "oldPlugins/" under the name 
+ * <PluginName><Timestamp>.jar.old
+ *
+ * @param authString
+ *            The authentication hash
+ *
+ * @param pluginName
+ *			  The name of the plugin to replace
+ * 
+ * @param downloadUrl
+ *            The URL of the file to be downloaded
+ * 
+ * @param md5
+ *            The md5 hash of the file that is being downloaded
+ * 
+ * @return boolean true on success false on failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If something went wrong during the file download,
+ *				or the computed hash does not match the provided hash
+ *				or the requested plugin could not be found.
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool replacePlugin(1:string authString, 
+					   2:string pluginName, 
+					   3:string downloadUrl, 
+					   4:string md5) 
+	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
 
 /**
  * Executes a command as if you were to type it directly into the console 
