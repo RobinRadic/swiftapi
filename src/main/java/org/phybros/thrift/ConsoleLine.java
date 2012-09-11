@@ -19,11 +19,15 @@ import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
 import org.apache.thrift.scheme.TupleScheme;
 
+/**
+ * A line from the console
+ */
 public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, ConsoleLine._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ConsoleLine");
 
   private static final org.apache.thrift.protocol.TField TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("timestamp", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField LEVEL_FIELD_DESC = new org.apache.thrift.protocol.TField("level", org.apache.thrift.protocol.TType.STRING, (short)3);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -32,12 +36,26 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
   }
 
   public long timestamp; // required
+  /**
+   * The actual message from the console
+   */
   public String message; // required
+  /**
+   * The log level (INFO, WARN, SEVERE etc.)
+   */
+  public String level; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     TIMESTAMP((short)1, "timestamp"),
-    MESSAGE((short)2, "message");
+    /**
+     * The actual message from the console
+     */
+    MESSAGE((short)2, "message"),
+    /**
+     * The log level (INFO, WARN, SEVERE etc.)
+     */
+    LEVEL((short)3, "level");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -56,6 +74,8 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
           return TIMESTAMP;
         case 2: // MESSAGE
           return MESSAGE;
+        case 3: // LEVEL
+          return LEVEL;
         default:
           return null;
       }
@@ -105,6 +125,8 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.LEVEL, new org.apache.thrift.meta_data.FieldMetaData("level", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ConsoleLine.class, metaDataMap);
   }
@@ -114,12 +136,14 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
 
   public ConsoleLine(
     long timestamp,
-    String message)
+    String message,
+    String level)
   {
     this();
     this.timestamp = timestamp;
     setTimestampIsSet(true);
     this.message = message;
+    this.level = level;
   }
 
   /**
@@ -132,6 +156,9 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
     if (other.isSetMessage()) {
       this.message = other.message;
     }
+    if (other.isSetLevel()) {
+      this.level = other.level;
+    }
   }
 
   public ConsoleLine deepCopy() {
@@ -143,6 +170,7 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
     setTimestampIsSet(false);
     this.timestamp = 0;
     this.message = null;
+    this.level = null;
   }
 
   public long getTimestamp() {
@@ -168,10 +196,16 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
     __isset_bit_vector.set(__TIMESTAMP_ISSET_ID, value);
   }
 
+  /**
+   * The actual message from the console
+   */
   public String getMessage() {
     return this.message;
   }
 
+  /**
+   * The actual message from the console
+   */
   public ConsoleLine setMessage(String message) {
     this.message = message;
     return this;
@@ -189,6 +223,36 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
   public void setMessageIsSet(boolean value) {
     if (!value) {
       this.message = null;
+    }
+  }
+
+  /**
+   * The log level (INFO, WARN, SEVERE etc.)
+   */
+  public String getLevel() {
+    return this.level;
+  }
+
+  /**
+   * The log level (INFO, WARN, SEVERE etc.)
+   */
+  public ConsoleLine setLevel(String level) {
+    this.level = level;
+    return this;
+  }
+
+  public void unsetLevel() {
+    this.level = null;
+  }
+
+  /** Returns true if field level is set (has been assigned a value) and false otherwise */
+  public boolean isSetLevel() {
+    return this.level != null;
+  }
+
+  public void setLevelIsSet(boolean value) {
+    if (!value) {
+      this.level = null;
     }
   }
 
@@ -210,6 +274,14 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
       }
       break;
 
+    case LEVEL:
+      if (value == null) {
+        unsetLevel();
+      } else {
+        setLevel((String)value);
+      }
+      break;
+
     }
   }
 
@@ -220,6 +292,9 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
 
     case MESSAGE:
       return getMessage();
+
+    case LEVEL:
+      return getLevel();
 
     }
     throw new IllegalStateException();
@@ -236,6 +311,8 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
       return isSetTimestamp();
     case MESSAGE:
       return isSetMessage();
+    case LEVEL:
+      return isSetLevel();
     }
     throw new IllegalStateException();
   }
@@ -268,6 +345,15 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
       if (!(this_present_message && that_present_message))
         return false;
       if (!this.message.equals(that.message))
+        return false;
+    }
+
+    boolean this_present_level = true && this.isSetLevel();
+    boolean that_present_level = true && that.isSetLevel();
+    if (this_present_level || that_present_level) {
+      if (!(this_present_level && that_present_level))
+        return false;
+      if (!this.level.equals(that.level))
         return false;
     }
 
@@ -307,6 +393,16 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetLevel()).compareTo(typedOther.isSetLevel());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetLevel()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.level, typedOther.level);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -336,6 +432,14 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
       sb.append("null");
     } else {
       sb.append(this.message);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("level:");
+    if (this.level == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.level);
     }
     first = false;
     sb.append(")");
@@ -398,6 +502,14 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 3: // LEVEL
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.level = iprot.readString();
+              struct.setLevelIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -419,6 +531,11 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
       if (struct.message != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
         oprot.writeString(struct.message);
+        oprot.writeFieldEnd();
+      }
+      if (struct.level != null) {
+        oprot.writeFieldBegin(LEVEL_FIELD_DESC);
+        oprot.writeString(struct.level);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -445,19 +562,25 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
       if (struct.isSetMessage()) {
         optionals.set(1);
       }
-      oprot.writeBitSet(optionals, 2);
+      if (struct.isSetLevel()) {
+        optionals.set(2);
+      }
+      oprot.writeBitSet(optionals, 3);
       if (struct.isSetTimestamp()) {
         oprot.writeI64(struct.timestamp);
       }
       if (struct.isSetMessage()) {
         oprot.writeString(struct.message);
       }
+      if (struct.isSetLevel()) {
+        oprot.writeString(struct.level);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, ConsoleLine struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(2);
+      BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
         struct.timestamp = iprot.readI64();
         struct.setTimestampIsSet(true);
@@ -465,6 +588,10 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
       if (incoming.get(1)) {
         struct.message = iprot.readString();
         struct.setMessageIsSet(true);
+      }
+      if (incoming.get(2)) {
+        struct.level = iprot.readString();
+        struct.setLevelIsSet(true);
       }
     }
   }

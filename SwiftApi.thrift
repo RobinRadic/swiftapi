@@ -149,9 +149,22 @@ enum Enchantment {
     ARROW_INFINITE = 51,
 }
 
+/**
+ * A line from the console
+ */
 struct ConsoleLine {
+	/*
+	 * A unix-style timestamp (in milliseconds)
+	 */
 	1:i64 timestamp,
-	2:string message
+	/**
+	 * The actual message from the console
+	 */
+	2:string message,
+	/**
+	 * The log level (INFO, WARN, SEVERE etc.)
+	 */
+	3:string level,
 }
 
 /**
@@ -1034,8 +1047,9 @@ service SwiftApi {
  * @param authString
  *            The authentication hash
  */
-	oneway void reloadServer(1:string authString)
-
+	bool reloadServer(1:string authString)
+	throws (1:Errors.EAuthException aex),
+	
 /**
  * Remove a Player from the server's whitelist. The player can be offline, or
  * be a player that has never played on this server before. If the player is not

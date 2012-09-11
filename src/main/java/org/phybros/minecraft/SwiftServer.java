@@ -990,21 +990,18 @@ public class SwiftServer {
 		 *            The authentication hash
 		 */
 		@Override
-		public void reloadServer(String authString) throws TException {
+		public boolean reloadServer(String authString) throws EAuthException,
+				TException {
 			logCall("reloadServer");
-			try {
-				authenticate(authString, "reloadServer");
-			} catch (Exception e) {
-				plugin.getLogger().severe(e.getMessage());
-			}
+			authenticate(authString, "reloadServer");
 
 			try {
 				plugin.getServer().reload();
+				return true;
 			} catch (Exception e) {
-				// the TNonBlockingServer throws an NPE here, this should mask
-				// it
 				plugin.getLogger().info(
 						"Error while reloading: " + e.getMessage());
+				return false;
 			}
 
 		}
@@ -1246,10 +1243,14 @@ public class SwiftServer {
 				// copy the downloaded file to the plugins DIR
 				String newDownloadedPluginPath = pluginsPath + "/"
 						+ downloadedFile.getName();
-				FileUtils.copyFile(downloadedFileObject, oldPlugin);
+				if (downloadedFileObject.getName().endsWith(".jar")) {
+					FileUtils.copyFile(downloadedFileObject, oldPlugin);
 
-				plugin.getLogger().info(
-						"Plugin replacement complete, reloading");
+					plugin.getLogger().info(
+							"Plugin replacement complete, reloading");
+				} else {
+					plugin.getLogger().info("Sorry, SwiftApi can only install plugins with the extension \".jar\"");
+				}
 				return true;
 			} catch (MalformedURLException e) {
 				plugin.getLogger().severe(e.getMessage());
