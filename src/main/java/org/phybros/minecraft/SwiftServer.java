@@ -1308,7 +1308,7 @@ public class SwiftServer {
 				if (downloadedFile.getName().compareTo(f.getName()) != 0) {
 					plugin.getLogger().warning(
 							"The new jar file for plugin " + p.getName()
-									+ " will still be " + f.getName());
+									+ " will still be named " + f.getName());
 				}
 
 				plugin.getLogger().info("Installing new JAR file..");
@@ -1319,10 +1319,15 @@ public class SwiftServer {
 					FileUtils.copyFile(downloadedFileObject, oldPlugin);
 
 					plugin.getLogger().info(
-							"Plugin replacement complete, reloading");
+							"Plugin installation complete. Reload or restart to use new version.");
 				} else {
 					plugin.getLogger()
-							.info("Sorry, SwiftApi can only install plugins with the extension \".jar\"");
+							.warning("Sorry, SwiftApi can only install plugins with the extension \".jar\"");
+					EDataException e = new EDataException();
+					e.code = ErrorCode.FILE_ERROR;
+					e.errorMessage = plugin.getConfig().getString(
+							"errorMessages.invalidPluginType");
+					throw e;
 				}
 				return true;
 			} catch (MalformedURLException e) {

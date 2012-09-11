@@ -53,3 +53,6 @@ errorMessages:
     # Requested world was not found
     # Use %s to represent the requested world name
     worldNotFound: World "%s" was not found
+    
+    # Client tried to download and install a file that wasn't a JAR
+    invalidPluginType: Only files of type ".jar" can be installed using SwiftApi
