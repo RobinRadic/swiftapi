@@ -20,7 +20,6 @@ import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
-import org.apache.thrift.transport.TSocket;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.phybros.thrift.ConsoleLine;
@@ -99,6 +98,37 @@ public class SwiftServer {
 				return false;
 			}
 		}
+		
+		/**
+		 * Broadcasts a message to all players on the server
+		 *
+		 * @param authString
+		 *            The authentication hash
+		 *
+		 * @param message
+		 *            The message to send
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 *
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean announce(String authString, String message)
+				throws EAuthException, TException {
+			logCall("announce");
+			authenticate(authString, "announce");
+
+			try {
+				plugin.getServer().broadcastMessage(message);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
 
 		/**
 		 * Permanently ban a player from the server by name. The player can be
@@ -148,6 +178,35 @@ public class SwiftServer {
 			}
 		}
 
+		/*
+		 * code to be reused
+		 * 
+		 * @Override public boolean copyPlugin(String authString, String
+		 * fileName) throws EAuthException, EDataException, TException {
+		 * logCall("copyPlugin"); authenticate(authString, "copyPlugin");
+		 * 
+		 * File pluginToCopy = new File(stagingPath + "/" + fileName); if
+		 * (!pluginToCopy.exists()) { plugin.getLogger().severe(
+		 * plugin.getConfig().getString( "errorMessages.fileNotFound"));
+		 * EDataException fileNotFoundEx = new EDataException();
+		 * fileNotFoundEx.code = ErrorCode.FILE_ERROR;
+		 * fileNotFoundEx.errorMessage = plugin.getConfig().getString(
+		 * "errorMessages.fileNotFound"); throw fileNotFoundEx; }
+		 * 
+		 * try { String newPluginPath = pluginsPath + "/" +
+		 * pluginToCopy.getName();
+		 * 
+		 * plugin.getLogger().info( "Copying file " + pluginToCopy + " to " +
+		 * newPluginPath + "..."); FileUtils.copyFile(pluginToCopy, new
+		 * File(newPluginPath)); plugin.getLogger().info("File copied."); }
+		 * catch (IOException e) { plugin.getLogger().severe(e.getMessage());
+		 * EDataException ioEx = new EDataException(); ioEx.code =
+		 * ErrorCode.FILE_ERROR; ioEx.errorMessage = ioEx.getMessage(); throw
+		 * ioEx; }
+		 * 
+		 * return false; }
+		 */
+
 		/**
 		 * Permanently ban a specific IP from connecting to this server
 		 * 
@@ -183,30 +242,49 @@ public class SwiftServer {
 		/*
 		 * code to be reused
 		 * 
-		 * @Override public boolean copyPlugin(String authString, String
-		 * fileName) throws EAuthException, EDataException, TException {
-		 * logCall("copyPlugin"); authenticate(authString, "copyPlugin");
+		 * @Override public boolean downloadFile(String authString, String url,
+		 * String md5) throws EAuthException, EDataException, TException {
+		 * logCall("downloadFile"); authenticate(authString, "downloadFile");
 		 * 
-		 * File pluginToCopy = new File(stagingPath + "/" + fileName); if
-		 * (!pluginToCopy.exists()) { plugin.getLogger().severe(
-		 * plugin.getConfig().getString( "errorMessages.fileNotFound"));
-		 * EDataException fileNotFoundEx = new EDataException();
-		 * fileNotFoundEx.code = ErrorCode.FILE_ERROR;
-		 * fileNotFoundEx.errorMessage = plugin.getConfig().getString(
-		 * "errorMessages.fileNotFound"); throw fileNotFoundEx; }
+		 * // this will create the holding area if it doesn't exist File
+		 * holdingArea = new File(stagingPath);
 		 * 
-		 * try { String newPluginPath = pluginsPath + "/" +
-		 * pluginToCopy.getName();
+		 * if (!holdingArea.exists()) { plugin.getLogger().info(
+		 * "Staging directory doesn't exist. Creating dir: " + stagingPath); //
+		 * try and create the directory if (!holdingArea.mkdir()) {
+		 * plugin.getLogger().severe( "Could not create staging directory!");
+		 * EDataException e = new EDataException(); e.code =
+		 * ErrorCode.FILE_ERROR; e.errorMessage = plugin.getConfig().getString(
+		 * "errorMessages.createStagingError"); throw e; } }
 		 * 
-		 * plugin.getLogger().info( "Copying file " + pluginToCopy + " to " +
-		 * newPluginPath + "..."); FileUtils.copyFile(pluginToCopy, new
-		 * File(newPluginPath)); plugin.getLogger().info("File copied."); }
-		 * catch (IOException e) { plugin.getLogger().severe(e.getMessage());
-		 * EDataException ioEx = new EDataException(); ioEx.code =
-		 * ErrorCode.FILE_ERROR; ioEx.errorMessage = ioEx.getMessage(); throw
-		 * ioEx; }
+		 * // at this point, we can assume that "stage" exists...in theory try {
+		 * plugin.getLogger().info( "Downloading file from: " + url + " ...");
+		 * URL dl = new URL(url); FileUtils.copyURLToFile(dl, new
+		 * File(stagingPath + "/" + FilenameUtils.getName(dl.getPath())), 5000,
+		 * 60000);
 		 * 
-		 * return false; }
+		 * File downloadedFile = new File(stagingPath + "/" +
+		 * FilenameUtils.getName(dl.getPath()));
+		 * plugin.getLogger().info("Download complete. Verifying md5.");
+		 * 
+		 * String calculatedHash = byteToString(createChecksum(downloadedFile
+		 * .getPath())); plugin.getLogger().info("Calculated hash: " +
+		 * calculatedHash);
+		 * 
+		 * if (md5.equalsIgnoreCase(calculatedHash)) {
+		 * plugin.getLogger().info("Hashes match"); return true; } else {
+		 * plugin.getLogger() .severe(
+		 * "Downloaded file hash does not match provided hash. Deleting file.");
+		 * downloadedFile.delete(); return false; } } catch
+		 * (MalformedURLException e) {
+		 * plugin.getLogger().severe(e.getMessage()); EDataException e1 = new
+		 * EDataException(); e1.code = ErrorCode.DOWNLOAD_ERROR; e1.errorMessage
+		 * = plugin.getConfig().getString( "errorMessages.malformedUrl"); throw
+		 * e1; } catch (IOException e) {
+		 * plugin.getLogger().severe(e.getMessage()); EDataException e1 = new
+		 * EDataException(); e1.code = ErrorCode.FILE_ERROR; e1.errorMessage =
+		 * e.getMessage(); throw e1; } catch (Exception e) {
+		 * plugin.getLogger().severe(e.getMessage()); return false; } }
 		 */
 
 		/**
@@ -265,54 +343,6 @@ public class SwiftServer {
 				return false;
 			}
 		}
-
-		/*
-		 * code to be reused
-		 * 
-		 * @Override public boolean downloadFile(String authString, String url,
-		 * String md5) throws EAuthException, EDataException, TException {
-		 * logCall("downloadFile"); authenticate(authString, "downloadFile");
-		 * 
-		 * // this will create the holding area if it doesn't exist File
-		 * holdingArea = new File(stagingPath);
-		 * 
-		 * if (!holdingArea.exists()) { plugin.getLogger().info(
-		 * "Staging directory doesn't exist. Creating dir: " + stagingPath); //
-		 * try and create the directory if (!holdingArea.mkdir()) {
-		 * plugin.getLogger().severe( "Could not create staging directory!");
-		 * EDataException e = new EDataException(); e.code =
-		 * ErrorCode.FILE_ERROR; e.errorMessage = plugin.getConfig().getString(
-		 * "errorMessages.createStagingError"); throw e; } }
-		 * 
-		 * // at this point, we can assume that "stage" exists...in theory try {
-		 * plugin.getLogger().info( "Downloading file from: " + url + " ...");
-		 * URL dl = new URL(url); FileUtils.copyURLToFile(dl, new
-		 * File(stagingPath + "/" + FilenameUtils.getName(dl.getPath())), 5000,
-		 * 60000);
-		 * 
-		 * File downloadedFile = new File(stagingPath + "/" +
-		 * FilenameUtils.getName(dl.getPath()));
-		 * plugin.getLogger().info("Download complete. Verifying md5.");
-		 * 
-		 * String calculatedHash = byteToString(createChecksum(downloadedFile
-		 * .getPath())); plugin.getLogger().info("Calculated hash: " +
-		 * calculatedHash);
-		 * 
-		 * if (md5.equalsIgnoreCase(calculatedHash)) {
-		 * plugin.getLogger().info("Hashes match"); return true; } else {
-		 * plugin.getLogger() .severe(
-		 * "Downloaded file hash does not match provided hash. Deleting file.");
-		 * downloadedFile.delete(); return false; } } catch
-		 * (MalformedURLException e) {
-		 * plugin.getLogger().severe(e.getMessage()); EDataException e1 = new
-		 * EDataException(); e1.code = ErrorCode.DOWNLOAD_ERROR; e1.errorMessage
-		 * = plugin.getConfig().getString( "errorMessages.malformedUrl"); throw
-		 * e1; } catch (IOException e) {
-		 * plugin.getLogger().severe(e.getMessage()); EDataException e1 = new
-		 * EDataException(); e1.code = ErrorCode.FILE_ERROR; e1.errorMessage =
-		 * e.getMessage(); throw e1; } catch (Exception e) {
-		 * plugin.getLogger().severe(e.getMessage()); return false; } }
-		 */
 
 		/**
 		 * Gets the IP addresses currently banned from joining this server
@@ -821,6 +851,48 @@ public class SwiftServer {
 		}
 
 		/**
+		 * Gets a specific world by name
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param worldName
+		 *            The name of the World to get
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the requested world could not be found
+		 * 
+		 * @return World The requested world
+		 * 
+		 */
+		@Override
+		public World getWorld(String authString, String worldName)
+				throws EAuthException, EDataException, TException {
+			logCall("getWorld");
+			authenticate(authString, "getWorld");
+
+			org.bukkit.World w = plugin.getServer().getWorld(worldName);
+
+			if (w == null) {
+				plugin.getLogger().info("World not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.worldNotFound"), worldName);
+				throw e;
+			}
+
+			return BukkitConverter.convertBukkitWorld(w);
+		}
+
+		/**
 		 * Gets all the worlds on the server
 		 * 
 		 * @param authString
@@ -1249,7 +1321,8 @@ public class SwiftServer {
 					plugin.getLogger().info(
 							"Plugin replacement complete, reloading");
 				} else {
-					plugin.getLogger().info("Sorry, SwiftApi can only install plugins with the extension \".jar\"");
+					plugin.getLogger()
+							.info("Sorry, SwiftApi can only install plugins with the extension \".jar\"");
 				}
 				return true;
 			} catch (MalformedURLException e) {
@@ -1313,6 +1386,51 @@ public class SwiftServer {
 		}
 
 		/**
+		 * Saves the specified world to disk
+		 *
+		 * @param authString
+		 *            The authentication hash
+		 *
+		 * @param worldName
+		 *            The name of the world to save
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the specified world could not be found
+		 *
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean saveWorld(String authString, String worldName)
+				throws EAuthException, EDataException, TException {
+			org.bukkit.World w = plugin.getServer().getWorld(worldName);
+
+			if (w == null) {
+				plugin.getLogger().info("World not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.worldNotFound"), worldName);
+				throw e;
+			}
+			
+			try {
+				plugin.getLogger().info("Saving world \"" + worldName + "\"...");
+				w.save();
+				plugin.getLogger().info("World saved.");
+				return true;				
+			} catch (Exception e) {
+				return false;
+			}			
+		}
+
+		/**
 		 * Sets the gamemode of a player
 		 * 
 		 * @param authString
@@ -1366,6 +1484,149 @@ public class SwiftServer {
 			} catch (Exception e) {
 				return false;
 			}
+		}
+
+		/**
+		 * Set's the isPVP property on the specified world
+		 *
+		 * @param authString
+		 *            The authentication hash
+		 *
+		 * @param worldName
+		 *            The name of the world to set the pvp flag for
+		 *
+		 * @param isPvp
+		 *            The value to set the isPVP property to
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the specified world could not be found
+		 *
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean setPvp(String authString, String worldName, boolean isPvp)
+				throws EAuthException, EDataException, TException {
+			org.bukkit.World w = plugin.getServer().getWorld(worldName);
+
+			if (w == null) {
+				plugin.getLogger().info("World not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.worldNotFound"), worldName);
+				throw e;
+			}
+			
+			try {
+				plugin.getLogger().info("Setting PVP to " + String.valueOf(isPvp) + " for world \"" + worldName + "\"");
+				w.setPVP(isPvp);
+				return true;				
+			} catch (Exception e) {
+				return false;
+			}	
+		}
+
+		/**
+		 * Set's the hasStorm property on the specified world (i.e. makes it rain)
+		 *
+		 * @param authString
+		 *            The authentication hash
+		 *
+		 * @param worldName
+		 *            The name of the world to set the storm for
+		 *
+		 * @param hasStorm
+		 *            The value to set the storm property to
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the specified world could not be found
+		 *
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */		
+		@Override
+		public boolean setStorm(String authString, String worldName,
+				boolean hasStorm) throws EAuthException, EDataException,
+				TException {
+			org.bukkit.World w = plugin.getServer().getWorld(worldName);
+
+			if (w == null) {
+				plugin.getLogger().info("World not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.worldNotFound"), worldName);
+				throw e;
+			}
+			
+			try {
+				plugin.getLogger().info("Setting storm to " + String.valueOf(hasStorm) + " for world \"" + worldName + "\"");
+				w.setStorm(hasStorm);
+				return true;				
+			} catch (Exception e) {
+				return false;
+			}	
+		}
+
+		/**
+		 * Set's the isThundering property on the specified world
+		 *
+		 * @param authString
+		 *            The authentication hash
+		 *
+		 * @param worldName
+		 *            The name of the world to set the storm for
+		 *
+		 * @param isThundering
+		 *            The value to set the isThundering property to
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the specified world could not be found
+		 *
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean setThundering(String authString, String worldName,
+				boolean isThundering) throws EAuthException, EDataException,
+				TException {
+			org.bukkit.World w = plugin.getServer().getWorld(worldName);
+
+			if (w == null) {
+				plugin.getLogger().info("World not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.worldNotFound"), worldName);
+				throw e;
+			}
+			
+			try {
+				plugin.getLogger().info("Setting thundering to " + String.valueOf(isThundering) + " for world \"" + worldName + "\"");
+				w.setThundering(isThundering);
+				return true;				
+			} catch (Exception e) {
+				return false;
+			}	
 		}
 
 		/**

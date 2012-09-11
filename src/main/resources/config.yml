@@ -49,3 +49,7 @@ errorMessages:
     
     # Could not get the JAR file of a specific plugin
     jarNotFound: Could not find the plugin's JAR file
+    
+    # Requested world was not found
+    # Use %s to represent the requested world name
+    worldNotFound: World "%s" was not found

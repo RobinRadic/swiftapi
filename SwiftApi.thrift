@@ -569,7 +569,27 @@ service SwiftApi {
 						2:string name)
 	throws (1:Errors.EAuthException aex,
 			2:Errors.EDataException dex),
-	
+
+/**
+ * Broadcasts a message to all players on the server
+ *
+ * @param authString
+ *            The authentication hash
+ *
+ * @param message
+ *            The message to send
+ * 
+ * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ *
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool announce(1:string authString, 2:string message)
+	throws (1:Errors.EAuthException aex),
+
 /**
  * Permanently ban a player from the server by name. The player can be
  * offline, or have never played on this server before
@@ -755,6 +775,26 @@ service SwiftApi {
  * 
  */
 	string getBukkitVersion(1:string authString) throws (1:Errors.EAuthException aex),
+
+/**
+ * Get the last 500 console messages. This method may change in the future to 
+ * include a "count" parameter so that you can specify how many lines to get, 
+ * but I'm unaware how much memory it would consume to keep ALL logs (since 
+ * restart or reload of plugin). Therefore it is capped at 500 for now.
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */			
+	list<ConsoleLine> getConsoleMessages(1:string authString) 
+	throws (1:Errors.EAuthException aex),
 	
 /**
  * Get an offline player. This method will always return an
@@ -964,7 +1004,32 @@ service SwiftApi {
  * @return List<OfflinePlayer> The players on the server's whitelist
  * 
  */
-	list<OfflinePlayer> getWhitelist(1:string authString) throws (1:Errors.EAuthException aex),
+	list<OfflinePlayer> getWhitelist(1:string authString) 
+	throws (1:Errors.EAuthException aex),
+	
+/**
+ * Gets a specific world by name
+ * 
+ * @param authString
+ *            The authentication hash
+ *
+ * @param worldName
+ *            The name of the World to get
+ * 
+ * @throws TException
+ *             If something thrifty went wrong
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ *
+ * @throws Errors.EDataException
+ *             If the requested world could not be found
+ * 
+ * @return World The requested world
+ * 
+ */
+	World getWorld(1:string authString, 2:string worldName) 
+	throws (1:Errors.EAuthException aex, 2:Errors.EDataException dex),
 	
 /**
  * Gets all the worlds on the server
@@ -1042,6 +1107,22 @@ service SwiftApi {
 			2:Errors.EDataException dex),
 
 /**
+ * Just a keepalive method to test authentication in clients
+ *
+ * @param authString
+ *            The authentication hash
+ * 
+ * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool ping(1:string authString) throws (1:Errors.EAuthException aex),
+
+/**
  * Reloads the server. This call does not send a response (for obvious reasons)
  * 
  * @param authString
@@ -1076,103 +1157,6 @@ service SwiftApi {
 							 2:string name)
 	throws (1:Errors.EAuthException aex,
 			2:Errors.EDataException dex),
-	
-/**
- * Sets the gamemode of a player
- * 
- * @param authString
- *            The authentication hash
- * 
- * @param name
- *            The name of the player
- * 
- * @param mode
- *            The GameMode to set the player to
- * 
- * @throws TException
- *             If something thrifty went wrong
- * 
- * @throws Errors.EAuthException
- *             If the method call was not correctly authenticated
- * 
- * @throws Errors.EDataException
- *             If the Player was not found
- * 
- * @return String the current bukkit version
- * 
- */
-	bool setGameMode(1:string authString, 
-					 2:string name, 
-					 3:GameMode mode) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
-	
-/**
- * Un ban a specific player
- * 
- * @param authString
- *            The authentication hash
- * 
- * @param name
- *            The name of the player to unban
- * 
- * @return boolean true on success false on failure
- * 
- * @throws Errors.EAuthException
- *             If the method call was not correctly authenticated
- * 
- * @throws Errors.EDataException
- *             If the player was not found
- * 
- * @throws org.apache.thrift.TException
- *             If something went wrong with Thrift
- */
-	bool unBan(1:string authString, 
-			   2:string name) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
-	
-/**
- * Un ban a specific IP from connecting to this server
- * 
- * @param authString
- *            The authentication hash
- * 
- * @param ip
- *            The IP to unban
- * 
- * @return boolean true on success false on failure
- * 
- * @throws Errors.EAuthException
- *             If the method call was not correctly authenticated
- * 
- * @throws org.apache.thrift.TException
- *             If something went wrong with Thrift
- */
-	bool unBanIp(1:string authString, 
-				 2:string ip) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
-
-/**
- * Get the last 500 console messages. This method may change in the future to 
- * include a "count" parameter so that you can specify how many lines to get, 
- * but I'm unaware how much memory it would consume to keep ALL logs (since 
- * restart or reload of plugin). Therefore it is capped at 500 for now.
- * 
- * @param authString
- *            The authentication hash
- * 
- * @return boolean true on success false on serious failure
- * 
- * @throws Errors.EAuthException
- *             If the method call was not correctly authenticated
- * 
- * @throws org.apache.thrift.TException
- *             If something went wrong with Thrift
- */			
-	list<ConsoleLine> getConsoleMessages(1:string authString) 
-	throws (1:Errors.EAuthException aex),
 
 /**
  * This method will replace a given plugin's .jar file with a new
@@ -1229,14 +1213,182 @@ service SwiftApi {
  *             If something went wrong with Thrift
  */	
 	bool runConsoleCommand(1:string authString, 2:string command) throws (1:Errors.EAuthException aex),
-	
+			
 /**
- * Just a keepalive method to test authentication in clients
+ * Saves the specified world to disk
  *
  * @param authString
  *            The authentication hash
+ *
+ * @param worldName
+ *            The name of the world to save
  * 
  * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the specified world could not be found
+ *
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool saveWorld(1:string authString, 
+				   2:string worldName)
+	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
+			
+/**
+ * Sets the gamemode of a player
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param name
+ *            The name of the player
+ * 
+ * @param mode
+ *            The GameMode to set the player to
+ * 
+ * @throws TException
+ *             If something thrifty went wrong
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the Player was not found
+ * 
+ * @return String the current bukkit version
+ * 
+ */
+	bool setGameMode(1:string authString, 
+					 2:string name, 
+					 3:GameMode mode) 
+	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
+
+/**
+ * Set's the isPVP property on the specified world
+ *
+ * @param authString
+ *            The authentication hash
+ *
+ * @param worldName
+ *            The name of the world to set the pvp flag for
+ *
+ * @param isPvp
+ *            The value to set the isPVP property to
+ * 
+ * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the specified world could not be found
+ *
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool setPvp(1:string authString, 
+			    2:string worldName, 
+			    3:bool isPvp)
+	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
+
+/**
+ * Set's the hasStorm property on the specified world (i.e. makes it rain)
+ *
+ * @param authString
+ *            The authentication hash
+ *
+ * @param worldName
+ *            The name of the world to set the storm for
+ *
+ * @param hasStorm
+ *            The value to set the storm property to
+ * 
+ * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the specified world could not be found
+ *
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool setStorm(1:string authString, 2:string worldName, 3:bool hasStorm)
+	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
+
+/**
+ * Set's the isThundering property on the specified world
+ *
+ * @param authString
+ *            The authentication hash
+ *
+ * @param worldName
+ *            The name of the world to set the storm for
+ *
+ * @param isThundering
+ *            The value to set the isThundering property to
+ * 
+ * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the specified world could not be found
+ *
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool setThundering(1:string authString, 
+					   2:string worldName, 
+					   3:bool isThundering)
+	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
+			
+/**
+ * Un ban a specific player
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param name
+ *            The name of the player to unban
+ * 
+ * @return boolean true on success false on failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the player was not found
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool unBan(1:string authString, 
+			   2:string name) 
+	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
+	
+/**
+ * Un ban a specific IP from connecting to this server
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param ip
+ *            The IP to unban
+ * 
+ * @return boolean true on success false on failure
  * 
  * @throws Errors.EAuthException
  *             If the method call was not correctly authenticated
@@ -1244,6 +1396,9 @@ service SwiftApi {
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */
-	bool ping(1:string authString) throws (1:Errors.EAuthException aex),
- 
+	bool unBanIp(1:string authString, 
+				 2:string ip) 
+	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
+
 }
