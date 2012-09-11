@@ -153,7 +153,7 @@ enum Enchantment {
  * A line from the console
  */
 struct ConsoleLine {
-	/*
+	/**
 	 * A unix-style timestamp (in milliseconds)
 	 */
 	1:i64 timestamp,
