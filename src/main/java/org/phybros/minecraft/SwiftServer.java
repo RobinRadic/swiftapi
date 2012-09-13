@@ -20,7 +20,6 @@ import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TNonblockingServerTransport;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.phybros.thrift.ConsoleLine;
 import org.phybros.thrift.EAuthException;
@@ -1417,7 +1416,7 @@ public class SwiftServer {
 								"errorMessages.worldNotFound"), worldName);
 				throw e;
 			}
-			
+
 			try {
 				plugin.getLogger().info("Saving world \"" + worldName + "\"...");
 				w.save();
