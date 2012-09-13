@@ -35,6 +35,9 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
     schemes.put(TupleScheme.class, new ConsoleLineTupleSchemeFactory());
   }
 
+  /**
+   * A unix-style timestamp (in milliseconds)
+   */
   public long timestamp; // required
   /**
    * The actual message from the console
@@ -47,6 +50,9 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * A unix-style timestamp (in milliseconds)
+     */
     TIMESTAMP((short)1, "timestamp"),
     /**
      * The actual message from the console
@@ -173,10 +179,16 @@ public class ConsoleLine implements org.apache.thrift.TBase<ConsoleLine, Console
     this.level = null;
   }
 
+  /**
+   * A unix-style timestamp (in milliseconds)
+   */
   public long getTimestamp() {
     return this.timestamp;
   }
 
+  /**
+   * A unix-style timestamp (in milliseconds)
+   */
   public ConsoleLine setTimestamp(long timestamp) {
     this.timestamp = timestamp;
     setTimestampIsSet(true);

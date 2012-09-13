@@ -16,10 +16,10 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.thrift.TException;
+import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
-import org.apache.thrift.server.TSimpleServer;
-import org.apache.thrift.transport.TServerSocket;
-import org.apache.thrift.transport.TServerTransport;
+import org.apache.thrift.transport.TNonblockingServerSocket;
+import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.phybros.thrift.ConsoleLine;
@@ -1062,18 +1062,15 @@ public class SwiftServer {
 		 *            The authentication hash
 		 */
 		@Override
-		public boolean reloadServer(String authString) throws EAuthException,
-				TException {
+		public void reloadServer(String authString) {
 			logCall("reloadServer");
-			authenticate(authString, "reloadServer");
 
 			try {
+				authenticate(authString, "reloadServer");
 				plugin.getServer().reload();
-				return true;
 			} catch (Exception e) {
 				plugin.getLogger().info(
 						"Error while reloading: " + e.getMessage());
-				return false;
 			}
 
 		}
@@ -1843,9 +1840,17 @@ public class SwiftServer {
 					 * plugin.getLogger().info( "Listening on port " +
 					 * String.valueOf(port)); server.serve();
 					 */
+					 
+					/*
 					TServerTransport tst = new TServerSocket(port);
 					server = new TSimpleServer(
 							new TSimpleServer.Args(tst).processor(pro));
+					plugin.getLogger().info(
+							"Listening on port " + String.valueOf(port));
+					*/
+					
+					TNonblockingServerTransport tst = new TNonblockingServerSocket(port);
+					server = new TNonblockingServer(new TNonblockingServer.Args(tst).processor(pro));
 					plugin.getLogger().info(
 							"Listening on port " + String.valueOf(port));
 					server.serve();

@@ -59,7 +59,7 @@ public class BukkitConverter {
 		newPlayer.name = bukkitOfflinePlayer.getName();
 		newPlayer.hasPlayedBefore = bukkitOfflinePlayer.hasPlayedBefore();
 
-		if (bukkitOfflinePlayer.isOnline()) {
+		if (bukkitOfflinePlayer.getPlayer() != null) {
 			newPlayer.player = convertBukkitPlayer(bukkitOfflinePlayer
 					.getPlayer());
 		}
@@ -198,25 +198,25 @@ public class BukkitConverter {
 			org.bukkit.plugin.Plugin bukkitPlugin) {
 
 		Plugin newPlugin = new Plugin();
-		
+
 		newPlugin.authors = bukkitPlugin.getDescription().getAuthors();
 		newPlugin.description = bukkitPlugin.getDescription().getDescription();
 		newPlugin.enabled = bukkitPlugin.isEnabled();
 		newPlugin.name = bukkitPlugin.getDescription().getName();
 		newPlugin.version = bukkitPlugin.getDescription().getVersion();
 		newPlugin.website = bukkitPlugin.getDescription().getWebsite();
-		
+
 		try {
 			ProtectionDomain p = bukkitPlugin.getClass().getProtectionDomain();
 			File f = new File(p.getCodeSource().getLocation().toString());
-			if(f.isFile()) {
+			if (f.isFile()) {
 				newPlugin.fileName = f.getName();
 			}
-		} catch(Exception e) {
-			
+		} catch (Exception e) {
+
 		}
-		
+
 		return newPlugin;
-		
+
 	}
 }

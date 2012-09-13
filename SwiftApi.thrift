@@ -1128,8 +1128,7 @@ service SwiftApi {
  * @param authString
  *            The authentication hash
  */
-	bool reloadServer(1:string authString)
-	throws (1:Errors.EAuthException aex),
+	oneway void reloadServer(1:string authString)
 	
 /**
  * Remove a Player from the server's whitelist. The player can be offline, or
