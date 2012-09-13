@@ -1371,20 +1371,16 @@ public class SwiftServer {
 		 *             If something went wrong with Thrift
 		 */
 		@Override
-		public boolean runConsoleCommand(String authString, String command)
-				throws EAuthException, TException {
+		public void runConsoleCommand(String authString, String command) {
 			logCall("runConsoleCommand");
-			authenticate(authString, "runConsoleCommand");
 
 			try {
-				Bukkit.getServer().dispatchCommand(
-						Bukkit.getServer().getConsoleSender(), command);
-				return true;
+				authenticate(authString, "runConsoleCommand");
+				plugin.getServer().dispatchCommand(
+						plugin.getServer().getConsoleSender(), command);
 			} catch (Exception e) {
 				plugin.getLogger().severe(e.getMessage());
 			}
-
-			return false;
 		}
 
 		/**

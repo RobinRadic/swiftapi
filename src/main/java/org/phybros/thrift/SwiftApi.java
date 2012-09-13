@@ -672,7 +672,7 @@ public class SwiftApi {
      * @param authString
      * @param command
      */
-    public boolean runConsoleCommand(String authString, String command) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public void runConsoleCommand(String authString, String command) throws org.apache.thrift.TException;
 
     /**
      * Saves the specified world to disk
@@ -1698,10 +1698,9 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "replacePlugin failed: unknown result");
     }
 
-    public boolean runConsoleCommand(String authString, String command) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public void runConsoleCommand(String authString, String command) throws org.apache.thrift.TException
     {
       send_runConsoleCommand(authString, command);
-      return recv_runConsoleCommand();
     }
 
     public void send_runConsoleCommand(String authString, String command) throws org.apache.thrift.TException
@@ -1710,19 +1709,6 @@ public class SwiftApi {
       args.setAuthString(authString);
       args.setCommand(command);
       sendBase("runConsoleCommand", args);
-    }
-
-    public boolean recv_runConsoleCommand() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
-    {
-      runConsoleCommand_result result = new runConsoleCommand_result();
-      receiveBase(result, "runConsoleCommand");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      if (result.aex != null) {
-        throw result.aex;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "runConsoleCommand failed: unknown result");
     }
 
     public boolean saveWorld(String authString, String worldName) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
@@ -2885,7 +2871,7 @@ public class SwiftApi {
       private String authString;
       private String command;
       public runConsoleCommand_call(String authString, String command, org.apache.thrift.async.AsyncMethodCallback<runConsoleCommand_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
+        super(client, protocolFactory, transport, resultHandler, true);
         this.authString = authString;
         this.command = command;
       }
@@ -2899,13 +2885,12 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public void getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_runConsoleCommand();
       }
     }
 
@@ -3793,15 +3778,9 @@ public class SwiftApi {
         return new runConsoleCommand_args();
       }
 
-      protected runConsoleCommand_result getResult(I iface, runConsoleCommand_args args) throws org.apache.thrift.TException {
-        runConsoleCommand_result result = new runConsoleCommand_result();
-        try {
-          result.success = iface.runConsoleCommand(args.authString, args.command);
-          result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
-          result.aex = aex;
-        }
-        return result;
+      protected org.apache.thrift.TBase getResult(I iface, runConsoleCommand_args args) throws org.apache.thrift.TException {
+        iface.runConsoleCommand(args.authString, args.command);
+        return null;
       }
     }
 
@@ -29160,458 +29139,6 @@ public class SwiftApi {
         if (incoming.get(1)) {
           struct.command = iprot.readString();
           struct.setCommandIsSet(true);
-        }
-      }
-    }
-
-  }
-
-  public static class runConsoleCommand_result implements org.apache.thrift.TBase<runConsoleCommand_result, runConsoleCommand_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("runConsoleCommand_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.BOOL, (short)0);
-    private static final org.apache.thrift.protocol.TField AEX_FIELD_DESC = new org.apache.thrift.protocol.TField("aex", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new runConsoleCommand_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new runConsoleCommand_resultTupleSchemeFactory());
-    }
-
-    public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success"),
-      AEX((short)1, "aex");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          case 1: // AEX
-            return AEX;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-    private static final int __SUCCESS_ISSET_ID = 0;
-    private BitSet __isset_bit_vector = new BitSet(1);
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-      tmpMap.put(_Fields.AEX, new org.apache.thrift.meta_data.FieldMetaData("aex", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(runConsoleCommand_result.class, metaDataMap);
-    }
-
-    public runConsoleCommand_result() {
-    }
-
-    public runConsoleCommand_result(
-      boolean success,
-      org.phybros.thrift.EAuthException aex)
-    {
-      this();
-      this.success = success;
-      setSuccessIsSet(true);
-      this.aex = aex;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public runConsoleCommand_result(runConsoleCommand_result other) {
-      __isset_bit_vector.clear();
-      __isset_bit_vector.or(other.__isset_bit_vector);
-      this.success = other.success;
-      if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
-      }
-    }
-
-    public runConsoleCommand_result deepCopy() {
-      return new runConsoleCommand_result(this);
-    }
-
-    @Override
-    public void clear() {
-      setSuccessIsSet(false);
-      this.success = false;
-      this.aex = null;
-    }
-
-    public boolean isSuccess() {
-      return this.success;
-    }
-
-    public runConsoleCommand_result setSuccess(boolean success) {
-      this.success = success;
-      setSuccessIsSet(true);
-      return this;
-    }
-
-    public void unsetSuccess() {
-      __isset_bit_vector.clear(__SUCCESS_ISSET_ID);
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return __isset_bit_vector.get(__SUCCESS_ISSET_ID);
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      __isset_bit_vector.set(__SUCCESS_ISSET_ID, value);
-    }
-
-    public org.phybros.thrift.EAuthException getAex() {
-      return this.aex;
-    }
-
-    public runConsoleCommand_result setAex(org.phybros.thrift.EAuthException aex) {
-      this.aex = aex;
-      return this;
-    }
-
-    public void unsetAex() {
-      this.aex = null;
-    }
-
-    /** Returns true if field aex is set (has been assigned a value) and false otherwise */
-    public boolean isSetAex() {
-      return this.aex != null;
-    }
-
-    public void setAexIsSet(boolean value) {
-      if (!value) {
-        this.aex = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((Boolean)value);
-        }
-        break;
-
-      case AEX:
-        if (value == null) {
-          unsetAex();
-        } else {
-          setAex((org.phybros.thrift.EAuthException)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return Boolean.valueOf(isSuccess());
-
-      case AEX:
-        return getAex();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      case AEX:
-        return isSetAex();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof runConsoleCommand_result)
-        return this.equals((runConsoleCommand_result)that);
-      return false;
-    }
-
-    public boolean equals(runConsoleCommand_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true;
-      boolean that_present_success = true;
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (this.success != that.success)
-          return false;
-      }
-
-      boolean this_present_aex = true && this.isSetAex();
-      boolean that_present_aex = true && that.isSetAex();
-      if (this_present_aex || that_present_aex) {
-        if (!(this_present_aex && that_present_aex))
-          return false;
-        if (!this.aex.equals(that.aex))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(runConsoleCommand_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      runConsoleCommand_result typedOther = (runConsoleCommand_result)other;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      lastComparison = Boolean.valueOf(isSetAex()).compareTo(typedOther.isSetAex());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetAex()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aex, typedOther.aex);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-      }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("runConsoleCommand_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      sb.append(this.success);
-      first = false;
-      if (!first) sb.append(", ");
-      sb.append("aex:");
-      if (this.aex == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.aex);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class runConsoleCommand_resultStandardSchemeFactory implements SchemeFactory {
-      public runConsoleCommand_resultStandardScheme getScheme() {
-        return new runConsoleCommand_resultStandardScheme();
-      }
-    }
-
-    private static class runConsoleCommand_resultStandardScheme extends StandardScheme<runConsoleCommand_result> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, runConsoleCommand_result struct) throws org.apache.thrift.TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
-                struct.success = iprot.readBool();
-                struct.setSuccessIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            case 1: // AEX
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
-                struct.aex.read(iprot);
-                struct.setAexIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, runConsoleCommand_result struct) throws org.apache.thrift.TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        oprot.writeBool(struct.success);
-        oprot.writeFieldEnd();
-        if (struct.aex != null) {
-          oprot.writeFieldBegin(AEX_FIELD_DESC);
-          struct.aex.write(oprot);
-          oprot.writeFieldEnd();
-        }
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class runConsoleCommand_resultTupleSchemeFactory implements SchemeFactory {
-      public runConsoleCommand_resultTupleScheme getScheme() {
-        return new runConsoleCommand_resultTupleScheme();
-      }
-    }
-
-    private static class runConsoleCommand_resultTupleScheme extends TupleScheme<runConsoleCommand_result> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, runConsoleCommand_result struct) throws org.apache.thrift.TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-        BitSet optionals = new BitSet();
-        if (struct.isSetSuccess()) {
-          optionals.set(0);
-        }
-        if (struct.isSetAex()) {
-          optionals.set(1);
-        }
-        oprot.writeBitSet(optionals, 2);
-        if (struct.isSetSuccess()) {
-          oprot.writeBool(struct.success);
-        }
-        if (struct.isSetAex()) {
-          struct.aex.write(oprot);
-        }
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, runConsoleCommand_result struct) throws org.apache.thrift.TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(2);
-        if (incoming.get(0)) {
-          struct.success = iprot.readBool();
-          struct.setSuccessIsSet(true);
-        }
-        if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
-          struct.aex.read(iprot);
-          struct.setAexIsSet(true);
         }
       }
     }

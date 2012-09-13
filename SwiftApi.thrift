@@ -1211,7 +1211,7 @@ service SwiftApi {
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */	
-	bool runConsoleCommand(1:string authString, 2:string command) throws (1:Errors.EAuthException aex),
+	oneway void runConsoleCommand(1:string authString, 2:string command)
 			
 /**
  * Saves the specified world to disk
