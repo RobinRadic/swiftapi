@@ -16,8 +16,8 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.thrift.TException;
-import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
+import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.bukkit.OfflinePlayer;
@@ -1845,7 +1845,7 @@ public class SwiftServer {
 					*/
 					
 					TNonblockingServerTransport tst = new TNonblockingServerSocket(port);
-					server = new TNonblockingServer(new TNonblockingServer.Args(tst).processor(pro));
+					server = new TThreadedSelectorServer(new TThreadedSelectorServer.Args(tst).processor(pro));
 					plugin.getLogger().info(
 							"Listening on port " + String.valueOf(port));
 					server.serve();
