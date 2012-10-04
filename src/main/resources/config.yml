@@ -55,4 +55,4 @@ errorMessages:
     worldNotFound: World "%s" was not found
     
     # Client tried to download and install a file that wasn't a JAR
-    invalidPluginType: Only files of type ".jar" can be installed using SwiftApi
+    invalidPluginType: Only files of type ".jar" and ".zip" can be installed using SwiftApi

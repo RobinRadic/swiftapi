@@ -1047,6 +1047,38 @@ service SwiftApi {
  * 
  */
 	list<World> getWorlds(1:string authString) throws (1:Errors.EAuthException aex),
+
+/**
+ * This method will download and install (copy/unzip) a plugin from a given URL
+ * onto the server.
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param downloadUrl
+ *            The URL of the file to be downloaded
+ * 
+ * @param md5
+ *            The md5 hash of the file that is being downloaded
+ * 
+ * @return boolean true on success false on failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If something went wrong during the file download, or the
+ *             computed hash does not match the provided hash or the
+ *             requested plugin could not be found.
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool installPlugin(1:string authString, 
+					   2:string downloadUrl, 
+					   3:string md5) 
+	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
 		
 /**
  * Kick a currently online Player from the server with a specific custom

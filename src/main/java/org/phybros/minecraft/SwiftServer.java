@@ -3,6 +3,7 @@ package org.phybros.minecraft;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -12,6 +13,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -37,9 +40,9 @@ public class SwiftServer {
 	public class SwiftApiHandler implements SwiftApi.Iface {
 
 		private String stagingPath = plugin.getDataFolder().getPath()
-				+ "/stage";
+				+ File.separator + "stage";
 		private String oldPluginsPath = plugin.getDataFolder().getPath()
-				+ "/oldPlugins";
+				+ File.separator + "oldPlugins";
 		private String pluginsPath = plugin.getDataFolder().getParent();
 
 		/**
@@ -921,6 +924,157 @@ public class SwiftServer {
 		}
 
 		/**
+		 * This method will download and install (copy/unzip) a plugin from a given URL
+		 * onto the server.
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param downloadUrl
+		 *            The URL of the file to be downloaded
+		 * 
+		 * @param md5
+		 *            The md5 hash of the file that is being downloaded
+		 * 
+		 * @return boolean true on success false on failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If something went wrong during the file download, or the
+		 *             computed hash does not match the provided hash or the
+		 *             requested plugin could not be found.
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean installPlugin(String authString, String downloadUrl,
+				String md5) throws EAuthException, EDataException, TException {
+			logCall("installPlugin");
+			authenticate(authString, "installPlugin");
+
+			// this will create the holding area if it doesn't exist
+			File holdingArea = new File(stagingPath);
+
+			// if the staging directory doesn't exist, then create it
+			if (!holdingArea.exists()) {
+				plugin.getLogger().info(
+						"Staging directory doesn't exist. Creating dir: "
+								+ stagingPath);
+				// try and create the directory
+				if (!holdingArea.mkdir()) {
+					plugin.getLogger().severe(
+							"Could not create staging directory!");
+					EDataException e = new EDataException();
+					e.code = ErrorCode.FILE_ERROR;
+					e.errorMessage = plugin.getConfig().getString(
+							"errorMessages.createDirectoryError");
+					throw e;
+				}
+			}
+
+			// at this point, we can assume that "stage" exists...in theory
+
+			plugin.getLogger().info(
+					"Downloading file from: " + downloadUrl + " ...");
+
+			try {
+				URL dl = new URL(downloadUrl);
+
+				// create a location to download the file to
+				File downloadedFileObject = new File(stagingPath
+						+ File.separator + FilenameUtils.getName(dl.getPath()));
+
+				// download the file
+				FileUtils.copyURLToFile(dl, downloadedFileObject, 5000, 60000);
+
+				File downloadedFile = new File(stagingPath + File.separator
+						+ FilenameUtils.getName(dl.getPath()));
+				plugin.getLogger().info("Download complete. Verifying md5.");
+
+				// figure out the MD5 hash of the downloaded file
+				String calculatedHash = byteToString(createChecksum(downloadedFile
+						.getPath()));
+				plugin.getLogger().info("Calculated hash: " + calculatedHash);
+
+				if (md5.equalsIgnoreCase(calculatedHash)) {
+					plugin.getLogger().info("Hashes match");
+				} else {
+					plugin.getLogger()
+							.severe("Downloaded file hash does not match provided hash. Deleting file.");
+					downloadedFile.delete();
+
+					EDataException e = new EDataException();
+					e.code = ErrorCode.DOWNLOAD_ERROR;
+					e.errorMessage = plugin.getConfig().getString(
+							"errorMessages.hashMismatch");
+					throw e;
+				}
+
+				plugin.getLogger().info("Installing plugin...");
+
+				// copy the downloaded file to the plugins DIR
+				String newDownloadedPluginPath = pluginsPath + File.separator
+						+ downloadedFile.getName();
+
+				if (downloadedFileObject.getName().endsWith(".zip")) {
+					File zipFile = new File(newDownloadedPluginPath);
+					FileUtils.copyFile(downloadedFileObject, zipFile);
+
+					plugin.getLogger().info("Unzipping plugin...");
+					unzipFile(zipFile, pluginsPath);
+					plugin.getLogger().info("Plugin unzipped.");
+
+					zipFile.delete();
+				} else if (downloadedFileObject.getName().endsWith(".jar")) {
+					FileUtils.copyFile(downloadedFileObject, new File(
+							newDownloadedPluginPath));
+				} else {
+					plugin.getLogger()
+							.warning(
+									"Sorry, SwiftApi can only install plugins with the extension \".jar\" and \".zip\"");
+					EDataException e = new EDataException();
+					e.code = ErrorCode.FILE_ERROR;
+					e.errorMessage = plugin.getConfig().getString(
+							"errorMessages.invalidPluginType");
+					throw e;
+				}
+
+				plugin.getLogger()
+						.info("Plugin installation complete. Reload or restart to use new version.");
+
+				return true;
+			} catch (MalformedURLException e) {
+				plugin.getLogger().severe(e.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.DOWNLOAD_ERROR;
+				e1.errorMessage = plugin.getConfig().getString(
+						"errorMessages.malformedUrl");
+				throw e1;
+			} catch (FileNotFoundException e) {
+				plugin.getLogger().severe(e.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = e.getMessage();
+				throw e1;
+			} catch (IOException e) {
+				plugin.getLogger().severe(e.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = e.getMessage();
+				throw e1;
+			} catch (NoSuchAlgorithmException e) {
+				plugin.getLogger().severe(e.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = e.getMessage();
+				throw e1;
+			}
+		}
+
+		/**
 		 * Kick a currently online Player from the server with a specific custom
 		 * message
 		 * 
@@ -1214,13 +1368,13 @@ public class SwiftServer {
 				URL dl = new URL(downloadUrl);
 
 				// create a locatio to download the file to
-				File downloadedFileObject = new File(stagingPath + "/"
-						+ FilenameUtils.getName(dl.getPath()));
+				File downloadedFileObject = new File(stagingPath
+						+ File.separator + FilenameUtils.getName(dl.getPath()));
 
 				// download the file
 				FileUtils.copyURLToFile(dl, downloadedFileObject, 5000, 60000);
 
-				File downloadedFile = new File(stagingPath + "/"
+				File downloadedFile = new File(stagingPath + File.separator
 						+ FilenameUtils.getName(dl.getPath()));
 				plugin.getLogger().info("Download complete. Verifying md5.");
 
@@ -1290,7 +1444,7 @@ public class SwiftServer {
 				// copy the plugin to the backup directory
 				// Format: <PluginName>_<Version>-<Timestamp>.jar.old
 				String destination = oldPluginsPath
-						+ "/"
+						+ File.separator
 						+ (p.getName() + "_" + p.getDescription().getVersion()
 								+ "-" + String.valueOf(System
 								.currentTimeMillis())).replaceAll("\\W+", "-")
@@ -1298,7 +1452,8 @@ public class SwiftServer {
 
 				plugin.getLogger().info(
 						"Backing up old JAR file to " + destination);
-				File oldPlugin = new File(pluginsPath + "/" + f.getName());
+				File oldPlugin = new File(pluginsPath + File.separator
+						+ f.getName());
 				FileUtils.copyFile(oldPlugin, new File(destination), false);
 
 				if (downloadedFile.getName().compareTo(f.getName()) != 0) {
@@ -1307,22 +1462,26 @@ public class SwiftServer {
 									+ " will still be named " + f.getName());
 				}
 
-				plugin.getLogger().info("Installing new JAR file..");
+				plugin.getLogger().info("Installing plugin...");
 				// copy the downloaded file to the plugins DIR
-				String newDownloadedPluginPath = pluginsPath + "/"
+				String newDownloadedPluginPath = pluginsPath + File.separator
 						+ downloadedFile.getName();
 
 				if (downloadedFileObject.getName().endsWith(".zip")) {
 					File zipFile = new File(newDownloadedPluginPath);
 					FileUtils.copyFile(downloadedFileObject, zipFile);
+
+					plugin.getLogger().info("Unzipping plugin...");
 					unzipFile(zipFile, pluginsPath);
+					plugin.getLogger().info("Plugin unzipped.");
+
 					zipFile.delete();
 				} else if (downloadedFileObject.getName().endsWith(".jar")) {
 					FileUtils.copyFile(downloadedFileObject, oldPlugin);
 				} else {
 					plugin.getLogger()
 							.warning(
-									"Sorry, SwiftApi can only install plugins with the extension \".jar\"");
+									"Sorry, SwiftApi can only install plugins with the extension \".jar\" and \".zip\"");
 					EDataException e = new EDataException();
 					e.code = ErrorCode.FILE_ERROR;
 					e.errorMessage = plugin.getConfig().getString(
@@ -1360,10 +1519,6 @@ public class SwiftServer {
 				e1.errorMessage = e.getMessage();
 				throw e1;
 			}
-		}
-
-		private void unzipFile(File zipFile, String outputDirectory) {
-			// TODO: recursively unzip the input file into the output directory			
 		}
 
 		/**
@@ -1806,6 +1961,49 @@ public class SwiftServer {
 				plugin.getLogger().info(
 						"SwiftApi method called: " + methodName + "()");
 			}
+		}
+
+		private void unzipFile(File zipFile, String outputDirectory)
+				throws IOException {
+			// TODO: recursively unzip the input file into the output directory
+			byte[] buffer = new byte[1024];
+
+			// create output directory is not exists
+			File folder = new File(outputDirectory);
+			if (!folder.exists()) {
+				folder.mkdirs();
+			}
+
+			// get the zip file content
+			ZipInputStream zis = new ZipInputStream(
+					new FileInputStream(zipFile));
+			// get the zipped file list entry
+			ZipEntry ze = zis.getNextEntry();
+
+			while (ze != null) {
+
+				String fileName = ze.getName();
+				File newFile = new File(outputDirectory + File.separator
+						+ fileName);
+
+				// create all non exists folders
+				// else you will hit FileNotFoundException for compressed
+				// folder
+				new File(newFile.getParent()).mkdirs();
+
+				FileOutputStream fos = new FileOutputStream(newFile);
+
+				int len;
+				while ((len = zis.read(buffer)) > 0) {
+					fos.write(buffer, 0, len);
+				}
+
+				fos.close();
+				ze = zis.getNextEntry();
+			}
+
+			zis.closeEntry();
+			zis.close();
 		}
 
 	}
