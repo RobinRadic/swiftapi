@@ -66,7 +66,7 @@ methods like so:
 TSocket socket = new TSocket("your.bukkitserver.org", 21111);
 socket.Open();
 
-TBinaryProtocol protocol = new TBinaryProtocol(new TBufferedTransport(socket));
+TBinaryProtocol protocol = new TBinaryProtocol(new TFramedTransport(socket));
 SwiftApi.Client client = new SwiftApi.Client(protocol);
 
 Console.WriteLine("Server Version: " + client.getServerVersion(authString));
