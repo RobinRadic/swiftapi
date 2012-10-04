@@ -97,13 +97,13 @@ public class SwiftServer {
 				return false;
 			}
 		}
-		
+
 		/**
 		 * Broadcasts a message to all players on the server
-		 *
+		 * 
 		 * @param authString
 		 *            The authentication hash
-		 *
+		 * 
 		 * @param message
 		 *            The message to send
 		 * 
@@ -111,7 +111,7 @@ public class SwiftServer {
 		 * 
 		 * @throws Errors.EAuthException
 		 *             If the method call was not correctly authenticated
-		 *
+		 * 
 		 * @throws org.apache.thrift.TException
 		 *             If something went wrong with Thrift
 		 */
@@ -1311,20 +1311,28 @@ public class SwiftServer {
 				// copy the downloaded file to the plugins DIR
 				String newDownloadedPluginPath = pluginsPath + "/"
 						+ downloadedFile.getName();
-				if (downloadedFileObject.getName().endsWith(".jar")) {
-					FileUtils.copyFile(downloadedFileObject, oldPlugin);
 
-					plugin.getLogger().info(
-							"Plugin installation complete. Reload or restart to use new version.");
+				if (downloadedFileObject.getName().endsWith(".zip")) {
+					File zipFile = new File(newDownloadedPluginPath);
+					FileUtils.copyFile(downloadedFileObject, zipFile);
+					unzipFile(zipFile, pluginsPath);
+					zipFile.delete();
+				} else if (downloadedFileObject.getName().endsWith(".jar")) {
+					FileUtils.copyFile(downloadedFileObject, oldPlugin);
 				} else {
 					plugin.getLogger()
-							.warning("Sorry, SwiftApi can only install plugins with the extension \".jar\"");
+							.warning(
+									"Sorry, SwiftApi can only install plugins with the extension \".jar\"");
 					EDataException e = new EDataException();
 					e.code = ErrorCode.FILE_ERROR;
 					e.errorMessage = plugin.getConfig().getString(
 							"errorMessages.invalidPluginType");
 					throw e;
 				}
+
+				plugin.getLogger()
+						.info("Plugin installation complete. Reload or restart to use new version.");
+
 				return true;
 			} catch (MalformedURLException e) {
 				plugin.getLogger().severe(e.getMessage());
@@ -1352,6 +1360,10 @@ public class SwiftServer {
 				e1.errorMessage = e.getMessage();
 				throw e1;
 			}
+		}
+
+		private void unzipFile(File zipFile, String outputDirectory) {
+			// TODO: recursively unzip the input file into the output directory			
 		}
 
 		/**
@@ -1384,10 +1396,10 @@ public class SwiftServer {
 
 		/**
 		 * Saves the specified world to disk
-		 *
+		 * 
 		 * @param authString
 		 *            The authentication hash
-		 *
+		 * 
 		 * @param worldName
 		 *            The name of the world to save
 		 * 
@@ -1398,7 +1410,7 @@ public class SwiftServer {
 		 * 
 		 * @throws Errors.EDataException
 		 *             If the specified world could not be found
-		 *
+		 * 
 		 * @throws org.apache.thrift.TException
 		 *             If something went wrong with Thrift
 		 */
@@ -1418,13 +1430,14 @@ public class SwiftServer {
 			}
 
 			try {
-				plugin.getLogger().info("Saving world \"" + worldName + "\"...");
+				plugin.getLogger()
+						.info("Saving world \"" + worldName + "\"...");
 				w.save();
 				plugin.getLogger().info("World saved.");
-				return true;				
+				return true;
 			} catch (Exception e) {
 				return false;
-			}			
+			}
 		}
 
 		/**
@@ -1485,13 +1498,13 @@ public class SwiftServer {
 
 		/**
 		 * Set's the isPVP property on the specified world
-		 *
+		 * 
 		 * @param authString
 		 *            The authentication hash
-		 *
+		 * 
 		 * @param worldName
 		 *            The name of the world to set the pvp flag for
-		 *
+		 * 
 		 * @param isPvp
 		 *            The value to set the isPVP property to
 		 * 
@@ -1502,7 +1515,7 @@ public class SwiftServer {
 		 * 
 		 * @throws Errors.EDataException
 		 *             If the specified world could not be found
-		 *
+		 * 
 		 * @throws org.apache.thrift.TException
 		 *             If something went wrong with Thrift
 		 */
@@ -1520,25 +1533,28 @@ public class SwiftServer {
 								"errorMessages.worldNotFound"), worldName);
 				throw e;
 			}
-			
+
 			try {
-				plugin.getLogger().info("Setting PVP to " + String.valueOf(isPvp) + " for world \"" + worldName + "\"");
+				plugin.getLogger().info(
+						"Setting PVP to " + String.valueOf(isPvp)
+								+ " for world \"" + worldName + "\"");
 				w.setPVP(isPvp);
-				return true;				
+				return true;
 			} catch (Exception e) {
 				return false;
-			}	
+			}
 		}
 
 		/**
-		 * Set's the hasStorm property on the specified world (i.e. makes it rain)
-		 *
+		 * Set's the hasStorm property on the specified world (i.e. makes it
+		 * rain)
+		 * 
 		 * @param authString
 		 *            The authentication hash
-		 *
+		 * 
 		 * @param worldName
 		 *            The name of the world to set the storm for
-		 *
+		 * 
 		 * @param hasStorm
 		 *            The value to set the storm property to
 		 * 
@@ -1549,10 +1565,10 @@ public class SwiftServer {
 		 * 
 		 * @throws Errors.EDataException
 		 *             If the specified world could not be found
-		 *
+		 * 
 		 * @throws org.apache.thrift.TException
 		 *             If something went wrong with Thrift
-		 */		
+		 */
 		@Override
 		public boolean setStorm(String authString, String worldName,
 				boolean hasStorm) throws EAuthException, EDataException,
@@ -1568,25 +1584,27 @@ public class SwiftServer {
 								"errorMessages.worldNotFound"), worldName);
 				throw e;
 			}
-			
+
 			try {
-				plugin.getLogger().info("Setting storm to " + String.valueOf(hasStorm) + " for world \"" + worldName + "\"");
+				plugin.getLogger().info(
+						"Setting storm to " + String.valueOf(hasStorm)
+								+ " for world \"" + worldName + "\"");
 				w.setStorm(hasStorm);
-				return true;				
+				return true;
 			} catch (Exception e) {
 				return false;
-			}	
+			}
 		}
 
 		/**
 		 * Set's the isThundering property on the specified world
-		 *
+		 * 
 		 * @param authString
 		 *            The authentication hash
-		 *
+		 * 
 		 * @param worldName
 		 *            The name of the world to set the storm for
-		 *
+		 * 
 		 * @param isThundering
 		 *            The value to set the isThundering property to
 		 * 
@@ -1597,7 +1615,7 @@ public class SwiftServer {
 		 * 
 		 * @throws Errors.EDataException
 		 *             If the specified world could not be found
-		 *
+		 * 
 		 * @throws org.apache.thrift.TException
 		 *             If something went wrong with Thrift
 		 */
@@ -1616,14 +1634,16 @@ public class SwiftServer {
 								"errorMessages.worldNotFound"), worldName);
 				throw e;
 			}
-			
+
 			try {
-				plugin.getLogger().info("Setting thundering to " + String.valueOf(isThundering) + " for world \"" + worldName + "\"");
+				plugin.getLogger().info(
+						"Setting thundering to " + String.valueOf(isThundering)
+								+ " for world \"" + worldName + "\"");
 				w.setThundering(isThundering);
-				return true;				
+				return true;
 			} catch (Exception e) {
 				return false;
-			}	
+			}
 		}
 
 		/**
@@ -1835,17 +1855,20 @@ public class SwiftServer {
 					 * plugin.getLogger().info( "Listening on port " +
 					 * String.valueOf(port)); server.serve();
 					 */
-					 
+
 					/*
-					TServerTransport tst = new TServerSocket(port);
-					server = new TSimpleServer(
-							new TSimpleServer.Args(tst).processor(pro));
-					plugin.getLogger().info(
-							"Listening on port " + String.valueOf(port));
-					*/
-					
-					TNonblockingServerTransport tst = new TNonblockingServerSocket(port);
-					server = new TThreadedSelectorServer(new TThreadedSelectorServer.Args(tst).processor(pro));
+					 * TServerTransport tst = new TServerSocket(port); server =
+					 * new TSimpleServer( new
+					 * TSimpleServer.Args(tst).processor(pro));
+					 * plugin.getLogger().info( "Listening on port " +
+					 * String.valueOf(port));
+					 */
+
+					TNonblockingServerTransport tst = new TNonblockingServerSocket(
+							port);
+					server = new TThreadedSelectorServer(
+							new TThreadedSelectorServer.Args(tst)
+									.processor(pro));
 					plugin.getLogger().info(
 							"Listening on port " + String.valueOf(port));
 					server.serve();
