@@ -5,7 +5,7 @@
 
 	<groupId>org.phybros.minecraft</groupId>
 	<artifactId>SwiftApi</artifactId>
-	<version>0.6</version>
+	<version>0.7</version>
 	<packaging>jar</packaging>
 
 	<url>https://github.com/phybros/swiftapi</url>
@@ -144,6 +144,7 @@
 					<artifactSet>
 						<excludes>
 							<exclude>org.bukkit:craftbukkit</exclude>
+							<exclude>org.bukkit:bukkit</exclude>
 						</excludes>
 					</artifactSet>
 				</configuration>

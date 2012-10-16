@@ -4,7 +4,7 @@
   <groupId>org.phybros.minecraft</groupId>
   <artifactId>SwiftApi</artifactId>
   <name>SwiftApi</name>
-  <version>0.6</version>
+  <version>0.7</version>
   <description>A bukkit plugin to expose functionality over an Apache Thrift interface</description>
   <url>https://github.com/phybros/swiftapi</url>
   <scm>
@@ -86,6 +86,7 @@
           <artifactSet>
             <excludes>
               <exclude>org.bukkit:craftbukkit</exclude>
+              <exclude>org.bukkit:bukkit</exclude>
             </excludes>
           </artifactSet>
         </configuration>
@@ -130,6 +131,10 @@
     <repository>
       <id>bukkit-repo</id>
       <url>http://repo.bukkit.org/content/groups/public/</url>
+    </repository>
+    <repository>
+      <id>Plugin Metrics</id>
+      <url>http://repo.mcstats.org/content/repositories/public</url>
     </repository>
   </repositories>
   <pluginRepositories>
