@@ -4,7 +4,7 @@
   <groupId>org.phybros.minecraft</groupId>
   <artifactId>SwiftApi</artifactId>
   <name>SwiftApi</name>
-  <version>0.5</version>
+  <version>0.6</version>
   <description>A bukkit plugin to expose functionality over an Apache Thrift interface</description>
   <url>https://github.com/phybros/swiftapi</url>
   <scm>

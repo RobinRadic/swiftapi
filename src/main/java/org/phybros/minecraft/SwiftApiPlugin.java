@@ -1,9 +1,11 @@
 package org.phybros.minecraft;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
 import org.phybros.thrift.ConsoleLine;
 
 public class SwiftApiPlugin extends JavaPlugin {
@@ -19,8 +21,14 @@ public class SwiftApiPlugin extends JavaPlugin {
 		try {
 			last500 = new ArrayList<ConsoleLine>();
 			this.saveDefaultConfig();
-			java.util.logging.Logger.getLogger("Minecraft").addHandler(new ConsoleHandler(this));
+			java.util.logging.Logger.getLogger("Minecraft").addHandler(
+					new ConsoleHandler(this));
 			server = new SwiftServer(this);
+
+			// mcstats
+			Metrics metrics = new Metrics(this);
+			metrics.start();
+
 			getLogger().info("SwiftApi was enabled.");
 		} catch (Exception e) {
 			getLogger().severe(e.getMessage());
