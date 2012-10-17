@@ -777,13 +777,14 @@ service SwiftApi {
 	string getBukkitVersion(1:string authString) throws (1:Errors.EAuthException aex),
 
 /**
- * Get the last 500 console messages. This method may change in the future to 
- * include a "count" parameter so that you can specify how many lines to get, 
- * but I'm unaware how much memory it would consume to keep ALL logs (since 
- * restart or reload of plugin). Therefore it is capped at 500 for now.
+ * Get the last 500 console messages or console messages since a given timestamp (up to 500)
  * 
  * @param authString
  *            The authentication hash
+ *
+ * @param since
+ *            A unix timestamp (with milliseconds). This will limit the results
+ *			  to console lines that were out output after the given time
  * 
  * @return boolean true on success false on serious failure
  * 
@@ -793,7 +794,7 @@ service SwiftApi {
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */			
-	list<ConsoleLine> getConsoleMessages(1:string authString) 
+	list<ConsoleLine> getConsoleMessages(1:string authString, 2:i64 since) 
 	throws (1:Errors.EAuthException aex),
 	
 /**

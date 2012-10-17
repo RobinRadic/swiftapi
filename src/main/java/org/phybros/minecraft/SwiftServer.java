@@ -450,12 +450,23 @@ public class SwiftServer {
 		 *             If something went wrong with Thrift
 		 */
 		@Override
-		public List<ConsoleLine> getConsoleMessages(String authString)
+		public List<ConsoleLine> getConsoleMessages(String authString, long since)
 				throws EAuthException, TException {
 			// This produces some serious log spam
 			// logCall("getConsoleMessages");
 			authenticate(authString, "getConsoleMessages");
 
+			if(since > 0) {
+				List<ConsoleLine> lines = new ArrayList<ConsoleLine>();
+				for(ConsoleLine c : plugin.last500){
+					if(c.timestamp > since) {
+						lines.add(c);
+					}
+				}
+				
+				return lines;
+			}
+			
 			return plugin.last500;
 		}
 

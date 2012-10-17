@@ -214,13 +214,14 @@ public class SwiftApi {
     public String getBukkitVersion(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
 
     /**
-     * Get the last 500 console messages. This method may change in the future to
-     * include a "count" parameter so that you can specify how many lines to get,
-     * but I'm unaware how much memory it would consume to keep ALL logs (since
-     * restart or reload of plugin). Therefore it is capped at 500 for now.
+     * Get the last 500 console messages or console messages since a given timestamp (up to 500)
      * 
      * @param authString
      *            The authentication hash
+     * 
+     * @param since
+     *            A unix timestamp (with milliseconds). This will limit the results
+     * 		  to console lines that were out output after the given time
      * 
      * @return boolean true on success false on serious failure
      * 
@@ -231,8 +232,9 @@ public class SwiftApi {
      *             If something went wrong with Thrift
      * 
      * @param authString
+     * @param since
      */
-    public List<ConsoleLine> getConsoleMessages(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public List<ConsoleLine> getConsoleMessages(String authString, long since) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
 
     /**
      * Get an offline player. This method will always return an
@@ -507,9 +509,6 @@ public class SwiftApi {
      * 
      * @param authString
      *            The authentication hash
-     * 
-     * @param pluginName
-     *            The name of the plugin to replace
      * 
      * @param downloadUrl
      *            The URL of the file to be downloaded
@@ -918,7 +917,7 @@ public class SwiftApi {
 
     public void getBukkitVersion(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBukkitVersion_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getConsoleMessages(String authString, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getConsoleMessages_call> resultHandler) throws org.apache.thrift.TException;
+    public void getConsoleMessages(String authString, long since, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getConsoleMessages_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getOfflinePlayer(String authString, String name, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getOfflinePlayer_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -1219,16 +1218,17 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBukkitVersion failed: unknown result");
     }
 
-    public List<ConsoleLine> getConsoleMessages(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<ConsoleLine> getConsoleMessages(String authString, long since) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
     {
-      send_getConsoleMessages(authString);
+      send_getConsoleMessages(authString, since);
       return recv_getConsoleMessages();
     }
 
-    public void send_getConsoleMessages(String authString) throws org.apache.thrift.TException
+    public void send_getConsoleMessages(String authString, long since) throws org.apache.thrift.TException
     {
       getConsoleMessages_args args = new getConsoleMessages_args();
       args.setAuthString(authString);
+      args.setSince(since);
       sendBase("getConsoleMessages", args);
     }
 
@@ -2285,24 +2285,27 @@ public class SwiftApi {
       }
     }
 
-    public void getConsoleMessages(String authString, org.apache.thrift.async.AsyncMethodCallback<getConsoleMessages_call> resultHandler) throws org.apache.thrift.TException {
+    public void getConsoleMessages(String authString, long since, org.apache.thrift.async.AsyncMethodCallback<getConsoleMessages_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getConsoleMessages_call method_call = new getConsoleMessages_call(authString, resultHandler, this, ___protocolFactory, ___transport);
+      getConsoleMessages_call method_call = new getConsoleMessages_call(authString, since, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getConsoleMessages_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String authString;
-      public getConsoleMessages_call(String authString, org.apache.thrift.async.AsyncMethodCallback<getConsoleMessages_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private long since;
+      public getConsoleMessages_call(String authString, long since, org.apache.thrift.async.AsyncMethodCallback<getConsoleMessages_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.authString = authString;
+        this.since = since;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getConsoleMessages", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getConsoleMessages_args args = new getConsoleMessages_args();
         args.setAuthString(authString);
+        args.setSince(since);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -3492,7 +3495,7 @@ public class SwiftApi {
       protected getConsoleMessages_result getResult(I iface, getConsoleMessages_args args) throws org.apache.thrift.TException {
         getConsoleMessages_result result = new getConsoleMessages_result();
         try {
-          result.success = iface.getConsoleMessages(args.authString);
+          result.success = iface.getConsoleMessages(args.authString, args.since);
         } catch (org.phybros.thrift.EAuthException aex) {
           result.aex = aex;
         }
@@ -11541,6 +11544,7 @@ public class SwiftApi {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getConsoleMessages_args");
 
     private static final org.apache.thrift.protocol.TField AUTH_STRING_FIELD_DESC = new org.apache.thrift.protocol.TField("authString", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField SINCE_FIELD_DESC = new org.apache.thrift.protocol.TField("since", org.apache.thrift.protocol.TType.I64, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -11549,10 +11553,12 @@ public class SwiftApi {
     }
 
     public String authString; // required
+    public long since; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      AUTH_STRING((short)1, "authString");
+      AUTH_STRING((short)1, "authString"),
+      SINCE((short)2, "since");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -11569,6 +11575,8 @@ public class SwiftApi {
         switch(fieldId) {
           case 1: // AUTH_STRING
             return AUTH_STRING;
+          case 2: // SINCE
+            return SINCE;
           default:
             return null;
         }
@@ -11609,11 +11617,15 @@ public class SwiftApi {
     }
 
     // isset id assignments
+    private static final int __SINCE_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.AUTH_STRING, new org.apache.thrift.meta_data.FieldMetaData("authString", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.SINCE, new org.apache.thrift.meta_data.FieldMetaData("since", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getConsoleMessages_args.class, metaDataMap);
     }
@@ -11622,19 +11634,25 @@ public class SwiftApi {
     }
 
     public getConsoleMessages_args(
-      String authString)
+      String authString,
+      long since)
     {
       this();
       this.authString = authString;
+      this.since = since;
+      setSinceIsSet(true);
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getConsoleMessages_args(getConsoleMessages_args other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
       if (other.isSetAuthString()) {
         this.authString = other.authString;
       }
+      this.since = other.since;
     }
 
     public getConsoleMessages_args deepCopy() {
@@ -11644,6 +11662,8 @@ public class SwiftApi {
     @Override
     public void clear() {
       this.authString = null;
+      setSinceIsSet(false);
+      this.since = 0;
     }
 
     public String getAuthString() {
@@ -11670,6 +11690,29 @@ public class SwiftApi {
       }
     }
 
+    public long getSince() {
+      return this.since;
+    }
+
+    public getConsoleMessages_args setSince(long since) {
+      this.since = since;
+      setSinceIsSet(true);
+      return this;
+    }
+
+    public void unsetSince() {
+      __isset_bit_vector.clear(__SINCE_ISSET_ID);
+    }
+
+    /** Returns true if field since is set (has been assigned a value) and false otherwise */
+    public boolean isSetSince() {
+      return __isset_bit_vector.get(__SINCE_ISSET_ID);
+    }
+
+    public void setSinceIsSet(boolean value) {
+      __isset_bit_vector.set(__SINCE_ISSET_ID, value);
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case AUTH_STRING:
@@ -11680,6 +11723,14 @@ public class SwiftApi {
         }
         break;
 
+      case SINCE:
+        if (value == null) {
+          unsetSince();
+        } else {
+          setSince((Long)value);
+        }
+        break;
+
       }
     }
 
@@ -11687,6 +11738,9 @@ public class SwiftApi {
       switch (field) {
       case AUTH_STRING:
         return getAuthString();
+
+      case SINCE:
+        return Long.valueOf(getSince());
 
       }
       throw new IllegalStateException();
@@ -11701,6 +11755,8 @@ public class SwiftApi {
       switch (field) {
       case AUTH_STRING:
         return isSetAuthString();
+      case SINCE:
+        return isSetSince();
       }
       throw new IllegalStateException();
     }
@@ -11727,6 +11783,15 @@ public class SwiftApi {
           return false;
       }
 
+      boolean this_present_since = true;
+      boolean that_present_since = true;
+      if (this_present_since || that_present_since) {
+        if (!(this_present_since && that_present_since))
+          return false;
+        if (this.since != that.since)
+          return false;
+      }
+
       return true;
     }
 
@@ -11749,6 +11814,16 @@ public class SwiftApi {
       }
       if (isSetAuthString()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.authString, typedOther.authString);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetSince()).compareTo(typedOther.isSetSince());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSince()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.since, typedOther.since);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -11780,6 +11855,10 @@ public class SwiftApi {
         sb.append(this.authString);
       }
       first = false;
+      if (!first) sb.append(", ");
+      sb.append("since:");
+      sb.append(this.since);
+      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -11798,6 +11877,8 @@ public class SwiftApi {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bit_vector = new BitSet(1);
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -11830,6 +11911,14 @@ public class SwiftApi {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 2: // SINCE
+              if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+                struct.since = iprot.readI64();
+                struct.setSinceIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -11850,6 +11939,9 @@ public class SwiftApi {
           oprot.writeString(struct.authString);
           oprot.writeFieldEnd();
         }
+        oprot.writeFieldBegin(SINCE_FIELD_DESC);
+        oprot.writeI64(struct.since);
+        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
       }
@@ -11871,19 +11963,29 @@ public class SwiftApi {
         if (struct.isSetAuthString()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSince()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetAuthString()) {
           oprot.writeString(struct.authString);
+        }
+        if (struct.isSetSince()) {
+          oprot.writeI64(struct.since);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getConsoleMessages_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
+        BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.authString = iprot.readString();
           struct.setAuthStringIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.since = iprot.readI64();
+          struct.setSinceIsSet(true);
         }
       }
     }
