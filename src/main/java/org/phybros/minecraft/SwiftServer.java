@@ -511,6 +511,15 @@ public class SwiftServer {
 				fileName = fileName.substring(1);
 			}
 
+			// this mitigates using "C:\long\path\filename" and translates it to
+			// "long\path\filename" which will usually result in a
+			// FileNotFoundException. Hooray!
+			String fileNamePrefix = FilenameUtils.getPrefix(fileName);
+			if (fileNamePrefix.length() > 0) {
+				fileName = fileName.substring(fileNamePrefix.length());
+			}
+
+			//initialize a scanner for later
 			Scanner scanner = null;
 
 			try {
@@ -552,7 +561,7 @@ public class SwiftServer {
 					fileContents.append(scanner.nextLine() + nl);
 				}
 
-				//send the contents!
+				// send the contents!
 				return fileContents.toString();
 			} catch (FileNotFoundException fnf) {
 				// throw an EDE if it doesn't exist
