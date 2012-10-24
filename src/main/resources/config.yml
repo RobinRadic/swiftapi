@@ -59,3 +59,6 @@ errorMessages:
     
     # No read access to selected file
     noReadAccess: Could not read file
+    
+    # If a binary file is read
+    fileIsBinary: Method does not support reading binary files

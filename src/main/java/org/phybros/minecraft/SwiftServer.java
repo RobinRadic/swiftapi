@@ -511,31 +511,39 @@ public class SwiftServer {
 				fileName = fileName.substring(1);
 			}
 
-			// open the file
-			File f = new File(fileName);
-
-			// check if the file exists
-			if (!f.exists()) {
-				// throw an EDE if it doesn't exist
-				EDataException d = new EDataException();
-				d.code = ErrorCode.NOT_FOUND;
-				d.errorMessage = plugin.getConfig().getString(
-						"errorMessages.fileNotFound");
-				throw d;
-			} else if (!f.canRead()) {
-				// throw an EDE if it doesn't exist
-				EDataException d = new EDataException();
-				d.code = ErrorCode.NO_READ;
-				d.errorMessage = plugin.getConfig().getString(
-						"errorMessages.noReadAccess");
-				throw d;
-			}
-
-			StringBuilder fileContents = new StringBuilder();
-			String nl = System.getProperty("line.separator");
 			Scanner scanner = null;
 
 			try {
+				// open the file
+				File f = new File(fileName);
+
+				// check if the file exists
+				if (!f.exists()) {
+					// throw an EDE if it doesn't exist
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NOT_FOUND;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.fileNotFound");
+					throw d;
+				} else if (!f.canRead()) {
+					// throw an EDE if it doesn't exist
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NO_READ;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.noReadAccess");
+					throw d;
+				} else if (fileIsBinary(fileName)) {
+					// throw an EDE if the file is binary
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NOT_FOUND;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.fileIsBinary");
+					throw d;
+				}
+
+				StringBuilder fileContents = new StringBuilder();
+				String nl = System.getProperty("line.separator");
+
 				// this might cause issues (the UTF-8 bit)...
 				scanner = new Scanner(new FileInputStream(f), "UTF-8");
 
@@ -543,6 +551,9 @@ public class SwiftServer {
 				while (scanner.hasNextLine()) {
 					fileContents.append(scanner.nextLine() + nl);
 				}
+
+				//send the contents!
+				return fileContents.toString();
 			} catch (FileNotFoundException fnf) {
 				// throw an EDE if it doesn't exist
 				EDataException d = new EDataException();
@@ -550,14 +561,18 @@ public class SwiftServer {
 				d.errorMessage = plugin.getConfig().getString(
 						"errorMessages.fileNotFound");
 				throw d;
+			} catch (IOException ioe) {
+				plugin.getLogger().severe(ioe.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = ioe.getMessage();
+				throw e1;
 			} finally {
 				// clean up
 				if (scanner != null) {
 					scanner.close();
 				}
 			}
-
-			return fileContents.toString();
 		}
 
 		/**
@@ -2140,6 +2155,35 @@ public class SwiftServer {
 			zis.close();
 		}
 
+		private boolean fileIsBinary(String fileName) throws IOException {
+			int defaultBufferSize = 50;
+
+			File f = new File(fileName);
+			InputStream in = new FileInputStream(f);
+			long fileSize = FileUtils.sizeOf(f);
+			int bufSize = fileSize >= defaultBufferSize ? defaultBufferSize
+					: (int) fileSize;
+
+			byte[] bytes = new byte[bufSize];
+
+			in.read(bytes, 0, bytes.length);
+			short bin = 0;
+
+			boolean isProbablyBinary = false;
+
+			for (byte thisByte : bytes) {
+				char it = (char) thisByte;
+				if (!Character.isWhitespace(it) && Character.isISOControl(it)) {
+					bin++;
+				}
+				if (bin >= 5) {
+					isProbablyBinary = true;
+				}
+			}
+
+			in.close();
+			return isProbablyBinary;
+		}
 	}
 
 	private int port;
