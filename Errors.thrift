@@ -25,6 +25,10 @@ enum ErrorCode {
  *	Something went wrong during a file operation
  */
  	FILE_ERROR = 4,
+/**
+ *	Could not read a file
+ */
+ 	NO_READ = 5,
 }
 
 /**

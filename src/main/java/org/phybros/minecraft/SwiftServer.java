@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -450,24 +451,102 @@ public class SwiftServer {
 		 *             If something went wrong with Thrift
 		 */
 		@Override
-		public List<ConsoleLine> getConsoleMessages(String authString, long since)
-				throws EAuthException, TException {
+		public List<ConsoleLine> getConsoleMessages(String authString,
+				long since) throws EAuthException, TException {
 			// This produces some serious log spam
 			// logCall("getConsoleMessages");
 			authenticate(authString, "getConsoleMessages");
 
-			if(since > 0) {
+			if (since > 0) {
 				List<ConsoleLine> lines = new ArrayList<ConsoleLine>();
-				for(ConsoleLine c : plugin.last500){
-					if(c.timestamp > since) {
+				for (ConsoleLine c : plugin.last500) {
+					if (c.timestamp > since) {
 						lines.add(c);
 					}
 				}
-				
+
 				return lines;
 			}
-			
+
 			return plugin.last500;
+		}
+
+		/**
+		 * Gets the contents of a file.
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param fileName
+		 *            The file to get. The fileName is relative to /plugins.
+		 *            This method cannot get the contents of any file outside
+		 *            /plugins.
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the file could not be read or does not exist
+		 * 
+		 * @return string the contents of the file
+		 * 
+		 */
+		@Override
+		public String getFileContents(String authString, String fileName)
+				throws EAuthException, EDataException, TException {
+			logCall("getFileContents");
+			authenticate(authString, "getFileContents");
+
+			// open the file
+			File f = new File(fileName);
+
+			// check if the file exists
+			if (!f.exists()) {
+				// throw an EDE if it doesn't exist
+				EDataException d = new EDataException();
+				d.code = ErrorCode.NOT_FOUND;
+				d.errorMessage = plugin.getConfig().getString(
+						"errorMessages.fileNotFound");
+				throw d;
+			} else if (!f.canRead()) {
+				// throw an EDE if it doesn't exist
+				EDataException d = new EDataException();
+				d.code = ErrorCode.NO_READ;
+				d.errorMessage = plugin.getConfig().getString(
+						"errorMessages.noReadAccess");
+				throw d;
+			}
+
+			StringBuilder fileContents = new StringBuilder();
+			String nl = System.getProperty("line.separator");
+			Scanner scanner = null;
+
+			try {
+				// this might cause issues (the UTF-8 bit)...
+				scanner = new Scanner(new FileInputStream(f), "UTF-8");
+
+				// loop through the file's lines
+				while (scanner.hasNextLine()) {
+					fileContents.append(scanner.nextLine() + nl);
+				}
+			} catch (FileNotFoundException fnf) {
+				// throw an EDE if it doesn't exist
+				EDataException d = new EDataException();
+				d.code = ErrorCode.NOT_FOUND;
+				d.errorMessage = plugin.getConfig().getString(
+						"errorMessages.fileNotFound");
+				throw d;
+			} finally {
+				// clean up
+				if (scanner != null) {
+					scanner.close();
+				}
+			}
+
+			return fileContents.toString();
 		}
 
 		/**
@@ -935,8 +1014,8 @@ public class SwiftServer {
 		}
 
 		/**
-		 * This method will download and install (copy/unzip) a plugin from a given URL
-		 * onto the server.
+		 * This method will download and install (copy/unzip) a plugin from a
+		 * given URL onto the server.
 		 * 
 		 * @param authString
 		 *            The authentication hash
@@ -1607,6 +1686,39 @@ public class SwiftServer {
 		}
 
 		/**
+		 * Sets the contents of a file.
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param fileName
+		 *            The file to set. The fileName is relative to /plugins.
+		 *            This method cannot set the contents of any file outside
+		 *            /plugins.
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the file could not be opened or does not exist
+		 * 
+		 * @return bool true on success, else false
+		 * 
+		 */
+		@Override
+		public boolean setFileContents(String authString, String fileName,
+				String fileContents) throws EAuthException, EDataException,
+				TException {
+			logCall("setFileContents");
+			authenticate(authString, "setFileContents");
+
+			return false;
+		}
+
+		/**
 		 * Sets the gamemode of a player
 		 * 
 		 * @param authString
@@ -1921,15 +2033,15 @@ public class SwiftServer {
 			// plugin.getLogger().info("Received:  " + authString);
 
 			if (!hash.equalsIgnoreCase(authString)) {
-				plugin.getLogger().info(
+				plugin.getLogger().warning(
 						String.format(
 								"Invalid Authentication received (method: %s)",
 								methodName));
+
 				EAuthException e = new EAuthException();
 				e.code = ErrorCode.INVALID_AUTHSTRING;
 				e.errorMessage = plugin.getConfig().getString(
 						"errorMessages.invalidAuthentication");
-				plugin.getLogger().info(e.toString());
 				throw e;
 			}
 		}
