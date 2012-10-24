@@ -500,6 +500,17 @@ public class SwiftServer {
 			logCall("getFileContents");
 			authenticate(authString, "getFileContents");
 
+			// sanitize the string
+			// this should jail the call into the server root
+			fileName = fileName.replace("../", "");
+
+			// Can't just use File.separator because on windows "/" is
+			// translated to C:\
+			if (fileName.startsWith("\\") || fileName.startsWith("/")
+					|| fileName.startsWith(File.separator)) {
+				fileName = fileName.substring(1);
+			}
+
 			// open the file
 			File f = new File(fileName);
 
