@@ -450,23 +450,23 @@ public class SwiftServer {
 		 *             If something went wrong with Thrift
 		 */
 		@Override
-		public List<ConsoleLine> getConsoleMessages(String authString, long since)
-				throws EAuthException, TException {
+		public List<ConsoleLine> getConsoleMessages(String authString,
+				long since) throws EAuthException, TException {
 			// This produces some serious log spam
 			// logCall("getConsoleMessages");
 			authenticate(authString, "getConsoleMessages");
 
-			if(since > 0) {
+			if (since > 0) {
 				List<ConsoleLine> lines = new ArrayList<ConsoleLine>();
-				for(ConsoleLine c : plugin.last500){
-					if(c.timestamp > since) {
+				for (ConsoleLine c : plugin.last500) {
+					if (c.timestamp > since) {
 						lines.add(c);
 					}
 				}
-				
+
 				return lines;
 			}
-			
+
 			return plugin.last500;
 		}
 
@@ -935,8 +935,8 @@ public class SwiftServer {
 		}
 
 		/**
-		 * This method will download and install (copy/unzip) a plugin from a given URL
-		 * onto the server.
+		 * This method will download and install (copy/unzip) a plugin from a
+		 * given URL onto the server.
 		 * 
 		 * @param authString
 		 *            The authentication hash
@@ -1427,7 +1427,7 @@ public class SwiftServer {
 				} else {
 					jarFileName = f.getName();
 					plugin.getLogger().info(
-							"Located original JAR file: " + f.getName());
+							"Located original JAR file: " + jarFileName);
 				}
 
 				// move the current jarfile to the oldPlugins directory
@@ -2056,30 +2056,21 @@ public class SwiftServer {
 					SwiftApi.Processor<SwiftApi.Iface> pro = new SwiftApi.Processor<SwiftApi.Iface>(
 							psh);
 
-					/*
-					 * TNonblockingServerTransport tst = new
-					 * TNonblockingServerSocket( port); server = new
-					 * TNonblockingServer( new
-					 * TNonblockingServer.Args(tst).processor(pro));
-					 * plugin.getLogger().info( "Listening on port " +
-					 * String.valueOf(port)); server.serve();
-					 */
-
-					/*
-					 * TServerTransport tst = new TServerSocket(port); server =
-					 * new TSimpleServer( new
-					 * TSimpleServer.Args(tst).processor(pro));
-					 * plugin.getLogger().info( "Listening on port " +
-					 * String.valueOf(port));
-					 */
-
-					TNonblockingServerTransport tst = new TNonblockingServerSocket(
-							port);
-					server = new TThreadedSelectorServer(
-							new TThreadedSelectorServer.Args(tst)
-									.processor(pro));
+					// create the transport
+					TNonblockingServerTransport tst = null;
+					tst = new TNonblockingServerSocket(port);
+					
+					//set up the server arguments
+					TThreadedSelectorServer.Args a = null;
+					a = new TThreadedSelectorServer.Args(tst);
+					
+					//allocate the server
+					server = new TThreadedSelectorServer(a.processor(pro));
+					
 					plugin.getLogger().info(
 							"Listening on port " + String.valueOf(port));
+					
+					//start up the server
 					server.serve();
 				} catch (Exception e) {
 					plugin.getLogger().severe(e.getMessage());
