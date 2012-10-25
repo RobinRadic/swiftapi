@@ -138,7 +138,7 @@ public class BukkitConverter {
 		playerInventory.armor = new PlayerArmor();
 		playerInventory.itemInHand = new org.phybros.thrift.ItemStack();
 
-		for (ItemStack i : bukkitInventory) {
+		for (ItemStack i : bukkitInventory.getContents()) {
 			org.phybros.thrift.ItemStack newItemStack = new org.phybros.thrift.ItemStack();
 
 			newItemStack.enchantments = new HashMap<Enchantment, Integer>();
@@ -161,6 +161,33 @@ public class BukkitConverter {
 		}
 
 		return playerInventory;
+	}
+
+	/**
+	 * Converts an org.bukkit.inventory.ItemStack into an org.phybros.thrift.ItemStack
+	 * @param bukkitItemStack The ItemStack to convert
+	 * @return The converted ItemStack
+	 */
+	public static org.phybros.thrift.ItemStack convertBukkitItemStack(
+			ItemStack bukkitItemStack) {
+		org.phybros.thrift.ItemStack newItemStack = new org.phybros.thrift.ItemStack();
+
+		newItemStack.enchantments = new HashMap<Enchantment, Integer>();
+
+		if (bukkitItemStack != null) {
+			newItemStack.amount = bukkitItemStack.getAmount();
+			newItemStack.durability = bukkitItemStack.getDurability();
+			newItemStack.typeId = bukkitItemStack.getTypeId();
+
+			for (Map.Entry<org.bukkit.enchantments.Enchantment, Integer> entry : bukkitItemStack
+					.getEnchantments().entrySet()) {
+				newItemStack.enchantments.put(
+						Enchantment.findByValue(entry.getValue()),
+						entry.getValue());
+			}
+		}
+
+		return newItemStack;
 	}
 
 	/**
