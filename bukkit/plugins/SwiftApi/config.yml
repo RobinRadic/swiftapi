@@ -45,7 +45,7 @@ errorMessages:
     fileNotFound: The requested file was not found
     
     # Hash verification
-    hashMismatch: The provided hash did not match the hash of the downloaded file
+    hashMismatch: The provided hash did not match the hash of the downloaded file!!!!!
     
     # Could not get the JAR file of a specific plugin
     jarNotFound: Could not find the plugin's JAR file

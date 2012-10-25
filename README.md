@@ -85,6 +85,28 @@ Where the `username`, `password` and `salt` are the values you configured in the
 plugin's config.yml file at install time and `methodName` is the name of the 
 method you are calling.
 
+Available Languages
+----
+As of Apache Thrift version 0.8.0, the languages you can use to talk to your server with are:
+
+* Actionscript 3 (AS3)
+* C (using GLib)
+* C
+* C#
+* Cocoa (Objective-C on Mac OS and iOS)
+* Delphi
+* Erlang
+* Go
+* Haskell
+* Java
+* Javascript
+* OCaml
+* Perl
+* PHP
+* Python (including Twisted async support)
+* Ruby
+* Smalltalk
+
 More Info
 ----
 For more information on Thrift (tutorials, examples in different languages 

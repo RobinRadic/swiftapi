@@ -31,7 +31,11 @@ public enum ErrorCode implements org.apache.thrift.TEnum {
   /**
    * Something went wrong during a file operation
    */
-  FILE_ERROR(4);
+  FILE_ERROR(4),
+  /**
+   * Could not read a file
+   */
+  NO_READ(5);
 
   private final int value;
 
@@ -62,6 +66,8 @@ public enum ErrorCode implements org.apache.thrift.TEnum {
         return DOWNLOAD_ERROR;
       case 4:
         return FILE_ERROR;
+      case 5:
+        return NO_READ;
       default:
         return null;
     }

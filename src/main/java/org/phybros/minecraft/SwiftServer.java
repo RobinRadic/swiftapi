@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -450,24 +451,121 @@ public class SwiftServer {
 		 *             If something went wrong with Thrift
 		 */
 		@Override
-		public List<ConsoleLine> getConsoleMessages(String authString, long since)
-				throws EAuthException, TException {
+		public List<ConsoleLine> getConsoleMessages(String authString,
+				long since) throws EAuthException, TException {
 			// This produces some serious log spam
 			// logCall("getConsoleMessages");
 			authenticate(authString, "getConsoleMessages");
 
-			if(since > 0) {
+			if (since > 0) {
 				List<ConsoleLine> lines = new ArrayList<ConsoleLine>();
-				for(ConsoleLine c : plugin.last500){
-					if(c.timestamp > since) {
+				for (ConsoleLine c : plugin.last500) {
+					if (c.timestamp > since) {
 						lines.add(c);
 					}
 				}
-				
+
 				return lines;
 			}
-			
+
 			return plugin.last500;
+		}
+
+		/**
+		 * Gets the contents of a file.
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param fileName
+		 *            The file to get. The fileName is relative to the server
+		 *            root. This method cannot get the contents of any file
+		 *            outside the server root.
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the file could not be read or does not exist
+		 * 
+		 * @return string the contents of the file
+		 * 
+		 */
+		@Override
+		public String getFileContents(String authString, String fileName)
+				throws EAuthException, EDataException, TException {
+			logCall("getFileContents");
+			authenticate(authString, "getFileContents");
+
+			// clean the filename before use
+			fileName = safeFilename(fileName);
+
+			// initialize a scanner for later
+			Scanner scanner = null;
+
+			try {
+				// open the file
+				File f = new File(fileName);
+
+				// check if the file exists
+				if (!f.exists()) {
+					// throw an EDE if it doesn't exist
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NOT_FOUND;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.fileNotFound");
+					throw d;
+				} else if (!f.canRead()) {
+					// throw an EDE if it doesn't exist
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NO_READ;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.noReadAccess");
+					throw d;
+				} else if (fileIsBinary(fileName)) {
+					// throw an EDE if the file is binary
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NOT_FOUND;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.fileIsBinary");
+					throw d;
+				}
+
+				StringBuilder fileContents = new StringBuilder();
+				String nl = System.getProperty("line.separator");
+
+				// this might cause issues (the UTF-8 bit)...
+				scanner = new Scanner(new FileInputStream(f), "UTF-8");
+
+				// loop through the file's lines
+				while (scanner.hasNextLine()) {
+					fileContents.append(scanner.nextLine() + nl);
+				}
+
+				// send the contents!
+				return fileContents.toString();
+			} catch (FileNotFoundException fnf) {
+				// throw an EDE if it doesn't exist
+				EDataException d = new EDataException();
+				d.code = ErrorCode.NOT_FOUND;
+				d.errorMessage = plugin.getConfig().getString(
+						"errorMessages.fileNotFound");
+				throw d;
+			} catch (IOException ioe) {
+				plugin.getLogger().severe(ioe.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = ioe.getMessage();
+				throw e1;
+			} finally {
+				// clean up
+				if (scanner != null) {
+					scanner.close();
+				}
+			}
 		}
 
 		/**
@@ -935,8 +1033,8 @@ public class SwiftServer {
 		}
 
 		/**
-		 * This method will download and install (copy/unzip) a plugin from a given URL
-		 * onto the server.
+		 * This method will download and install (copy/unzip) a plugin from a
+		 * given URL onto the server.
 		 * 
 		 * @param authString
 		 *            The authentication hash
@@ -1607,6 +1705,87 @@ public class SwiftServer {
 		}
 
 		/**
+		 * Sets the contents of a file.
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param fileName
+		 *            The file to set. The fileName is relative to /plugins.
+		 *            This method cannot set the contents of any file outside
+		 *            /plugins.
+		 * 
+		 * @throws TException
+		 *             If something thrifty went wrong
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the file could not be opened or does not exist
+		 * 
+		 * @return bool true on success, else false
+		 * 
+		 */
+		@Override
+		public boolean setFileContents(String authString, String fileName,
+				String fileContents) throws EAuthException, EDataException,
+				TException {
+			logCall("setFileContents");
+			authenticate(authString, "setFileContents");
+			
+			// clean the filename before use
+			fileName = safeFilename(fileName);
+
+			try {
+				// open the file
+				File f = new File(fileName);
+
+				// check if the file exists
+				if (!f.exists()) {
+					// throw an EDE if it doesn't exist
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NOT_FOUND;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.fileNotFound");
+					throw d;
+				} else if (!f.canWrite()) {
+					// throw an EDE if it doesn't exist
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NO_READ;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.noWriteAccess");
+					throw d;
+				} else if (fileIsBinary(fileName)) {
+					// throw an EDE if the file is binary
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NOT_FOUND;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.fileIsBinary");
+					throw d;
+				}
+
+				// write to the file
+				FileUtils.write(f, fileContents);
+				
+				return true;
+			} catch (FileNotFoundException fnf) {
+				// throw an EDE if it doesn't exist
+				EDataException d = new EDataException();
+				d.code = ErrorCode.NOT_FOUND;
+				d.errorMessage = plugin.getConfig().getString(
+						"errorMessages.fileNotFound");
+				throw d;
+			} catch (IOException ioe) {
+				plugin.getLogger().severe(ioe.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = ioe.getMessage();
+				throw e1;
+			}
+		}
+
+		/**
 		 * Sets the gamemode of a player
 		 * 
 		 * @param authString
@@ -1921,15 +2100,15 @@ public class SwiftServer {
 			// plugin.getLogger().info("Received:  " + authString);
 
 			if (!hash.equalsIgnoreCase(authString)) {
-				plugin.getLogger().info(
+				plugin.getLogger().warning(
 						String.format(
 								"Invalid Authentication received (method: %s)",
 								methodName));
+
 				EAuthException e = new EAuthException();
 				e.code = ErrorCode.INVALID_AUTHSTRING;
 				e.errorMessage = plugin.getConfig().getString(
 						"errorMessages.invalidAuthentication");
-				plugin.getLogger().info(e.toString());
 				throw e;
 			}
 		}
@@ -1960,6 +2139,36 @@ public class SwiftServer {
 			return complete.digest();
 		}
 
+		private boolean fileIsBinary(String fileName) throws IOException {
+			int defaultBufferSize = 50;
+
+			File f = new File(fileName);
+			InputStream in = new FileInputStream(f);
+			long fileSize = FileUtils.sizeOf(f);
+			int bufSize = fileSize >= defaultBufferSize ? defaultBufferSize
+					: (int) fileSize;
+
+			byte[] bytes = new byte[bufSize];
+
+			in.read(bytes, 0, bytes.length);
+			short bin = 0;
+
+			boolean isProbablyBinary = false;
+
+			for (byte thisByte : bytes) {
+				char it = (char) thisByte;
+				if (!Character.isWhitespace(it) && Character.isISOControl(it)) {
+					bin++;
+				}
+				if (bin >= 5) {
+					isProbablyBinary = true;
+				}
+			}
+
+			in.close();
+			return isProbablyBinary;
+		}
+
 		/**
 		 * Log an API call. If the config option logMethodCalls is false, this
 		 * method does nothing.
@@ -1972,6 +2181,41 @@ public class SwiftServer {
 				plugin.getLogger().info(
 						"SwiftApi method called: " + methodName + "()");
 			}
+		}
+
+		/**
+		 * Makes a filename suitable for use by the plugin.
+		 * 
+		 * This function essentially "jails" the filename in the root directory
+		 * of the CB Server
+		 * 
+		 * @param fileName
+		 *            The filename to clean
+		 * @return String the cleaned filename
+		 */
+		private String safeFilename(String fileName) {
+			// sanitize the string
+			// this should jail the call into the server root
+			fileName = fileName.replace("../", "");
+			fileName = fileName.replace("..\\", "");
+			fileName = fileName.replace((".." + File.separator), "");
+
+			// Can't just use File.separator because on windows "/" is
+			// translated to C:\
+			if (fileName.startsWith("\\") || fileName.startsWith("/")
+					|| fileName.startsWith(File.separator)) {
+				fileName = fileName.substring(1);
+			}
+
+			// this mitigates using "C:\long\path\filename" and translates it to
+			// "long\path\filename" which will usually result in a
+			// FileNotFoundException. Hooray!
+			String fileNamePrefix = FilenameUtils.getPrefix(fileName);
+			if (fileNamePrefix.length() > 0) {
+				fileName = fileName.substring(fileNamePrefix.length());
+			}
+
+			return fileName;
 		}
 
 		private void unzipFile(File zipFile, String outputDirectory)
@@ -2016,7 +2260,6 @@ public class SwiftServer {
 			zis.closeEntry();
 			zis.close();
 		}
-
 	}
 
 	private int port;

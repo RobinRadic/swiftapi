@@ -796,6 +796,32 @@ service SwiftApi {
  */			
 	list<ConsoleLine> getConsoleMessages(1:string authString, 2:i64 since) 
 	throws (1:Errors.EAuthException aex),
+
+/**
+ * Gets the contents of a file.
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param fileName
+ *            The file to get. The fileName is relative to the server
+ *            root. This method cannot get the contents of any file
+ *            outside the server root.
+ * 
+ * @throws TException
+ *             If something thrifty went wrong
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the file could not be read or does not exist
+ * 
+ * @return string the contents of the file
+ * 
+ */
+	string getFileContents(1:string authString, 2:string fileName)
+	throws(1:Errors.EAuthException aex, 2:Errors.EDataException dex)
 	
 /**
  * Get an offline player. This method will always return an
@@ -1270,7 +1296,32 @@ service SwiftApi {
 				   2:string worldName)
 	throws (1:Errors.EAuthException aex, 
 			2:Errors.EDataException dex),
-			
+
+/**
+ * Sets the contents of a file.
+ * 
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param fileName
+ *            The file to set. The fileName is relative to /plugins. This 
+ *			  method cannot set the contents of any file outside /plugins.
+ * 
+ * @throws TException
+ *             If something thrifty went wrong
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the file could not be opened or does not exist
+ * 
+ * @return bool true on success, else false
+ * 
+ */
+	bool setFileContents(1:string authString, 2:string fileName, 3:string fileContents)
+	throws(1:Errors.EAuthException aex, 2:Errors.EDataException dex)
+				
 /**
  * Sets the gamemode of a player
  * 

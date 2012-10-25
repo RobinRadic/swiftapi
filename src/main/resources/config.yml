@@ -56,3 +56,12 @@ errorMessages:
     
     # Client tried to download and install a file that wasn't a JAR
     invalidPluginType: Only files of type ".jar" and ".zip" can be installed using SwiftApi
+    
+    # No read access to selected file
+    noReadAccess: Could not read file
+    
+    # No write access to selected file
+    noWriteAccess: Could not write to file
+    
+    # If a binary file is read
+    fileIsBinary: Method does not support reading binary files
