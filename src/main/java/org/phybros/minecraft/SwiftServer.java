@@ -503,6 +503,8 @@ public class SwiftServer {
 			// sanitize the string
 			// this should jail the call into the server root
 			fileName = fileName.replace("../", "");
+			fileName = fileName.replace("..\\", "");
+			fileName = fileName.replace((".." + File.separator), "");
 
 			// Can't just use File.separator because on windows "/" is
 			// translated to C:\
