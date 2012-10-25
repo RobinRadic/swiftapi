@@ -60,5 +60,8 @@ errorMessages:
     # No read access to selected file
     noReadAccess: Could not read file
     
+    # No write access to selected file
+    noWriteAccess: Could not write to file
+    
     # If a binary file is read
     fileIsBinary: Method does not support reading binary files

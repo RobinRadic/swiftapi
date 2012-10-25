@@ -804,8 +804,9 @@ service SwiftApi {
  *            The authentication hash
  * 
  * @param fileName
- *            The file to get. The fileName is relative to /plugins. This 
- *			  method cannot get the contents of any file outside /plugins.
+ *            The file to get. The fileName is relative to the server
+ *            root. This method cannot get the contents of any file
+ *            outside the server root.
  * 
  * @throws TException
  *             If something thrifty went wrong

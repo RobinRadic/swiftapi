@@ -478,9 +478,9 @@ public class SwiftServer {
 		 *            The authentication hash
 		 * 
 		 * @param fileName
-		 *            The file to get. The fileName is relative to /plugins.
-		 *            This method cannot get the contents of any file outside
-		 *            /plugins.
+		 *            The file to get. The fileName is relative to the server
+		 *            root. This method cannot get the contents of any file
+		 *            outside the server root.
 		 * 
 		 * @throws TException
 		 *             If something thrifty went wrong
@@ -500,28 +500,10 @@ public class SwiftServer {
 			logCall("getFileContents");
 			authenticate(authString, "getFileContents");
 
-			// sanitize the string
-			// this should jail the call into the server root
-			fileName = fileName.replace("../", "");
-			fileName = fileName.replace("..\\", "");
-			fileName = fileName.replace((".." + File.separator), "");
+			// clean the filename before use
+			fileName = safeFilename(fileName);
 
-			// Can't just use File.separator because on windows "/" is
-			// translated to C:\
-			if (fileName.startsWith("\\") || fileName.startsWith("/")
-					|| fileName.startsWith(File.separator)) {
-				fileName = fileName.substring(1);
-			}
-
-			// this mitigates using "C:\long\path\filename" and translates it to
-			// "long\path\filename" which will usually result in a
-			// FileNotFoundException. Hooray!
-			String fileNamePrefix = FilenameUtils.getPrefix(fileName);
-			if (fileNamePrefix.length() > 0) {
-				fileName = fileName.substring(fileNamePrefix.length());
-			}
-
-			//initialize a scanner for later
+			// initialize a scanner for later
 			Scanner scanner = null;
 
 			try {
@@ -1751,8 +1733,56 @@ public class SwiftServer {
 				TException {
 			logCall("setFileContents");
 			authenticate(authString, "setFileContents");
+			
+			// clean the filename before use
+			fileName = safeFilename(fileName);
 
-			return false;
+			try {
+				// open the file
+				File f = new File(fileName);
+
+				// check if the file exists
+				if (!f.exists()) {
+					// throw an EDE if it doesn't exist
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NOT_FOUND;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.fileNotFound");
+					throw d;
+				} else if (!f.canWrite()) {
+					// throw an EDE if it doesn't exist
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NO_READ;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.noWriteAccess");
+					throw d;
+				} else if (fileIsBinary(fileName)) {
+					// throw an EDE if the file is binary
+					EDataException d = new EDataException();
+					d.code = ErrorCode.NOT_FOUND;
+					d.errorMessage = plugin.getConfig().getString(
+							"errorMessages.fileIsBinary");
+					throw d;
+				}
+
+				// write to the file
+				FileUtils.write(f, fileContents);
+				
+				return true;
+			} catch (FileNotFoundException fnf) {
+				// throw an EDE if it doesn't exist
+				EDataException d = new EDataException();
+				d.code = ErrorCode.NOT_FOUND;
+				d.errorMessage = plugin.getConfig().getString(
+						"errorMessages.fileNotFound");
+				throw d;
+			} catch (IOException ioe) {
+				plugin.getLogger().severe(ioe.getMessage());
+				EDataException e1 = new EDataException();
+				e1.code = ErrorCode.FILE_ERROR;
+				e1.errorMessage = ioe.getMessage();
+				throw e1;
+			}
 		}
 
 		/**
@@ -2109,6 +2139,36 @@ public class SwiftServer {
 			return complete.digest();
 		}
 
+		private boolean fileIsBinary(String fileName) throws IOException {
+			int defaultBufferSize = 50;
+
+			File f = new File(fileName);
+			InputStream in = new FileInputStream(f);
+			long fileSize = FileUtils.sizeOf(f);
+			int bufSize = fileSize >= defaultBufferSize ? defaultBufferSize
+					: (int) fileSize;
+
+			byte[] bytes = new byte[bufSize];
+
+			in.read(bytes, 0, bytes.length);
+			short bin = 0;
+
+			boolean isProbablyBinary = false;
+
+			for (byte thisByte : bytes) {
+				char it = (char) thisByte;
+				if (!Character.isWhitespace(it) && Character.isISOControl(it)) {
+					bin++;
+				}
+				if (bin >= 5) {
+					isProbablyBinary = true;
+				}
+			}
+
+			in.close();
+			return isProbablyBinary;
+		}
+
 		/**
 		 * Log an API call. If the config option logMethodCalls is false, this
 		 * method does nothing.
@@ -2121,6 +2181,41 @@ public class SwiftServer {
 				plugin.getLogger().info(
 						"SwiftApi method called: " + methodName + "()");
 			}
+		}
+
+		/**
+		 * Makes a filename suitable for use by the plugin.
+		 * 
+		 * This function essentially "jails" the filename in the root directory
+		 * of the CB Server
+		 * 
+		 * @param fileName
+		 *            The filename to clean
+		 * @return String the cleaned filename
+		 */
+		private String safeFilename(String fileName) {
+			// sanitize the string
+			// this should jail the call into the server root
+			fileName = fileName.replace("../", "");
+			fileName = fileName.replace("..\\", "");
+			fileName = fileName.replace((".." + File.separator), "");
+
+			// Can't just use File.separator because on windows "/" is
+			// translated to C:\
+			if (fileName.startsWith("\\") || fileName.startsWith("/")
+					|| fileName.startsWith(File.separator)) {
+				fileName = fileName.substring(1);
+			}
+
+			// this mitigates using "C:\long\path\filename" and translates it to
+			// "long\path\filename" which will usually result in a
+			// FileNotFoundException. Hooray!
+			String fileNamePrefix = FilenameUtils.getPrefix(fileName);
+			if (fileNamePrefix.length() > 0) {
+				fileName = fileName.substring(fileNamePrefix.length());
+			}
+
+			return fileName;
 		}
 
 		private void unzipFile(File zipFile, String outputDirectory)
@@ -2164,36 +2259,6 @@ public class SwiftServer {
 
 			zis.closeEntry();
 			zis.close();
-		}
-
-		private boolean fileIsBinary(String fileName) throws IOException {
-			int defaultBufferSize = 50;
-
-			File f = new File(fileName);
-			InputStream in = new FileInputStream(f);
-			long fileSize = FileUtils.sizeOf(f);
-			int bufSize = fileSize >= defaultBufferSize ? defaultBufferSize
-					: (int) fileSize;
-
-			byte[] bytes = new byte[bufSize];
-
-			in.read(bytes, 0, bytes.length);
-			short bin = 0;
-
-			boolean isProbablyBinary = false;
-
-			for (byte thisByte : bytes) {
-				char it = (char) thisByte;
-				if (!Character.isWhitespace(it) && Character.isISOControl(it)) {
-					bin++;
-				}
-				if (bin >= 5) {
-					isProbablyBinary = true;
-				}
-			}
-
-			in.close();
-			return isProbablyBinary;
 		}
 	}
 
