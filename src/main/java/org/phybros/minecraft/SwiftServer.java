@@ -1750,7 +1750,7 @@ public class SwiftServer {
 							"errorMessages.fileNotFound");
 					throw d;
 				} else if (!f.canWrite()) {
-					// throw an EDE if it doesn't exist
+					// throw an EDE if it can't be written to
 					EDataException d = new EDataException();
 					d.code = ErrorCode.NO_READ;
 					d.errorMessage = plugin.getConfig().getString(
