@@ -244,8 +244,9 @@ public class SwiftApi {
      *            The authentication hash
      * 
      * @param fileName
-     *            The file to get. The fileName is relative to /plugins. This
-     * 		  method cannot get the contents of any file outside /plugins.
+     *            The file to get. The fileName is relative to the server
+     *            root. This method cannot get the contents of any file
+     *            outside the server root.
      * 
      * @throws TException
      *             If something thrifty went wrong
@@ -3735,16 +3736,20 @@ public class SwiftApi {
       }
     }
 
-    private static class getFileContents<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getFileContents_args> {
+    public static class getFileContents<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getFileContents_args> {
       public getFileContents() {
         super("getFileContents");
       }
 
-      protected getFileContents_args getEmptyArgsInstance() {
+      public getFileContents_args getEmptyArgsInstance() {
         return new getFileContents_args();
       }
 
-      protected getFileContents_result getResult(I iface, getFileContents_args args) throws org.apache.thrift.TException {
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public getFileContents_result getResult(I iface, getFileContents_args args) throws org.apache.thrift.TException {
         getFileContents_result result = new getFileContents_result();
         try {
           result.success = iface.getFileContents(args.authString, args.fileName);
@@ -3757,7 +3762,7 @@ public class SwiftApi {
       }
     }
 
-    private static class getOfflinePlayer<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getOfflinePlayer_args> {
+    public static class getOfflinePlayer<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getOfflinePlayer_args> {
       public getOfflinePlayer() {
         super("getOfflinePlayer");
       }
@@ -4278,16 +4283,20 @@ public class SwiftApi {
       }
     }
 
-    private static class setFileContents<I extends Iface> extends org.apache.thrift.ProcessFunction<I, setFileContents_args> {
+    public static class setFileContents<I extends Iface> extends org.apache.thrift.ProcessFunction<I, setFileContents_args> {
       public setFileContents() {
         super("setFileContents");
       }
 
-      protected setFileContents_args getEmptyArgsInstance() {
+      public setFileContents_args getEmptyArgsInstance() {
         return new setFileContents_args();
       }
 
-      protected setFileContents_result getResult(I iface, setFileContents_args args) throws org.apache.thrift.TException {
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public setFileContents_result getResult(I iface, setFileContents_args args) throws org.apache.thrift.TException {
         setFileContents_result result = new setFileContents_result();
         try {
           result.success = iface.setFileContents(args.authString, args.fileName, args.fileContents);
@@ -4301,7 +4310,7 @@ public class SwiftApi {
       }
     }
 
-    private static class setGameMode<I extends Iface> extends org.apache.thrift.ProcessFunction<I, setGameMode_args> {
+    public static class setGameMode<I extends Iface> extends org.apache.thrift.ProcessFunction<I, setGameMode_args> {
       public setGameMode() {
         super("setGameMode");
       }
@@ -13243,6 +13252,7 @@ public class SwiftApi {
 
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
+      // check for sub-struct validity
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -13773,6 +13783,7 @@ public class SwiftApi {
 
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
+      // check for sub-struct validity
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -33395,6 +33406,7 @@ public class SwiftApi {
 
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
+      // check for sub-struct validity
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -33628,7 +33640,7 @@ public class SwiftApi {
 
     // isset id assignments
     private static final int __SUCCESS_ISSET_ID = 0;
-    private BitSet __isset_bit_vector = new BitSet(1);
+    private byte __isset_bitfield = 0;
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -33661,8 +33673,7 @@ public class SwiftApi {
      * Performs a deep copy on <i>other</i>.
      */
     public setFileContents_result(setFileContents_result other) {
-      __isset_bit_vector.clear();
-      __isset_bit_vector.or(other.__isset_bit_vector);
+      __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
         this.aex = new org.phybros.thrift.EAuthException(other.aex);
@@ -33695,16 +33706,16 @@ public class SwiftApi {
     }
 
     public void unsetSuccess() {
-      __isset_bit_vector.clear(__SUCCESS_ISSET_ID);
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __SUCCESS_ISSET_ID);
     }
 
     /** Returns true if field success is set (has been assigned a value) and false otherwise */
     public boolean isSetSuccess() {
-      return __isset_bit_vector.get(__SUCCESS_ISSET_ID);
+      return EncodingUtils.testBit(__isset_bitfield, __SUCCESS_ISSET_ID);
     }
 
     public void setSuccessIsSet(boolean value) {
-      __isset_bit_vector.set(__SUCCESS_ISSET_ID, value);
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
     public org.phybros.thrift.EAuthException getAex() {
@@ -33947,6 +33958,7 @@ public class SwiftApi {
 
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
+      // check for sub-struct validity
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -33959,6 +33971,8 @@ public class SwiftApi {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bitfield = 0;
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -34024,9 +34038,11 @@ public class SwiftApi {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        oprot.writeBool(struct.success);
-        oprot.writeFieldEnd();
+        if (struct.isSetSuccess()) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          oprot.writeBool(struct.success);
+          oprot.writeFieldEnd();
+        }
         if (struct.aex != null) {
           oprot.writeFieldBegin(AEX_FIELD_DESC);
           struct.aex.write(oprot);
