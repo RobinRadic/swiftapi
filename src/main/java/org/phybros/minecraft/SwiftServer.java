@@ -1525,7 +1525,7 @@ public class SwiftServer {
 				} else {
 					jarFileName = f.getName();
 					plugin.getLogger().info(
-							"Located original JAR file: " + f.getName());
+							"Located original JAR file: " + jarFileName);
 				}
 
 				// move the current jarfile to the oldPlugins directory
@@ -2299,30 +2299,21 @@ public class SwiftServer {
 					SwiftApi.Processor<SwiftApi.Iface> pro = new SwiftApi.Processor<SwiftApi.Iface>(
 							psh);
 
-					/*
-					 * TNonblockingServerTransport tst = new
-					 * TNonblockingServerSocket( port); server = new
-					 * TNonblockingServer( new
-					 * TNonblockingServer.Args(tst).processor(pro));
-					 * plugin.getLogger().info( "Listening on port " +
-					 * String.valueOf(port)); server.serve();
-					 */
-
-					/*
-					 * TServerTransport tst = new TServerSocket(port); server =
-					 * new TSimpleServer( new
-					 * TSimpleServer.Args(tst).processor(pro));
-					 * plugin.getLogger().info( "Listening on port " +
-					 * String.valueOf(port));
-					 */
-
-					TNonblockingServerTransport tst = new TNonblockingServerSocket(
-							port);
-					server = new TThreadedSelectorServer(
-							new TThreadedSelectorServer.Args(tst)
-									.processor(pro));
+					// create the transport
+					TNonblockingServerTransport tst = null;
+					tst = new TNonblockingServerSocket(port);
+					
+					//set up the server arguments
+					TThreadedSelectorServer.Args a = null;
+					a = new TThreadedSelectorServer.Args(tst);
+					
+					//allocate the server
+					server = new TThreadedSelectorServer(a.processor(pro));
+					
 					plugin.getLogger().info(
 							"Listening on port " + String.valueOf(port));
+					
+					//start up the server
 					server.serve();
 				} catch (Exception e) {
 					plugin.getLogger().severe(e.getMessage());
