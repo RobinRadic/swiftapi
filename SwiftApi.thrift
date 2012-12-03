@@ -1436,7 +1436,38 @@ service SwiftApi {
 					   3:bool isThundering)
 	throws (1:Errors.EAuthException aex, 
 			2:Errors.EDataException dex),
-			
+
+/**
+ * Sets the time on the specified world or all worlds if a 
+ * blank world name is specified.
+ *
+ * @param authString
+ *            The authentication hash
+ *
+ * @param worldName
+ *            The name of the world to set the time for. If a blank 
+ *			  world name is specified, the time is set for all worlds.
+ *
+ * @param time
+ *            The value to set the world time
+ * 
+ * @return boolean true on success false on serious failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the specified world could not be found
+ *
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool setWorldTime( 1:string authString, 
+					   2:string worldName, 
+					   3:i64 time)
+	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
+						
 /**
  * Un ban a specific player
  * 

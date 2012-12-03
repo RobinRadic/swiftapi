@@ -1867,6 +1867,9 @@ public class SwiftServer {
 		@Override
 		public boolean setPvp(String authString, String worldName, boolean isPvp)
 				throws EAuthException, EDataException, TException {
+			logCall("setPvp");
+			authenticate(authString, "setPvp");
+			
 			org.bukkit.World w = plugin.getServer().getWorld(worldName);
 
 			if (w == null) {
@@ -1918,6 +1921,9 @@ public class SwiftServer {
 		public boolean setStorm(String authString, String worldName,
 				boolean hasStorm) throws EAuthException, EDataException,
 				TException {
+			logCall("setStorm");
+			authenticate(authString, "setStorm");
+			
 			org.bukkit.World w = plugin.getServer().getWorld(worldName);
 
 			if (w == null) {
@@ -1968,6 +1974,9 @@ public class SwiftServer {
 		public boolean setThundering(String authString, String worldName,
 				boolean isThundering) throws EAuthException, EDataException,
 				TException {
+			logCall("setThundering");
+			authenticate(authString, "setThundering");
+			
 			org.bukkit.World w = plugin.getServer().getWorld(worldName);
 
 			if (w == null) {
@@ -1989,6 +1998,18 @@ public class SwiftServer {
 			} catch (Exception e) {
 				return false;
 			}
+		}
+
+		@Override
+		public boolean setWorldTime(String authString, String worldName,
+				long time) throws EAuthException, EDataException, TException {
+			logCall("setWorldTime");
+			authenticate(authString, "setWorldTime");
+			
+			// TODO Auto-generated method stub
+			
+			
+			return false;
 		}
 
 		/**

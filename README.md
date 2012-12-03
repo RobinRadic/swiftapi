@@ -87,7 +87,7 @@ method you are calling.
 
 Available Languages
 ----
-As of Apache Thrift version 0.8.0, the languages you can use to talk to your server with are:
+As of Apache Thrift version 0.9.0, the languages you can use to talk to your server with are:
 
 * Actionscript 3 (AS3)
 * C (using GLib)
