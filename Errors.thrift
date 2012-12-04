@@ -1,5 +1,6 @@
 namespace java org.phybros.thrift
 namespace csharp org.phybros.thrift
+namespace php org.phybros.thrift
 
 /**
  * Various codes used for catching errors
