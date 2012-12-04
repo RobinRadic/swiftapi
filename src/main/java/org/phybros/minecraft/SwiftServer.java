@@ -2000,16 +2000,80 @@ public class SwiftServer {
 			}
 		}
 
+		/**
+		 * Sets the time on the specified world or all worlds if a 
+		 * blank world name is specified.
+		 *
+		 * @param authString
+		 *            The authentication hash
+		 *
+		 * @param worldName
+		 *            The name of the world to set the time for. If a blank 
+		 *			  world name is specified, the time is set for all worlds.
+		 *
+		 * @param time
+		 *            The value to set the world time
+		 * 
+		 * @return boolean true on success false on serious failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the specified world could not be found
+		 *
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
 		@Override
 		public boolean setWorldTime(String authString, String worldName,
 				long time) throws EAuthException, EDataException, TException {
+			// log and auth
 			logCall("setWorldTime");
 			authenticate(authString, "setWorldTime");
 			
-			// TODO Auto-generated method stub
+			// time cannot be less than 0
+			if(time < 0) {
+				plugin.getLogger().warning("setWorldTime(): Time less than zero specified, assuming zero");
+				time = 0;
+			}
 			
+			// time cannot be greater than 24000
+			if(time > 24000) {
+				plugin.getLogger().warning("setWorldTime(): Time greater than 24000 specified, assuming 24000");
+				time = 24000;
+			}
 			
-			return false;
+			//if the user specified no world...
+			if(worldName.trim().equalsIgnoreCase("")) {
+				plugin.getLogger().info("Setting time to " + String.valueOf(time) + " on all worlds");
+				
+				for(org.bukkit.World w : plugin.getServer().getWorlds()) {
+					w.setTime(time);
+				}
+				
+				return true;
+			} else {
+				// get the specified world
+				org.bukkit.World w = plugin.getServer().getWorld(worldName);
+				
+				//throw an EDE if the world was not found
+				if (w == null) {
+					plugin.getLogger().info(String.format(
+							plugin.getConfig().getString(
+									"errorMessages.worldNotFound"), worldName));
+					EDataException e = new EDataException();
+					e.code = ErrorCode.NOT_FOUND;
+					e.errorMessage = String.format(
+							plugin.getConfig().getString(
+									"errorMessages.worldNotFound"), worldName);
+					throw e;
+				}
+
+				plugin.getLogger().info("Setting time to " + String.valueOf(time) + " on world \"" + worldName + "\"");
+				w.setTime(time);
+				return true;
+			}
 		}
 
 		/**
