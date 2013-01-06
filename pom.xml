@@ -13,12 +13,12 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
+ 
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
-			<version>1.4.6-R0.3-SNAPSHOT</version>
+			<version>1.4.6-R0.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.thrift</groupId>
