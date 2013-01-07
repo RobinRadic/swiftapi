@@ -5,7 +5,7 @@
 
 	<groupId>org.phybros.minecraft</groupId>
 	<artifactId>SwiftApi</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<packaging>jar</packaging>
 
 	<url>https://github.com/phybros/swiftapi</url>
@@ -29,7 +29,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.5.8</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -40,7 +39,6 @@
 			<groupId>org.mcstats</groupId>
 			<artifactId>metrics</artifactId>
 			<version>1.2-SNAPSHOT</version>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 	<repositories>
