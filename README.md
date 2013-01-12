@@ -3,7 +3,10 @@ SwiftApi
 
 An Apache Thrift based API for CraftBukkit Minecraft servers. This API allows
 simple calls to Bukkit methods over the internet using almost any programming
-language.
+language. If you're a programmer who wants to create a killer server admin
+app, this is the plugin for you!
+
+Check out [MineCenter](http://minecenter.org) for an example of what you can do with the plugin.
 
 Build Prerequisites
 ----
@@ -20,7 +23,7 @@ And maven will produce a jar file called `/target/SwiftApi-<version>.jar`
 
 Installation
 ----
-Just drop the built jar file into your `plugins/` directory on the server, and 
+Just drop the jar file into your `plugins/` directory on the server, and 
 restart the server.
 
 Configuration

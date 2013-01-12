@@ -2305,19 +2305,16 @@ public class SwiftServer {
 
 		private void unzipFile(File zipFile, String outputDirectory)
 				throws IOException {
-			// TODO: recursively unzip the input file into the output directory
 			byte[] buffer = new byte[1024];
 
-			// create output directory is not exists
+			// make the target dir if it doesn't exist
 			File folder = new File(outputDirectory);
 			if (!folder.exists()) {
 				folder.mkdirs();
 			}
 
-			// get the zip file content
 			ZipInputStream zis = new ZipInputStream(
 					new FileInputStream(zipFile));
-			// get the zipped file list entry
 			ZipEntry ze = zis.getNextEntry();
 
 			while (ze != null) {
@@ -2328,9 +2325,7 @@ public class SwiftServer {
 						+ fileName);
 				plugin.getLogger().info(String.format("Unzipping %s to %s...", fileName, newFile.getAbsolutePath()));
 
-				// create all non exists folders
-				// else you will hit FileNotFoundException for compressed
-				// folder
+				// Make any folders that might exist
 				if(ze.isDirectory()) {
 					newFile.mkdirs();
 				} else {
