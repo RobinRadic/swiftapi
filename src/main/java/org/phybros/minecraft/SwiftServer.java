@@ -2330,7 +2330,7 @@ public class SwiftServer {
 					newFile.mkdirs();
 				} else {
 					newFile.createNewFile();
-
+ 
 					FileOutputStream fos = new FileOutputStream(newFile);
 
 					int len;
