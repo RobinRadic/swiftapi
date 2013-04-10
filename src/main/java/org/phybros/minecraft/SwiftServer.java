@@ -36,6 +36,8 @@ import org.phybros.thrift.Server;
 import org.phybros.thrift.SwiftApi;
 import org.phybros.thrift.World;
 
+import org.bukkit.ChatColor;
+
 public class SwiftServer {
 
 	public class SwiftApiHandler implements SwiftApi.Iface {
@@ -124,9 +126,9 @@ public class SwiftServer {
 				throws EAuthException, TException {
 			logCall("announce");
 			authenticate(authString, "announce");
-
+                        String msgWithColor = ChatColor.translateAlternateColorCodes('&', message);            
 			try {
-				plugin.getServer().broadcastMessage(message);
+				plugin.getServer().broadcastMessage(msgWithColor);
 				return true;
 			} catch (Exception e) {
 				return false;
