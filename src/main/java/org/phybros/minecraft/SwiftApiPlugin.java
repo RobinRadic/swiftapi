@@ -20,8 +20,7 @@ public class SwiftApiPlugin extends JavaPlugin {
 		try {
 			last500 = new ArrayList<ConsoleLine>();
 			this.saveDefaultConfig();
-			java.util.logging.Logger.getLogger("Minecraft").addHandler(
-					new ConsoleHandler(this));
+			this.getServer().getLogger().addHandler(new ConsoleHandler(this));
 			server = new SwiftServer(this);
 
 			// mcstats
