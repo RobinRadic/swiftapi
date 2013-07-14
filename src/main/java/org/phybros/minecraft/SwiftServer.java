@@ -2400,7 +2400,7 @@ public class SwiftServer {
 					server = new TThreadedSelectorServer(a.processor(pro));
 					
 					plugin.getLogger().info(
-							"Listening on port " + String.valueOf(port));
+							"Started up and listening on port " + String.valueOf(port));
 					
 					//start up the server
 					server.serve();
