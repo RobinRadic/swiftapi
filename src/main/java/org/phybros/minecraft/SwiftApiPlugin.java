@@ -1,5 +1,6 @@
 package org.phybros.minecraft;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,19 +18,22 @@ public class SwiftApiPlugin extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		try {			
+			Metrics metrics = new Metrics(this);
+			metrics.start();
+		} catch(IOException e) {
+			getLogger().severe("Exception initializing stats: " + e.getMessage());			
+		}
+		
 		try {
 			last500 = new ArrayList<ConsoleLine>();
 			this.saveDefaultConfig();
 			this.getServer().getLogger().addHandler(new ConsoleHandler(this));
 			server = new SwiftServer(this);
 
-			// mcstats
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-
 			getLogger().info("SwiftApi was enabled.");
 		} catch (Exception e) {
-			getLogger().severe(e.getMessage());
+			getLogger().severe("SwiftApi was not enabled: " + e.getMessage());
 		}
 	}
 
