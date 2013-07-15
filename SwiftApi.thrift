@@ -224,6 +224,11 @@ struct ItemStack {
  * @since 1.5
  */
  	6: string displayName,
+/**
+ * The data value associated with this item
+ * @since 1.5
+ */
+ 	7: i32 data,
 }
 
 /**

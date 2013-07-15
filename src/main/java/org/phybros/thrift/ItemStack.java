@@ -34,6 +34,7 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
   private static final org.apache.thrift.protocol.TField ENCHANTMENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("enchantments", org.apache.thrift.protocol.TType.MAP, (short)4);
   private static final org.apache.thrift.protocol.TField LORE_FIELD_DESC = new org.apache.thrift.protocol.TField("lore", org.apache.thrift.protocol.TType.LIST, (short)5);
   private static final org.apache.thrift.protocol.TField DISPLAY_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("displayName", org.apache.thrift.protocol.TType.STRING, (short)6);
+  private static final org.apache.thrift.protocol.TField DATA_FIELD_DESC = new org.apache.thrift.protocol.TField("data", org.apache.thrift.protocol.TType.I32, (short)7);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -67,6 +68,11 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
    * @since 1.5
    */
   public String displayName; // required
+  /**
+   * The data value associated with this item
+   * @since 1.5
+   */
+  public int data; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -95,7 +101,12 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
      * The display name of the item
      * @since 1.5
      */
-    DISPLAY_NAME((short)6, "displayName");
+    DISPLAY_NAME((short)6, "displayName"),
+    /**
+     * The data value associated with this item
+     * @since 1.5
+     */
+    DATA((short)7, "data");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -122,6 +133,8 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
           return LORE;
         case 6: // DISPLAY_NAME
           return DISPLAY_NAME;
+        case 7: // DATA
+          return DATA;
         default:
           return null;
       }
@@ -165,6 +178,7 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
   private static final int __AMOUNT_ISSET_ID = 0;
   private static final int __TYPEID_ISSET_ID = 1;
   private static final int __DURABILITY_ISSET_ID = 2;
+  private static final int __DATA_ISSET_ID = 3;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -184,6 +198,8 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.DISPLAY_NAME, new org.apache.thrift.meta_data.FieldMetaData("displayName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.DATA, new org.apache.thrift.meta_data.FieldMetaData("data", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ItemStack.class, metaDataMap);
   }
@@ -197,7 +213,8 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     int durability,
     Map<Enchantment,Integer> enchantments,
     List<String> lore,
-    String displayName)
+    String displayName,
+    int data)
   {
     this();
     this.amount = amount;
@@ -209,6 +226,8 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     this.enchantments = enchantments;
     this.lore = lore;
     this.displayName = displayName;
+    this.data = data;
+    setDataIsSet(true);
   }
 
   /**
@@ -244,6 +263,7 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     if (other.isSetDisplayName()) {
       this.displayName = other.displayName;
     }
+    this.data = other.data;
   }
 
   public ItemStack deepCopy() {
@@ -261,6 +281,8 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     this.enchantments = null;
     this.lore = null;
     this.displayName = null;
+    setDataIsSet(false);
+    this.data = 0;
   }
 
   /**
@@ -470,6 +492,37 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     }
   }
 
+  /**
+   * The data value associated with this item
+   * @since 1.5
+   */
+  public int getData() {
+    return this.data;
+  }
+
+  /**
+   * The data value associated with this item
+   * @since 1.5
+   */
+  public ItemStack setData(int data) {
+    this.data = data;
+    setDataIsSet(true);
+    return this;
+  }
+
+  public void unsetData() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __DATA_ISSET_ID);
+  }
+
+  /** Returns true if field data is set (has been assigned a value) and false otherwise */
+  public boolean isSetData() {
+    return EncodingUtils.testBit(__isset_bitfield, __DATA_ISSET_ID);
+  }
+
+  public void setDataIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __DATA_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case AMOUNT:
@@ -520,6 +573,14 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       }
       break;
 
+    case DATA:
+      if (value == null) {
+        unsetData();
+      } else {
+        setData((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -542,6 +603,9 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
 
     case DISPLAY_NAME:
       return getDisplayName();
+
+    case DATA:
+      return Integer.valueOf(getData());
 
     }
     throw new IllegalStateException();
@@ -566,6 +630,8 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       return isSetLore();
     case DISPLAY_NAME:
       return isSetDisplayName();
+    case DATA:
+      return isSetData();
     }
     throw new IllegalStateException();
   }
@@ -634,6 +700,15 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       if (!(this_present_displayName && that_present_displayName))
         return false;
       if (!this.displayName.equals(that.displayName))
+        return false;
+    }
+
+    boolean this_present_data = true;
+    boolean that_present_data = true;
+    if (this_present_data || that_present_data) {
+      if (!(this_present_data && that_present_data))
+        return false;
+      if (this.data != that.data)
         return false;
     }
 
@@ -713,6 +788,16 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetData()).compareTo(typedOther.isSetData());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetData()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.data, typedOther.data);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -767,6 +852,10 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     } else {
       sb.append(this.displayName);
     }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("data:");
+    sb.append(this.data);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -883,6 +972,14 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 7: // DATA
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.data = iprot.readI32();
+              struct.setDataIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -937,6 +1034,9 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
         oprot.writeString(struct.displayName);
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldBegin(DATA_FIELD_DESC);
+      oprot.writeI32(struct.data);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -973,7 +1073,10 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       if (struct.isSetDisplayName()) {
         optionals.set(5);
       }
-      oprot.writeBitSet(optionals, 6);
+      if (struct.isSetData()) {
+        optionals.set(6);
+      }
+      oprot.writeBitSet(optionals, 7);
       if (struct.isSetAmount()) {
         oprot.writeI32(struct.amount);
       }
@@ -1005,12 +1108,15 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       if (struct.isSetDisplayName()) {
         oprot.writeString(struct.displayName);
       }
+      if (struct.isSetData()) {
+        oprot.writeI32(struct.data);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, ItemStack struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(6);
+      BitSet incoming = iprot.readBitSet(7);
       if (incoming.get(0)) {
         struct.amount = iprot.readI32();
         struct.setAmountIsSet(true);
@@ -1054,6 +1160,10 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       if (incoming.get(5)) {
         struct.displayName = iprot.readString();
         struct.setDisplayNameIsSet(true);
+      }
+      if (incoming.get(6)) {
+        struct.data = iprot.readI32();
+        struct.setDataIsSet(true);
       }
     }
   }

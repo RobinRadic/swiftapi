@@ -137,28 +137,37 @@ public class BukkitConverter {
 		playerInventory.inventory = new ArrayList<org.phybros.thrift.ItemStack>();
 		playerInventory.armor = new PlayerArmor();
 		playerInventory.itemInHand = new org.phybros.thrift.ItemStack();
-		
+
 		// convert the inventory
 		for (ItemStack i : bukkitInventory.getContents()) {
 			// add to the inventory
-			playerInventory.inventory.add(BukkitConverter.convertBukkitItemStack(i));
+			playerInventory.inventory.add(BukkitConverter
+					.convertBukkitItemStack(i));
 		}
-		
+
 		// convert the held item
-		playerInventory.itemInHand = BukkitConverter.convertBukkitItemStack(bukkitInventory.getItemInHand());
+		playerInventory.itemInHand = BukkitConverter
+				.convertBukkitItemStack(bukkitInventory.getItemInHand());
 
 		// armor
-		playerInventory.armor.boots = BukkitConverter.convertBukkitItemStack(bukkitInventory.getBoots());
-		playerInventory.armor.helmet = BukkitConverter.convertBukkitItemStack(bukkitInventory.getHelmet());
-		playerInventory.armor.leggings = BukkitConverter.convertBukkitItemStack(bukkitInventory.getLeggings());
-		playerInventory.armor.chestplate = BukkitConverter.convertBukkitItemStack(bukkitInventory.getChestplate());
-		
+		playerInventory.armor.boots = BukkitConverter
+				.convertBukkitItemStack(bukkitInventory.getBoots());
+		playerInventory.armor.helmet = BukkitConverter
+				.convertBukkitItemStack(bukkitInventory.getHelmet());
+		playerInventory.armor.leggings = BukkitConverter
+				.convertBukkitItemStack(bukkitInventory.getLeggings());
+		playerInventory.armor.chestplate = BukkitConverter
+				.convertBukkitItemStack(bukkitInventory.getChestplate());
+
 		return playerInventory;
 	}
 
 	/**
-	 * Converts an org.bukkit.inventory.ItemStack into an org.phybros.thrift.ItemStack
-	 * @param bukkitItemStack The ItemStack to convert
+	 * Converts an org.bukkit.inventory.ItemStack into an
+	 * org.phybros.thrift.ItemStack
+	 * 
+	 * @param bukkitItemStack
+	 *            The ItemStack to convert
 	 * @return The converted ItemStack
 	 */
 	public static org.phybros.thrift.ItemStack convertBukkitItemStack(
@@ -171,10 +180,19 @@ public class BukkitConverter {
 			newItemStack.amount = bukkitItemStack.getAmount();
 			newItemStack.durability = bukkitItemStack.getDurability();
 			newItemStack.typeId = bukkitItemStack.getTypeId();
-			
-			//newItemStack.lore = bukkitItemStack.getItemMeta().hasLore() ? bukkitItemStack.getItemMeta().getLore() : new ArrayList<String>();
-			//newItemStack.displayName = bukkitItemStack.getItemMeta().hasDisplayName() ? bukkitItemStack.getItemMeta().getDisplayName() : "";
-			
+			newItemStack.data = (int) bukkitItemStack.getData().getData();
+
+			if (bukkitItemStack.hasItemMeta()) {
+				newItemStack.lore = bukkitItemStack.getItemMeta().hasLore() ? bukkitItemStack
+						.getItemMeta().getLore() : new ArrayList<String>();
+				newItemStack.displayName = bukkitItemStack.getItemMeta()
+						.hasDisplayName() ? bukkitItemStack.getItemMeta()
+						.getDisplayName() : "";
+			} else {
+				newItemStack.lore = new ArrayList<String>();
+				newItemStack.displayName = "";
+			}
+
 			for (Map.Entry<org.bukkit.enchantments.Enchantment, Integer> entry : bukkitItemStack
 					.getEnchantments().entrySet()) {
 				newItemStack.enchantments.put(
