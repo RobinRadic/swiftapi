@@ -214,6 +214,16 @@ struct ItemStack {
  * The current enchantments in effect on this item
  */
 	4: map<Enchantment, i32> enchantments,
+/**
+ * The lore associated with this item
+ * @since 1.5
+ */
+ 	5: list<string> lore,
+/**
+ * The display name of the item
+ * @since 1.5
+ */
+ 	6: string displayName,
 }
 
 /**
@@ -544,6 +554,37 @@ struct Server {
 }
 
 service SwiftApi {
+/**
+ * Add an item to a player's inventory
+ * 
+ * @since 1.5
+ *
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param playerName
+ *            The name of the player
+ * 
+ * @param item
+ *            The item to add, in the form of an ItemStack
+ * 
+ * @return boolean true on success, false on failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the player was not found
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool addItemToInventory(1:string authString,
+							2:string playerName,
+							3:ItemStack item)
+	throws (1:Errors.EAuthException aex,
+			2:Errors.EDataException dex),
+
 /**
  * Add a Player to the server's whitelist. The player can be offline, or
  * be a player that has never played on this server before. If the player is
@@ -1189,6 +1230,37 @@ service SwiftApi {
  *            The authentication hash
  */
 	oneway void reloadServer(1:string authString)
+
+/**
+ * Removes an item from a player's inventory
+ * 
+ * @since 1.5
+ *
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param playerName
+ *            The name of the player
+ * 
+ * @param itemIndex
+ *            The 0-based index of the item being removed
+ * 
+ * @return boolean true on success, false on failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the player was not found
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool removeInventoryItem(1:string authString,
+							 2:string playerName,
+							 3:i32 itemIndex)
+	throws (1:Errors.EAuthException aex,
+			2:Errors.EDataException dex),
 	
 /**
  * Remove a Player from the server's whitelist. The player can be offline, or
@@ -1514,6 +1586,41 @@ service SwiftApi {
 	bool unBanIp(1:string authString, 
 				 2:string ip) 
 	throws (1:Errors.EAuthException aex, 
+			2:Errors.EDataException dex),
+
+/**
+ * Replaces an item in the player's inventory with the supplied one
+ * 
+ * @since 1.5
+ *
+ * @param authString
+ *            The authentication hash
+ * 
+ * @param playerName
+ *            The name of the player
+ * 
+ * @param item
+ *            The item that will replace the item specified by itemIndex, in the form of an ItemStack
+ * 
+ * @param itemIndex
+ *            The 0-based index of which item to replace in the inventory
+ * 
+ * @return boolean true on success, false on failure
+ * 
+ * @throws Errors.EAuthException
+ *             If the method call was not correctly authenticated
+ * 
+ * @throws Errors.EDataException
+ *             If the player was not found
+ * 
+ * @throws org.apache.thrift.TException
+ *             If something went wrong with Thrift
+ */
+	bool updateInventoryItem(1:string authString,
+							 2:string playerName,
+							 3:ItemStack item,
+							 4:i32 itemIndex)
+	throws (1:Errors.EAuthException aex,
 			2:Errors.EDataException dex),
 
 }

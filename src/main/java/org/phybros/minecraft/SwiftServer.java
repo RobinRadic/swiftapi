@@ -12,6 +12,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
@@ -25,11 +26,14 @@ import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.bukkit.OfflinePlayer;
+import org.phybros.minecraft.converters.BukkitConverter;
+import org.phybros.minecraft.converters.ThriftConverter;
 import org.phybros.thrift.ConsoleLine;
 import org.phybros.thrift.EAuthException;
 import org.phybros.thrift.EDataException;
 import org.phybros.thrift.ErrorCode;
 import org.phybros.thrift.GameMode;
+import org.phybros.thrift.ItemStack;
 import org.phybros.thrift.Player;
 import org.phybros.thrift.Plugin;
 import org.phybros.thrift.Server;
@@ -47,6 +51,62 @@ public class SwiftServer {
 		private String oldPluginsPath = plugin.getDataFolder().getPath()
 				+ File.separator + "oldPlugins";
 		private String pluginsPath = plugin.getDataFolder().getParent();
+
+		/**
+		 * Add an item to a player's inventory
+		 * 
+		 * @since 1.5
+		 *
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param playerName
+		 *            The name of the player
+		 * 
+		 * @param item
+		 *            The item to add, in the form of an ItemStack
+		 * 
+		 * @return boolean true on success, false on failure
+		 * 
+		 * @throws Errors.EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws Errors.EDataException
+		 *             If the player was not found
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean addItemToInventory(String authString, String playerName,
+				ItemStack item) throws EAuthException, EDataException,
+				TException {
+			logCall("addItemToInventory");
+			authenticate(authString, "addItemToInventory");
+
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(playerName);
+
+			if (offPl == null) {
+				plugin.getLogger().info("Player not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), playerName);
+				throw e;
+			}
+			
+			try {
+				org.bukkit.inventory.ItemStack converted = ThriftConverter.convertItemStack(item);
+				HashMap<Integer, org.bukkit.inventory.ItemStack> result;
+				result = offPl.getPlayer().getInventory().addItem(converted);
+				
+				return result.isEmpty();
+			} catch (Exception e) {
+				plugin.getLogger().severe(e.getClass().getName() + " in addItemToInventory: " + e.getMessage());
+				return false;
+			}
+		}
 
 		/**
 		 * Add a Player to the server's whitelist. The player can be offline, or
@@ -135,6 +195,35 @@ public class SwiftServer {
 			}
 		}
 
+		/*
+		 * code to be reused
+		 * 
+		 * @Override public boolean copyPlugin(String authString, String
+		 * fileName) throws EAuthException, EDataException, TException {
+		 * logCall("copyPlugin"); authenticate(authString, "copyPlugin");
+		 * 
+		 * File pluginToCopy = new File(stagingPath + "/" + fileName); if
+		 * (!pluginToCopy.exists()) { plugin.getLogger().severe(
+		 * plugin.getConfig().getString( "errorMessages.fileNotFound"));
+		 * EDataException fileNotFoundEx = new EDataException();
+		 * fileNotFoundEx.code = ErrorCode.FILE_ERROR;
+		 * fileNotFoundEx.errorMessage = plugin.getConfig().getString(
+		 * "errorMessages.fileNotFound"); throw fileNotFoundEx; }
+		 * 
+		 * try { String newPluginPath = pluginsPath + "/" +
+		 * pluginToCopy.getName();
+		 * 
+		 * plugin.getLogger().info( "Copying file " + pluginToCopy + " to " +
+		 * newPluginPath + "..."); FileUtils.copyFile(pluginToCopy, new
+		 * File(newPluginPath)); plugin.getLogger().info("File copied."); }
+		 * catch (IOException e) { plugin.getLogger().severe(e.getMessage());
+		 * EDataException ioEx = new EDataException(); ioEx.code =
+		 * ErrorCode.FILE_ERROR; ioEx.errorMessage = ioEx.getMessage(); throw
+		 * ioEx; }
+		 * 
+		 * return false; }
+		 */
+
 		/**
 		 * Permanently ban a player from the server by name. The player can be
 		 * offline, or have never played on this server before
@@ -177,67 +266,6 @@ public class SwiftServer {
 			try {
 				offPl.setBanned(true);
 				plugin.getLogger().info("Banned player " + offPl.getName());
-				return true;
-			} catch (Exception e) {
-				return false;
-			}
-		}
-
-		/*
-		 * code to be reused
-		 * 
-		 * @Override public boolean copyPlugin(String authString, String
-		 * fileName) throws EAuthException, EDataException, TException {
-		 * logCall("copyPlugin"); authenticate(authString, "copyPlugin");
-		 * 
-		 * File pluginToCopy = new File(stagingPath + "/" + fileName); if
-		 * (!pluginToCopy.exists()) { plugin.getLogger().severe(
-		 * plugin.getConfig().getString( "errorMessages.fileNotFound"));
-		 * EDataException fileNotFoundEx = new EDataException();
-		 * fileNotFoundEx.code = ErrorCode.FILE_ERROR;
-		 * fileNotFoundEx.errorMessage = plugin.getConfig().getString(
-		 * "errorMessages.fileNotFound"); throw fileNotFoundEx; }
-		 * 
-		 * try { String newPluginPath = pluginsPath + "/" +
-		 * pluginToCopy.getName();
-		 * 
-		 * plugin.getLogger().info( "Copying file " + pluginToCopy + " to " +
-		 * newPluginPath + "..."); FileUtils.copyFile(pluginToCopy, new
-		 * File(newPluginPath)); plugin.getLogger().info("File copied."); }
-		 * catch (IOException e) { plugin.getLogger().severe(e.getMessage());
-		 * EDataException ioEx = new EDataException(); ioEx.code =
-		 * ErrorCode.FILE_ERROR; ioEx.errorMessage = ioEx.getMessage(); throw
-		 * ioEx; }
-		 * 
-		 * return false; }
-		 */
-
-		/**
-		 * Permanently ban a specific IP from connecting to this server
-		 * 
-		 * @param authString
-		 *            The authentication hash
-		 * 
-		 * @param ip
-		 *            The IP address to ban
-		 * 
-		 * @return boolean true on success false on failure
-		 * 
-		 * @throws EAuthException
-		 *             If the method call was not correctly authenticated
-		 * 
-		 * @throws org.apache.thrift.TException
-		 *             If something went wrong with Thrift
-		 */
-		@Override
-		public boolean banIp(String authString, String ip)
-				throws EAuthException, TException {
-			logCall("banIp");
-			authenticate(authString, "banIp");
-
-			try {
-				plugin.getServer().banIP(ip);
-				plugin.getLogger().info("Banned IP address " + ip);
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -291,6 +319,38 @@ public class SwiftServer {
 		 * e.getMessage(); throw e1; } catch (Exception e) {
 		 * plugin.getLogger().severe(e.getMessage()); return false; } }
 		 */
+
+		/**
+		 * Permanently ban a specific IP from connecting to this server
+		 * 
+		 * @param authString
+		 *            The authentication hash
+		 * 
+		 * @param ip
+		 *            The IP address to ban
+		 * 
+		 * @return boolean true on success false on failure
+		 * 
+		 * @throws EAuthException
+		 *             If the method call was not correctly authenticated
+		 * 
+		 * @throws org.apache.thrift.TException
+		 *             If something went wrong with Thrift
+		 */
+		@Override
+		public boolean banIp(String authString, String ip)
+				throws EAuthException, TException {
+			logCall("banIp");
+			authenticate(authString, "banIp");
+
+			try {
+				plugin.getServer().banIP(ip);
+				plugin.getLogger().info("Banned IP address " + ip);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
 
 		/**
 		 * Takes "op" (operator) privileges away from a player. If the player is
@@ -1396,6 +1456,35 @@ public class SwiftServer {
 			}
 		}
 
+		@Override
+		public boolean removeInventoryItem(String authString,
+				String playerName, int itemIndex) throws EAuthException,
+				EDataException, TException {
+			logCall("removeInventoryItem");
+			authenticate(authString, "removeInventoryItem");
+			
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(playerName);
+
+			if (offPl == null) {
+				plugin.getLogger().info("Player not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), playerName);
+				throw e;
+			}
+			
+
+			try {
+				offPl.getPlayer().getInventory().clear(itemIndex);
+				return true;
+			} catch(Exception e) {
+				plugin.getLogger().severe(e.getClass().getName() + " in removeInventoryItem: " + e.getMessage());
+				return false;
+			}
+		}
+
 		/**
 		 * This method will replace a given plugin's .jar file with a new
 		 * version downloaded from the internet. The old .jar file will be moved
@@ -2152,6 +2241,34 @@ public class SwiftServer {
 				plugin.getLogger().info("Un banned IP address " + ip);
 				return true;
 			} catch (Exception e) {
+				return false;
+			}
+		}
+
+		@Override
+		public boolean updateInventoryItem(String authString,
+				String playerName, ItemStack item, int itemIndex)
+				throws EAuthException, EDataException, TException {
+			logCall("updateInventoryItem");
+			authenticate(authString, "updateInventoryItem");
+			
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(playerName);
+
+			if (offPl == null) {
+				plugin.getLogger().info("Player not found");
+				EDataException e = new EDataException();
+				e.code = ErrorCode.NOT_FOUND;
+				e.errorMessage = String.format(
+						plugin.getConfig().getString(
+								"errorMessages.playerNotFound"), playerName);
+				throw e;
+			}
+			
+			try {
+				offPl.getPlayer().getInventory().setItem(itemIndex, ThriftConverter.convertItemStack(item));
+				return true;
+			} catch(Exception e) {
+				plugin.getLogger().severe(e.getClass().getName() + " in updateInventoryItem: " + e.getMessage());
 				return false;
 			}
 		}

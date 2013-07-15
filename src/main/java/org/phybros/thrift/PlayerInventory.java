@@ -529,14 +529,14 @@ public class PlayerInventory implements org.apache.thrift.TBase<PlayerInventory,
           case 1: // INVENTORY
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list10 = iprot.readListBegin();
-                struct.inventory = new ArrayList<ItemStack>(_list10.size);
-                for (int _i11 = 0; _i11 < _list10.size; ++_i11)
+                org.apache.thrift.protocol.TList _list18 = iprot.readListBegin();
+                struct.inventory = new ArrayList<ItemStack>(_list18.size);
+                for (int _i19 = 0; _i19 < _list18.size; ++_i19)
                 {
-                  ItemStack _elem12; // required
-                  _elem12 = new ItemStack();
-                  _elem12.read(iprot);
-                  struct.inventory.add(_elem12);
+                  ItemStack _elem20; // required
+                  _elem20 = new ItemStack();
+                  _elem20.read(iprot);
+                  struct.inventory.add(_elem20);
                 }
                 iprot.readListEnd();
               }
@@ -582,9 +582,9 @@ public class PlayerInventory implements org.apache.thrift.TBase<PlayerInventory,
         oprot.writeFieldBegin(INVENTORY_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.inventory.size()));
-          for (ItemStack _iter13 : struct.inventory)
+          for (ItemStack _iter21 : struct.inventory)
           {
-            _iter13.write(oprot);
+            _iter21.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -631,9 +631,9 @@ public class PlayerInventory implements org.apache.thrift.TBase<PlayerInventory,
       if (struct.isSetInventory()) {
         {
           oprot.writeI32(struct.inventory.size());
-          for (ItemStack _iter14 : struct.inventory)
+          for (ItemStack _iter22 : struct.inventory)
           {
-            _iter14.write(oprot);
+            _iter22.write(oprot);
           }
         }
       }
@@ -651,14 +651,14 @@ public class PlayerInventory implements org.apache.thrift.TBase<PlayerInventory,
       BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
         {
-          org.apache.thrift.protocol.TList _list15 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.inventory = new ArrayList<ItemStack>(_list15.size);
-          for (int _i16 = 0; _i16 < _list15.size; ++_i16)
+          org.apache.thrift.protocol.TList _list23 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.inventory = new ArrayList<ItemStack>(_list23.size);
+          for (int _i24 = 0; _i24 < _list23.size; ++_i24)
           {
-            ItemStack _elem17; // required
-            _elem17 = new ItemStack();
-            _elem17.read(iprot);
-            struct.inventory.add(_elem17);
+            ItemStack _elem25; // required
+            _elem25 = new ItemStack();
+            _elem25.read(iprot);
+            struct.inventory.add(_elem25);
           }
         }
         struct.setInventoryIsSet(true);

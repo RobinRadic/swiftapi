@@ -1684,14 +1684,14 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
           case 2: // OFFLINE_PLAYERS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list26 = iprot.readListBegin();
-                struct.offlinePlayers = new ArrayList<OfflinePlayer>(_list26.size);
-                for (int _i27 = 0; _i27 < _list26.size; ++_i27)
+                org.apache.thrift.protocol.TList _list34 = iprot.readListBegin();
+                struct.offlinePlayers = new ArrayList<OfflinePlayer>(_list34.size);
+                for (int _i35 = 0; _i35 < _list34.size; ++_i35)
                 {
-                  OfflinePlayer _elem28; // required
-                  _elem28 = new OfflinePlayer();
-                  _elem28.read(iprot);
-                  struct.offlinePlayers.add(_elem28);
+                  OfflinePlayer _elem36; // required
+                  _elem36 = new OfflinePlayer();
+                  _elem36.read(iprot);
+                  struct.offlinePlayers.add(_elem36);
                 }
                 iprot.readListEnd();
               }
@@ -1703,14 +1703,14 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
           case 3: // ONLINE_PLAYERS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list29 = iprot.readListBegin();
-                struct.onlinePlayers = new ArrayList<Player>(_list29.size);
-                for (int _i30 = 0; _i30 < _list29.size; ++_i30)
+                org.apache.thrift.protocol.TList _list37 = iprot.readListBegin();
+                struct.onlinePlayers = new ArrayList<Player>(_list37.size);
+                for (int _i38 = 0; _i38 < _list37.size; ++_i38)
                 {
-                  Player _elem31; // required
-                  _elem31 = new Player();
-                  _elem31.read(iprot);
-                  struct.onlinePlayers.add(_elem31);
+                  Player _elem39; // required
+                  _elem39 = new Player();
+                  _elem39.read(iprot);
+                  struct.onlinePlayers.add(_elem39);
                 }
                 iprot.readListEnd();
               }
@@ -1786,14 +1786,14 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
           case 12: // WHITELIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list32 = iprot.readListBegin();
-                struct.whitelist = new ArrayList<OfflinePlayer>(_list32.size);
-                for (int _i33 = 0; _i33 < _list32.size; ++_i33)
+                org.apache.thrift.protocol.TList _list40 = iprot.readListBegin();
+                struct.whitelist = new ArrayList<OfflinePlayer>(_list40.size);
+                for (int _i41 = 0; _i41 < _list40.size; ++_i41)
                 {
-                  OfflinePlayer _elem34; // required
-                  _elem34 = new OfflinePlayer();
-                  _elem34.read(iprot);
-                  struct.whitelist.add(_elem34);
+                  OfflinePlayer _elem42; // required
+                  _elem42 = new OfflinePlayer();
+                  _elem42.read(iprot);
+                  struct.whitelist.add(_elem42);
                 }
                 iprot.readListEnd();
               }
@@ -1805,14 +1805,14 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
           case 13: // BANNED_PLAYERS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list35 = iprot.readListBegin();
-                struct.bannedPlayers = new ArrayList<OfflinePlayer>(_list35.size);
-                for (int _i36 = 0; _i36 < _list35.size; ++_i36)
+                org.apache.thrift.protocol.TList _list43 = iprot.readListBegin();
+                struct.bannedPlayers = new ArrayList<OfflinePlayer>(_list43.size);
+                for (int _i44 = 0; _i44 < _list43.size; ++_i44)
                 {
-                  OfflinePlayer _elem37; // required
-                  _elem37 = new OfflinePlayer();
-                  _elem37.read(iprot);
-                  struct.bannedPlayers.add(_elem37);
+                  OfflinePlayer _elem45; // required
+                  _elem45 = new OfflinePlayer();
+                  _elem45.read(iprot);
+                  struct.bannedPlayers.add(_elem45);
                 }
                 iprot.readListEnd();
               }
@@ -1824,13 +1824,13 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
           case 14: // BANNED_IPS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list38 = iprot.readListBegin();
-                struct.bannedIps = new ArrayList<String>(_list38.size);
-                for (int _i39 = 0; _i39 < _list38.size; ++_i39)
+                org.apache.thrift.protocol.TList _list46 = iprot.readListBegin();
+                struct.bannedIps = new ArrayList<String>(_list46.size);
+                for (int _i47 = 0; _i47 < _list46.size; ++_i47)
                 {
-                  String _elem40; // required
-                  _elem40 = iprot.readString();
-                  struct.bannedIps.add(_elem40);
+                  String _elem48; // required
+                  _elem48 = iprot.readString();
+                  struct.bannedIps.add(_elem48);
                 }
                 iprot.readListEnd();
               }
@@ -1842,14 +1842,14 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
           case 15: // WORLDS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list41 = iprot.readListBegin();
-                struct.worlds = new ArrayList<World>(_list41.size);
-                for (int _i42 = 0; _i42 < _list41.size; ++_i42)
+                org.apache.thrift.protocol.TList _list49 = iprot.readListBegin();
+                struct.worlds = new ArrayList<World>(_list49.size);
+                for (int _i50 = 0; _i50 < _list49.size; ++_i50)
                 {
-                  World _elem43; // required
-                  _elem43 = new World();
-                  _elem43.read(iprot);
-                  struct.worlds.add(_elem43);
+                  World _elem51; // required
+                  _elem51 = new World();
+                  _elem51.read(iprot);
+                  struct.worlds.add(_elem51);
                 }
                 iprot.readListEnd();
               }
@@ -1882,9 +1882,9 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
         oprot.writeFieldBegin(OFFLINE_PLAYERS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.offlinePlayers.size()));
-          for (OfflinePlayer _iter44 : struct.offlinePlayers)
+          for (OfflinePlayer _iter52 : struct.offlinePlayers)
           {
-            _iter44.write(oprot);
+            _iter52.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1894,9 +1894,9 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
         oprot.writeFieldBegin(ONLINE_PLAYERS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.onlinePlayers.size()));
-          for (Player _iter45 : struct.onlinePlayers)
+          for (Player _iter53 : struct.onlinePlayers)
           {
-            _iter45.write(oprot);
+            _iter53.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1936,9 +1936,9 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
         oprot.writeFieldBegin(WHITELIST_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.whitelist.size()));
-          for (OfflinePlayer _iter46 : struct.whitelist)
+          for (OfflinePlayer _iter54 : struct.whitelist)
           {
-            _iter46.write(oprot);
+            _iter54.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1948,9 +1948,9 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
         oprot.writeFieldBegin(BANNED_PLAYERS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.bannedPlayers.size()));
-          for (OfflinePlayer _iter47 : struct.bannedPlayers)
+          for (OfflinePlayer _iter55 : struct.bannedPlayers)
           {
-            _iter47.write(oprot);
+            _iter55.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1960,9 +1960,9 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
         oprot.writeFieldBegin(BANNED_IPS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.bannedIps.size()));
-          for (String _iter48 : struct.bannedIps)
+          for (String _iter56 : struct.bannedIps)
           {
-            oprot.writeString(_iter48);
+            oprot.writeString(_iter56);
           }
           oprot.writeListEnd();
         }
@@ -1972,9 +1972,9 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
         oprot.writeFieldBegin(WORLDS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.worlds.size()));
-          for (World _iter49 : struct.worlds)
+          for (World _iter57 : struct.worlds)
           {
-            _iter49.write(oprot);
+            _iter57.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -2050,18 +2050,18 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
       if (struct.isSetOfflinePlayers()) {
         {
           oprot.writeI32(struct.offlinePlayers.size());
-          for (OfflinePlayer _iter50 : struct.offlinePlayers)
+          for (OfflinePlayer _iter58 : struct.offlinePlayers)
           {
-            _iter50.write(oprot);
+            _iter58.write(oprot);
           }
         }
       }
       if (struct.isSetOnlinePlayers()) {
         {
           oprot.writeI32(struct.onlinePlayers.size());
-          for (Player _iter51 : struct.onlinePlayers)
+          for (Player _iter59 : struct.onlinePlayers)
           {
-            _iter51.write(oprot);
+            _iter59.write(oprot);
           }
         }
       }
@@ -2092,36 +2092,36 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
       if (struct.isSetWhitelist()) {
         {
           oprot.writeI32(struct.whitelist.size());
-          for (OfflinePlayer _iter52 : struct.whitelist)
+          for (OfflinePlayer _iter60 : struct.whitelist)
           {
-            _iter52.write(oprot);
+            _iter60.write(oprot);
           }
         }
       }
       if (struct.isSetBannedPlayers()) {
         {
           oprot.writeI32(struct.bannedPlayers.size());
-          for (OfflinePlayer _iter53 : struct.bannedPlayers)
+          for (OfflinePlayer _iter61 : struct.bannedPlayers)
           {
-            _iter53.write(oprot);
+            _iter61.write(oprot);
           }
         }
       }
       if (struct.isSetBannedIps()) {
         {
           oprot.writeI32(struct.bannedIps.size());
-          for (String _iter54 : struct.bannedIps)
+          for (String _iter62 : struct.bannedIps)
           {
-            oprot.writeString(_iter54);
+            oprot.writeString(_iter62);
           }
         }
       }
       if (struct.isSetWorlds()) {
         {
           oprot.writeI32(struct.worlds.size());
-          for (World _iter55 : struct.worlds)
+          for (World _iter63 : struct.worlds)
           {
-            _iter55.write(oprot);
+            _iter63.write(oprot);
           }
         }
       }
@@ -2137,28 +2137,28 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
       }
       if (incoming.get(1)) {
         {
-          org.apache.thrift.protocol.TList _list56 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.offlinePlayers = new ArrayList<OfflinePlayer>(_list56.size);
-          for (int _i57 = 0; _i57 < _list56.size; ++_i57)
+          org.apache.thrift.protocol.TList _list64 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.offlinePlayers = new ArrayList<OfflinePlayer>(_list64.size);
+          for (int _i65 = 0; _i65 < _list64.size; ++_i65)
           {
-            OfflinePlayer _elem58; // required
-            _elem58 = new OfflinePlayer();
-            _elem58.read(iprot);
-            struct.offlinePlayers.add(_elem58);
+            OfflinePlayer _elem66; // required
+            _elem66 = new OfflinePlayer();
+            _elem66.read(iprot);
+            struct.offlinePlayers.add(_elem66);
           }
         }
         struct.setOfflinePlayersIsSet(true);
       }
       if (incoming.get(2)) {
         {
-          org.apache.thrift.protocol.TList _list59 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.onlinePlayers = new ArrayList<Player>(_list59.size);
-          for (int _i60 = 0; _i60 < _list59.size; ++_i60)
+          org.apache.thrift.protocol.TList _list67 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.onlinePlayers = new ArrayList<Player>(_list67.size);
+          for (int _i68 = 0; _i68 < _list67.size; ++_i68)
           {
-            Player _elem61; // required
-            _elem61 = new Player();
-            _elem61.read(iprot);
-            struct.onlinePlayers.add(_elem61);
+            Player _elem69; // required
+            _elem69 = new Player();
+            _elem69.read(iprot);
+            struct.onlinePlayers.add(_elem69);
           }
         }
         struct.setOnlinePlayersIsSet(true);
@@ -2197,55 +2197,55 @@ public class Server implements org.apache.thrift.TBase<Server, Server._Fields>, 
       }
       if (incoming.get(11)) {
         {
-          org.apache.thrift.protocol.TList _list62 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.whitelist = new ArrayList<OfflinePlayer>(_list62.size);
-          for (int _i63 = 0; _i63 < _list62.size; ++_i63)
+          org.apache.thrift.protocol.TList _list70 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.whitelist = new ArrayList<OfflinePlayer>(_list70.size);
+          for (int _i71 = 0; _i71 < _list70.size; ++_i71)
           {
-            OfflinePlayer _elem64; // required
-            _elem64 = new OfflinePlayer();
-            _elem64.read(iprot);
-            struct.whitelist.add(_elem64);
+            OfflinePlayer _elem72; // required
+            _elem72 = new OfflinePlayer();
+            _elem72.read(iprot);
+            struct.whitelist.add(_elem72);
           }
         }
         struct.setWhitelistIsSet(true);
       }
       if (incoming.get(12)) {
         {
-          org.apache.thrift.protocol.TList _list65 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.bannedPlayers = new ArrayList<OfflinePlayer>(_list65.size);
-          for (int _i66 = 0; _i66 < _list65.size; ++_i66)
+          org.apache.thrift.protocol.TList _list73 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.bannedPlayers = new ArrayList<OfflinePlayer>(_list73.size);
+          for (int _i74 = 0; _i74 < _list73.size; ++_i74)
           {
-            OfflinePlayer _elem67; // required
-            _elem67 = new OfflinePlayer();
-            _elem67.read(iprot);
-            struct.bannedPlayers.add(_elem67);
+            OfflinePlayer _elem75; // required
+            _elem75 = new OfflinePlayer();
+            _elem75.read(iprot);
+            struct.bannedPlayers.add(_elem75);
           }
         }
         struct.setBannedPlayersIsSet(true);
       }
       if (incoming.get(13)) {
         {
-          org.apache.thrift.protocol.TList _list68 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-          struct.bannedIps = new ArrayList<String>(_list68.size);
-          for (int _i69 = 0; _i69 < _list68.size; ++_i69)
+          org.apache.thrift.protocol.TList _list76 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+          struct.bannedIps = new ArrayList<String>(_list76.size);
+          for (int _i77 = 0; _i77 < _list76.size; ++_i77)
           {
-            String _elem70; // required
-            _elem70 = iprot.readString();
-            struct.bannedIps.add(_elem70);
+            String _elem78; // required
+            _elem78 = iprot.readString();
+            struct.bannedIps.add(_elem78);
           }
         }
         struct.setBannedIpsIsSet(true);
       }
       if (incoming.get(14)) {
         {
-          org.apache.thrift.protocol.TList _list71 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.worlds = new ArrayList<World>(_list71.size);
-          for (int _i72 = 0; _i72 < _list71.size; ++_i72)
+          org.apache.thrift.protocol.TList _list79 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.worlds = new ArrayList<World>(_list79.size);
+          for (int _i80 = 0; _i80 < _list79.size; ++_i80)
           {
-            World _elem73; // required
-            _elem73 = new World();
-            _elem73.read(iprot);
-            struct.worlds.add(_elem73);
+            World _elem81; // required
+            _elem81 = new World();
+            _elem81.read(iprot);
+            struct.worlds.add(_elem81);
           }
         }
         struct.setWorldsIsSet(true);

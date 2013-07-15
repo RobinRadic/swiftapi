@@ -6,11 +6,13 @@
  */
 package org.phybros.thrift;
 
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.EncodingUtils;
@@ -30,6 +32,8 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
   private static final org.apache.thrift.protocol.TField TYPE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("typeId", org.apache.thrift.protocol.TType.I32, (short)2);
   private static final org.apache.thrift.protocol.TField DURABILITY_FIELD_DESC = new org.apache.thrift.protocol.TField("durability", org.apache.thrift.protocol.TType.I32, (short)3);
   private static final org.apache.thrift.protocol.TField ENCHANTMENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("enchantments", org.apache.thrift.protocol.TType.MAP, (short)4);
+  private static final org.apache.thrift.protocol.TField LORE_FIELD_DESC = new org.apache.thrift.protocol.TField("lore", org.apache.thrift.protocol.TType.LIST, (short)5);
+  private static final org.apache.thrift.protocol.TField DISPLAY_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("displayName", org.apache.thrift.protocol.TType.STRING, (short)6);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -53,6 +57,16 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
    * The current enchantments in effect on this item
    */
   public Map<Enchantment,Integer> enchantments; // required
+  /**
+   * The lore associated with this item
+   * @since 1.5
+   */
+  public List<String> lore; // required
+  /**
+   * The display name of the item
+   * @since 1.5
+   */
+  public String displayName; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -71,7 +85,17 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     /**
      * The current enchantments in effect on this item
      */
-    ENCHANTMENTS((short)4, "enchantments");
+    ENCHANTMENTS((short)4, "enchantments"),
+    /**
+     * The lore associated with this item
+     * @since 1.5
+     */
+    LORE((short)5, "lore"),
+    /**
+     * The display name of the item
+     * @since 1.5
+     */
+    DISPLAY_NAME((short)6, "displayName");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -94,6 +118,10 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
           return DURABILITY;
         case 4: // ENCHANTMENTS
           return ENCHANTMENTS;
+        case 5: // LORE
+          return LORE;
+        case 6: // DISPLAY_NAME
+          return DISPLAY_NAME;
         default:
           return null;
       }
@@ -151,6 +179,11 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
         new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
             new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, Enchantment.class), 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32))));
+    tmpMap.put(_Fields.LORE, new org.apache.thrift.meta_data.FieldMetaData("lore", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+    tmpMap.put(_Fields.DISPLAY_NAME, new org.apache.thrift.meta_data.FieldMetaData("displayName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ItemStack.class, metaDataMap);
   }
@@ -162,7 +195,9 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     int amount,
     int typeId,
     int durability,
-    Map<Enchantment,Integer> enchantments)
+    Map<Enchantment,Integer> enchantments,
+    List<String> lore,
+    String displayName)
   {
     this();
     this.amount = amount;
@@ -172,6 +207,8 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     this.durability = durability;
     setDurabilityIsSet(true);
     this.enchantments = enchantments;
+    this.lore = lore;
+    this.displayName = displayName;
   }
 
   /**
@@ -197,6 +234,16 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       }
       this.enchantments = __this__enchantments;
     }
+    if (other.isSetLore()) {
+      List<String> __this__lore = new ArrayList<String>();
+      for (String other_element : other.lore) {
+        __this__lore.add(other_element);
+      }
+      this.lore = __this__lore;
+    }
+    if (other.isSetDisplayName()) {
+      this.displayName = other.displayName;
+    }
   }
 
   public ItemStack deepCopy() {
@@ -212,6 +259,8 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     setDurabilityIsSet(false);
     this.durability = 0;
     this.enchantments = null;
+    this.lore = null;
+    this.displayName = null;
   }
 
   /**
@@ -342,6 +391,85 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
     }
   }
 
+  public int getLoreSize() {
+    return (this.lore == null) ? 0 : this.lore.size();
+  }
+
+  public java.util.Iterator<String> getLoreIterator() {
+    return (this.lore == null) ? null : this.lore.iterator();
+  }
+
+  public void addToLore(String elem) {
+    if (this.lore == null) {
+      this.lore = new ArrayList<String>();
+    }
+    this.lore.add(elem);
+  }
+
+  /**
+   * The lore associated with this item
+   * @since 1.5
+   */
+  public List<String> getLore() {
+    return this.lore;
+  }
+
+  /**
+   * The lore associated with this item
+   * @since 1.5
+   */
+  public ItemStack setLore(List<String> lore) {
+    this.lore = lore;
+    return this;
+  }
+
+  public void unsetLore() {
+    this.lore = null;
+  }
+
+  /** Returns true if field lore is set (has been assigned a value) and false otherwise */
+  public boolean isSetLore() {
+    return this.lore != null;
+  }
+
+  public void setLoreIsSet(boolean value) {
+    if (!value) {
+      this.lore = null;
+    }
+  }
+
+  /**
+   * The display name of the item
+   * @since 1.5
+   */
+  public String getDisplayName() {
+    return this.displayName;
+  }
+
+  /**
+   * The display name of the item
+   * @since 1.5
+   */
+  public ItemStack setDisplayName(String displayName) {
+    this.displayName = displayName;
+    return this;
+  }
+
+  public void unsetDisplayName() {
+    this.displayName = null;
+  }
+
+  /** Returns true if field displayName is set (has been assigned a value) and false otherwise */
+  public boolean isSetDisplayName() {
+    return this.displayName != null;
+  }
+
+  public void setDisplayNameIsSet(boolean value) {
+    if (!value) {
+      this.displayName = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case AMOUNT:
@@ -376,6 +504,22 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       }
       break;
 
+    case LORE:
+      if (value == null) {
+        unsetLore();
+      } else {
+        setLore((List<String>)value);
+      }
+      break;
+
+    case DISPLAY_NAME:
+      if (value == null) {
+        unsetDisplayName();
+      } else {
+        setDisplayName((String)value);
+      }
+      break;
+
     }
   }
 
@@ -392,6 +536,12 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
 
     case ENCHANTMENTS:
       return getEnchantments();
+
+    case LORE:
+      return getLore();
+
+    case DISPLAY_NAME:
+      return getDisplayName();
 
     }
     throw new IllegalStateException();
@@ -412,6 +562,10 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       return isSetDurability();
     case ENCHANTMENTS:
       return isSetEnchantments();
+    case LORE:
+      return isSetLore();
+    case DISPLAY_NAME:
+      return isSetDisplayName();
     }
     throw new IllegalStateException();
   }
@@ -462,6 +616,24 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       if (!(this_present_enchantments && that_present_enchantments))
         return false;
       if (!this.enchantments.equals(that.enchantments))
+        return false;
+    }
+
+    boolean this_present_lore = true && this.isSetLore();
+    boolean that_present_lore = true && that.isSetLore();
+    if (this_present_lore || that_present_lore) {
+      if (!(this_present_lore && that_present_lore))
+        return false;
+      if (!this.lore.equals(that.lore))
+        return false;
+    }
+
+    boolean this_present_displayName = true && this.isSetDisplayName();
+    boolean that_present_displayName = true && that.isSetDisplayName();
+    if (this_present_displayName || that_present_displayName) {
+      if (!(this_present_displayName && that_present_displayName))
+        return false;
+      if (!this.displayName.equals(that.displayName))
         return false;
     }
 
@@ -521,6 +693,26 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetLore()).compareTo(typedOther.isSetLore());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetLore()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.lore, typedOther.lore);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetDisplayName()).compareTo(typedOther.isSetDisplayName());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetDisplayName()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.displayName, typedOther.displayName);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -558,6 +750,22 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       sb.append("null");
     } else {
       sb.append(this.enchantments);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("lore:");
+    if (this.lore == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.lore);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("displayName:");
+    if (this.displayName == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.displayName);
     }
     first = false;
     sb.append(")");
@@ -649,6 +857,32 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 5: // LORE
+            if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+                struct.lore = new ArrayList<String>(_list4.size);
+                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
+                {
+                  String _elem6; // required
+                  _elem6 = iprot.readString();
+                  struct.lore.add(_elem6);
+                }
+                iprot.readListEnd();
+              }
+              struct.setLoreIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 6: // DISPLAY_NAME
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.displayName = iprot.readString();
+              struct.setDisplayNameIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -677,13 +911,30 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
         oprot.writeFieldBegin(ENCHANTMENTS_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.I32, struct.enchantments.size()));
-          for (Map.Entry<Enchantment, Integer> _iter4 : struct.enchantments.entrySet())
+          for (Map.Entry<Enchantment, Integer> _iter7 : struct.enchantments.entrySet())
           {
-            oprot.writeI32(_iter4.getKey().getValue());
-            oprot.writeI32(_iter4.getValue());
+            oprot.writeI32(_iter7.getKey().getValue());
+            oprot.writeI32(_iter7.getValue());
           }
           oprot.writeMapEnd();
         }
+        oprot.writeFieldEnd();
+      }
+      if (struct.lore != null) {
+        oprot.writeFieldBegin(LORE_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.lore.size()));
+          for (String _iter8 : struct.lore)
+          {
+            oprot.writeString(_iter8);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+      if (struct.displayName != null) {
+        oprot.writeFieldBegin(DISPLAY_NAME_FIELD_DESC);
+        oprot.writeString(struct.displayName);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -716,7 +967,13 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       if (struct.isSetEnchantments()) {
         optionals.set(3);
       }
-      oprot.writeBitSet(optionals, 4);
+      if (struct.isSetLore()) {
+        optionals.set(4);
+      }
+      if (struct.isSetDisplayName()) {
+        optionals.set(5);
+      }
+      oprot.writeBitSet(optionals, 6);
       if (struct.isSetAmount()) {
         oprot.writeI32(struct.amount);
       }
@@ -729,19 +986,31 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       if (struct.isSetEnchantments()) {
         {
           oprot.writeI32(struct.enchantments.size());
-          for (Map.Entry<Enchantment, Integer> _iter5 : struct.enchantments.entrySet())
+          for (Map.Entry<Enchantment, Integer> _iter9 : struct.enchantments.entrySet())
           {
-            oprot.writeI32(_iter5.getKey().getValue());
-            oprot.writeI32(_iter5.getValue());
+            oprot.writeI32(_iter9.getKey().getValue());
+            oprot.writeI32(_iter9.getValue());
           }
         }
+      }
+      if (struct.isSetLore()) {
+        {
+          oprot.writeI32(struct.lore.size());
+          for (String _iter10 : struct.lore)
+          {
+            oprot.writeString(_iter10);
+          }
+        }
+      }
+      if (struct.isSetDisplayName()) {
+        oprot.writeString(struct.displayName);
       }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, ItemStack struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(4);
+      BitSet incoming = iprot.readBitSet(6);
       if (incoming.get(0)) {
         struct.amount = iprot.readI32();
         struct.setAmountIsSet(true);
@@ -756,18 +1025,35 @@ public class ItemStack implements org.apache.thrift.TBase<ItemStack, ItemStack._
       }
       if (incoming.get(3)) {
         {
-          org.apache.thrift.protocol.TMap _map6 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.I32, iprot.readI32());
-          struct.enchantments = new HashMap<Enchantment,Integer>(2*_map6.size);
-          for (int _i7 = 0; _i7 < _map6.size; ++_i7)
+          org.apache.thrift.protocol.TMap _map11 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.I32, iprot.readI32());
+          struct.enchantments = new HashMap<Enchantment,Integer>(2*_map11.size);
+          for (int _i12 = 0; _i12 < _map11.size; ++_i12)
           {
-            Enchantment _key8; // required
-            int _val9; // required
-            _key8 = Enchantment.findByValue(iprot.readI32());
-            _val9 = iprot.readI32();
-            struct.enchantments.put(_key8, _val9);
+            Enchantment _key13; // required
+            int _val14; // required
+            _key13 = Enchantment.findByValue(iprot.readI32());
+            _val14 = iprot.readI32();
+            struct.enchantments.put(_key13, _val14);
           }
         }
         struct.setEnchantmentsIsSet(true);
+      }
+      if (incoming.get(4)) {
+        {
+          org.apache.thrift.protocol.TList _list15 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+          struct.lore = new ArrayList<String>(_list15.size);
+          for (int _i16 = 0; _i16 < _list15.size; ++_i16)
+          {
+            String _elem17; // required
+            _elem17 = iprot.readString();
+            struct.lore.add(_elem17);
+          }
+        }
+        struct.setLoreIsSet(true);
+      }
+      if (incoming.get(5)) {
+        struct.displayName = iprot.readString();
+        struct.setDisplayNameIsSet(true);
       }
     }
   }

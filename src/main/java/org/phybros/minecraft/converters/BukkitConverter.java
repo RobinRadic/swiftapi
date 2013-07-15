@@ -1,4 +1,4 @@
-package org.phybros.minecraft;
+package org.phybros.minecraft.converters;
 
 import java.io.File;
 import java.security.ProtectionDomain;
@@ -137,13 +137,13 @@ public class BukkitConverter {
 		playerInventory.inventory = new ArrayList<org.phybros.thrift.ItemStack>();
 		playerInventory.armor = new PlayerArmor();
 		playerInventory.itemInHand = new org.phybros.thrift.ItemStack();
-
+		
 		// convert the inventory
 		for (ItemStack i : bukkitInventory.getContents()) {
 			// add to the inventory
 			playerInventory.inventory.add(BukkitConverter.convertBukkitItemStack(i));
 		}
-
+		
 		// convert the held item
 		playerInventory.itemInHand = BukkitConverter.convertBukkitItemStack(bukkitInventory.getItemInHand());
 
@@ -171,7 +171,10 @@ public class BukkitConverter {
 			newItemStack.amount = bukkitItemStack.getAmount();
 			newItemStack.durability = bukkitItemStack.getDurability();
 			newItemStack.typeId = bukkitItemStack.getTypeId();
-
+			
+			//newItemStack.lore = bukkitItemStack.getItemMeta().hasLore() ? bukkitItemStack.getItemMeta().getLore() : new ArrayList<String>();
+			//newItemStack.displayName = bukkitItemStack.getItemMeta().hasDisplayName() ? bukkitItemStack.getItemMeta().getDisplayName() : "";
+			
 			for (Map.Entry<org.bukkit.enchantments.Enchantment, Integer> entry : bukkitItemStack
 					.getEnchantments().entrySet()) {
 				newItemStack.enchantments.put(
