@@ -145,6 +145,7 @@
 						<excludes>
 							<exclude>org.bukkit:craftbukkit</exclude>
 							<exclude>org.bukkit:bukkit</exclude>
+							<exclude>commons-lang:commons-lang</exclude>
 						</excludes>
 					</artifactSet>
 				</configuration>
