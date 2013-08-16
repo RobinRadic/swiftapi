@@ -3,3 +3,4 @@ bukkit/*
 gen-*
 thrift-0.9.0.exe
 gen.bat
+dependency-reduced-pom.xml
