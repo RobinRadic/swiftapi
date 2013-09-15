@@ -47,6 +47,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   private static final org.apache.thrift.protocol.TField LEVEL_PROGRESS_FIELD_DESC = new org.apache.thrift.protocol.TField("levelProgress", org.apache.thrift.protocol.TType.DOUBLE, (short)19);
   private static final org.apache.thrift.protocol.TField PORT_FIELD_DESC = new org.apache.thrift.protocol.TField("port", org.apache.thrift.protocol.TType.I32, (short)20);
   private static final org.apache.thrift.protocol.TField LOCATION_FIELD_DESC = new org.apache.thrift.protocol.TField("location", org.apache.thrift.protocol.TType.STRUCT, (short)21);
+  private static final org.apache.thrift.protocol.TField HEALTH_DOUBLE_FIELD_DESC = new org.apache.thrift.protocol.TField("healthDouble", org.apache.thrift.protocol.TType.DOUBLE, (short)22);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -101,6 +102,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
    */
   public int foodLevel; // required
   /**
+   * DEPRECATED: use Player.healthDouble instead.
    * How much health the Player has in halves of hearts (20 max)
    */
   public int health; // required
@@ -140,6 +142,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
    * The current location of the player
    */
   public Location location; // required
+  /**
+   * The health of the player. Use this instead of Player.health.
+   */
+  public double healthDouble; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -190,6 +196,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
      */
     FOOD_LEVEL((short)11, "foodLevel"),
     /**
+     * DEPRECATED: use Player.healthDouble instead.
      * How much health the Player has in halves of hearts (20 max)
      */
     HEALTH((short)12, "health"),
@@ -228,7 +235,11 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     /**
      * The current location of the player
      */
-    LOCATION((short)21, "location");
+    LOCATION((short)21, "location"),
+    /**
+     * The health of the player. Use this instead of Player.health.
+     */
+    HEALTH_DOUBLE((short)22, "healthDouble");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -285,6 +296,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
           return PORT;
         case 21: // LOCATION
           return LOCATION;
+        case 22: // HEALTH_DOUBLE
+          return HEALTH_DOUBLE;
         default:
           return null;
       }
@@ -341,7 +354,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   private static final int __ISWHITELISTED_ISSET_ID = 13;
   private static final int __LEVELPROGRESS_ISSET_ID = 14;
   private static final int __PORT_ISSET_ID = 15;
-  private short __isset_bitfield = 0;
+  private static final int __HEALTHDOUBLE_ISSET_ID = 16;
+  private int __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -387,6 +401,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.LOCATION, new org.apache.thrift.meta_data.FieldMetaData("location", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
+    tmpMap.put(_Fields.HEALTH_DOUBLE, new org.apache.thrift.meta_data.FieldMetaData("healthDouble", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Player.class, metaDataMap);
   }
@@ -415,7 +431,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     PlayerInventory inventory,
     double levelProgress,
     int port,
-    Location location)
+    Location location,
+    double healthDouble)
   {
     this();
     this.name = name;
@@ -455,6 +472,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     this.port = port;
     setPortIsSet(true);
     this.location = location;
+    this.healthDouble = healthDouble;
+    setHealthDoubleIsSet(true);
   }
 
   /**
@@ -493,6 +512,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     if (other.isSetLocation()) {
       this.location = new Location(other.location);
     }
+    this.healthDouble = other.healthDouble;
   }
 
   public Player deepCopy() {
@@ -538,6 +558,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     setPortIsSet(false);
     this.port = 0;
     this.location = null;
+    setHealthDoubleIsSet(false);
+    this.healthDouble = 0.0;
   }
 
   /**
@@ -867,6 +889,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   }
 
   /**
+   * DEPRECATED: use Player.healthDouble instead.
    * How much health the Player has in halves of hearts (20 max)
    */
   public int getHealth() {
@@ -874,6 +897,7 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
   }
 
   /**
+   * DEPRECATED: use Player.healthDouble instead.
    * How much health the Player has in halves of hearts (20 max)
    */
   public Player setHealth(int health) {
@@ -1158,6 +1182,35 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     }
   }
 
+  /**
+   * The health of the player. Use this instead of Player.health.
+   */
+  public double getHealthDouble() {
+    return this.healthDouble;
+  }
+
+  /**
+   * The health of the player. Use this instead of Player.health.
+   */
+  public Player setHealthDouble(double healthDouble) {
+    this.healthDouble = healthDouble;
+    setHealthDoubleIsSet(true);
+    return this;
+  }
+
+  public void unsetHealthDouble() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __HEALTHDOUBLE_ISSET_ID);
+  }
+
+  /** Returns true if field healthDouble is set (has been assigned a value) and false otherwise */
+  public boolean isSetHealthDouble() {
+    return EncodingUtils.testBit(__isset_bitfield, __HEALTHDOUBLE_ISSET_ID);
+  }
+
+  public void setHealthDoubleIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __HEALTHDOUBLE_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -1328,6 +1381,14 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       }
       break;
 
+    case HEALTH_DOUBLE:
+      if (value == null) {
+        unsetHealthDouble();
+      } else {
+        setHealthDouble((Double)value);
+      }
+      break;
+
     }
   }
 
@@ -1396,6 +1457,9 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     case LOCATION:
       return getLocation();
 
+    case HEALTH_DOUBLE:
+      return Double.valueOf(getHealthDouble());
+
     }
     throw new IllegalStateException();
   }
@@ -1449,6 +1513,8 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       return isSetPort();
     case LOCATION:
       return isSetLocation();
+    case HEALTH_DOUBLE:
+      return isSetHealthDouble();
     }
     throw new IllegalStateException();
   }
@@ -1652,6 +1718,15 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (!(this_present_location && that_present_location))
         return false;
       if (!this.location.equals(that.location))
+        return false;
+    }
+
+    boolean this_present_healthDouble = true;
+    boolean that_present_healthDouble = true;
+    if (this_present_healthDouble || that_present_healthDouble) {
+      if (!(this_present_healthDouble && that_present_healthDouble))
+        return false;
+      if (this.healthDouble != that.healthDouble)
         return false;
     }
 
@@ -1881,6 +1956,16 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetHealthDouble()).compareTo(typedOther.isSetHealthDouble());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetHealthDouble()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.healthDouble, typedOther.healthDouble);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -2003,6 +2088,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
     } else {
       sb.append(this.location);
     }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("healthDouble:");
+    sb.append(this.healthDouble);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -2225,6 +2314,14 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 22: // HEALTH_DOUBLE
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.healthDouble = iprot.readDouble();
+              struct.setHealthDoubleIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -2313,6 +2410,9 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         struct.location.write(oprot);
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldBegin(HEALTH_DOUBLE_FIELD_DESC);
+      oprot.writeDouble(struct.healthDouble);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -2394,7 +2494,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (struct.isSetLocation()) {
         optionals.set(20);
       }
-      oprot.writeBitSet(optionals, 21);
+      if (struct.isSetHealthDouble()) {
+        optionals.set(21);
+      }
+      oprot.writeBitSet(optionals, 22);
       if (struct.isSetName()) {
         oprot.writeString(struct.name);
       }
@@ -2458,12 +2561,15 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
       if (struct.isSetLocation()) {
         struct.location.write(oprot);
       }
+      if (struct.isSetHealthDouble()) {
+        oprot.writeDouble(struct.healthDouble);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, Player struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(21);
+      BitSet incoming = iprot.readBitSet(22);
       if (incoming.get(0)) {
         struct.name = iprot.readString();
         struct.setNameIsSet(true);
@@ -2549,6 +2655,10 @@ public class Player implements org.apache.thrift.TBase<Player, Player._Fields>, 
         struct.location = new Location();
         struct.location.read(iprot);
         struct.setLocationIsSet(true);
+      }
+      if (incoming.get(21)) {
+        struct.healthDouble = iprot.readDouble();
+        struct.setHealthDoubleIsSet(true);
       }
     }
   }

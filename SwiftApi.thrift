@@ -320,6 +320,7 @@ struct Player {
  */
 	11: i32 foodLevel,
 /**
+ * DEPRECATED: use Player.healthDouble instead.
  * How much health the Player has in halves of hearts (20 max)
  */
 	12: i32 health,
@@ -359,6 +360,10 @@ struct Player {
  * The current location of the player
  */
 	21: Location location,	
+/**
+ * The health of the player. Use this instead of Player.health.
+ */
+	22: double healthDouble,
 }
 
 /**

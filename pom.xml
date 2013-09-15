@@ -5,20 +5,21 @@
 
 	<groupId>org.phybros.minecraft</groupId>
 	<artifactId>SwiftApi</artifactId>
-	<version>1.5</version>
+	<version>1.6</version>
 	<packaging>jar</packaging>
 
 	<url>https://github.com/phybros/swiftapi</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<bukkit.version>1.6.2-R1.0</bukkit.version>
 	</properties>
- 
+
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>1.5.2-R1.0</version>
+			<artifactId>bukkit</artifactId>
+			<version>${bukkit.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.thrift</groupId>

@@ -100,7 +100,10 @@ public class BukkitConverter {
 			newPlayer.gamemode = GameMode.SURVIVAL;
 			break;
 		}
-		newPlayer.health = bukkitPlayer.getHealth();
+
+		// health has changed to a double as of 1.6.2-R1.0
+		newPlayer.health = (int) Math.ceil(bukkitPlayer.getHealth());
+		newPlayer.healthDouble = bukkitPlayer.getHealth();
 
 		newPlayer.inventory = convertBukkitPlayerInventory(bukkitPlayer
 				.getInventory());
