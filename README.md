@@ -1,4 +1,4 @@
-![SwiftApi Logo](http://willwarren.com/docs/swiftapi/SwiftApi-256.png "SwiftApi is an Apache Thrift based API for your Bukkit server")
+![SwiftApi Logo](https://dev.bukkit.org/media/images/62/892/SwiftApi-256.png "SwiftApi is an Apache Thrift based API for your Bukkit server")
 
 An Apache Thrift based API for CraftBukkit Minecraft servers. This API allows
 simple calls to Bukkit methods over the internet using almost any programming
