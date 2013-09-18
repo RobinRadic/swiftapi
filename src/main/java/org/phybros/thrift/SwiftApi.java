@@ -47,10 +47,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success, false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the player was not found
      * 
      * @throws org.apache.thrift.TException
@@ -60,7 +60,7 @@ public class SwiftApi {
      * @param playerName
      * @param item
      */
-    public boolean addItemToInventory(String authString, String playerName, ItemStack item) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean addItemToInventory(String authString, String playerName, ItemStack item) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Add a Player to the server's whitelist. The player can be offline, or
@@ -75,10 +75,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success, false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the player was not found
      * 
      * @throws org.apache.thrift.TException
@@ -87,7 +87,7 @@ public class SwiftApi {
      * @param authString
      * @param name
      */
-    public boolean addToWhitelist(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean addToWhitelist(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Broadcasts a message to all players on the server
@@ -100,7 +100,7 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on serious failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @throws org.apache.thrift.TException
@@ -109,7 +109,7 @@ public class SwiftApi {
      * @param authString
      * @param message
      */
-    public boolean announce(String authString, String message) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public boolean announce(String authString, String message) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Permanently ban a player from the server by name. The player can be
@@ -123,10 +123,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the player was not found
      * 
      * @throws org.apache.thrift.TException
@@ -135,7 +135,7 @@ public class SwiftApi {
      * @param authString
      * @param name
      */
-    public boolean ban(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean ban(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Permanently ban a specific IP from connecting to this server
@@ -148,7 +148,7 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @throws org.apache.thrift.TException
@@ -157,7 +157,7 @@ public class SwiftApi {
      * @param authString
      * @param ip
      */
-    public boolean banIp(String authString, String ip) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public boolean banIp(String authString, String ip) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Takes "op" (operator) privileges away from a player. If the player is
@@ -175,10 +175,10 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the Player was not found
      * 
      * @return String the current bukkit version
@@ -188,7 +188,7 @@ public class SwiftApi {
      * @param name
      * @param notifyPlayer
      */
-    public boolean deOp(String authString, String name, boolean notifyPlayer) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean deOp(String authString, String name, boolean notifyPlayer) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Gets the IP addresses currently banned from joining this server
@@ -199,7 +199,7 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return List<String> The banned IPs
@@ -207,7 +207,7 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public List<String> getBannedIps(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public List<String> getBannedIps(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Gets the players currently banned from this server
@@ -218,7 +218,7 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return List<OfflinePlayer> The banned players
@@ -226,7 +226,7 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public List<OfflinePlayer> getBannedPlayers(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public List<OfflinePlayer> getBannedPlayers(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Get the current bukkit version
@@ -237,7 +237,7 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return String the current bukkit version
@@ -245,7 +245,7 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public String getBukkitVersion(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public String getBukkitVersion(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Get the last 500 console messages or console messages since a given timestamp (up to 500)
@@ -259,7 +259,7 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on serious failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @throws org.apache.thrift.TException
@@ -268,7 +268,7 @@ public class SwiftApi {
      * @param authString
      * @param since
      */
-    public List<ConsoleLine> getConsoleMessages(String authString, long since) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public List<ConsoleLine> getConsoleMessages(String authString, long since) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Gets the contents of a file.
@@ -284,10 +284,10 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the file could not be read or does not exist
      * 
      * @return string the contents of the file
@@ -296,7 +296,7 @@ public class SwiftApi {
      * @param authString
      * @param fileName
      */
-    public String getFileContents(String authString, String fileName) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public String getFileContents(String authString, String fileName) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Get an offline player. This method will always return an
@@ -315,10 +315,10 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the player could not be found
      * 
      * @return OfflinePlayer the requested player.
@@ -327,7 +327,7 @@ public class SwiftApi {
      * @param authString
      * @param name
      */
-    public OfflinePlayer getOfflinePlayer(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public OfflinePlayer getOfflinePlayer(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Gets a list of all players who have ever played on this server
@@ -338,7 +338,7 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return List<OfflinePlayer> A list of all players who have ever
@@ -347,7 +347,7 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public List<OfflinePlayer> getOfflinePlayers(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public List<OfflinePlayer> getOfflinePlayers(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Gets a list of all players who are Opped on this server
@@ -358,7 +358,7 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return List<OfflinePlayer> A list of all players who are opped
@@ -367,10 +367,10 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public List<OfflinePlayer> getOps(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public List<OfflinePlayer> getOps(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
-     * Get a player by name. Throws an Errors.EDataException if the player is
+     * Get a player by name. Throws an EDataException if the player is
      * offline, or doesn't exist
      * 
      * @param authString
@@ -382,20 +382,20 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the player is not online, or does not exist
      * 
      * @return Player The requested player. If the player could not be
-     *         found, and Errors.EDataException is thrown
+     *         found, and EDataException is thrown
      * @see org.phybros.thrift.SwiftApi.Iface#getPlugins(java.lang.String)
      * 
      * @param authString
      * @param name
      */
-    public Player getPlayer(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public Player getPlayer(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Get all online Players
@@ -406,14 +406,14 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return List<Player> A list of all currently online players
      * 
      * @param authString
      */
-    public List<Player> getPlayers(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public List<Player> getPlayers(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Get a loaded server plugin by name
@@ -427,10 +427,10 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the requested plugin was not found
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return Plugin The plugin
@@ -439,7 +439,7 @@ public class SwiftApi {
      * @param authString
      * @param name
      */
-    public Plugin getPlugin(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public Plugin getPlugin(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * This method returns a list of all the currently loaded plugins on the
@@ -451,7 +451,7 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return List<Plugin> A list of the plugins on the server
@@ -459,7 +459,7 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public List<Plugin> getPlugins(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public List<Plugin> getPlugins(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Get the current server. This object contains a large amount of information
@@ -472,7 +472,7 @@ public class SwiftApi {
      * @throws TException
      * 		  If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      * 		  If the method call was not correctly authenticated
      * 
      * @return Server An object containing server information
@@ -480,7 +480,7 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public Server getServer(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public Server getServer(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Get the current server version
@@ -491,7 +491,7 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return String the version of the server
@@ -499,7 +499,7 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public String getServerVersion(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public String getServerVersion(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Gets all whitelisted players
@@ -510,7 +510,7 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return List<OfflinePlayer> The players on the server's whitelist
@@ -518,7 +518,7 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public List<OfflinePlayer> getWhitelist(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public List<OfflinePlayer> getWhitelist(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Gets a specific world by name
@@ -532,10 +532,10 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the requested world could not be found
      * 
      * @return World The requested world
@@ -544,7 +544,7 @@ public class SwiftApi {
      * @param authString
      * @param worldName
      */
-    public World getWorld(String authString, String worldName) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public World getWorld(String authString, String worldName) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Gets all the worlds on the server
@@ -555,7 +555,7 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @return List<World> the worlds on the server
@@ -563,7 +563,7 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public List<World> getWorlds(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public List<World> getWorlds(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * This method will download and install (copy/unzip) a plugin from a given URL
@@ -580,10 +580,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If something went wrong during the file download, or the
      *             computed hash does not match the provided hash or the
      *             requested plugin could not be found.
@@ -595,7 +595,7 @@ public class SwiftApi {
      * @param downloadUrl
      * @param md5
      */
-    public boolean installPlugin(String authString, String downloadUrl, String md5) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean installPlugin(String authString, String downloadUrl, String md5) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Kick a currently online Player from the server with a specific custom
@@ -613,10 +613,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the player is not currently online
      * 
      * @throws org.apache.thrift.TException
@@ -626,7 +626,7 @@ public class SwiftApi {
      * @param name
      * @param message
      */
-    public boolean kick(String authString, String name, String message) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean kick(String authString, String name, String message) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Makes a player "op" (operator). If the player is already op, then
@@ -641,10 +641,10 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the Player was not found
      * 
      * @return String the current bukkit version
@@ -654,7 +654,7 @@ public class SwiftApi {
      * @param name
      * @param notifyPlayer
      */
-    public boolean op(String authString, String name, boolean notifyPlayer) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean op(String authString, String name, boolean notifyPlayer) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Just a keepalive method to test authentication in clients
@@ -664,7 +664,7 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on serious failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @throws org.apache.thrift.TException
@@ -672,7 +672,7 @@ public class SwiftApi {
      * 
      * @param authString
      */
-    public boolean ping(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException;
+    public boolean ping(String authString) throws EAuthException, org.apache.thrift.TException;
 
     /**
      * Reloads the server. This call does not send a response (for obvious reasons)
@@ -700,10 +700,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success, false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the player was not found
      * 
      * @throws org.apache.thrift.TException
@@ -713,7 +713,7 @@ public class SwiftApi {
      * @param playerName
      * @param itemIndex
      */
-    public boolean removeInventoryItem(String authString, String playerName, int itemIndex) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean removeInventoryItem(String authString, String playerName, int itemIndex) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Remove a Player from the server's whitelist. The player can be offline, or
@@ -728,10 +728,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success, false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the player was not found
      * 
      * @throws org.apache.thrift.TException
@@ -740,7 +740,7 @@ public class SwiftApi {
      * @param authString
      * @param name
      */
-    public boolean removeFromWhitelist(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean removeFromWhitelist(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * This method will replace a given plugin's .jar file with a new
@@ -763,10 +763,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If something went wrong during the file download, or the
      *             computed hash does not match the provided hash or the
      *             requested plugin could not be found.
@@ -779,7 +779,7 @@ public class SwiftApi {
      * @param downloadUrl
      * @param md5
      */
-    public boolean replacePlugin(String authString, String pluginName, String downloadUrl, String md5) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean replacePlugin(String authString, String pluginName, String downloadUrl, String md5) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Executes a command as if you were to type it directly into the console
@@ -790,7 +790,7 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on serious failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @throws org.apache.thrift.TException
@@ -812,10 +812,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on serious failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the specified world could not be found
      * 
      * @throws org.apache.thrift.TException
@@ -824,7 +824,7 @@ public class SwiftApi {
      * @param authString
      * @param worldName
      */
-    public boolean saveWorld(String authString, String worldName) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean saveWorld(String authString, String worldName) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Sets the contents of a file.
@@ -839,10 +839,10 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the file could not be opened or does not exist
      * 
      * @return bool true on success, else false
@@ -852,7 +852,7 @@ public class SwiftApi {
      * @param fileName
      * @param fileContents
      */
-    public boolean setFileContents(String authString, String fileName, String fileContents) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean setFileContents(String authString, String fileName, String fileContents) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Sets the gamemode of a player
@@ -869,10 +869,10 @@ public class SwiftApi {
      * @throws TException
      *             If something thrifty went wrong
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the Player was not found
      * 
      * @return String the current bukkit version
@@ -882,7 +882,7 @@ public class SwiftApi {
      * @param name
      * @param mode
      */
-    public boolean setGameMode(String authString, String name, GameMode mode) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean setGameMode(String authString, String name, GameMode mode) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Set's the isPVP property on the specified world
@@ -898,10 +898,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on serious failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the specified world could not be found
      * 
      * @throws org.apache.thrift.TException
@@ -911,7 +911,7 @@ public class SwiftApi {
      * @param worldName
      * @param isPvp
      */
-    public boolean setPvp(String authString, String worldName, boolean isPvp) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean setPvp(String authString, String worldName, boolean isPvp) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Set's the hasStorm property on the specified world (i.e. makes it rain)
@@ -927,10 +927,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on serious failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the specified world could not be found
      * 
      * @throws org.apache.thrift.TException
@@ -940,7 +940,7 @@ public class SwiftApi {
      * @param worldName
      * @param hasStorm
      */
-    public boolean setStorm(String authString, String worldName, boolean hasStorm) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean setStorm(String authString, String worldName, boolean hasStorm) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Set's the isThundering property on the specified world
@@ -956,10 +956,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on serious failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the specified world could not be found
      * 
      * @throws org.apache.thrift.TException
@@ -969,7 +969,7 @@ public class SwiftApi {
      * @param worldName
      * @param isThundering
      */
-    public boolean setThundering(String authString, String worldName, boolean isThundering) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean setThundering(String authString, String worldName, boolean isThundering) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Sets the time on the specified world or all worlds if a
@@ -987,10 +987,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on serious failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the specified world could not be found
      * 
      * @throws org.apache.thrift.TException
@@ -1000,7 +1000,7 @@ public class SwiftApi {
      * @param worldName
      * @param time
      */
-    public boolean setWorldTime(String authString, String worldName, long time) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean setWorldTime(String authString, String worldName, long time) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Un ban a specific player
@@ -1013,10 +1013,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the player was not found
      * 
      * @throws org.apache.thrift.TException
@@ -1025,7 +1025,7 @@ public class SwiftApi {
      * @param authString
      * @param name
      */
-    public boolean unBan(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean unBan(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Un ban a specific IP from connecting to this server
@@ -1038,7 +1038,7 @@ public class SwiftApi {
      * 
      * @return boolean true on success false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
      * @throws org.apache.thrift.TException
@@ -1047,7 +1047,7 @@ public class SwiftApi {
      * @param authString
      * @param ip
      */
-    public boolean unBanIp(String authString, String ip) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean unBanIp(String authString, String ip) throws EAuthException, EDataException, org.apache.thrift.TException;
 
     /**
      * Replaces an item in the player's inventory with the supplied one
@@ -1068,10 +1068,10 @@ public class SwiftApi {
      * 
      * @return boolean true on success, false on failure
      * 
-     * @throws Errors.EAuthException
+     * @throws EAuthException
      *             If the method call was not correctly authenticated
      * 
-     * @throws Errors.EDataException
+     * @throws EDataException
      *             If the player was not found
      * 
      * @throws org.apache.thrift.TException
@@ -1082,7 +1082,7 @@ public class SwiftApi {
      * @param item
      * @param itemIndex
      */
-    public boolean updateInventoryItem(String authString, String playerName, ItemStack item, int itemIndex) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException;
+    public boolean updateInventoryItem(String authString, String playerName, ItemStack item, int itemIndex) throws EAuthException, EDataException, org.apache.thrift.TException;
 
   }
 
@@ -1194,7 +1194,7 @@ public class SwiftApi {
       super(iprot, oprot);
     }
 
-    public boolean addItemToInventory(String authString, String playerName, ItemStack item) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean addItemToInventory(String authString, String playerName, ItemStack item) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_addItemToInventory(authString, playerName, item);
       return recv_addItemToInventory();
@@ -1209,7 +1209,7 @@ public class SwiftApi {
       sendBase("addItemToInventory", args);
     }
 
-    public boolean recv_addItemToInventory() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_addItemToInventory() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       addItemToInventory_result result = new addItemToInventory_result();
       receiveBase(result, "addItemToInventory");
@@ -1225,7 +1225,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "addItemToInventory failed: unknown result");
     }
 
-    public boolean addToWhitelist(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean addToWhitelist(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_addToWhitelist(authString, name);
       return recv_addToWhitelist();
@@ -1239,7 +1239,7 @@ public class SwiftApi {
       sendBase("addToWhitelist", args);
     }
 
-    public boolean recv_addToWhitelist() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_addToWhitelist() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       addToWhitelist_result result = new addToWhitelist_result();
       receiveBase(result, "addToWhitelist");
@@ -1255,7 +1255,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "addToWhitelist failed: unknown result");
     }
 
-    public boolean announce(String authString, String message) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public boolean announce(String authString, String message) throws EAuthException, org.apache.thrift.TException
     {
       send_announce(authString, message);
       return recv_announce();
@@ -1269,7 +1269,7 @@ public class SwiftApi {
       sendBase("announce", args);
     }
 
-    public boolean recv_announce() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public boolean recv_announce() throws EAuthException, org.apache.thrift.TException
     {
       announce_result result = new announce_result();
       receiveBase(result, "announce");
@@ -1282,7 +1282,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "announce failed: unknown result");
     }
 
-    public boolean ban(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean ban(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_ban(authString, name);
       return recv_ban();
@@ -1296,7 +1296,7 @@ public class SwiftApi {
       sendBase("ban", args);
     }
 
-    public boolean recv_ban() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_ban() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       ban_result result = new ban_result();
       receiveBase(result, "ban");
@@ -1312,7 +1312,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "ban failed: unknown result");
     }
 
-    public boolean banIp(String authString, String ip) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public boolean banIp(String authString, String ip) throws EAuthException, org.apache.thrift.TException
     {
       send_banIp(authString, ip);
       return recv_banIp();
@@ -1326,7 +1326,7 @@ public class SwiftApi {
       sendBase("banIp", args);
     }
 
-    public boolean recv_banIp() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public boolean recv_banIp() throws EAuthException, org.apache.thrift.TException
     {
       banIp_result result = new banIp_result();
       receiveBase(result, "banIp");
@@ -1339,7 +1339,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "banIp failed: unknown result");
     }
 
-    public boolean deOp(String authString, String name, boolean notifyPlayer) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean deOp(String authString, String name, boolean notifyPlayer) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_deOp(authString, name, notifyPlayer);
       return recv_deOp();
@@ -1354,7 +1354,7 @@ public class SwiftApi {
       sendBase("deOp", args);
     }
 
-    public boolean recv_deOp() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_deOp() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       deOp_result result = new deOp_result();
       receiveBase(result, "deOp");
@@ -1370,7 +1370,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "deOp failed: unknown result");
     }
 
-    public List<String> getBannedIps(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<String> getBannedIps(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getBannedIps(authString);
       return recv_getBannedIps();
@@ -1383,7 +1383,7 @@ public class SwiftApi {
       sendBase("getBannedIps", args);
     }
 
-    public List<String> recv_getBannedIps() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<String> recv_getBannedIps() throws EAuthException, org.apache.thrift.TException
     {
       getBannedIps_result result = new getBannedIps_result();
       receiveBase(result, "getBannedIps");
@@ -1396,7 +1396,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBannedIps failed: unknown result");
     }
 
-    public List<OfflinePlayer> getBannedPlayers(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<OfflinePlayer> getBannedPlayers(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getBannedPlayers(authString);
       return recv_getBannedPlayers();
@@ -1409,7 +1409,7 @@ public class SwiftApi {
       sendBase("getBannedPlayers", args);
     }
 
-    public List<OfflinePlayer> recv_getBannedPlayers() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<OfflinePlayer> recv_getBannedPlayers() throws EAuthException, org.apache.thrift.TException
     {
       getBannedPlayers_result result = new getBannedPlayers_result();
       receiveBase(result, "getBannedPlayers");
@@ -1422,7 +1422,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBannedPlayers failed: unknown result");
     }
 
-    public String getBukkitVersion(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public String getBukkitVersion(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getBukkitVersion(authString);
       return recv_getBukkitVersion();
@@ -1435,7 +1435,7 @@ public class SwiftApi {
       sendBase("getBukkitVersion", args);
     }
 
-    public String recv_getBukkitVersion() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public String recv_getBukkitVersion() throws EAuthException, org.apache.thrift.TException
     {
       getBukkitVersion_result result = new getBukkitVersion_result();
       receiveBase(result, "getBukkitVersion");
@@ -1448,7 +1448,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBukkitVersion failed: unknown result");
     }
 
-    public List<ConsoleLine> getConsoleMessages(String authString, long since) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<ConsoleLine> getConsoleMessages(String authString, long since) throws EAuthException, org.apache.thrift.TException
     {
       send_getConsoleMessages(authString, since);
       return recv_getConsoleMessages();
@@ -1462,7 +1462,7 @@ public class SwiftApi {
       sendBase("getConsoleMessages", args);
     }
 
-    public List<ConsoleLine> recv_getConsoleMessages() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<ConsoleLine> recv_getConsoleMessages() throws EAuthException, org.apache.thrift.TException
     {
       getConsoleMessages_result result = new getConsoleMessages_result();
       receiveBase(result, "getConsoleMessages");
@@ -1475,7 +1475,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getConsoleMessages failed: unknown result");
     }
 
-    public String getFileContents(String authString, String fileName) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public String getFileContents(String authString, String fileName) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_getFileContents(authString, fileName);
       return recv_getFileContents();
@@ -1489,7 +1489,7 @@ public class SwiftApi {
       sendBase("getFileContents", args);
     }
 
-    public String recv_getFileContents() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public String recv_getFileContents() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       getFileContents_result result = new getFileContents_result();
       receiveBase(result, "getFileContents");
@@ -1505,7 +1505,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getFileContents failed: unknown result");
     }
 
-    public OfflinePlayer getOfflinePlayer(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public OfflinePlayer getOfflinePlayer(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_getOfflinePlayer(authString, name);
       return recv_getOfflinePlayer();
@@ -1519,7 +1519,7 @@ public class SwiftApi {
       sendBase("getOfflinePlayer", args);
     }
 
-    public OfflinePlayer recv_getOfflinePlayer() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public OfflinePlayer recv_getOfflinePlayer() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       getOfflinePlayer_result result = new getOfflinePlayer_result();
       receiveBase(result, "getOfflinePlayer");
@@ -1535,7 +1535,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getOfflinePlayer failed: unknown result");
     }
 
-    public List<OfflinePlayer> getOfflinePlayers(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<OfflinePlayer> getOfflinePlayers(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getOfflinePlayers(authString);
       return recv_getOfflinePlayers();
@@ -1548,7 +1548,7 @@ public class SwiftApi {
       sendBase("getOfflinePlayers", args);
     }
 
-    public List<OfflinePlayer> recv_getOfflinePlayers() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<OfflinePlayer> recv_getOfflinePlayers() throws EAuthException, org.apache.thrift.TException
     {
       getOfflinePlayers_result result = new getOfflinePlayers_result();
       receiveBase(result, "getOfflinePlayers");
@@ -1561,7 +1561,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getOfflinePlayers failed: unknown result");
     }
 
-    public List<OfflinePlayer> getOps(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<OfflinePlayer> getOps(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getOps(authString);
       return recv_getOps();
@@ -1574,7 +1574,7 @@ public class SwiftApi {
       sendBase("getOps", args);
     }
 
-    public List<OfflinePlayer> recv_getOps() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<OfflinePlayer> recv_getOps() throws EAuthException, org.apache.thrift.TException
     {
       getOps_result result = new getOps_result();
       receiveBase(result, "getOps");
@@ -1587,7 +1587,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getOps failed: unknown result");
     }
 
-    public Player getPlayer(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public Player getPlayer(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_getPlayer(authString, name);
       return recv_getPlayer();
@@ -1601,7 +1601,7 @@ public class SwiftApi {
       sendBase("getPlayer", args);
     }
 
-    public Player recv_getPlayer() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public Player recv_getPlayer() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       getPlayer_result result = new getPlayer_result();
       receiveBase(result, "getPlayer");
@@ -1617,7 +1617,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getPlayer failed: unknown result");
     }
 
-    public List<Player> getPlayers(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<Player> getPlayers(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getPlayers(authString);
       return recv_getPlayers();
@@ -1630,7 +1630,7 @@ public class SwiftApi {
       sendBase("getPlayers", args);
     }
 
-    public List<Player> recv_getPlayers() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<Player> recv_getPlayers() throws EAuthException, org.apache.thrift.TException
     {
       getPlayers_result result = new getPlayers_result();
       receiveBase(result, "getPlayers");
@@ -1643,7 +1643,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getPlayers failed: unknown result");
     }
 
-    public Plugin getPlugin(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public Plugin getPlugin(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_getPlugin(authString, name);
       return recv_getPlugin();
@@ -1657,7 +1657,7 @@ public class SwiftApi {
       sendBase("getPlugin", args);
     }
 
-    public Plugin recv_getPlugin() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public Plugin recv_getPlugin() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       getPlugin_result result = new getPlugin_result();
       receiveBase(result, "getPlugin");
@@ -1673,7 +1673,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getPlugin failed: unknown result");
     }
 
-    public List<Plugin> getPlugins(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<Plugin> getPlugins(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getPlugins(authString);
       return recv_getPlugins();
@@ -1686,7 +1686,7 @@ public class SwiftApi {
       sendBase("getPlugins", args);
     }
 
-    public List<Plugin> recv_getPlugins() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<Plugin> recv_getPlugins() throws EAuthException, org.apache.thrift.TException
     {
       getPlugins_result result = new getPlugins_result();
       receiveBase(result, "getPlugins");
@@ -1699,7 +1699,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getPlugins failed: unknown result");
     }
 
-    public Server getServer(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public Server getServer(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getServer(authString);
       return recv_getServer();
@@ -1712,7 +1712,7 @@ public class SwiftApi {
       sendBase("getServer", args);
     }
 
-    public Server recv_getServer() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public Server recv_getServer() throws EAuthException, org.apache.thrift.TException
     {
       getServer_result result = new getServer_result();
       receiveBase(result, "getServer");
@@ -1725,7 +1725,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getServer failed: unknown result");
     }
 
-    public String getServerVersion(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public String getServerVersion(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getServerVersion(authString);
       return recv_getServerVersion();
@@ -1738,7 +1738,7 @@ public class SwiftApi {
       sendBase("getServerVersion", args);
     }
 
-    public String recv_getServerVersion() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public String recv_getServerVersion() throws EAuthException, org.apache.thrift.TException
     {
       getServerVersion_result result = new getServerVersion_result();
       receiveBase(result, "getServerVersion");
@@ -1751,7 +1751,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getServerVersion failed: unknown result");
     }
 
-    public List<OfflinePlayer> getWhitelist(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<OfflinePlayer> getWhitelist(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getWhitelist(authString);
       return recv_getWhitelist();
@@ -1764,7 +1764,7 @@ public class SwiftApi {
       sendBase("getWhitelist", args);
     }
 
-    public List<OfflinePlayer> recv_getWhitelist() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<OfflinePlayer> recv_getWhitelist() throws EAuthException, org.apache.thrift.TException
     {
       getWhitelist_result result = new getWhitelist_result();
       receiveBase(result, "getWhitelist");
@@ -1777,7 +1777,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getWhitelist failed: unknown result");
     }
 
-    public World getWorld(String authString, String worldName) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public World getWorld(String authString, String worldName) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_getWorld(authString, worldName);
       return recv_getWorld();
@@ -1791,7 +1791,7 @@ public class SwiftApi {
       sendBase("getWorld", args);
     }
 
-    public World recv_getWorld() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public World recv_getWorld() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       getWorld_result result = new getWorld_result();
       receiveBase(result, "getWorld");
@@ -1807,7 +1807,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getWorld failed: unknown result");
     }
 
-    public List<World> getWorlds(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<World> getWorlds(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_getWorlds(authString);
       return recv_getWorlds();
@@ -1820,7 +1820,7 @@ public class SwiftApi {
       sendBase("getWorlds", args);
     }
 
-    public List<World> recv_getWorlds() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public List<World> recv_getWorlds() throws EAuthException, org.apache.thrift.TException
     {
       getWorlds_result result = new getWorlds_result();
       receiveBase(result, "getWorlds");
@@ -1833,7 +1833,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getWorlds failed: unknown result");
     }
 
-    public boolean installPlugin(String authString, String downloadUrl, String md5) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean installPlugin(String authString, String downloadUrl, String md5) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_installPlugin(authString, downloadUrl, md5);
       return recv_installPlugin();
@@ -1848,7 +1848,7 @@ public class SwiftApi {
       sendBase("installPlugin", args);
     }
 
-    public boolean recv_installPlugin() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_installPlugin() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       installPlugin_result result = new installPlugin_result();
       receiveBase(result, "installPlugin");
@@ -1864,7 +1864,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "installPlugin failed: unknown result");
     }
 
-    public boolean kick(String authString, String name, String message) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean kick(String authString, String name, String message) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_kick(authString, name, message);
       return recv_kick();
@@ -1879,7 +1879,7 @@ public class SwiftApi {
       sendBase("kick", args);
     }
 
-    public boolean recv_kick() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_kick() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       kick_result result = new kick_result();
       receiveBase(result, "kick");
@@ -1895,7 +1895,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "kick failed: unknown result");
     }
 
-    public boolean op(String authString, String name, boolean notifyPlayer) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean op(String authString, String name, boolean notifyPlayer) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_op(authString, name, notifyPlayer);
       return recv_op();
@@ -1910,7 +1910,7 @@ public class SwiftApi {
       sendBase("op", args);
     }
 
-    public boolean recv_op() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_op() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       op_result result = new op_result();
       receiveBase(result, "op");
@@ -1926,7 +1926,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "op failed: unknown result");
     }
 
-    public boolean ping(String authString) throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public boolean ping(String authString) throws EAuthException, org.apache.thrift.TException
     {
       send_ping(authString);
       return recv_ping();
@@ -1939,7 +1939,7 @@ public class SwiftApi {
       sendBase("ping", args);
     }
 
-    public boolean recv_ping() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException
+    public boolean recv_ping() throws EAuthException, org.apache.thrift.TException
     {
       ping_result result = new ping_result();
       receiveBase(result, "ping");
@@ -1964,7 +1964,7 @@ public class SwiftApi {
       sendBase("reloadServer", args);
     }
 
-    public boolean removeInventoryItem(String authString, String playerName, int itemIndex) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean removeInventoryItem(String authString, String playerName, int itemIndex) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_removeInventoryItem(authString, playerName, itemIndex);
       return recv_removeInventoryItem();
@@ -1979,7 +1979,7 @@ public class SwiftApi {
       sendBase("removeInventoryItem", args);
     }
 
-    public boolean recv_removeInventoryItem() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_removeInventoryItem() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       removeInventoryItem_result result = new removeInventoryItem_result();
       receiveBase(result, "removeInventoryItem");
@@ -1995,7 +1995,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "removeInventoryItem failed: unknown result");
     }
 
-    public boolean removeFromWhitelist(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean removeFromWhitelist(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_removeFromWhitelist(authString, name);
       return recv_removeFromWhitelist();
@@ -2009,7 +2009,7 @@ public class SwiftApi {
       sendBase("removeFromWhitelist", args);
     }
 
-    public boolean recv_removeFromWhitelist() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_removeFromWhitelist() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       removeFromWhitelist_result result = new removeFromWhitelist_result();
       receiveBase(result, "removeFromWhitelist");
@@ -2025,7 +2025,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "removeFromWhitelist failed: unknown result");
     }
 
-    public boolean replacePlugin(String authString, String pluginName, String downloadUrl, String md5) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean replacePlugin(String authString, String pluginName, String downloadUrl, String md5) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_replacePlugin(authString, pluginName, downloadUrl, md5);
       return recv_replacePlugin();
@@ -2041,7 +2041,7 @@ public class SwiftApi {
       sendBase("replacePlugin", args);
     }
 
-    public boolean recv_replacePlugin() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_replacePlugin() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       replacePlugin_result result = new replacePlugin_result();
       receiveBase(result, "replacePlugin");
@@ -2070,7 +2070,7 @@ public class SwiftApi {
       sendBase("runConsoleCommand", args);
     }
 
-    public boolean saveWorld(String authString, String worldName) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean saveWorld(String authString, String worldName) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_saveWorld(authString, worldName);
       return recv_saveWorld();
@@ -2084,7 +2084,7 @@ public class SwiftApi {
       sendBase("saveWorld", args);
     }
 
-    public boolean recv_saveWorld() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_saveWorld() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       saveWorld_result result = new saveWorld_result();
       receiveBase(result, "saveWorld");
@@ -2100,7 +2100,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "saveWorld failed: unknown result");
     }
 
-    public boolean setFileContents(String authString, String fileName, String fileContents) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean setFileContents(String authString, String fileName, String fileContents) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_setFileContents(authString, fileName, fileContents);
       return recv_setFileContents();
@@ -2115,7 +2115,7 @@ public class SwiftApi {
       sendBase("setFileContents", args);
     }
 
-    public boolean recv_setFileContents() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_setFileContents() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       setFileContents_result result = new setFileContents_result();
       receiveBase(result, "setFileContents");
@@ -2131,7 +2131,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "setFileContents failed: unknown result");
     }
 
-    public boolean setGameMode(String authString, String name, GameMode mode) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean setGameMode(String authString, String name, GameMode mode) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_setGameMode(authString, name, mode);
       return recv_setGameMode();
@@ -2146,7 +2146,7 @@ public class SwiftApi {
       sendBase("setGameMode", args);
     }
 
-    public boolean recv_setGameMode() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_setGameMode() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       setGameMode_result result = new setGameMode_result();
       receiveBase(result, "setGameMode");
@@ -2162,7 +2162,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "setGameMode failed: unknown result");
     }
 
-    public boolean setPvp(String authString, String worldName, boolean isPvp) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean setPvp(String authString, String worldName, boolean isPvp) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_setPvp(authString, worldName, isPvp);
       return recv_setPvp();
@@ -2177,7 +2177,7 @@ public class SwiftApi {
       sendBase("setPvp", args);
     }
 
-    public boolean recv_setPvp() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_setPvp() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       setPvp_result result = new setPvp_result();
       receiveBase(result, "setPvp");
@@ -2193,7 +2193,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "setPvp failed: unknown result");
     }
 
-    public boolean setStorm(String authString, String worldName, boolean hasStorm) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean setStorm(String authString, String worldName, boolean hasStorm) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_setStorm(authString, worldName, hasStorm);
       return recv_setStorm();
@@ -2208,7 +2208,7 @@ public class SwiftApi {
       sendBase("setStorm", args);
     }
 
-    public boolean recv_setStorm() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_setStorm() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       setStorm_result result = new setStorm_result();
       receiveBase(result, "setStorm");
@@ -2224,7 +2224,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "setStorm failed: unknown result");
     }
 
-    public boolean setThundering(String authString, String worldName, boolean isThundering) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean setThundering(String authString, String worldName, boolean isThundering) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_setThundering(authString, worldName, isThundering);
       return recv_setThundering();
@@ -2239,7 +2239,7 @@ public class SwiftApi {
       sendBase("setThundering", args);
     }
 
-    public boolean recv_setThundering() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_setThundering() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       setThundering_result result = new setThundering_result();
       receiveBase(result, "setThundering");
@@ -2255,7 +2255,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "setThundering failed: unknown result");
     }
 
-    public boolean setWorldTime(String authString, String worldName, long time) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean setWorldTime(String authString, String worldName, long time) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_setWorldTime(authString, worldName, time);
       return recv_setWorldTime();
@@ -2270,7 +2270,7 @@ public class SwiftApi {
       sendBase("setWorldTime", args);
     }
 
-    public boolean recv_setWorldTime() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_setWorldTime() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       setWorldTime_result result = new setWorldTime_result();
       receiveBase(result, "setWorldTime");
@@ -2286,7 +2286,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "setWorldTime failed: unknown result");
     }
 
-    public boolean unBan(String authString, String name) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean unBan(String authString, String name) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_unBan(authString, name);
       return recv_unBan();
@@ -2300,7 +2300,7 @@ public class SwiftApi {
       sendBase("unBan", args);
     }
 
-    public boolean recv_unBan() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_unBan() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       unBan_result result = new unBan_result();
       receiveBase(result, "unBan");
@@ -2316,7 +2316,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "unBan failed: unknown result");
     }
 
-    public boolean unBanIp(String authString, String ip) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean unBanIp(String authString, String ip) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_unBanIp(authString, ip);
       return recv_unBanIp();
@@ -2330,7 +2330,7 @@ public class SwiftApi {
       sendBase("unBanIp", args);
     }
 
-    public boolean recv_unBanIp() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_unBanIp() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       unBanIp_result result = new unBanIp_result();
       receiveBase(result, "unBanIp");
@@ -2346,7 +2346,7 @@ public class SwiftApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "unBanIp failed: unknown result");
     }
 
-    public boolean updateInventoryItem(String authString, String playerName, ItemStack item, int itemIndex) throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean updateInventoryItem(String authString, String playerName, ItemStack item, int itemIndex) throws EAuthException, EDataException, org.apache.thrift.TException
     {
       send_updateInventoryItem(authString, playerName, item, itemIndex);
       return recv_updateInventoryItem();
@@ -2362,7 +2362,7 @@ public class SwiftApi {
       sendBase("updateInventoryItem", args);
     }
 
-    public boolean recv_updateInventoryItem() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException
+    public boolean recv_updateInventoryItem() throws EAuthException, EDataException, org.apache.thrift.TException
     {
       updateInventoryItem_result result = new updateInventoryItem_result();
       receiveBase(result, "updateInventoryItem");
@@ -2424,7 +2424,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2459,7 +2459,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2494,7 +2494,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2529,7 +2529,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2564,7 +2564,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2602,7 +2602,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2634,7 +2634,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public List<String> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public List<String> getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2666,7 +2666,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public List<OfflinePlayer> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public List<OfflinePlayer> getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2698,7 +2698,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public String getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public String getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2733,7 +2733,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public List<ConsoleLine> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public List<ConsoleLine> getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2768,7 +2768,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public String getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public String getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2803,7 +2803,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public OfflinePlayer getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public OfflinePlayer getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2835,7 +2835,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public List<OfflinePlayer> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public List<OfflinePlayer> getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2867,7 +2867,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public List<OfflinePlayer> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public List<OfflinePlayer> getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2902,7 +2902,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public Player getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public Player getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2934,7 +2934,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public List<Player> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public List<Player> getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -2969,7 +2969,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public Plugin getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public Plugin getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3001,7 +3001,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public List<Plugin> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public List<Plugin> getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3033,7 +3033,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public Server getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public Server getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3065,7 +3065,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public String getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public String getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3097,7 +3097,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public List<OfflinePlayer> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public List<OfflinePlayer> getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3132,7 +3132,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public World getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public World getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3164,7 +3164,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public List<World> getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public List<World> getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3202,7 +3202,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3240,7 +3240,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3278,7 +3278,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3310,7 +3310,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3379,7 +3379,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3414,7 +3414,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3455,7 +3455,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3524,7 +3524,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3562,7 +3562,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3600,7 +3600,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3638,7 +3638,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3676,7 +3676,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3714,7 +3714,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3752,7 +3752,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3787,7 +3787,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3822,7 +3822,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3863,7 +3863,7 @@ public class SwiftApi {
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.phybros.thrift.EAuthException, org.phybros.thrift.EDataException, org.apache.thrift.TException {
+      public boolean getResult() throws EAuthException, EDataException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -3949,9 +3949,9 @@ public class SwiftApi {
         try {
           result.success = iface.addItemToInventory(args.authString, args.playerName, args.item);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -3976,9 +3976,9 @@ public class SwiftApi {
         try {
           result.success = iface.addToWhitelist(args.authString, args.name);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4003,7 +4003,7 @@ public class SwiftApi {
         try {
           result.success = iface.announce(args.authString, args.message);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4028,9 +4028,9 @@ public class SwiftApi {
         try {
           result.success = iface.ban(args.authString, args.name);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4055,7 +4055,7 @@ public class SwiftApi {
         try {
           result.success = iface.banIp(args.authString, args.ip);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4080,9 +4080,9 @@ public class SwiftApi {
         try {
           result.success = iface.deOp(args.authString, args.name, args.notifyPlayer);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4106,7 +4106,7 @@ public class SwiftApi {
         getBannedIps_result result = new getBannedIps_result();
         try {
           result.success = iface.getBannedIps(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4130,7 +4130,7 @@ public class SwiftApi {
         getBannedPlayers_result result = new getBannedPlayers_result();
         try {
           result.success = iface.getBannedPlayers(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4154,7 +4154,7 @@ public class SwiftApi {
         getBukkitVersion_result result = new getBukkitVersion_result();
         try {
           result.success = iface.getBukkitVersion(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4178,7 +4178,7 @@ public class SwiftApi {
         getConsoleMessages_result result = new getConsoleMessages_result();
         try {
           result.success = iface.getConsoleMessages(args.authString, args.since);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4202,9 +4202,9 @@ public class SwiftApi {
         getFileContents_result result = new getFileContents_result();
         try {
           result.success = iface.getFileContents(args.authString, args.fileName);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4228,9 +4228,9 @@ public class SwiftApi {
         getOfflinePlayer_result result = new getOfflinePlayer_result();
         try {
           result.success = iface.getOfflinePlayer(args.authString, args.name);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4254,7 +4254,7 @@ public class SwiftApi {
         getOfflinePlayers_result result = new getOfflinePlayers_result();
         try {
           result.success = iface.getOfflinePlayers(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4278,7 +4278,7 @@ public class SwiftApi {
         getOps_result result = new getOps_result();
         try {
           result.success = iface.getOps(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4302,9 +4302,9 @@ public class SwiftApi {
         getPlayer_result result = new getPlayer_result();
         try {
           result.success = iface.getPlayer(args.authString, args.name);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4328,7 +4328,7 @@ public class SwiftApi {
         getPlayers_result result = new getPlayers_result();
         try {
           result.success = iface.getPlayers(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4352,9 +4352,9 @@ public class SwiftApi {
         getPlugin_result result = new getPlugin_result();
         try {
           result.success = iface.getPlugin(args.authString, args.name);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4378,7 +4378,7 @@ public class SwiftApi {
         getPlugins_result result = new getPlugins_result();
         try {
           result.success = iface.getPlugins(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4402,7 +4402,7 @@ public class SwiftApi {
         getServer_result result = new getServer_result();
         try {
           result.success = iface.getServer(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4426,7 +4426,7 @@ public class SwiftApi {
         getServerVersion_result result = new getServerVersion_result();
         try {
           result.success = iface.getServerVersion(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4450,7 +4450,7 @@ public class SwiftApi {
         getWhitelist_result result = new getWhitelist_result();
         try {
           result.success = iface.getWhitelist(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4474,9 +4474,9 @@ public class SwiftApi {
         getWorld_result result = new getWorld_result();
         try {
           result.success = iface.getWorld(args.authString, args.worldName);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4500,7 +4500,7 @@ public class SwiftApi {
         getWorlds_result result = new getWorlds_result();
         try {
           result.success = iface.getWorlds(args.authString);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4525,9 +4525,9 @@ public class SwiftApi {
         try {
           result.success = iface.installPlugin(args.authString, args.downloadUrl, args.md5);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4552,9 +4552,9 @@ public class SwiftApi {
         try {
           result.success = iface.kick(args.authString, args.name, args.message);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4579,9 +4579,9 @@ public class SwiftApi {
         try {
           result.success = iface.op(args.authString, args.name, args.notifyPlayer);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4606,7 +4606,7 @@ public class SwiftApi {
         try {
           result.success = iface.ping(args.authString);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
         }
         return result;
@@ -4650,9 +4650,9 @@ public class SwiftApi {
         try {
           result.success = iface.removeInventoryItem(args.authString, args.playerName, args.itemIndex);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4677,9 +4677,9 @@ public class SwiftApi {
         try {
           result.success = iface.removeFromWhitelist(args.authString, args.name);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4704,9 +4704,9 @@ public class SwiftApi {
         try {
           result.success = iface.replacePlugin(args.authString, args.pluginName, args.downloadUrl, args.md5);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4750,9 +4750,9 @@ public class SwiftApi {
         try {
           result.success = iface.saveWorld(args.authString, args.worldName);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4777,9 +4777,9 @@ public class SwiftApi {
         try {
           result.success = iface.setFileContents(args.authString, args.fileName, args.fileContents);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4804,9 +4804,9 @@ public class SwiftApi {
         try {
           result.success = iface.setGameMode(args.authString, args.name, args.mode);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4831,9 +4831,9 @@ public class SwiftApi {
         try {
           result.success = iface.setPvp(args.authString, args.worldName, args.isPvp);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4858,9 +4858,9 @@ public class SwiftApi {
         try {
           result.success = iface.setStorm(args.authString, args.worldName, args.hasStorm);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4885,9 +4885,9 @@ public class SwiftApi {
         try {
           result.success = iface.setThundering(args.authString, args.worldName, args.isThundering);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4912,9 +4912,9 @@ public class SwiftApi {
         try {
           result.success = iface.setWorldTime(args.authString, args.worldName, args.time);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4939,9 +4939,9 @@ public class SwiftApi {
         try {
           result.success = iface.unBan(args.authString, args.name);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4966,9 +4966,9 @@ public class SwiftApi {
         try {
           result.success = iface.unBanIp(args.authString, args.ip);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -4993,9 +4993,9 @@ public class SwiftApi {
         try {
           result.success = iface.updateInventoryItem(args.authString, args.playerName, args.item, args.itemIndex);
           result.setSuccessIsSet(true);
-        } catch (org.phybros.thrift.EAuthException aex) {
+        } catch (EAuthException aex) {
           result.aex = aex;
-        } catch (org.phybros.thrift.EDataException dex) {
+        } catch (EDataException dex) {
           result.dex = dex;
         }
         return result;
@@ -5088,13 +5088,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             addItemToInventory_result result = new addItemToInventory_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -5151,13 +5151,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             addToWhitelist_result result = new addToWhitelist_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -5214,8 +5214,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             announce_result result = new announce_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -5272,13 +5272,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             ban_result result = new ban_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -5335,8 +5335,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             banIp_result result = new banIp_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -5393,13 +5393,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             deOp_result result = new deOp_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -5455,8 +5455,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getBannedIps_result result = new getBannedIps_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -5512,8 +5512,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getBannedPlayers_result result = new getBannedPlayers_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -5569,8 +5569,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getBukkitVersion_result result = new getBukkitVersion_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -5626,8 +5626,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getConsoleMessages_result result = new getConsoleMessages_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -5683,13 +5683,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getFileContents_result result = new getFileContents_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -5745,13 +5745,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getOfflinePlayer_result result = new getOfflinePlayer_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -5807,8 +5807,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getOfflinePlayers_result result = new getOfflinePlayers_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -5864,8 +5864,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getOps_result result = new getOps_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -5921,13 +5921,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getPlayer_result result = new getPlayer_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -5983,8 +5983,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getPlayers_result result = new getPlayers_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -6040,13 +6040,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getPlugin_result result = new getPlugin_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -6102,8 +6102,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getPlugins_result result = new getPlugins_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -6159,8 +6159,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getServer_result result = new getServer_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -6216,8 +6216,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getServerVersion_result result = new getServerVersion_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -6273,8 +6273,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getWhitelist_result result = new getWhitelist_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -6330,13 +6330,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getWorld_result result = new getWorld_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -6392,8 +6392,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             getWorlds_result result = new getWorlds_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -6450,13 +6450,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             installPlugin_result result = new installPlugin_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -6513,13 +6513,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             kick_result result = new kick_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -6576,13 +6576,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             op_result result = new op_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -6639,8 +6639,8 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             ping_result result = new ping_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
@@ -6725,13 +6725,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             removeInventoryItem_result result = new removeInventoryItem_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -6788,13 +6788,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             removeFromWhitelist_result result = new removeFromWhitelist_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -6851,13 +6851,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             replacePlugin_result result = new replacePlugin_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -6942,13 +6942,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             saveWorld_result result = new saveWorld_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -7005,13 +7005,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             setFileContents_result result = new setFileContents_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -7068,13 +7068,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             setGameMode_result result = new setGameMode_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -7131,13 +7131,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             setPvp_result result = new setPvp_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -7194,13 +7194,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             setStorm_result result = new setStorm_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -7257,13 +7257,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             setThundering_result result = new setThundering_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -7320,13 +7320,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             setWorldTime_result result = new setWorldTime_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -7383,13 +7383,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             unBan_result result = new unBan_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -7446,13 +7446,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             unBanIp_result result = new unBanIp_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -7509,13 +7509,13 @@ public class SwiftApi {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             updateInventoryItem_result result = new updateInventoryItem_result();
-            if (e instanceof org.phybros.thrift.EAuthException) {
-                        result.aex = (org.phybros.thrift.EAuthException) e;
+            if (e instanceof EAuthException) {
+                        result.aex = (EAuthException) e;
                         result.setAexIsSet(true);
                         msg = result;
             }
-            else             if (e instanceof org.phybros.thrift.EDataException) {
-                        result.dex = (org.phybros.thrift.EDataException) e;
+            else             if (e instanceof EDataException) {
+                        result.dex = (EDataException) e;
                         result.setDexIsSet(true);
                         msg = result;
             }
@@ -8119,8 +8119,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -8207,8 +8207,8 @@ public class SwiftApi {
 
     public addItemToInventory_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -8224,10 +8224,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -8266,11 +8266,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public addItemToInventory_result setAex(org.phybros.thrift.EAuthException aex) {
+    public addItemToInventory_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -8290,11 +8290,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public addItemToInventory_result setDex(org.phybros.thrift.EDataException dex) {
+    public addItemToInventory_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -8328,7 +8328,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -8336,7 +8336,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -8555,7 +8555,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -8564,7 +8564,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -8649,12 +8649,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -9131,8 +9131,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -9219,8 +9219,8 @@ public class SwiftApi {
 
     public addToWhitelist_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -9236,10 +9236,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -9278,11 +9278,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public addToWhitelist_result setAex(org.phybros.thrift.EAuthException aex) {
+    public addToWhitelist_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -9302,11 +9302,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public addToWhitelist_result setDex(org.phybros.thrift.EDataException dex) {
+    public addToWhitelist_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -9340,7 +9340,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -9348,7 +9348,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -9567,7 +9567,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -9576,7 +9576,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -9661,12 +9661,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -10142,7 +10142,7 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -10224,7 +10224,7 @@ public class SwiftApi {
 
     public announce_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -10239,7 +10239,7 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -10277,11 +10277,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public announce_result setAex(org.phybros.thrift.EAuthException aex) {
+    public announce_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -10315,7 +10315,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -10502,7 +10502,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -10576,7 +10576,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -11053,8 +11053,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -11141,8 +11141,8 @@ public class SwiftApi {
 
     public ban_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -11158,10 +11158,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -11200,11 +11200,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public ban_result setAex(org.phybros.thrift.EAuthException aex) {
+    public ban_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -11224,11 +11224,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public ban_result setDex(org.phybros.thrift.EDataException dex) {
+    public ban_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -11262,7 +11262,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -11270,7 +11270,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -11489,7 +11489,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -11498,7 +11498,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -11583,12 +11583,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -12064,7 +12064,7 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -12146,7 +12146,7 @@ public class SwiftApi {
 
     public banIp_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -12161,7 +12161,7 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -12199,11 +12199,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public banIp_result setAex(org.phybros.thrift.EAuthException aex) {
+    public banIp_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -12237,7 +12237,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -12424,7 +12424,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -12498,7 +12498,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -13073,8 +13073,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -13161,8 +13161,8 @@ public class SwiftApi {
 
     public deOp_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -13178,10 +13178,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -13220,11 +13220,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public deOp_result setAex(org.phybros.thrift.EAuthException aex) {
+    public deOp_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -13244,11 +13244,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public deOp_result setDex(org.phybros.thrift.EDataException dex) {
+    public deOp_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -13282,7 +13282,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -13290,7 +13290,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -13509,7 +13509,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -13518,7 +13518,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -13603,12 +13603,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -13984,7 +13984,7 @@ public class SwiftApi {
     }
 
     public List<String> success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -14065,7 +14065,7 @@ public class SwiftApi {
 
     public getBannedIps_result(
       List<String> success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -14081,7 +14081,7 @@ public class SwiftApi {
         this.success = __this__success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -14134,11 +14134,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getBannedIps_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getBannedIps_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -14172,7 +14172,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -14371,7 +14371,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -14467,7 +14467,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -14843,7 +14843,7 @@ public class SwiftApi {
     }
 
     public List<OfflinePlayer> success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -14924,7 +14924,7 @@ public class SwiftApi {
 
     public getBannedPlayers_result(
       List<OfflinePlayer> success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -14943,7 +14943,7 @@ public class SwiftApi {
         this.success = __this__success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -14996,11 +14996,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getBannedPlayers_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getBannedPlayers_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -15034,7 +15034,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -15234,7 +15234,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -15331,7 +15331,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -15707,7 +15707,7 @@ public class SwiftApi {
     }
 
     public String success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -15787,7 +15787,7 @@ public class SwiftApi {
 
     public getBukkitVersion_result(
       String success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -15802,7 +15802,7 @@ public class SwiftApi {
         this.success = other.success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -15840,11 +15840,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getBukkitVersion_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getBukkitVersion_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -15878,7 +15878,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -16067,7 +16067,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -16141,7 +16141,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -16615,7 +16615,7 @@ public class SwiftApi {
     }
 
     public List<ConsoleLine> success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -16696,7 +16696,7 @@ public class SwiftApi {
 
     public getConsoleMessages_result(
       List<ConsoleLine> success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -16715,7 +16715,7 @@ public class SwiftApi {
         this.success = __this__success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -16768,11 +16768,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getConsoleMessages_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getConsoleMessages_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -16806,7 +16806,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -17006,7 +17006,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -17103,7 +17103,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -17580,8 +17580,8 @@ public class SwiftApi {
     }
 
     public String success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -17666,8 +17666,8 @@ public class SwiftApi {
 
     public getFileContents_result(
       String success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -17683,10 +17683,10 @@ public class SwiftApi {
         this.success = other.success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -17725,11 +17725,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getFileContents_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getFileContents_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -17749,11 +17749,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public getFileContents_result setDex(org.phybros.thrift.EDataException dex) {
+    public getFileContents_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -17787,7 +17787,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -17795,7 +17795,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -18016,7 +18016,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -18025,7 +18025,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -18110,12 +18110,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -18592,8 +18592,8 @@ public class SwiftApi {
     }
 
     public OfflinePlayer success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -18678,8 +18678,8 @@ public class SwiftApi {
 
     public getOfflinePlayer_result(
       OfflinePlayer success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -18695,10 +18695,10 @@ public class SwiftApi {
         this.success = new OfflinePlayer(other.success);
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -18737,11 +18737,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getOfflinePlayer_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getOfflinePlayer_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -18761,11 +18761,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public getOfflinePlayer_result setDex(org.phybros.thrift.EDataException dex) {
+    public getOfflinePlayer_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -18799,7 +18799,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -18807,7 +18807,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -19032,7 +19032,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -19041,7 +19041,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -19127,12 +19127,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -19508,7 +19508,7 @@ public class SwiftApi {
     }
 
     public List<OfflinePlayer> success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -19589,7 +19589,7 @@ public class SwiftApi {
 
     public getOfflinePlayers_result(
       List<OfflinePlayer> success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -19608,7 +19608,7 @@ public class SwiftApi {
         this.success = __this__success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -19661,11 +19661,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getOfflinePlayers_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getOfflinePlayers_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -19699,7 +19699,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -19899,7 +19899,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -19996,7 +19996,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -20372,7 +20372,7 @@ public class SwiftApi {
     }
 
     public List<OfflinePlayer> success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -20453,7 +20453,7 @@ public class SwiftApi {
 
     public getOps_result(
       List<OfflinePlayer> success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -20472,7 +20472,7 @@ public class SwiftApi {
         this.success = __this__success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -20525,11 +20525,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getOps_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getOps_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -20563,7 +20563,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -20763,7 +20763,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -20860,7 +20860,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -21337,8 +21337,8 @@ public class SwiftApi {
     }
 
     public Player success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -21423,8 +21423,8 @@ public class SwiftApi {
 
     public getPlayer_result(
       Player success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -21440,10 +21440,10 @@ public class SwiftApi {
         this.success = new Player(other.success);
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -21482,11 +21482,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getPlayer_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getPlayer_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -21506,11 +21506,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public getPlayer_result setDex(org.phybros.thrift.EDataException dex) {
+    public getPlayer_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -21544,7 +21544,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -21552,7 +21552,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -21777,7 +21777,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -21786,7 +21786,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -21872,12 +21872,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -22253,7 +22253,7 @@ public class SwiftApi {
     }
 
     public List<Player> success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -22334,7 +22334,7 @@ public class SwiftApi {
 
     public getPlayers_result(
       List<Player> success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -22353,7 +22353,7 @@ public class SwiftApi {
         this.success = __this__success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -22406,11 +22406,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getPlayers_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getPlayers_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -22444,7 +22444,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -22644,7 +22644,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -22741,7 +22741,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -23218,8 +23218,8 @@ public class SwiftApi {
     }
 
     public Plugin success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -23304,8 +23304,8 @@ public class SwiftApi {
 
     public getPlugin_result(
       Plugin success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -23321,10 +23321,10 @@ public class SwiftApi {
         this.success = new Plugin(other.success);
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -23363,11 +23363,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getPlugin_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getPlugin_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -23387,11 +23387,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public getPlugin_result setDex(org.phybros.thrift.EDataException dex) {
+    public getPlugin_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -23425,7 +23425,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -23433,7 +23433,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -23658,7 +23658,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -23667,7 +23667,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -23753,12 +23753,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -24134,7 +24134,7 @@ public class SwiftApi {
     }
 
     public List<Plugin> success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -24215,7 +24215,7 @@ public class SwiftApi {
 
     public getPlugins_result(
       List<Plugin> success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -24234,7 +24234,7 @@ public class SwiftApi {
         this.success = __this__success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -24287,11 +24287,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getPlugins_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getPlugins_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -24325,7 +24325,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -24525,7 +24525,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -24622,7 +24622,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -24998,7 +24998,7 @@ public class SwiftApi {
     }
 
     public Server success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -25078,7 +25078,7 @@ public class SwiftApi {
 
     public getServer_result(
       Server success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -25093,7 +25093,7 @@ public class SwiftApi {
         this.success = new Server(other.success);
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -25131,11 +25131,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getServer_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getServer_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -25169,7 +25169,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -25362,7 +25362,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -25437,7 +25437,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -25813,7 +25813,7 @@ public class SwiftApi {
     }
 
     public String success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -25893,7 +25893,7 @@ public class SwiftApi {
 
     public getServerVersion_result(
       String success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -25908,7 +25908,7 @@ public class SwiftApi {
         this.success = other.success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -25946,11 +25946,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getServerVersion_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getServerVersion_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -25984,7 +25984,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -26173,7 +26173,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -26247,7 +26247,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -26623,7 +26623,7 @@ public class SwiftApi {
     }
 
     public List<OfflinePlayer> success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -26704,7 +26704,7 @@ public class SwiftApi {
 
     public getWhitelist_result(
       List<OfflinePlayer> success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -26723,7 +26723,7 @@ public class SwiftApi {
         this.success = __this__success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -26776,11 +26776,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getWhitelist_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getWhitelist_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -26814,7 +26814,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -27014,7 +27014,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -27111,7 +27111,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -27588,8 +27588,8 @@ public class SwiftApi {
     }
 
     public World success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -27674,8 +27674,8 @@ public class SwiftApi {
 
     public getWorld_result(
       World success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -27691,10 +27691,10 @@ public class SwiftApi {
         this.success = new World(other.success);
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -27733,11 +27733,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getWorld_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getWorld_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -27757,11 +27757,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public getWorld_result setDex(org.phybros.thrift.EDataException dex) {
+    public getWorld_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -27795,7 +27795,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -27803,7 +27803,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -28028,7 +28028,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -28037,7 +28037,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -28123,12 +28123,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -28504,7 +28504,7 @@ public class SwiftApi {
     }
 
     public List<World> success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -28585,7 +28585,7 @@ public class SwiftApi {
 
     public getWorlds_result(
       List<World> success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -28604,7 +28604,7 @@ public class SwiftApi {
         this.success = __this__success;
       }
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -28657,11 +28657,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public getWorlds_result setAex(org.phybros.thrift.EAuthException aex) {
+    public getWorlds_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -28695,7 +28695,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -28895,7 +28895,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -28992,7 +28992,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -29569,8 +29569,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -29657,8 +29657,8 @@ public class SwiftApi {
 
     public installPlugin_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -29674,10 +29674,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -29716,11 +29716,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public installPlugin_result setAex(org.phybros.thrift.EAuthException aex) {
+    public installPlugin_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -29740,11 +29740,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public installPlugin_result setDex(org.phybros.thrift.EDataException dex) {
+    public installPlugin_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -29778,7 +29778,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -29786,7 +29786,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -30005,7 +30005,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -30014,7 +30014,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -30099,12 +30099,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -30681,8 +30681,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -30769,8 +30769,8 @@ public class SwiftApi {
 
     public kick_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -30786,10 +30786,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -30828,11 +30828,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public kick_result setAex(org.phybros.thrift.EAuthException aex) {
+    public kick_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -30852,11 +30852,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public kick_result setDex(org.phybros.thrift.EDataException dex) {
+    public kick_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -30890,7 +30890,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -30898,7 +30898,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -31117,7 +31117,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -31126,7 +31126,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -31211,12 +31211,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -31791,8 +31791,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -31879,8 +31879,8 @@ public class SwiftApi {
 
     public op_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -31896,10 +31896,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -31938,11 +31938,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public op_result setAex(org.phybros.thrift.EAuthException aex) {
+    public op_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -31962,11 +31962,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public op_result setDex(org.phybros.thrift.EDataException dex) {
+    public op_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -32000,7 +32000,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -32008,7 +32008,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -32227,7 +32227,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -32236,7 +32236,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -32321,12 +32321,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -32702,7 +32702,7 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
+    public EAuthException aex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -32784,7 +32784,7 @@ public class SwiftApi {
 
     public ping_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex)
+      EAuthException aex)
     {
       this();
       this.success = success;
@@ -32799,7 +32799,7 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
     }
 
@@ -32837,11 +32837,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public ping_result setAex(org.phybros.thrift.EAuthException aex) {
+    public ping_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -32875,7 +32875,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -33062,7 +33062,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -33136,7 +33136,7 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
@@ -34065,8 +34065,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -34153,8 +34153,8 @@ public class SwiftApi {
 
     public removeInventoryItem_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -34170,10 +34170,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -34212,11 +34212,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public removeInventoryItem_result setAex(org.phybros.thrift.EAuthException aex) {
+    public removeInventoryItem_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -34236,11 +34236,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public removeInventoryItem_result setDex(org.phybros.thrift.EDataException dex) {
+    public removeInventoryItem_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -34274,7 +34274,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -34282,7 +34282,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -34501,7 +34501,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -34510,7 +34510,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -34595,12 +34595,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -35077,8 +35077,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -35165,8 +35165,8 @@ public class SwiftApi {
 
     public removeFromWhitelist_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -35182,10 +35182,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -35224,11 +35224,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public removeFromWhitelist_result setAex(org.phybros.thrift.EAuthException aex) {
+    public removeFromWhitelist_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -35248,11 +35248,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public removeFromWhitelist_result setDex(org.phybros.thrift.EDataException dex) {
+    public removeFromWhitelist_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -35286,7 +35286,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -35294,7 +35294,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -35513,7 +35513,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -35522,7 +35522,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -35607,12 +35607,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -36289,8 +36289,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -36377,8 +36377,8 @@ public class SwiftApi {
 
     public replacePlugin_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -36394,10 +36394,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -36436,11 +36436,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public replacePlugin_result setAex(org.phybros.thrift.EAuthException aex) {
+    public replacePlugin_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -36460,11 +36460,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public replacePlugin_result setDex(org.phybros.thrift.EDataException dex) {
+    public replacePlugin_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -36498,7 +36498,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -36506,7 +36506,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -36725,7 +36725,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -36734,7 +36734,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -36819,12 +36819,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -37755,8 +37755,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -37843,8 +37843,8 @@ public class SwiftApi {
 
     public saveWorld_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -37860,10 +37860,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -37902,11 +37902,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public saveWorld_result setAex(org.phybros.thrift.EAuthException aex) {
+    public saveWorld_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -37926,11 +37926,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public saveWorld_result setDex(org.phybros.thrift.EDataException dex) {
+    public saveWorld_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -37964,7 +37964,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -37972,7 +37972,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -38191,7 +38191,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -38200,7 +38200,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -38285,12 +38285,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -38867,8 +38867,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -38955,8 +38955,8 @@ public class SwiftApi {
 
     public setFileContents_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -38972,10 +38972,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -39014,11 +39014,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public setFileContents_result setAex(org.phybros.thrift.EAuthException aex) {
+    public setFileContents_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -39038,11 +39038,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public setFileContents_result setDex(org.phybros.thrift.EDataException dex) {
+    public setFileContents_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -39076,7 +39076,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -39084,7 +39084,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -39303,7 +39303,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -39312,7 +39312,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -39397,12 +39397,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -39995,8 +39995,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -40083,8 +40083,8 @@ public class SwiftApi {
 
     public setGameMode_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -40100,10 +40100,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -40142,11 +40142,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public setGameMode_result setAex(org.phybros.thrift.EAuthException aex) {
+    public setGameMode_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -40166,11 +40166,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public setGameMode_result setDex(org.phybros.thrift.EDataException dex) {
+    public setGameMode_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -40204,7 +40204,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -40212,7 +40212,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -40431,7 +40431,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -40440,7 +40440,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -40525,12 +40525,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -41105,8 +41105,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -41193,8 +41193,8 @@ public class SwiftApi {
 
     public setPvp_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -41210,10 +41210,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -41252,11 +41252,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public setPvp_result setAex(org.phybros.thrift.EAuthException aex) {
+    public setPvp_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -41276,11 +41276,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public setPvp_result setDex(org.phybros.thrift.EDataException dex) {
+    public setPvp_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -41314,7 +41314,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -41322,7 +41322,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -41541,7 +41541,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -41550,7 +41550,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -41635,12 +41635,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -42215,8 +42215,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -42303,8 +42303,8 @@ public class SwiftApi {
 
     public setStorm_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -42320,10 +42320,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -42362,11 +42362,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public setStorm_result setAex(org.phybros.thrift.EAuthException aex) {
+    public setStorm_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -42386,11 +42386,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public setStorm_result setDex(org.phybros.thrift.EDataException dex) {
+    public setStorm_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -42424,7 +42424,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -42432,7 +42432,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -42651,7 +42651,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -42660,7 +42660,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -42745,12 +42745,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -43325,8 +43325,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -43413,8 +43413,8 @@ public class SwiftApi {
 
     public setThundering_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -43430,10 +43430,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -43472,11 +43472,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public setThundering_result setAex(org.phybros.thrift.EAuthException aex) {
+    public setThundering_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -43496,11 +43496,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public setThundering_result setDex(org.phybros.thrift.EDataException dex) {
+    public setThundering_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -43534,7 +43534,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -43542,7 +43542,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -43761,7 +43761,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -43770,7 +43770,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -43855,12 +43855,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -44435,8 +44435,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -44523,8 +44523,8 @@ public class SwiftApi {
 
     public setWorldTime_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -44540,10 +44540,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -44582,11 +44582,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public setWorldTime_result setAex(org.phybros.thrift.EAuthException aex) {
+    public setWorldTime_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -44606,11 +44606,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public setWorldTime_result setDex(org.phybros.thrift.EDataException dex) {
+    public setWorldTime_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -44644,7 +44644,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -44652,7 +44652,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -44871,7 +44871,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -44880,7 +44880,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -44965,12 +44965,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -45447,8 +45447,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -45535,8 +45535,8 @@ public class SwiftApi {
 
     public unBan_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -45552,10 +45552,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -45594,11 +45594,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public unBan_result setAex(org.phybros.thrift.EAuthException aex) {
+    public unBan_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -45618,11 +45618,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public unBan_result setDex(org.phybros.thrift.EDataException dex) {
+    public unBan_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -45656,7 +45656,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -45664,7 +45664,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -45883,7 +45883,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -45892,7 +45892,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -45977,12 +45977,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -46459,8 +46459,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -46547,8 +46547,8 @@ public class SwiftApi {
 
     public unBanIp_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -46564,10 +46564,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -46606,11 +46606,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public unBanIp_result setAex(org.phybros.thrift.EAuthException aex) {
+    public unBanIp_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -46630,11 +46630,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public unBanIp_result setDex(org.phybros.thrift.EDataException dex) {
+    public unBanIp_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -46668,7 +46668,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -46676,7 +46676,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -46895,7 +46895,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -46904,7 +46904,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -46989,12 +46989,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }
@@ -47674,8 +47674,8 @@ public class SwiftApi {
     }
 
     public boolean success; // required
-    public org.phybros.thrift.EAuthException aex; // required
-    public org.phybros.thrift.EDataException dex; // required
+    public EAuthException aex; // required
+    public EDataException dex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -47762,8 +47762,8 @@ public class SwiftApi {
 
     public updateInventoryItem_result(
       boolean success,
-      org.phybros.thrift.EAuthException aex,
-      org.phybros.thrift.EDataException dex)
+      EAuthException aex,
+      EDataException dex)
     {
       this();
       this.success = success;
@@ -47779,10 +47779,10 @@ public class SwiftApi {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
       if (other.isSetAex()) {
-        this.aex = new org.phybros.thrift.EAuthException(other.aex);
+        this.aex = new EAuthException(other.aex);
       }
       if (other.isSetDex()) {
-        this.dex = new org.phybros.thrift.EDataException(other.dex);
+        this.dex = new EDataException(other.dex);
       }
     }
 
@@ -47821,11 +47821,11 @@ public class SwiftApi {
       __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
-    public org.phybros.thrift.EAuthException getAex() {
+    public EAuthException getAex() {
       return this.aex;
     }
 
-    public updateInventoryItem_result setAex(org.phybros.thrift.EAuthException aex) {
+    public updateInventoryItem_result setAex(EAuthException aex) {
       this.aex = aex;
       return this;
     }
@@ -47845,11 +47845,11 @@ public class SwiftApi {
       }
     }
 
-    public org.phybros.thrift.EDataException getDex() {
+    public EDataException getDex() {
       return this.dex;
     }
 
-    public updateInventoryItem_result setDex(org.phybros.thrift.EDataException dex) {
+    public updateInventoryItem_result setDex(EDataException dex) {
       this.dex = dex;
       return this;
     }
@@ -47883,7 +47883,7 @@ public class SwiftApi {
         if (value == null) {
           unsetAex();
         } else {
-          setAex((org.phybros.thrift.EAuthException)value);
+          setAex((EAuthException)value);
         }
         break;
 
@@ -47891,7 +47891,7 @@ public class SwiftApi {
         if (value == null) {
           unsetDex();
         } else {
-          setDex((org.phybros.thrift.EDataException)value);
+          setDex((EDataException)value);
         }
         break;
 
@@ -48110,7 +48110,7 @@ public class SwiftApi {
               break;
             case 1: // AEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.aex = new org.phybros.thrift.EAuthException();
+                struct.aex = new EAuthException();
                 struct.aex.read(iprot);
                 struct.setAexIsSet(true);
               } else { 
@@ -48119,7 +48119,7 @@ public class SwiftApi {
               break;
             case 2: // DEX
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dex = new org.phybros.thrift.EDataException();
+                struct.dex = new EDataException();
                 struct.dex.read(iprot);
                 struct.setDexIsSet(true);
               } else { 
@@ -48204,12 +48204,12 @@ public class SwiftApi {
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.aex = new org.phybros.thrift.EAuthException();
+          struct.aex = new EAuthException();
           struct.aex.read(iprot);
           struct.setAexIsSet(true);
         }
         if (incoming.get(2)) {
-          struct.dex = new org.phybros.thrift.EDataException();
+          struct.dex = new EDataException();
           struct.dex.read(iprot);
           struct.setDexIsSet(true);
         }

@@ -2,7 +2,63 @@ namespace java org.phybros.thrift
 namespace csharp org.phybros.thrift
 namespace php org.phybros.thrift
 
-include "Errors.thrift"
+/**
+ * Various codes used for catching errors
+ */
+enum ErrorCode {
+/**
+ * If a parameter was invalid
+ */
+	INVALID_REQUEST = 0,
+/**
+ * Authentication failed
+ */
+	INVALID_AUTHSTRING = 1,
+/**
+ * Requested data could not be found
+ */
+	NOT_FOUND = 2,
+/**
+ *	Something went wrong during a download operation
+ */
+ 	DOWNLOAD_ERROR = 3,
+/**
+ *	Something went wrong during a file operation
+ */
+ 	FILE_ERROR = 4,
+/**
+ *	Could not read a file
+ */
+ 	NO_READ = 5,
+}
+
+/**
+ * This exception is thrown when something data-related went wrong
+ */
+exception EDataException {
+/**
+ * Detailed reason for the exception
+ */
+	1: ErrorCode code,
+/**
+ * A message that describes the exception
+ */
+	2: string errorMessage,
+}
+
+/**
+ * Thrown when authentication fails, this is thrown
+ */
+exception EAuthException {
+/**
+ * Detailed reason for the exception
+ */
+	1: ErrorCode code,
+/**
+ * A message that describes the exception
+ */
+	2: string errorMessage,
+}
 
 /**
  * Game difficulties
@@ -580,10 +636,10 @@ service SwiftApi {
  * 
  * @return boolean true on success, false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the player was not found
  * 
  * @throws org.apache.thrift.TException
@@ -592,8 +648,8 @@ service SwiftApi {
 	bool addItemToInventory(1:string authString,
 							2:string playerName,
 							3:ItemStack item)
-	throws (1:Errors.EAuthException aex,
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex,
+			2:EDataException dex),
 
 /**
  * Add a Player to the server's whitelist. The player can be offline, or
@@ -608,10 +664,10 @@ service SwiftApi {
  * 
  * @return boolean true on success, false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the player was not found
  * 
  * @throws org.apache.thrift.TException
@@ -619,8 +675,8 @@ service SwiftApi {
  */
 	bool addToWhitelist(1:string authString,
 						2:string name)
-	throws (1:Errors.EAuthException aex,
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex,
+			2:EDataException dex),
 
 /**
  * Broadcasts a message to all players on the server
@@ -633,14 +689,14 @@ service SwiftApi {
  * 
  * @return boolean true on success false on serious failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  *
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */
 	bool announce(1:string authString, 2:string message)
-	throws (1:Errors.EAuthException aex),
+	throws (1:EAuthException aex),
 
 /**
  * Permanently ban a player from the server by name. The player can be
@@ -654,10 +710,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the player was not found
  * 
  * @throws org.apache.thrift.TException
@@ -665,8 +721,8 @@ service SwiftApi {
  */
 	bool ban(1:string authString, 
 			 2:string name) 
- 	throws (1:Errors.EAuthException aex, 
- 			2:Errors.EDataException dex),
+ 	throws (1:EAuthException aex, 
+ 			2:EDataException dex),
 	
 /**
  * Permanently ban a specific IP from connecting to this server
@@ -679,13 +735,13 @@ service SwiftApi {
  * 
  * @return boolean true on success false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */
-	bool banIp(1:string authString, 2:string ip) throws (1:Errors.EAuthException aex),
+	bool banIp(1:string authString, 2:string ip) throws (1:EAuthException aex),
 
 /**
  * Copies a file into the plugins directory on the server
@@ -698,10 +754,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If something went wrong during the file copy
  * 
  * @throws org.apache.thrift.TException
@@ -710,8 +766,8 @@ service SwiftApi {
 /* replacing this with the "replacePlugin" method
 	bool copyPlugin(1:string authString,
 				    2:string fileName)
-	throws (1:Errors.EAuthException aex, 
- 			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+ 			2:EDataException dex),
 */
 
 /**
@@ -729,10 +785,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If something went wrong during the file download,
  *				or the computed hash does not match the provided hash.
  * 
@@ -743,8 +799,8 @@ service SwiftApi {
 	bool downloadFile(1:string authString,
 					  2:string url,
 					  3:string md5)
-	throws (1:Errors.EAuthException aex, 
- 			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+ 			2:EDataException dex),
 */
 
 /**
@@ -763,10 +819,10 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the Player was not found
  * 
  * @return String the current bukkit version
@@ -774,8 +830,8 @@ service SwiftApi {
  */
 	bool deOp(1:string authString,
 			  2:string name, 3:bool notifyPlayer) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 	
 /**
  * Gets the IP addresses currently banned from joining this server
@@ -786,13 +842,13 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return List<String> The banned IPs
  * 
  */
-	list<string> getBannedIps(1:string authString) throws (1:Errors.EAuthException aex),
+	list<string> getBannedIps(1:string authString) throws (1:EAuthException aex),
 	
 /**
  * Gets the players currently banned from this server
@@ -803,13 +859,13 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return List<OfflinePlayer> The banned players
  * 
  */
-	list<OfflinePlayer> getBannedPlayers(1:string authString) throws (1:Errors.EAuthException aex),
+	list<OfflinePlayer> getBannedPlayers(1:string authString) throws (1:EAuthException aex),
 	
 /**
  * Get the current bukkit version
@@ -820,13 +876,13 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return String the current bukkit version
  * 
  */
-	string getBukkitVersion(1:string authString) throws (1:Errors.EAuthException aex),
+	string getBukkitVersion(1:string authString) throws (1:EAuthException aex),
 
 /**
  * Get the last 500 console messages or console messages since a given timestamp (up to 500)
@@ -840,14 +896,14 @@ service SwiftApi {
  * 
  * @return boolean true on success false on serious failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */			
 	list<ConsoleLine> getConsoleMessages(1:string authString, 2:i64 since) 
-	throws (1:Errors.EAuthException aex),
+	throws (1:EAuthException aex),
 
 /**
  * Gets the contents of a file.
@@ -863,17 +919,17 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the file could not be read or does not exist
  * 
  * @return string the contents of the file
  * 
  */
 	string getFileContents(1:string authString, 2:string fileName)
-	throws(1:Errors.EAuthException aex, 2:Errors.EDataException dex)
+	throws(1:EAuthException aex, 2:EDataException dex)
 	
 /**
  * Get an offline player. This method will always return an
@@ -892,10 +948,10 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the player could not be found
  * 
  * @return OfflinePlayer the requested player.
@@ -903,8 +959,8 @@ service SwiftApi {
  */
 	OfflinePlayer getOfflinePlayer(1:string authString, 
 								   2:string name) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 	
 /**
  * Gets a list of all players who have ever played on this server
@@ -915,7 +971,7 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return List<OfflinePlayer> A list of all players who have ever
@@ -923,7 +979,7 @@ service SwiftApi {
  * 
  */
 	list<OfflinePlayer> getOfflinePlayers(1:string authString) 
-	throws (1:Errors.EAuthException aex),
+	throws (1:EAuthException aex),
 	
 /**
  * Gets a list of all players who are Opped on this server
@@ -934,7 +990,7 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return List<OfflinePlayer> A list of all players who are opped
@@ -942,10 +998,10 @@ service SwiftApi {
  * 
  */
 	list<OfflinePlayer> getOps(1:string authString) 
-	throws (1:Errors.EAuthException aex),
+	throws (1:EAuthException aex),
 	
 /**
- * Get a player by name. Throws an Errors.EDataException if the player is
+ * Get a player by name. Throws an EDataException if the player is
  * offline, or doesn't exist
  * 
  * @param authString
@@ -957,20 +1013,20 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the player is not online, or does not exist
  * 
  * @return Player The requested player. If the player could not be
- *         found, and Errors.EDataException is thrown
+ *         found, and EDataException is thrown
  * @see org.phybros.thrift.SwiftApi.Iface#getPlugins(java.lang.String)
  */
 	Player getPlayer(1:string authString, 
 					 2:string name) 
-	throws (1:Errors.EAuthException aex, 
- 			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+ 			2:EDataException dex),
 	
 /**
  * Get all online Players
@@ -981,12 +1037,12 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return List<Player> A list of all currently online players
  */
-	list<Player> getPlayers(1:string authString) throws (1:Errors.EAuthException aex),
+	list<Player> getPlayers(1:string authString) throws (1:EAuthException aex),
 	
 /**
  * Get a loaded server plugin by name
@@ -1000,10 +1056,10 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the requested plugin was not found
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return Plugin The plugin
@@ -1011,8 +1067,8 @@ service SwiftApi {
  */
 	Plugin getPlugin(1:string authString, 
 					 2:string name) 
-	throws (1:Errors.EAuthException aex,
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex,
+			2:EDataException dex),
 	
 /**
  * This method returns a list of all the currently loaded plugins on the
@@ -1024,13 +1080,13 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return List<Plugin> A list of the plugins on the server
  * 
  */
-	list<Plugin> getPlugins(1:string authString) throws (1:Errors.EAuthException aex),
+	list<Plugin> getPlugins(1:string authString) throws (1:EAuthException aex),
 
 /**
  * Get the current server. This object contains a large amount of information
@@ -1043,13 +1099,13 @@ service SwiftApi {
  * @throws TException
  *			  If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *			  If the method call was not correctly authenticated
  *
  * @return Server An object containing server information
  * 
  */
- 	Server getServer(1:string authString) throws (1:Errors.EAuthException aex),
+ 	Server getServer(1:string authString) throws (1:EAuthException aex),
 
 /**
  * Get the current server version
@@ -1060,13 +1116,13 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return String the version of the server
  * 
  */
-	string getServerVersion(1:string authString) throws (1:Errors.EAuthException aex),
+	string getServerVersion(1:string authString) throws (1:EAuthException aex),
 
 /**
  * Gets all whitelisted players
@@ -1077,14 +1133,14 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return List<OfflinePlayer> The players on the server's whitelist
  * 
  */
 	list<OfflinePlayer> getWhitelist(1:string authString) 
-	throws (1:Errors.EAuthException aex),
+	throws (1:EAuthException aex),
 	
 /**
  * Gets a specific world by name
@@ -1098,17 +1154,17 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  *
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the requested world could not be found
  * 
  * @return World The requested world
  * 
  */
 	World getWorld(1:string authString, 2:string worldName) 
-	throws (1:Errors.EAuthException aex, 2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 2:EDataException dex),
 	
 /**
  * Gets all the worlds on the server
@@ -1119,13 +1175,13 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @return List<World> the worlds on the server
  * 
  */
-	list<World> getWorlds(1:string authString) throws (1:Errors.EAuthException aex),
+	list<World> getWorlds(1:string authString) throws (1:EAuthException aex),
 
 /**
  * This method will download and install (copy/unzip) a plugin from a given URL
@@ -1142,10 +1198,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If something went wrong during the file download, or the
  *             computed hash does not match the provided hash or the
  *             requested plugin could not be found.
@@ -1156,8 +1212,8 @@ service SwiftApi {
 	bool installPlugin(1:string authString, 
 					   2:string downloadUrl, 
 					   3:string md5) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 		
 /**
  * Kick a currently online Player from the server with a specific custom
@@ -1175,10 +1231,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the player is not currently online
  * 
  * @throws org.apache.thrift.TException
@@ -1187,8 +1243,8 @@ service SwiftApi {
 	bool kick(1:string authString, 
 			  2:string name, 
 			  3:string message) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 	
 /**
  * Makes a player "op" (operator). If the player is already op, then
@@ -1203,10 +1259,10 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the Player was not found
  * 
  * @return String the current bukkit version
@@ -1214,8 +1270,8 @@ service SwiftApi {
  */
 	bool op(1:string authString, 
 			2:string name, 3:bool notifyPlayer) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 
 /**
  * Just a keepalive method to test authentication in clients
@@ -1225,13 +1281,13 @@ service SwiftApi {
  * 
  * @return boolean true on success false on serious failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */
-	bool ping(1:string authString) throws (1:Errors.EAuthException aex),
+	bool ping(1:string authString) throws (1:EAuthException aex),
 
 /**
  * Reloads the server. This call does not send a response (for obvious reasons)
@@ -1257,10 +1313,10 @@ service SwiftApi {
  * 
  * @return boolean true on success, false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the player was not found
  * 
  * @throws org.apache.thrift.TException
@@ -1269,8 +1325,8 @@ service SwiftApi {
 	bool removeInventoryItem(1:string authString,
 							 2:string playerName,
 							 3:i32 itemIndex)
-	throws (1:Errors.EAuthException aex,
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex,
+			2:EDataException dex),
 	
 /**
  * Remove a Player from the server's whitelist. The player can be offline, or
@@ -1285,10 +1341,10 @@ service SwiftApi {
  * 
  * @return boolean true on success, false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the player was not found
  * 
  * @throws org.apache.thrift.TException
@@ -1296,8 +1352,8 @@ service SwiftApi {
  */
 	bool removeFromWhitelist(1:string authString,
 							 2:string name)
-	throws (1:Errors.EAuthException aex,
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex,
+			2:EDataException dex),
 
 /**
  * This method will replace a given plugin's .jar file with a new
@@ -1320,10 +1376,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If something went wrong during the file download, or the
  *             computed hash does not match the provided hash or the
  *             requested plugin could not be found.
@@ -1335,8 +1391,8 @@ service SwiftApi {
 					   2:string pluginName, 
 					   3:string downloadUrl, 
 					   4:string md5) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 
 /**
  * Executes a command as if you were to type it directly into the console 
@@ -1347,7 +1403,7 @@ service SwiftApi {
  * 
  * @return boolean true on success false on serious failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @throws org.apache.thrift.TException
@@ -1366,10 +1422,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on serious failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the specified world could not be found
  *
  * @throws org.apache.thrift.TException
@@ -1377,8 +1433,8 @@ service SwiftApi {
  */
 	bool saveWorld(1:string authString, 
 				   2:string worldName)
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 
 /**
  * Sets the contents of a file.
@@ -1393,17 +1449,17 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the file could not be opened or does not exist
  * 
  * @return bool true on success, else false
  * 
  */
 	bool setFileContents(1:string authString, 2:string fileName, 3:string fileContents)
-	throws(1:Errors.EAuthException aex, 2:Errors.EDataException dex)
+	throws(1:EAuthException aex, 2:EDataException dex)
 				
 /**
  * Sets the gamemode of a player
@@ -1420,10 +1476,10 @@ service SwiftApi {
  * @throws TException
  *             If something thrifty went wrong
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the Player was not found
  * 
  * @return String the current bukkit version
@@ -1432,8 +1488,8 @@ service SwiftApi {
 	bool setGameMode(1:string authString, 
 					 2:string name, 
 					 3:GameMode mode) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 
 /**
  * Set's the isPVP property on the specified world
@@ -1449,10 +1505,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on serious failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the specified world could not be found
  *
  * @throws org.apache.thrift.TException
@@ -1461,8 +1517,8 @@ service SwiftApi {
 	bool setPvp(1:string authString, 
 			    2:string worldName, 
 			    3:bool isPvp)
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 
 /**
  * Set's the hasStorm property on the specified world (i.e. makes it rain)
@@ -1478,18 +1534,18 @@ service SwiftApi {
  * 
  * @return boolean true on success false on serious failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the specified world could not be found
  *
  * @throws org.apache.thrift.TException
  *             If something went wrong with Thrift
  */
 	bool setStorm(1:string authString, 2:string worldName, 3:bool hasStorm)
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 
 /**
  * Set's the isThundering property on the specified world
@@ -1505,10 +1561,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on serious failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the specified world could not be found
  *
  * @throws org.apache.thrift.TException
@@ -1517,8 +1573,8 @@ service SwiftApi {
 	bool setThundering(1:string authString, 
 					   2:string worldName, 
 					   3:bool isThundering)
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 
 /**
  * Sets the time on the specified world or all worlds if a 
@@ -1536,10 +1592,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on serious failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the specified world could not be found
  *
  * @throws org.apache.thrift.TException
@@ -1548,8 +1604,8 @@ service SwiftApi {
 	bool setWorldTime( 1:string authString, 
 					   2:string worldName, 
 					   3:i64 time)
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 						
 /**
  * Un ban a specific player
@@ -1562,10 +1618,10 @@ service SwiftApi {
  * 
  * @return boolean true on success false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the player was not found
  * 
  * @throws org.apache.thrift.TException
@@ -1573,8 +1629,8 @@ service SwiftApi {
  */
 	bool unBan(1:string authString, 
 			   2:string name) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 	
 /**
  * Un ban a specific IP from connecting to this server
@@ -1587,7 +1643,7 @@ service SwiftApi {
  * 
  * @return boolean true on success false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
  * @throws org.apache.thrift.TException
@@ -1595,8 +1651,8 @@ service SwiftApi {
  */
 	bool unBanIp(1:string authString, 
 				 2:string ip) 
-	throws (1:Errors.EAuthException aex, 
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex, 
+			2:EDataException dex),
 
 /**
  * Replaces an item in the player's inventory with the supplied one
@@ -1617,10 +1673,10 @@ service SwiftApi {
  * 
  * @return boolean true on success, false on failure
  * 
- * @throws Errors.EAuthException
+ * @throws EAuthException
  *             If the method call was not correctly authenticated
  * 
- * @throws Errors.EDataException
+ * @throws EDataException
  *             If the player was not found
  * 
  * @throws org.apache.thrift.TException
@@ -1630,7 +1686,7 @@ service SwiftApi {
 							 2:string playerName,
 							 3:ItemStack item,
 							 4:i32 itemIndex)
-	throws (1:Errors.EAuthException aex,
-			2:Errors.EDataException dex),
+	throws (1:EAuthException aex,
+			2:EDataException dex),
 
 }

@@ -25,6 +25,7 @@ import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TNonblockingServerTransport;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.phybros.minecraft.converters.BukkitConverter;
 import org.phybros.minecraft.converters.ThriftConverter;
@@ -39,8 +40,6 @@ import org.phybros.thrift.Plugin;
 import org.phybros.thrift.Server;
 import org.phybros.thrift.SwiftApi;
 import org.phybros.thrift.World;
-
-import org.bukkit.ChatColor;
 
 public class SwiftServer {
 
