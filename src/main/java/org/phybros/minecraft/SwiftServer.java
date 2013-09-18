@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -25,6 +27,7 @@ import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TNonblockingServerTransport;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.phybros.minecraft.converters.BukkitConverter;
@@ -38,6 +41,7 @@ import org.phybros.thrift.ItemStack;
 import org.phybros.thrift.Player;
 import org.phybros.thrift.Plugin;
 import org.phybros.thrift.Server;
+import org.phybros.thrift.ServerHealth;
 import org.phybros.thrift.SwiftApi;
 import org.phybros.thrift.World;
 
@@ -55,7 +59,7 @@ public class SwiftServer {
 		 * Add an item to a player's inventory
 		 * 
 		 * @since 1.5
-		 *
+		 * 
 		 * @param authString
 		 *            The authentication hash
 		 * 
@@ -83,7 +87,8 @@ public class SwiftServer {
 			logCall("addItemToInventory");
 			authenticate(authString, "addItemToInventory");
 
-			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(playerName);
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(
+					playerName);
 
 			if (offPl == null) {
 				plugin.getLogger().info("Player not found");
@@ -94,15 +99,18 @@ public class SwiftServer {
 								"errorMessages.playerNotFound"), playerName);
 				throw e;
 			}
-			
+
 			try {
-				org.bukkit.inventory.ItemStack converted = ThriftConverter.convertItemStack(item);
+				org.bukkit.inventory.ItemStack converted = ThriftConverter
+						.convertItemStack(item);
 				HashMap<Integer, org.bukkit.inventory.ItemStack> result;
 				result = offPl.getPlayer().getInventory().addItem(converted);
-				
+
 				return result.isEmpty();
 			} catch (Exception e) {
-				plugin.getLogger().severe(e.getClass().getName() + " in addItemToInventory: " + e.getMessage());
+				plugin.getLogger().severe(
+						e.getClass().getName() + " in addItemToInventory: "
+								+ e.getMessage());
 				return false;
 			}
 		}
@@ -185,7 +193,8 @@ public class SwiftServer {
 				throws EAuthException, TException {
 			logCall("announce");
 			authenticate(authString, "announce");
-                        String msgWithColor = ChatColor.translateAlternateColorCodes('&', message);            
+			String msgWithColor = ChatColor.translateAlternateColorCodes('&',
+					message);
 			try {
 				plugin.getServer().broadcastMessage(msgWithColor);
 				return true;
@@ -961,6 +970,51 @@ public class SwiftServer {
 				s.worlds.add(BukkitConverter.convertBukkitWorld(w));
 			}
 
+			/**
+			 * Get the server health information and add it to the return value.
+			 */
+			s.health = new ArrayList<ServerHealth>();
+
+			// get CPUs
+			int cpus = Runtime.getRuntime().availableProcessors();
+			s.health.add(new ServerHealth("cpus", String.format(plugin
+					.getConfig().getString("messages.cpus"), cpus), String
+					.valueOf(cpus)));
+
+			// get uptime
+			// long startTime =
+			// ManagementFactory.getRuntimeMXBean().getStartTime();
+			long uptime = ManagementFactory.getRuntimeMXBean().getUptime() / 1000L;
+			int day = (int) TimeUnit.SECONDS.toDays(uptime);
+			long hours = TimeUnit.SECONDS.toHours(uptime) - (day * 24);
+			long minutes = TimeUnit.SECONDS.toMinutes(uptime)
+					- (TimeUnit.SECONDS.toHours(uptime) * 60);
+			long seconds = TimeUnit.SECONDS.toSeconds(uptime)
+					- (TimeUnit.SECONDS.toMinutes(uptime) * 60);
+
+			s.health.add(new ServerHealth("uptime", String.format(plugin
+					.getConfig().getString("messages.uptime"), hours, minutes,
+					seconds), String.valueOf(uptime)));
+
+			// get memMax
+			long memMax = Runtime.getRuntime().maxMemory() / 1024;
+			s.health.add(new ServerHealth("memMax", String.format(plugin
+					.getConfig().getString("messages.memMax"),
+					(int) (memMax / 1024)), String.valueOf(memMax)));
+			// get memTotal
+			long memTotal = Runtime.getRuntime().totalMemory() / 1024;
+			s.health.add(new ServerHealth("memTotal", String.format(plugin
+					.getConfig().getString("messages.memTotal"),
+					(int) (memTotal / 1024)), String.valueOf(memTotal)));
+			// get memFree
+			long memFree = Runtime.getRuntime().freeMemory() / 1024;
+			s.health.add(new ServerHealth("memFree", String.format(plugin
+					.getConfig().getString("messages.memFree"),
+					(int) (memFree / 1024)), String.valueOf(memFree)));
+
+			/**
+			 * Send the server back to the client
+			 */
 			return s;
 		}
 
@@ -1461,8 +1515,9 @@ public class SwiftServer {
 				EDataException, TException {
 			logCall("removeInventoryItem");
 			authenticate(authString, "removeInventoryItem");
-			
-			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(playerName);
+
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(
+					playerName);
 
 			if (offPl == null) {
 				plugin.getLogger().info("Player not found");
@@ -1473,13 +1528,14 @@ public class SwiftServer {
 								"errorMessages.playerNotFound"), playerName);
 				throw e;
 			}
-			
 
 			try {
 				offPl.getPlayer().getInventory().clear(itemIndex);
 				return true;
-			} catch(Exception e) {
-				plugin.getLogger().severe(e.getClass().getName() + " in removeInventoryItem: " + e.getMessage());
+			} catch (Exception e) {
+				plugin.getLogger().severe(
+						e.getClass().getName() + " in removeInventoryItem: "
+								+ e.getMessage());
 				return false;
 			}
 		}
@@ -1823,7 +1879,7 @@ public class SwiftServer {
 				TException {
 			logCall("setFileContents");
 			authenticate(authString, "setFileContents");
-			
+
 			// clean the filename before use
 			fileName = safeFilename(fileName);
 
@@ -1857,7 +1913,7 @@ public class SwiftServer {
 
 				// write to the file
 				FileUtils.write(f, fileContents);
-				
+
 				return true;
 			} catch (FileNotFoundException fnf) {
 				// throw an EDE if it doesn't exist
@@ -1959,7 +2015,7 @@ public class SwiftServer {
 				throws EAuthException, EDataException, TException {
 			logCall("setPvp");
 			authenticate(authString, "setPvp");
-			
+
 			org.bukkit.World w = plugin.getServer().getWorld(worldName);
 
 			if (w == null) {
@@ -2013,7 +2069,7 @@ public class SwiftServer {
 				TException {
 			logCall("setStorm");
 			authenticate(authString, "setStorm");
-			
+
 			org.bukkit.World w = plugin.getServer().getWorld(worldName);
 
 			if (w == null) {
@@ -2066,7 +2122,7 @@ public class SwiftServer {
 				TException {
 			logCall("setThundering");
 			authenticate(authString, "setThundering");
-			
+
 			org.bukkit.World w = plugin.getServer().getWorld(worldName);
 
 			if (w == null) {
@@ -2091,16 +2147,16 @@ public class SwiftServer {
 		}
 
 		/**
-		 * Sets the time on the specified world or all worlds if a 
-		 * blank world name is specified.
-		 *
+		 * Sets the time on the specified world or all worlds if a blank world
+		 * name is specified.
+		 * 
 		 * @param authString
 		 *            The authentication hash
-		 *
+		 * 
 		 * @param worldName
-		 *            The name of the world to set the time for. If a blank 
-		 *			  world name is specified, the time is set for all worlds.
-		 *
+		 *            The name of the world to set the time for. If a blank
+		 *            world name is specified, the time is set for all worlds.
+		 * 
 		 * @param time
 		 *            The value to set the world time
 		 * 
@@ -2111,7 +2167,7 @@ public class SwiftServer {
 		 * 
 		 * @throws Errors.EDataException
 		 *             If the specified world could not be found
-		 *
+		 * 
 		 * @throws org.apache.thrift.TException
 		 *             If something went wrong with Thrift
 		 */
@@ -2121,46 +2177,56 @@ public class SwiftServer {
 			// log and auth
 			logCall("setWorldTime");
 			authenticate(authString, "setWorldTime");
-			
+
 			// time cannot be less than 0
-			if(time < 0) {
-				plugin.getLogger().warning("setWorldTime(): Time less than zero specified, assuming zero");
+			if (time < 0) {
+				plugin.getLogger()
+						.warning(
+								"setWorldTime(): Time less than zero specified, assuming zero");
 				time = 0;
 			}
-			
+
 			// time cannot be greater than 24000
-			if(time > 24000) {
-				plugin.getLogger().warning("setWorldTime(): Time greater than 24000 specified, assuming 24000");
+			if (time > 24000) {
+				plugin.getLogger()
+						.warning(
+								"setWorldTime(): Time greater than 24000 specified, assuming 24000");
 				time = 24000;
 			}
-			
-			//if the user specified no world...
-			if(worldName.trim().equalsIgnoreCase("")) {
-				plugin.getLogger().info("Setting time to " + String.valueOf(time) + " on all worlds");
-				
-				for(org.bukkit.World w : plugin.getServer().getWorlds()) {
+
+			// if the user specified no world...
+			if (worldName.trim().equalsIgnoreCase("")) {
+				plugin.getLogger().info(
+						"Setting time to " + String.valueOf(time)
+								+ " on all worlds");
+
+				for (org.bukkit.World w : plugin.getServer().getWorlds()) {
 					w.setTime(time);
 				}
-				
+
 				return true;
 			} else {
 				// get the specified world
 				org.bukkit.World w = plugin.getServer().getWorld(worldName);
-				
-				//throw an EDE if the world was not found
+
+				// throw an EDE if the world was not found
 				if (w == null) {
-					plugin.getLogger().info(String.format(
-							plugin.getConfig().getString(
-									"errorMessages.worldNotFound"), worldName));
+					plugin.getLogger().info(
+							String.format(
+									plugin.getConfig().getString(
+											"errorMessages.worldNotFound"),
+									worldName));
 					EDataException e = new EDataException();
 					e.code = ErrorCode.NOT_FOUND;
-					e.errorMessage = String.format(
-							plugin.getConfig().getString(
-									"errorMessages.worldNotFound"), worldName);
+					e.errorMessage = String.format(plugin.getConfig()
+							.getString("errorMessages.worldNotFound"),
+							worldName);
 					throw e;
 				}
 
-				plugin.getLogger().info("Setting time to " + String.valueOf(time) + " on world \"" + worldName + "\"");
+				plugin.getLogger().info(
+						"Setting time to " + String.valueOf(time)
+								+ " on world \"" + worldName + "\"");
 				w.setTime(time);
 				return true;
 			}
@@ -2250,8 +2316,9 @@ public class SwiftServer {
 				throws EAuthException, EDataException, TException {
 			logCall("updateInventoryItem");
 			authenticate(authString, "updateInventoryItem");
-			
-			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(playerName);
+
+			OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(
+					playerName);
 
 			if (offPl == null) {
 				plugin.getLogger().info("Player not found");
@@ -2262,12 +2329,17 @@ public class SwiftServer {
 								"errorMessages.playerNotFound"), playerName);
 				throw e;
 			}
-			
+
 			try {
-				offPl.getPlayer().getInventory().setItem(itemIndex, ThriftConverter.convertItemStack(item));
+				offPl.getPlayer()
+						.getInventory()
+						.setItem(itemIndex,
+								ThriftConverter.convertItemStack(item));
 				return true;
-			} catch(Exception e) {
-				plugin.getLogger().severe(e.getClass().getName() + " in updateInventoryItem: " + e.getMessage());
+			} catch (Exception e) {
+				plugin.getLogger().severe(
+						e.getClass().getName() + " in updateInventoryItem: "
+								+ e.getMessage());
 				return false;
 			}
 		}
@@ -2438,17 +2510,19 @@ public class SwiftServer {
 			while (ze != null) {
 
 				String fileName = ze.getName();
-				
+
 				File newFile = new File(outputDirectory + File.separator
 						+ fileName);
-				plugin.getLogger().info(String.format("Unzipping %s to %s...", fileName, newFile.getAbsolutePath()));
+				plugin.getLogger().info(
+						String.format("Unzipping %s to %s...", fileName,
+								newFile.getAbsolutePath()));
 
 				// Make any folders that might exist
-				if(ze.isDirectory()) {
+				if (ze.isDirectory()) {
 					newFile.mkdirs();
 				} else {
 					newFile.createNewFile();
- 
+
 					FileOutputStream fos = new FileOutputStream(newFile);
 
 					int len;
@@ -2507,18 +2581,19 @@ public class SwiftServer {
 					// create the transport
 					TNonblockingServerTransport tst = null;
 					tst = new TNonblockingServerSocket(port);
-					
-					//set up the server arguments
+
+					// set up the server arguments
 					TThreadedSelectorServer.Args a = null;
 					a = new TThreadedSelectorServer.Args(tst);
-					
-					//allocate the server
+
+					// allocate the server
 					server = new TThreadedSelectorServer(a.processor(pro));
-					
+
 					plugin.getLogger().info(
-							"Started up and listening on port " + String.valueOf(port));
-					
-					//start up the server
+							"Started up and listening on port "
+									+ String.valueOf(port));
+
+					// start up the server
 					server.serve();
 				} catch (Exception e) {
 					plugin.getLogger().severe(e.getMessage());

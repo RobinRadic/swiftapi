@@ -14354,13 +14354,13 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list82 = iprot.readListBegin();
-                  struct.success = new ArrayList<String>(_list82.size);
-                  for (int _i83 = 0; _i83 < _list82.size; ++_i83)
+                  org.apache.thrift.protocol.TList _list90 = iprot.readListBegin();
+                  struct.success = new ArrayList<String>(_list90.size);
+                  for (int _i91 = 0; _i91 < _list90.size; ++_i91)
                   {
-                    String _elem84;
-                    _elem84 = iprot.readString();
-                    struct.success.add(_elem84);
+                    String _elem92;
+                    _elem92 = iprot.readString();
+                    struct.success.add(_elem92);
                   }
                   iprot.readListEnd();
                 }
@@ -14397,9 +14397,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.success.size()));
-            for (String _iter85 : struct.success)
+            for (String _iter93 : struct.success)
             {
-              oprot.writeString(_iter85);
+              oprot.writeString(_iter93);
             }
             oprot.writeListEnd();
           }
@@ -14438,9 +14438,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (String _iter86 : struct.success)
+            for (String _iter94 : struct.success)
             {
-              oprot.writeString(_iter86);
+              oprot.writeString(_iter94);
             }
           }
         }
@@ -14455,13 +14455,13 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list87 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.success = new ArrayList<String>(_list87.size);
-            for (int _i88 = 0; _i88 < _list87.size; ++_i88)
+            org.apache.thrift.protocol.TList _list95 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new ArrayList<String>(_list95.size);
+            for (int _i96 = 0; _i96 < _list95.size; ++_i96)
             {
-              String _elem89;
-              _elem89 = iprot.readString();
-              struct.success.add(_elem89);
+              String _elem97;
+              _elem97 = iprot.readString();
+              struct.success.add(_elem97);
             }
           }
           struct.setSuccessIsSet(true);
@@ -15216,14 +15216,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list90 = iprot.readListBegin();
-                  struct.success = new ArrayList<OfflinePlayer>(_list90.size);
-                  for (int _i91 = 0; _i91 < _list90.size; ++_i91)
+                  org.apache.thrift.protocol.TList _list98 = iprot.readListBegin();
+                  struct.success = new ArrayList<OfflinePlayer>(_list98.size);
+                  for (int _i99 = 0; _i99 < _list98.size; ++_i99)
                   {
-                    OfflinePlayer _elem92;
-                    _elem92 = new OfflinePlayer();
-                    _elem92.read(iprot);
-                    struct.success.add(_elem92);
+                    OfflinePlayer _elem100;
+                    _elem100 = new OfflinePlayer();
+                    _elem100.read(iprot);
+                    struct.success.add(_elem100);
                   }
                   iprot.readListEnd();
                 }
@@ -15260,9 +15260,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (OfflinePlayer _iter93 : struct.success)
+            for (OfflinePlayer _iter101 : struct.success)
             {
-              _iter93.write(oprot);
+              _iter101.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -15301,9 +15301,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (OfflinePlayer _iter94 : struct.success)
+            for (OfflinePlayer _iter102 : struct.success)
             {
-              _iter94.write(oprot);
+              _iter102.write(oprot);
             }
           }
         }
@@ -15318,14 +15318,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list95 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<OfflinePlayer>(_list95.size);
-            for (int _i96 = 0; _i96 < _list95.size; ++_i96)
+            org.apache.thrift.protocol.TList _list103 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<OfflinePlayer>(_list103.size);
+            for (int _i104 = 0; _i104 < _list103.size; ++_i104)
             {
-              OfflinePlayer _elem97;
-              _elem97 = new OfflinePlayer();
-              _elem97.read(iprot);
-              struct.success.add(_elem97);
+              OfflinePlayer _elem105;
+              _elem105 = new OfflinePlayer();
+              _elem105.read(iprot);
+              struct.success.add(_elem105);
             }
           }
           struct.setSuccessIsSet(true);
@@ -16988,14 +16988,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list98 = iprot.readListBegin();
-                  struct.success = new ArrayList<ConsoleLine>(_list98.size);
-                  for (int _i99 = 0; _i99 < _list98.size; ++_i99)
+                  org.apache.thrift.protocol.TList _list106 = iprot.readListBegin();
+                  struct.success = new ArrayList<ConsoleLine>(_list106.size);
+                  for (int _i107 = 0; _i107 < _list106.size; ++_i107)
                   {
-                    ConsoleLine _elem100;
-                    _elem100 = new ConsoleLine();
-                    _elem100.read(iprot);
-                    struct.success.add(_elem100);
+                    ConsoleLine _elem108;
+                    _elem108 = new ConsoleLine();
+                    _elem108.read(iprot);
+                    struct.success.add(_elem108);
                   }
                   iprot.readListEnd();
                 }
@@ -17032,9 +17032,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (ConsoleLine _iter101 : struct.success)
+            for (ConsoleLine _iter109 : struct.success)
             {
-              _iter101.write(oprot);
+              _iter109.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -17073,9 +17073,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (ConsoleLine _iter102 : struct.success)
+            for (ConsoleLine _iter110 : struct.success)
             {
-              _iter102.write(oprot);
+              _iter110.write(oprot);
             }
           }
         }
@@ -17090,14 +17090,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list103 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<ConsoleLine>(_list103.size);
-            for (int _i104 = 0; _i104 < _list103.size; ++_i104)
+            org.apache.thrift.protocol.TList _list111 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<ConsoleLine>(_list111.size);
+            for (int _i112 = 0; _i112 < _list111.size; ++_i112)
             {
-              ConsoleLine _elem105;
-              _elem105 = new ConsoleLine();
-              _elem105.read(iprot);
-              struct.success.add(_elem105);
+              ConsoleLine _elem113;
+              _elem113 = new ConsoleLine();
+              _elem113.read(iprot);
+              struct.success.add(_elem113);
             }
           }
           struct.setSuccessIsSet(true);
@@ -19881,14 +19881,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list106 = iprot.readListBegin();
-                  struct.success = new ArrayList<OfflinePlayer>(_list106.size);
-                  for (int _i107 = 0; _i107 < _list106.size; ++_i107)
+                  org.apache.thrift.protocol.TList _list114 = iprot.readListBegin();
+                  struct.success = new ArrayList<OfflinePlayer>(_list114.size);
+                  for (int _i115 = 0; _i115 < _list114.size; ++_i115)
                   {
-                    OfflinePlayer _elem108;
-                    _elem108 = new OfflinePlayer();
-                    _elem108.read(iprot);
-                    struct.success.add(_elem108);
+                    OfflinePlayer _elem116;
+                    _elem116 = new OfflinePlayer();
+                    _elem116.read(iprot);
+                    struct.success.add(_elem116);
                   }
                   iprot.readListEnd();
                 }
@@ -19925,9 +19925,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (OfflinePlayer _iter109 : struct.success)
+            for (OfflinePlayer _iter117 : struct.success)
             {
-              _iter109.write(oprot);
+              _iter117.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -19966,9 +19966,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (OfflinePlayer _iter110 : struct.success)
+            for (OfflinePlayer _iter118 : struct.success)
             {
-              _iter110.write(oprot);
+              _iter118.write(oprot);
             }
           }
         }
@@ -19983,14 +19983,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list111 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<OfflinePlayer>(_list111.size);
-            for (int _i112 = 0; _i112 < _list111.size; ++_i112)
+            org.apache.thrift.protocol.TList _list119 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<OfflinePlayer>(_list119.size);
+            for (int _i120 = 0; _i120 < _list119.size; ++_i120)
             {
-              OfflinePlayer _elem113;
-              _elem113 = new OfflinePlayer();
-              _elem113.read(iprot);
-              struct.success.add(_elem113);
+              OfflinePlayer _elem121;
+              _elem121 = new OfflinePlayer();
+              _elem121.read(iprot);
+              struct.success.add(_elem121);
             }
           }
           struct.setSuccessIsSet(true);
@@ -20745,14 +20745,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list114 = iprot.readListBegin();
-                  struct.success = new ArrayList<OfflinePlayer>(_list114.size);
-                  for (int _i115 = 0; _i115 < _list114.size; ++_i115)
+                  org.apache.thrift.protocol.TList _list122 = iprot.readListBegin();
+                  struct.success = new ArrayList<OfflinePlayer>(_list122.size);
+                  for (int _i123 = 0; _i123 < _list122.size; ++_i123)
                   {
-                    OfflinePlayer _elem116;
-                    _elem116 = new OfflinePlayer();
-                    _elem116.read(iprot);
-                    struct.success.add(_elem116);
+                    OfflinePlayer _elem124;
+                    _elem124 = new OfflinePlayer();
+                    _elem124.read(iprot);
+                    struct.success.add(_elem124);
                   }
                   iprot.readListEnd();
                 }
@@ -20789,9 +20789,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (OfflinePlayer _iter117 : struct.success)
+            for (OfflinePlayer _iter125 : struct.success)
             {
-              _iter117.write(oprot);
+              _iter125.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -20830,9 +20830,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (OfflinePlayer _iter118 : struct.success)
+            for (OfflinePlayer _iter126 : struct.success)
             {
-              _iter118.write(oprot);
+              _iter126.write(oprot);
             }
           }
         }
@@ -20847,14 +20847,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list119 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<OfflinePlayer>(_list119.size);
-            for (int _i120 = 0; _i120 < _list119.size; ++_i120)
+            org.apache.thrift.protocol.TList _list127 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<OfflinePlayer>(_list127.size);
+            for (int _i128 = 0; _i128 < _list127.size; ++_i128)
             {
-              OfflinePlayer _elem121;
-              _elem121 = new OfflinePlayer();
-              _elem121.read(iprot);
-              struct.success.add(_elem121);
+              OfflinePlayer _elem129;
+              _elem129 = new OfflinePlayer();
+              _elem129.read(iprot);
+              struct.success.add(_elem129);
             }
           }
           struct.setSuccessIsSet(true);
@@ -22626,14 +22626,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list122 = iprot.readListBegin();
-                  struct.success = new ArrayList<Player>(_list122.size);
-                  for (int _i123 = 0; _i123 < _list122.size; ++_i123)
+                  org.apache.thrift.protocol.TList _list130 = iprot.readListBegin();
+                  struct.success = new ArrayList<Player>(_list130.size);
+                  for (int _i131 = 0; _i131 < _list130.size; ++_i131)
                   {
-                    Player _elem124;
-                    _elem124 = new Player();
-                    _elem124.read(iprot);
-                    struct.success.add(_elem124);
+                    Player _elem132;
+                    _elem132 = new Player();
+                    _elem132.read(iprot);
+                    struct.success.add(_elem132);
                   }
                   iprot.readListEnd();
                 }
@@ -22670,9 +22670,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Player _iter125 : struct.success)
+            for (Player _iter133 : struct.success)
             {
-              _iter125.write(oprot);
+              _iter133.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -22711,9 +22711,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Player _iter126 : struct.success)
+            for (Player _iter134 : struct.success)
             {
-              _iter126.write(oprot);
+              _iter134.write(oprot);
             }
           }
         }
@@ -22728,14 +22728,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list127 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Player>(_list127.size);
-            for (int _i128 = 0; _i128 < _list127.size; ++_i128)
+            org.apache.thrift.protocol.TList _list135 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Player>(_list135.size);
+            for (int _i136 = 0; _i136 < _list135.size; ++_i136)
             {
-              Player _elem129;
-              _elem129 = new Player();
-              _elem129.read(iprot);
-              struct.success.add(_elem129);
+              Player _elem137;
+              _elem137 = new Player();
+              _elem137.read(iprot);
+              struct.success.add(_elem137);
             }
           }
           struct.setSuccessIsSet(true);
@@ -24507,14 +24507,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list130 = iprot.readListBegin();
-                  struct.success = new ArrayList<Plugin>(_list130.size);
-                  for (int _i131 = 0; _i131 < _list130.size; ++_i131)
+                  org.apache.thrift.protocol.TList _list138 = iprot.readListBegin();
+                  struct.success = new ArrayList<Plugin>(_list138.size);
+                  for (int _i139 = 0; _i139 < _list138.size; ++_i139)
                   {
-                    Plugin _elem132;
-                    _elem132 = new Plugin();
-                    _elem132.read(iprot);
-                    struct.success.add(_elem132);
+                    Plugin _elem140;
+                    _elem140 = new Plugin();
+                    _elem140.read(iprot);
+                    struct.success.add(_elem140);
                   }
                   iprot.readListEnd();
                 }
@@ -24551,9 +24551,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Plugin _iter133 : struct.success)
+            for (Plugin _iter141 : struct.success)
             {
-              _iter133.write(oprot);
+              _iter141.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -24592,9 +24592,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Plugin _iter134 : struct.success)
+            for (Plugin _iter142 : struct.success)
             {
-              _iter134.write(oprot);
+              _iter142.write(oprot);
             }
           }
         }
@@ -24609,14 +24609,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list135 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Plugin>(_list135.size);
-            for (int _i136 = 0; _i136 < _list135.size; ++_i136)
+            org.apache.thrift.protocol.TList _list143 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Plugin>(_list143.size);
+            for (int _i144 = 0; _i144 < _list143.size; ++_i144)
             {
-              Plugin _elem137;
-              _elem137 = new Plugin();
-              _elem137.read(iprot);
-              struct.success.add(_elem137);
+              Plugin _elem145;
+              _elem145 = new Plugin();
+              _elem145.read(iprot);
+              struct.success.add(_elem145);
             }
           }
           struct.setSuccessIsSet(true);
@@ -26996,14 +26996,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list138 = iprot.readListBegin();
-                  struct.success = new ArrayList<OfflinePlayer>(_list138.size);
-                  for (int _i139 = 0; _i139 < _list138.size; ++_i139)
+                  org.apache.thrift.protocol.TList _list146 = iprot.readListBegin();
+                  struct.success = new ArrayList<OfflinePlayer>(_list146.size);
+                  for (int _i147 = 0; _i147 < _list146.size; ++_i147)
                   {
-                    OfflinePlayer _elem140;
-                    _elem140 = new OfflinePlayer();
-                    _elem140.read(iprot);
-                    struct.success.add(_elem140);
+                    OfflinePlayer _elem148;
+                    _elem148 = new OfflinePlayer();
+                    _elem148.read(iprot);
+                    struct.success.add(_elem148);
                   }
                   iprot.readListEnd();
                 }
@@ -27040,9 +27040,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (OfflinePlayer _iter141 : struct.success)
+            for (OfflinePlayer _iter149 : struct.success)
             {
-              _iter141.write(oprot);
+              _iter149.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -27081,9 +27081,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (OfflinePlayer _iter142 : struct.success)
+            for (OfflinePlayer _iter150 : struct.success)
             {
-              _iter142.write(oprot);
+              _iter150.write(oprot);
             }
           }
         }
@@ -27098,14 +27098,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list143 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<OfflinePlayer>(_list143.size);
-            for (int _i144 = 0; _i144 < _list143.size; ++_i144)
+            org.apache.thrift.protocol.TList _list151 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<OfflinePlayer>(_list151.size);
+            for (int _i152 = 0; _i152 < _list151.size; ++_i152)
             {
-              OfflinePlayer _elem145;
-              _elem145 = new OfflinePlayer();
-              _elem145.read(iprot);
-              struct.success.add(_elem145);
+              OfflinePlayer _elem153;
+              _elem153 = new OfflinePlayer();
+              _elem153.read(iprot);
+              struct.success.add(_elem153);
             }
           }
           struct.setSuccessIsSet(true);
@@ -28877,14 +28877,14 @@ public class SwiftApi {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list146 = iprot.readListBegin();
-                  struct.success = new ArrayList<World>(_list146.size);
-                  for (int _i147 = 0; _i147 < _list146.size; ++_i147)
+                  org.apache.thrift.protocol.TList _list154 = iprot.readListBegin();
+                  struct.success = new ArrayList<World>(_list154.size);
+                  for (int _i155 = 0; _i155 < _list154.size; ++_i155)
                   {
-                    World _elem148;
-                    _elem148 = new World();
-                    _elem148.read(iprot);
-                    struct.success.add(_elem148);
+                    World _elem156;
+                    _elem156 = new World();
+                    _elem156.read(iprot);
+                    struct.success.add(_elem156);
                   }
                   iprot.readListEnd();
                 }
@@ -28921,9 +28921,9 @@ public class SwiftApi {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (World _iter149 : struct.success)
+            for (World _iter157 : struct.success)
             {
-              _iter149.write(oprot);
+              _iter157.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -28962,9 +28962,9 @@ public class SwiftApi {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (World _iter150 : struct.success)
+            for (World _iter158 : struct.success)
             {
-              _iter150.write(oprot);
+              _iter158.write(oprot);
             }
           }
         }
@@ -28979,14 +28979,14 @@ public class SwiftApi {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list151 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<World>(_list151.size);
-            for (int _i152 = 0; _i152 < _list151.size; ++_i152)
+            org.apache.thrift.protocol.TList _list159 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<World>(_list159.size);
+            for (int _i160 = 0; _i160 < _list159.size; ++_i160)
             {
-              World _elem153;
-              _elem153 = new World();
-              _elem153.read(iprot);
-              struct.success.add(_elem153);
+              World _elem161;
+              _elem161 = new World();
+              _elem161.read(iprot);
+              struct.success.add(_elem161);
             }
           }
           struct.setSuccessIsSet(true);

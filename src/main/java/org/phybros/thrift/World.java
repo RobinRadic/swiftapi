@@ -39,6 +39,8 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
   private static final org.apache.thrift.protocol.TField WEATHER_DURATION_FIELD_DESC = new org.apache.thrift.protocol.TField("weatherDuration", org.apache.thrift.protocol.TType.I64, (short)11);
   private static final org.apache.thrift.protocol.TField SEED_FIELD_DESC = new org.apache.thrift.protocol.TField("seed", org.apache.thrift.protocol.TType.I64, (short)12);
   private static final org.apache.thrift.protocol.TField IS_PVP_FIELD_DESC = new org.apache.thrift.protocol.TField("isPvp", org.apache.thrift.protocol.TType.BOOL, (short)13);
+  private static final org.apache.thrift.protocol.TField CHUNKS_FIELD_DESC = new org.apache.thrift.protocol.TField("chunks", org.apache.thrift.protocol.TType.I32, (short)14);
+  private static final org.apache.thrift.protocol.TField ENTITIES_FIELD_DESC = new org.apache.thrift.protocol.TField("entities", org.apache.thrift.protocol.TType.I32, (short)15);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -102,6 +104,16 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
    * The current PVP setting for this world.
    */
   public boolean isPvp; // required
+  /**
+   * The number of currently loaded chunks
+   * @since 1.7
+   */
+  public int chunks; // required
+  /**
+   * The number of entities
+   * @since 1.7
+   */
+  public int entities; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -160,7 +172,17 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     /**
      * The current PVP setting for this world.
      */
-    IS_PVP((short)13, "isPvp");
+    IS_PVP((short)13, "isPvp"),
+    /**
+     * The number of currently loaded chunks
+     * @since 1.7
+     */
+    CHUNKS((short)14, "chunks"),
+    /**
+     * The number of entities
+     * @since 1.7
+     */
+    ENTITIES((short)15, "entities");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -201,6 +223,10 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
           return SEED;
         case 13: // IS_PVP
           return IS_PVP;
+        case 14: // CHUNKS
+          return CHUNKS;
+        case 15: // ENTITIES
+          return ENTITIES;
         default:
           return null;
       }
@@ -251,6 +277,8 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
   private static final int __WEATHERDURATION_ISSET_ID = 7;
   private static final int __SEED_ISSET_ID = 8;
   private static final int __ISPVP_ISSET_ID = 9;
+  private static final int __CHUNKS_ISSET_ID = 10;
+  private static final int __ENTITIES_ISSET_ID = 11;
   private short __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -281,6 +309,10 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.IS_PVP, new org.apache.thrift.meta_data.FieldMetaData("isPvp", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.CHUNKS, new org.apache.thrift.meta_data.FieldMetaData("chunks", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.ENTITIES, new org.apache.thrift.meta_data.FieldMetaData("entities", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(World.class, metaDataMap);
   }
@@ -301,7 +333,9 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     long fullTime,
     long weatherDuration,
     long seed,
-    boolean isPvp)
+    boolean isPvp,
+    int chunks,
+    int entities)
   {
     this();
     this.name = name;
@@ -327,6 +361,10 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     setSeedIsSet(true);
     this.isPvp = isPvp;
     setIsPvpIsSet(true);
+    this.chunks = chunks;
+    setChunksIsSet(true);
+    this.entities = entities;
+    setEntitiesIsSet(true);
   }
 
   /**
@@ -353,6 +391,8 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     this.weatherDuration = other.weatherDuration;
     this.seed = other.seed;
     this.isPvp = other.isPvp;
+    this.chunks = other.chunks;
+    this.entities = other.entities;
   }
 
   public World deepCopy() {
@@ -384,6 +424,10 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     this.seed = 0;
     setIsPvpIsSet(false);
     this.isPvp = false;
+    setChunksIsSet(false);
+    this.chunks = 0;
+    setEntitiesIsSet(false);
+    this.entities = 0;
   }
 
   /**
@@ -774,6 +818,68 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __ISPVP_ISSET_ID, value);
   }
 
+  /**
+   * The number of currently loaded chunks
+   * @since 1.7
+   */
+  public int getChunks() {
+    return this.chunks;
+  }
+
+  /**
+   * The number of currently loaded chunks
+   * @since 1.7
+   */
+  public World setChunks(int chunks) {
+    this.chunks = chunks;
+    setChunksIsSet(true);
+    return this;
+  }
+
+  public void unsetChunks() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __CHUNKS_ISSET_ID);
+  }
+
+  /** Returns true if field chunks is set (has been assigned a value) and false otherwise */
+  public boolean isSetChunks() {
+    return EncodingUtils.testBit(__isset_bitfield, __CHUNKS_ISSET_ID);
+  }
+
+  public void setChunksIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __CHUNKS_ISSET_ID, value);
+  }
+
+  /**
+   * The number of entities
+   * @since 1.7
+   */
+  public int getEntities() {
+    return this.entities;
+  }
+
+  /**
+   * The number of entities
+   * @since 1.7
+   */
+  public World setEntities(int entities) {
+    this.entities = entities;
+    setEntitiesIsSet(true);
+    return this;
+  }
+
+  public void unsetEntities() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __ENTITIES_ISSET_ID);
+  }
+
+  /** Returns true if field entities is set (has been assigned a value) and false otherwise */
+  public boolean isSetEntities() {
+    return EncodingUtils.testBit(__isset_bitfield, __ENTITIES_ISSET_ID);
+  }
+
+  public void setEntitiesIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __ENTITIES_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -880,6 +986,22 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       }
       break;
 
+    case CHUNKS:
+      if (value == null) {
+        unsetChunks();
+      } else {
+        setChunks((Integer)value);
+      }
+      break;
+
+    case ENTITIES:
+      if (value == null) {
+        unsetEntities();
+      } else {
+        setEntities((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -924,6 +1046,12 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     case IS_PVP:
       return Boolean.valueOf(isIsPvp());
 
+    case CHUNKS:
+      return Integer.valueOf(getChunks());
+
+    case ENTITIES:
+      return Integer.valueOf(getEntities());
+
     }
     throw new IllegalStateException();
   }
@@ -961,6 +1089,10 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       return isSetSeed();
     case IS_PVP:
       return isSetIsPvp();
+    case CHUNKS:
+      return isSetChunks();
+    case ENTITIES:
+      return isSetEntities();
     }
     throw new IllegalStateException();
   }
@@ -1092,6 +1224,24 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       if (!(this_present_isPvp && that_present_isPvp))
         return false;
       if (this.isPvp != that.isPvp)
+        return false;
+    }
+
+    boolean this_present_chunks = true;
+    boolean that_present_chunks = true;
+    if (this_present_chunks || that_present_chunks) {
+      if (!(this_present_chunks && that_present_chunks))
+        return false;
+      if (this.chunks != that.chunks)
+        return false;
+    }
+
+    boolean this_present_entities = true;
+    boolean that_present_entities = true;
+    if (this_present_entities || that_present_entities) {
+      if (!(this_present_entities && that_present_entities))
+        return false;
+      if (this.entities != that.entities)
         return false;
     }
 
@@ -1241,6 +1391,26 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetChunks()).compareTo(other.isSetChunks());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetChunks()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.chunks, other.chunks);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetEntities()).compareTo(other.isSetEntities());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetEntities()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.entities, other.entities);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -1323,6 +1493,14 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
     if (!first) sb.append(", ");
     sb.append("isPvp:");
     sb.append(this.isPvp);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("chunks:");
+    sb.append(this.chunks);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("entities:");
+    sb.append(this.entities);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -1473,6 +1651,22 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 14: // CHUNKS
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.chunks = iprot.readI32();
+              struct.setChunksIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 15: // ENTITIES
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.entities = iprot.readI32();
+              struct.setEntitiesIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -1533,6 +1727,12 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       oprot.writeFieldBegin(IS_PVP_FIELD_DESC);
       oprot.writeBool(struct.isPvp);
       oprot.writeFieldEnd();
+      oprot.writeFieldBegin(CHUNKS_FIELD_DESC);
+      oprot.writeI32(struct.chunks);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(ENTITIES_FIELD_DESC);
+      oprot.writeI32(struct.entities);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -1590,7 +1790,13 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       if (struct.isSetIsPvp()) {
         optionals.set(12);
       }
-      oprot.writeBitSet(optionals, 13);
+      if (struct.isSetChunks()) {
+        optionals.set(13);
+      }
+      if (struct.isSetEntities()) {
+        optionals.set(14);
+      }
+      oprot.writeBitSet(optionals, 15);
       if (struct.isSetName()) {
         oprot.writeString(struct.name);
       }
@@ -1630,12 +1836,18 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       if (struct.isSetIsPvp()) {
         oprot.writeBool(struct.isPvp);
       }
+      if (struct.isSetChunks()) {
+        oprot.writeI32(struct.chunks);
+      }
+      if (struct.isSetEntities()) {
+        oprot.writeI32(struct.entities);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, World struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(13);
+      BitSet incoming = iprot.readBitSet(15);
       if (incoming.get(0)) {
         struct.name = iprot.readString();
         struct.setNameIsSet(true);
@@ -1687,6 +1899,14 @@ public class World implements org.apache.thrift.TBase<World, World._Fields>, jav
       if (incoming.get(12)) {
         struct.isPvp = iprot.readBool();
         struct.setIsPvpIsSet(true);
+      }
+      if (incoming.get(13)) {
+        struct.chunks = iprot.readI32();
+        struct.setChunksIsSet(true);
+      }
+      if (incoming.get(14)) {
+        struct.entities = iprot.readI32();
+        struct.setEntitiesIsSet(true);
       }
     }
   }

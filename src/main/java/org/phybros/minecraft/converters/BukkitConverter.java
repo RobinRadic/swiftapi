@@ -220,12 +220,42 @@ public class BukkitConverter {
 		newWorld.allowAnimals = bukkitWorld.getAllowAnimals();
 		newWorld.allowMonsters = bukkitWorld.getAllowMonsters();
 		newWorld.canGenerateStructures = bukkitWorld.canGenerateStructures();
-		newWorld.difficulty = Difficulty.findByValue(bukkitWorld
-				.getDifficulty().getValue());
-		// add 1 to the value to get the right enum value (thrift doesnt allow
-		// negative numbers)
-		newWorld.environment = Environment.findByValue(bukkitWorld
-				.getEnvironment().getId() + 1);
+
+		// convert the difficulty
+		switch (bukkitWorld.getDifficulty()) {
+		case PEACEFUL:
+			newWorld.difficulty = Difficulty.PEACEFUL;
+			break;
+		case EASY:
+			newWorld.difficulty = Difficulty.EASY;
+			break;
+		case NORMAL:
+			newWorld.difficulty = Difficulty.NORMAL;
+			break;
+		case HARD:
+			newWorld.difficulty = Difficulty.HARD;
+			break;
+		default:
+			newWorld.difficulty = Difficulty.NORMAL;
+			break;
+		}
+
+		// convert the environment
+		switch (bukkitWorld.getEnvironment()) {
+		case NORMAL:
+			newWorld.environment = Environment.NORMAL;
+			break;
+		case NETHER:
+			newWorld.environment = Environment.NETHER;
+			break;
+		case THE_END:
+			newWorld.environment = Environment.THE_END;
+			break;
+		default:
+			newWorld.environment = Environment.NORMAL;
+			break;
+		}
+
 		newWorld.fullTime = bukkitWorld.getFullTime();
 		newWorld.hasStorm = bukkitWorld.hasStorm();
 		newWorld.isPvp = bukkitWorld.getPVP();
@@ -234,6 +264,12 @@ public class BukkitConverter {
 		newWorld.time = bukkitWorld.getTime();
 		newWorld.weatherDuration = bukkitWorld.getWeatherDuration();
 		newWorld.name = bukkitWorld.getName();
+
+		/**
+		 * Get some health information about the world
+		 */
+		newWorld.chunks = bukkitWorld.getLoadedChunks().length;
+		newWorld.entities = bukkitWorld.getEntities().size();
 
 		return newWorld;
 	}

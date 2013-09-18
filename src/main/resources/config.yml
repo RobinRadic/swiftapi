@@ -18,6 +18,13 @@ messages:
     deOp: You have been deOpped
     op: You have been opped
 
+    # Messages for health information
+    cpus: "Available CPUs: %d"
+    uptime: "Uptime: %d hours %d minutes %d seconds"
+    memMax: "Max Memory: %d MB"
+    memTotal: "Allocated Memory: %d MB"
+    memFree: "Free Memory: %d MB"
+
 # Error messages.
 errorMessages:
     # Requestor's authString was invalid

@@ -551,6 +551,43 @@ struct World {
  * The current PVP setting for this world.
  */
 	13: bool isPvp,
+/**
+ * The number of currently loaded chunks
+ * @since 1.7
+ */
+    14: i32 chunks,
+/**
+ * The number of entities
+ * @since 1.7
+ */
+	15: i32 entities,
+}
+
+/**
+ * Represents a piece of information regarding the health of the server.
+ *
+ * @since 1.7
+ */
+struct ServerHealth {
+/**
+ * The unique id for this piece of information.
+ * Valid values are:
+ * cpus - the number of available CPUs
+ * uptime - server uptime in SECONDS
+ * memMax - maximum useable amount of memory in KB
+ * memTotal - the amount of memory used in KB
+ * memFree - the amount of memory free in KB
+ */
+    1: required string id,
+/**
+ * The name of the piece of information. Examples would include
+ * "Uptime: 154235s", "Memory Usage: 500MB"
+ */
+    2: required string label,
+/**
+ * The value of the piece of information
+ */
+    3: string value,
 }
 
 /**
@@ -617,6 +654,13 @@ struct Server {
  * A list of worlds currently running on the server
  */
 	15: list<World> worlds,
+/**
+ * Information about the server's overall health; memory usage,
+ * cpu usage, uptime, chunk info etc.
+ *
+ * @since 1.7
+ */
+	16: list<ServerHealth> health,
 }
 
 service SwiftApi {
