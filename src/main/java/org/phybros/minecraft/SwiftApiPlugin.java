@@ -1,17 +1,18 @@
 package org.phybros.minecraft;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import org.apache.logging.log4j.LogManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 import org.phybros.thrift.ConsoleLine;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class SwiftApiPlugin extends JavaPlugin {
 
 	private SwiftServer server;
-	public List<ConsoleLine> last500;
+	public List<ConsoleLine> consoleBuffer;
 
 	public SwiftApiPlugin() {
 	}
@@ -26,10 +27,13 @@ public class SwiftApiPlugin extends JavaPlugin {
 		}
 		
 		try {
-			last500 = new ArrayList<ConsoleLine>();
+			consoleBuffer = new ArrayList<>();
 			this.saveDefaultConfig();
-			this.getServer().getLogger().addHandler(new ConsoleHandler(this));
-			server = new SwiftServer(this);
+
+            SwiftFilter filter = new SwiftFilter(this);
+            ((org.apache.logging.log4j.core.Logger) LogManager.getRootLogger()).addFilter(filter);
+
+            server = new SwiftServer(this);
 
 			getLogger().info("SwiftApi was enabled.");
 		} catch (Exception e) {
