@@ -1,7 +1,5 @@
 ![SwiftApi Logo](https://dev.bukkit.org/media/images/62/892/SwiftApi-256.png "SwiftApi is an Apache Thrift based API for your Bukkit server")
 
-# I don't have a lot of time to work on this any more - if you have experience with Apache Thrift, please update SwiftApi to the latest RB :)
-
 An Apache Thrift based API for CraftBukkit Minecraft servers. This API allows
 simple calls to Bukkit methods over the internet using almost any programming
 language. If you're a programmer who wants to create a killer server admin
@@ -18,7 +16,7 @@ Build Instructions
 ----
 Assuming you have maven installed, just run
 
-    mvn package
+    mvn clean package
 
 And maven will produce a jar file called `/target/SwiftApi-<version>.jar`
 
@@ -91,7 +89,7 @@ method you are calling.
 
 Available Languages
 ----
-As of Apache Thrift version 0.9.0, the languages you can use to talk to your server with are:
+As of Apache Thrift version 0.9.1, the languages you can use to talk to your server with are:
 
 * Actionscript 3 (AS3)
 * C (using GLib)
