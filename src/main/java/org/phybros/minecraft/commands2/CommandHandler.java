@@ -1,29 +1,22 @@
-package org.phybros.minecraft.commands;
-//Imports we will need.
+package org.phybros.minecraft.commands2;
 
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-
+import org.phybros.minecraft.SwiftApiPlugin;
 
 import java.util.HashMap;
 
-//The class will implement CommandExecutor.
 public class CommandHandler implements CommandExecutor
 {
-    private JavaPlugin plugin;
-    public CommandHandler(JavaPlugin plugin){
-        this.plugin = plugin;
-    }
-    private static HashMap<String, ICommand> commands = new HashMap<String, ICommand>();
 
+    private HashMap<String, ICommand> commands = new HashMap<String, ICommand>();
 
     public void register(String name, ICommand cmd) {
         commands.put(name, cmd);
     }
 
-    public HashMap<String, ICommand> getCommands(){
+    public HashMap<String, ICommand> getMap(){
         return commands;
     }
 
@@ -38,13 +31,14 @@ public class CommandHandler implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if(args.length == 0) {
-            getExecutor("swift").onCommand(sender, cmd, commandLabel, args, this.plugin);
+            getExecutor("swift").onCommand(sender, cmd, commandLabel, args, SwiftApiPlugin.getApi().getPlugin());
             return true;
         }
 
+
         if(args.length > 0) {
             if(exists(args[0])){
-                getExecutor(args[0]).onCommand(sender, cmd, commandLabel, args, this.plugin);
+                getExecutor(args[0]).onCommand(sender, cmd, commandLabel, args, SwiftApiPlugin.getApi().getPlugin());
                 return true;
             } else {
                 sender.sendMessage("This command doesn't exist!");

@@ -4,3 +4,9 @@ main: org.phybros.minecraft.SwiftApiPlugin
 version: 1.7
 website: http://dev.bukkit.org/server-mods/swiftapi
 author: phybros
+commands:
+  swift:
+    description: Swift command
+    usage: /<command>
+    permission: swiftapi.basic
+    permission-message: This command requires a higher permission!

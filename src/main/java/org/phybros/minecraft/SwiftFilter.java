@@ -7,6 +7,7 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 import org.phybros.thrift.ConsoleLine;
+import org.phybros.thrift.SwiftApi;
 
 /**
  * Created by will on 2014-07-11.
@@ -46,8 +47,8 @@ public class SwiftFilter implements Filter {
 
     @Override
     public Result filter(LogEvent logEvent) {
-        if(plugin.consoleBuffer.size() > 1000) {
-            plugin.consoleBuffer.remove(0);
+        if(SwiftApiPlugin.getApi().getConsoleBuffer().size() > 1000) {
+            SwiftApiPlugin.getApi().getConsoleBuffer().remove(0);
         }
 
         ConsoleLine line = new ConsoleLine();
@@ -55,7 +56,7 @@ public class SwiftFilter implements Filter {
         line.timestamp = logEvent.getMillis();
         line.level = logEvent.getLevel().toString();
 
-        plugin.consoleBuffer.add(line);
+        SwiftApiPlugin.getApi().getConsoleBuffer().add(line);
 
         return Result.NEUTRAL;
     }

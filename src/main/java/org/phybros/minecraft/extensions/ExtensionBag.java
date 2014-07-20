@@ -1,44 +1,33 @@
 package org.phybros.minecraft.extensions;
 
 
-import org.phybros.minecraft.api.Api;
+import org.phybros.minecraft.Api;
+import org.phybros.minecraft.SwiftApiPlugin;
 
 import java.util.HashMap;
 import java.util.logging.Logger;
 
 
 public class ExtensionBag  {
-    private static ExtensionBag instance = null;
 
     private final Logger log = Logger.getLogger("Minecraft");
 
     private HashMap<String, SwiftApiExtension> extensions;
 
 
-    protected ExtensionBag(){
+    public ExtensionBag(){
         extensions = new HashMap<String, SwiftApiExtension>();
     }
 
-    public static ExtensionBag getInstance(){
-        if(instance == null)
-        {
-            instance = new ExtensionBag();
-        }
-
-        Api.console("Api:extensions:get-instance", "count", instance.count() + "");
-        return instance;
-    }
-
-
     public void add(SwiftApiExtension extension){
         extensions.put(extension.name(), extension);
-        Api.console("Api:extensions:add", extension.name(), extension.getVersion());
+        SwiftApiPlugin.getApi().console("Api:extensions:add", extension.name(), extension.getVersion());
     }
 
 
     public SwiftApiExtension get(String name) throws ExtensionNotExistsException {
         if(has(name)) {
-            Api.console("Api:extensions:get", name);
+            SwiftApiPlugin.getApi().console("Api:extensions:get", name);
             return extensions.get(name);
         } else {
             throw new ExtensionNotExistsException(name);
@@ -53,7 +42,7 @@ public class ExtensionBag  {
     {
         if(has(name)) {
             extensions.remove(name);
-            Api.console("Api:extensions:remove", name);
+            SwiftApiPlugin.getApi().console("Api:extensions:remove", name);
         } else {
             throw new ExtensionNotExistsException(name);
         }
@@ -62,7 +51,7 @@ public class ExtensionBag  {
     public int count() {
         return extensions.size();
     }
-    
+
     public String toString()
     {
         return extensions.toString();

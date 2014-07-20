@@ -11,7 +11,7 @@ The main plugin file
 package org.yourname.extension.vault;
 
 // The Api with static access to usefull stuff
-import org.phybros.minecraft.api.Api;
+import org.phybros.minecraft.Api;
 
 // This is an extended JavaPlugin class
 import org.phybros.minecraft.extensions.SwiftApiExtension;      
@@ -41,10 +41,10 @@ A command
 #!java
 package org.yourname.extension.vault.commands;
 
-import org.phybros.minecraft.api.Api;
+import org.phybros.minecraft.Api;
 
 // Every command that you want under the /swift handler should implement the ICommand interface
-import org.phybros.minecraft.commands.ICommand;      
+import org.phybros.minecraft.commands2.ICommand;      
  
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

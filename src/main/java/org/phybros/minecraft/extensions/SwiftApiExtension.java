@@ -2,7 +2,8 @@ package org.phybros.minecraft.extensions;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import org.phybros.minecraft.api.Api;
+import org.phybros.minecraft.Api;
+import org.phybros.minecraft.SwiftApiPlugin;
 
 
 import java.util.logging.Level;
@@ -25,16 +26,16 @@ abstract public class SwiftApiExtension extends JavaPlugin implements ISwiftApiE
     @Override
     @SuppressWarnings("unchecked")
     public final void onEnable() {
-        Api.extensions.add(this);
+        SwiftApiPlugin.getApi().getExtensions().add(this);
         this.enable();
-        Api.console("SwiftApiExtension:extension:on-enable: " + this.name());
+        SwiftApiPlugin.getApi().console("SwiftApiExtension:extension:on-enable: " + this.name());
     }
 
     @Override
     public final void onDisable() {
-        Api.extensions.remove(name());
+        SwiftApiPlugin.getApi().getExtensions().remove(name());
         this.disable();
-        Api.console("SwiftApiExtension:extension:on-disable: " + this.name());
+        SwiftApiPlugin.getApi().console("SwiftApiExtension:extension:on-disable: " + this.name());
     }
 
     public final String name(){

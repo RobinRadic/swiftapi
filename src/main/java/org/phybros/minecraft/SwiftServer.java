@@ -420,7 +420,7 @@ public class SwiftServer {
 
             if (since > 0) {
                 List<ConsoleLine> lines = new ArrayList<>();
-                for (ConsoleLine c : plugin.consoleBuffer) {
+                for (ConsoleLine c : SwiftApiPlugin.getApi().getConsoleBuffer()) {
                     if (c.timestamp > since) {
                         lines.add(c);
                     }
@@ -429,7 +429,7 @@ public class SwiftServer {
                 return lines;
             }
 
-            return plugin.consoleBuffer;
+            return SwiftApiPlugin.getApi().getConsoleBuffer();
         }
 
         /**
