@@ -18,7 +18,7 @@ public class ConfigurationFactory implements Listener {
     HashMap<String, HashMap<String, Configuration>> files;
 
     protected ConfigurationFactory() {
-        files = new HashMap<String, Configuration>();
+        files = new HashMap<String, HashMap<String, Configuration>();
     }
 
     public void create(SwiftExtension plugin, String fileName){

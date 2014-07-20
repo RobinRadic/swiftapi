@@ -19,11 +19,23 @@ class SwiftApiVaultExtension implements SwiftApiExtension {
     // Note that we are not using onEnable and onDisable, instead use enable and disable
     public void enable() {  
         Api.commands.register("vault", new SwiftVaultCommand());
-        Api.swiftapi.register
+        Api.swiftApi.extendHandler("vault", new SwiftVaultApiHandler())
     }
     
     public void disable() {
         Api.plugin.getServer(); // Api.plugin is the SwiftApiPlugin instance
+    }
+}
+```
+
+Exposing functionality to the api will go something like this
+```
+#!java
+package org.yourname.extension.vault;
+
+class SwiftVaultApiHandler implements SwiftVaultApi.IFace {
+    public void addMoney(String playerName, Double amount){
+        // code here
     }
 }
 ```
