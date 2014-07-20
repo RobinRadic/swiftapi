@@ -4,20 +4,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import org.phybros.minecraft.Api;
 import org.phybros.minecraft.SwiftApiPlugin;
+import org.phybros.minecraft.utils.Configuration;
 import org.phybros.minecraft.utils.ConfigurationFactory;
-
-
-import java.util.logging.Level;
-
 
 abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExtension {
 
-    protected String[] yamls = { "config", "plugin" };
+    protected String[] yamls = null;
 
+    private Configuration[] configFiles = null;
 
-    public final void yamlFile(String fileName)
+    public Configuration config(String ymlFileName)
     {
-
+        return new Configuration(this, ymlFileName); // @todo should work with factory
     }
 
     /**
@@ -37,6 +35,11 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
     @SuppressWarnings("unchecked")
     public final void onEnable() {
 
+        if(yamls.length > 0) {
+            ConfigurationFactory instance = ConfigurationFactory.getInstance();
+            instance.create(this, yamls);
+        }
+
         SwiftApiPlugin.extensions.add(this);
         this.enable();
         Api.debug("Extension:onEnable", this.name());
@@ -49,9 +52,7 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
         Api.console("Extension:onDisable: ", this.name());
     }
 
-    public ConfigurationFactory() {
-        return ConfigurationFactory.getInstance();
-    }
+
     public final String name(){
         return getName();
     }

@@ -7,25 +7,16 @@ import org.phybros.minecraft.extensions.SwiftExtension;
 
 import java.util.HashMap;
 
-/**
- * Created by radic on 7/21/14.
- */
+// Singleton
 public class ConfigurationFactory implements Listener {
+
+    // Hashmap<String plugin, Hashmap<filename, config object>>
+    HashMap<String, HashMap<String, Configuration>> files;
 
     private static ConfigurationFactory instance = null;
 
-    // plugin, files
-    HashMap<String, HashMap<String, Configuration>> files;
-
-    protected ConfigurationFactory() {
-        files = new HashMap<String, HashMap<String, Configuration>();
-    }
-
-    public void create(SwiftExtension plugin, String fileName){
-        Configuration config = new Configuration(plugin, fileName);
-    }
-    public void create(SwiftExtension plugin, String[] fileName){
-
+    private ConfigurationFactory() {
+        files = new HashMap<String, HashMap<String, Configuration>>();
     }
 
     public static ConfigurationFactory getInstance() {
@@ -35,8 +26,10 @@ public class ConfigurationFactory implements Listener {
         return instance;
     }
 
-    @EventHandler
-    public void onPluginEnabled(PluginEnableEvent event){
+    public void create(SwiftExtension plugin, String fileName){
+        Configuration config = new Configuration(plugin, fileName);
+    }
+    public void create(SwiftExtension plugin, String[] fileName){
 
     }
 
