@@ -1,8 +1,11 @@
 package org.phybros.minecraft;
 
 import org.apache.logging.log4j.LogManager;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
+import org.phybros.minecraft.api.Api;
+import org.phybros.minecraft.extensions.ExtensionBag;
 import org.phybros.thrift.ConsoleLine;
 
 import java.io.IOException;
@@ -25,7 +28,9 @@ public class SwiftApiPlugin extends JavaPlugin {
 		} catch(IOException e) {
 			getLogger().severe("Exception initializing stats: " + e.getMessage());			
 		}
-		
+
+        Api.extensions = ExtensionBag.getInstance();
+
 		try {
 			consoleBuffer = new ArrayList<>();
 			this.saveDefaultConfig();
@@ -50,4 +55,7 @@ public class SwiftApiPlugin extends JavaPlugin {
 			getLogger().severe(e.getMessage());
 		}
 	}
+
+
+
 }

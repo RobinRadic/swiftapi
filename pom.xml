@@ -198,7 +198,7 @@
 							<tasks>
 								<copy
 									file="${project.build.directory}/${project.build.finalName}.jar"
-									tofile="${basedir}/bukkit/plugins/${project.build.finalName}.jar" />
+									tofile="${basedir}/builder/swiftapi.jar" />
 							</tasks>
 						</configuration>
 						<goals>
