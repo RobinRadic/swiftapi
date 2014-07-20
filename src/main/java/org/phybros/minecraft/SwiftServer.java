@@ -420,7 +420,7 @@ public class SwiftServer {
 
             if (since > 0) {
                 List<ConsoleLine> lines = new ArrayList<>();
-                for (ConsoleLine c : SwiftApiPlugin.getApi().getConsoleBuffer()) {
+                for (ConsoleLine c : SwiftApiPlugin.consoleBuffer) {
                     if (c.timestamp > since) {
                         lines.add(c);
                     }
@@ -429,7 +429,7 @@ public class SwiftServer {
                 return lines;
             }
 
-            return SwiftApiPlugin.getApi().getConsoleBuffer();
+            return SwiftApiPlugin.consoleBuffer;
         }
 
         /**
@@ -2165,6 +2165,7 @@ public class SwiftServer {
                     Thread.sleep(2000);
 
                     SwiftApiHandler psh = new SwiftApiHandler();
+
                     SwiftApi.Processor<SwiftApi.Iface> pro = new SwiftApi.Processor<SwiftApi.Iface>(
                             psh);
 

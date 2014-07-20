@@ -4,17 +4,27 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import org.phybros.minecraft.Api;
 import org.phybros.minecraft.SwiftApiPlugin;
+import org.phybros.minecraft.utils.ConfigurationFactory;
 
 
 import java.util.logging.Level;
 
 
-abstract public class SwiftApiExtension extends JavaPlugin implements ISwiftApiExtension {
+abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExtension {
+
+    protected String[] yamls = { "config", "plugin" };
+
+
+    public final void yamlFile(String fileName)
+    {
+
+    }
 
     /**
      * Called when this plugin is being enabled
      */
     public void enable() {
+
     }
 
     /**
@@ -26,18 +36,22 @@ abstract public class SwiftApiExtension extends JavaPlugin implements ISwiftApiE
     @Override
     @SuppressWarnings("unchecked")
     public final void onEnable() {
-        SwiftApiPlugin.getApi().getExtensions().add(this);
+
+        SwiftApiPlugin.extensions.add(this);
         this.enable();
-        SwiftApiPlugin.getApi().console("SwiftApiExtension:extension:on-enable: " + this.name());
+        Api.debug("Extension:onEnable", this.name());
     }
 
     @Override
     public final void onDisable() {
-        SwiftApiPlugin.getApi().getExtensions().remove(name());
+        SwiftApiPlugin.extensions.remove(name());
         this.disable();
-        SwiftApiPlugin.getApi().console("SwiftApiExtension:extension:on-disable: " + this.name());
+        Api.console("Extension:onDisable: ", this.name());
     }
 
+    public ConfigurationFactory() {
+        return ConfigurationFactory.getInstance();
+    }
     public final String name(){
         return getName();
     }
@@ -45,14 +59,5 @@ abstract public class SwiftApiExtension extends JavaPlugin implements ISwiftApiE
     public final String getVersion() {
         return this.getDescription().getVersion();
     }
-
-    public void log(Level level, String message) {
-        this.getLogger().log(level, message);
-    }
-
-    public void log(String message) {
-        this.getLogger().log(Level.INFO, message);
-    }
-
 
 }

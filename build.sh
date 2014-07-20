@@ -29,6 +29,12 @@ jar -xf swiftapi.jar
 echo "Fixing directories and creating new jar"
 rm -rf $rootdir/builder/output/org/phybros/minecraft
 cp -r $rootdir/builder/source/org/phybros/minecraft $rootdir/builder/output/org/phybros/minecraft
+
+echo "fixing config and plugin yml"
+rm $rootdir/builder/output/*.yml
+cp $rootdir/builder/source/plugin.yml $rootdir/builder/output/plugin.yml
+cp $rootdir/builder/source/config.yml $rootdir/builder/output/config.yml
+
 cd $rootdir/builder/output
 jar -cf SwiftApi.jar .
 

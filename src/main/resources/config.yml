@@ -2,6 +2,8 @@
 #
 # This is the default config file for SwiftApi
 
+debug: true
+
 # Authentication Information (CHANGE THESE)
 username: admin
 password: password

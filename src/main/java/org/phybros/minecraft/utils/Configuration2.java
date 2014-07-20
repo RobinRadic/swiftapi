@@ -2,26 +2,26 @@ package org.phybros.minecraft.utils;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-
 
 import java.io.*;
 
 /**
  * @todo make this a class that every extension can use to easily register their yml files
  */
-public class Configuration extends YamlConfiguration {
+public class Configuration2 {
 
     private File configFile;
+    private FileConfiguration config;
+
+
     private JavaPlugin plugin;
-    private String fileName;
 
-    public Configuration(JavaPlugin plugin, String fileName){
+    public Configuration2(JavaPlugin plugin){
         this.plugin = plugin;
-        this.fileName = fileName;
 
-        configFile = new File(plugin.getDataFolder(), fileName);
+        configFile = new File(plugin.getDataFolder(), "config.yml");
+
 
         try {
             firstRun();
@@ -30,11 +30,16 @@ public class Configuration extends YamlConfiguration {
             e.printStackTrace();
         }
 
+        config = new YamlConfiguration();
+
+
     }
+
 
     public void load() {
         try {
-            super.load(configFile);
+            config.load(configFile);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,24 +47,28 @@ public class Configuration extends YamlConfiguration {
 
     public void save() {
         try {
-            super.save(configFile);
+            config.save(configFile);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public File getConfigFile(){
-        return configFile;
+
+    public FileConfiguration getConfig(){
+
+        return config;
     }
 
-    public String getFileName() { return fileName; }
 
+    public Object get(String path){
+        return config.get(path);
+    }
 
     private void firstRun() throws Exception {
         if(!configFile.exists()){
             configFile.getParentFile().mkdirs();
-            copy(plugin.getResource(fileName), configFile);
+            copy(plugin.getResource("config.yml"), configFile);
         }
 
 

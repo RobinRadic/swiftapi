@@ -1,74 +1,49 @@
 package org.phybros.minecraft;
 
 import org.bukkit.ChatColor;
-import org.phybros.minecraft.commands2.CommandHandler;
-import org.phybros.minecraft.commands2.ICommand;
-import org.phybros.minecraft.extensions.ExtensionBag;
-import org.phybros.thrift.ConsoleLine;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.phybros.minecraft.commands.ICommand;
 
 
 public class Api {
+    protected Api() {}
 
-    private static Api instance = null;
-
-    private SwiftApiPlugin plugin;
-    private ExtensionBag extensions;
-    private CommandHandler commands;
-    private List<ConsoleLine> consoleBuffer;
-
-    protected Api(SwiftApiPlugin plugin) {
-        this.plugin = plugin;
-        extensions = new ExtensionBag();
-        commands = new CommandHandler();
-        consoleBuffer = new ArrayList<>();
+    public static void registerCommand(String name, ICommand command) {
+        SwiftApiPlugin.commands.register(name, command);
     }
 
-    public static Api getInstance(SwiftApiPlugin plugin) {
-        if(instance == null) {
-            instance = new Api(plugin);
-        }
-        return instance;
+    public static void registerCommands() {
+        SwiftApiPlugin.plugin.getCommand("swift").setExecutor(SwiftApiPlugin.commands);
     }
 
-    public SwiftApiPlugin getPlugin() {
-        return plugin;
+    public static void console(String name, String value){
+        SwiftApiPlugin.plugin.getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[" + ChatColor.GREEN + name + ChatColor.GOLD + "] " + ChatColor.WHITE + value);
     }
 
-    public ExtensionBag getExtensions() {
-        return extensions;
+    public static void console(String value){
+        SwiftApiPlugin.plugin.getServer().getConsoleSender().sendMessage(ChatColor.WHITE + value);
     }
 
-    public CommandHandler getCommands() {
-        return commands;
-    }
-
-    public List<ConsoleLine> getConsoleBuffer() { return consoleBuffer; }
-
-    public void registerCommand(String name, ICommand command) {
-        commands.register(name, command);
-    }
-
-    public void registerCommands() {
-        //plugin.getCommand("swift").setExecutor(commands2);
-    }
-
-    public void console(String name, String value){
-        plugin.getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[" + ChatColor.GREEN + name + ChatColor.GOLD + "] " + ChatColor.WHITE + value);
-    }
-
-    public void console(String value){
-        plugin.getServer().getConsoleSender().sendMessage(ChatColor.WHITE + value);
-    }
-
-    public void console(String name, String childName, String value){
-        plugin.getServer().getConsoleSender().sendMessage(
+    public static void console(String name, String childName, String value){
+        SwiftApiPlugin.plugin.getServer().getConsoleSender().sendMessage(
                 ChatColor.GOLD + "[" + ChatColor.GREEN + name + ChatColor.GOLD + "]" +
                         ChatColor.WHITE + "->" + ChatColor.AQUA + "(" + ChatColor.YELLOW + childName + ChatColor.AQUA + ") " +
                         ChatColor.WHITE + value);
     }
+
+    public static void debug(String name, String value)
+    {
+        System.out.print(SwiftApiPlugin.config.get("debug"));
+        console("configetdebug", SwiftApiPlugin.config.get("debug").toString());
+        if(true == true) {
+            SwiftApiPlugin.plugin.getServer().getConsoleSender().sendMessage(
+                    ChatColor.GOLD + "[" + ChatColor.GREEN + "SwiftApi:Debug" + ChatColor.GOLD + "]" +
+                            ChatColor.WHITE + ":" + ChatColor.AQUA + "[" + ChatColor.YELLOW + name + ChatColor.AQUA + "]: " +
+                            ChatColor.WHITE + value
+            );
+        }
+
+    }
+
     /**
      * some more public accessible stuff here, to extend the SwiftServer
      */

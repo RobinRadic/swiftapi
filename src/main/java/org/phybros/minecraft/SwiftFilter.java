@@ -47,8 +47,8 @@ public class SwiftFilter implements Filter {
 
     @Override
     public Result filter(LogEvent logEvent) {
-        if(SwiftApiPlugin.getApi().getConsoleBuffer().size() > 1000) {
-            SwiftApiPlugin.getApi().getConsoleBuffer().remove(0);
+        if(SwiftApiPlugin.consoleBuffer.size() > 1000) {
+            SwiftApiPlugin.consoleBuffer.remove(0);
         }
 
         ConsoleLine line = new ConsoleLine();
@@ -56,7 +56,7 @@ public class SwiftFilter implements Filter {
         line.timestamp = logEvent.getMillis();
         line.level = logEvent.getLevel().toString();
 
-        SwiftApiPlugin.getApi().getConsoleBuffer().add(line);
+        SwiftApiPlugin.consoleBuffer.add(line);
 
         return Result.NEUTRAL;
     }
