@@ -34,4 +34,6 @@ jar -cf SwiftApi.jar .
 
 echo "Removing old jar from plugins dir and placing new"
 rm $rootdir/../mcserver/craftbukkit/plugins/SwiftApi.jar
-mv SwiftApi.jar $rootdir/../mcserver/craftbukkit/plugins/SwiftApi.jar
+cp SwiftApi.jar $rootdir/../mcserver/craftbukkit/plugins/SwiftApi.jar
+cp SwiftApi.jar $rootdir/../SwiftApiServerHealth/lib/SwiftApi.jar
+rm SwiftApi.jar

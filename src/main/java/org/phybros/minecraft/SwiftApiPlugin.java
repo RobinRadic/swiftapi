@@ -5,6 +5,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 import org.phybros.minecraft.api.Api;
+import org.phybros.minecraft.commands.CommandHandler;
+import org.phybros.minecraft.commands.SwiftCommand;
+import org.phybros.minecraft.commands.SwiftExtensionsCommand;
+import org.phybros.minecraft.commands.SwiftInfoCommand;
 import org.phybros.minecraft.extensions.ExtensionBag;
 import org.phybros.thrift.ConsoleLine;
 
@@ -29,7 +33,7 @@ public class SwiftApiPlugin extends JavaPlugin {
 			getLogger().severe("Exception initializing stats: " + e.getMessage());			
 		}
 
-        Api.extensions = ExtensionBag.getInstance();
+        Api.init(this);
 
 		try {
 			consoleBuffer = new ArrayList<>();
