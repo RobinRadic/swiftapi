@@ -14,6 +14,7 @@ Check the [SwiftApi](https://bitbucket.org/phybros/swiftapi) page for all inform
 ### Extending SwiftApi
 
 SwiftApi provides several classes to simplefy the creation oof extensions. The general gist is:
+
 - `org.phybros.minecraft.extensions.SwiftExtension` is an abstract class extending JavaPlugin. It provides several improvements to make extending a piece of cake.
 - `org.phybros.minecraft.Api` provides several static methods that do certain stuff you can invoke from anywhere in your code.
 - `org.phybors.commands.ICommand` is the interface used to internally register commands, so you can easily create and register commands in the swift namespace.
@@ -52,6 +53,7 @@ class SwiftApiVaultExtension implements SwiftApiExtension {
 ```
 
 Notes:
+
 - the config yamls will automaticly create on first run, load on enable and save on disable.
 - the handlers that extend the SwiftApi need to have a associated thrift file. 
 
