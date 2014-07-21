@@ -1,27 +1,25 @@
-package org.phybros.minecraft.utils;
+package org.phybros.minecraft.configuration;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
 
 import java.io.*;
 
 /**
  * @todo make this a class that every extension can use to easily register their yml files
  */
-public class Configuration2 {
+public class Configuration extends YamlConfiguration {
 
     private File configFile;
-    private FileConfiguration config;
-
-
     private JavaPlugin plugin;
+    private String fileName;
 
-    public Configuration2(JavaPlugin plugin){
+    public Configuration(JavaPlugin plugin, String fileName){
         this.plugin = plugin;
+        this.fileName = fileName;
 
-        configFile = new File(plugin.getDataFolder(), "config.yml");
-
+        configFile = new File(plugin.getDataFolder(), fileName);
 
         try {
             firstRun();
@@ -30,16 +28,11 @@ public class Configuration2 {
             e.printStackTrace();
         }
 
-        config = new YamlConfiguration();
-
-
     }
-
 
     public void load() {
         try {
-            config.load(configFile);
-
+            super.load(configFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,28 +40,24 @@ public class Configuration2 {
 
     public void save() {
         try {
-            config.save(configFile);
+            super.save(configFile);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    public FileConfiguration getConfig(){
-
-        return config;
+    public File getConfigFile(){
+        return configFile;
     }
 
+    public String getFileName() { return fileName; }
 
-    public Object get(String path){
-        return config.get(path);
-    }
 
     private void firstRun() throws Exception {
         if(!configFile.exists()){
             configFile.getParentFile().mkdirs();
-            copy(plugin.getResource("config.yml"), configFile);
+            copy(plugin.getResource(fileName), configFile);
         }
 
 

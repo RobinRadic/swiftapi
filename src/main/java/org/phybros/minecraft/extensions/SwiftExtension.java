@@ -4,18 +4,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import org.phybros.minecraft.Api;
 import org.phybros.minecraft.SwiftApiPlugin;
-import org.phybros.minecraft.utils.Configuration;
-import org.phybros.minecraft.utils.ConfigurationFactory;
+import org.phybros.minecraft.commands.ICommand;
+import org.phybros.minecraft.configuration.Configuration;
+import org.phybros.minecraft.configuration.ConfigurationFactory;
+
+import java.util.HashMap;
 
 abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExtension {
 
     protected String[] yamls = null;
 
-    private Configuration[] configFiles = null;
+    private HashMap<String, Configuration> config = null;
 
-    public Configuration config(String ymlFileName)
+    public Configuration config(String fileName)
     {
-        return new Configuration(this, ymlFileName); // @todo should work with factory
+        return config.get(fileName);
     }
 
     /**
@@ -31,25 +34,48 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
     public void disable() {
     }
 
+    public final void registerCommand(String name, ICommand command) {
+        Api.registerCommand(name, command);
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public final void onEnable() {
 
+        SwiftApiPlugin.extensions.add(this);
+
         if(yamls.length > 0) {
-            ConfigurationFactory instance = ConfigurationFactory.getInstance();
-            instance.create(this, yamls);
+            ConfigurationFactory factory = ConfigurationFactory.getInstance();
+
+            for(String fileName : yamls) {
+                if( ! factory.has(this, fileName) ) {
+                    factory.add(this, fileName);
+                }
+
+                if( ! config.containsKey(fileName) ) {
+                    Configuration configFile = factory.get(this, fileName);
+                    configFile.load();
+                    config.put(fileName, configFile);
+                }
+            }
         }
 
-        SwiftApiPlugin.extensions.add(this);
         this.enable();
         Api.debug("Extension:onEnable", this.name());
     }
 
     @Override
     public final void onDisable() {
+
+        if(config.size() > 0) {
+            for(String configFile : config.keySet()) {
+                config.get(configFile).save();
+            }
+        }
+
         SwiftApiPlugin.extensions.remove(name());
         this.disable();
-        Api.console("Extension:onDisable: ", this.name());
+        Api.debug("Extension:onDisable: ", this.name());
     }
 
 

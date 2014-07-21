@@ -1,11 +1,42 @@
 package org.phybros.minecraft;
 
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.PluginManager;
+import org.phybros.minecraft.commands.CommandHandler;
 import org.phybros.minecraft.commands.ICommand;
+import org.phybros.minecraft.extensions.ExtensionBag;
+import org.phybros.minecraft.configuration.Configuration;
+import org.phybros.thrift.ConsoleLine;
+
+import java.util.List;
 
 
 public class Api {
     protected Api() {}
+
+    public static SwiftApiPlugin plugin() {
+        return SwiftApiPlugin.plugin;
+    }
+
+    public static PluginManager pluginManager() {
+        return SwiftApiPlugin.pluginManager;
+    }
+
+    public static Configuration config() {
+        return SwiftApiPlugin.config;
+    }
+
+    public static ExtensionBag extensions() {
+        return SwiftApiPlugin.extensions;
+    }
+
+    public static CommandHandler commands() {
+        return SwiftApiPlugin.commands;
+    }
+
+    public static List<ConsoleLine> consoleLinex() {
+        return SwiftApiPlugin.consoleBuffer;
+    }
 
     public static void registerCommand(String name, ICommand command) {
         SwiftApiPlugin.commands.register(name, command);

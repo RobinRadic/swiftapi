@@ -10,7 +10,7 @@ import org.phybros.minecraft.commands.SwiftCommand;
 import org.phybros.minecraft.commands.SwiftExtensionsCommand;
 import org.phybros.minecraft.commands.SwiftInfoCommand;
 import org.phybros.minecraft.extensions.ExtensionBag;
-import org.phybros.minecraft.utils.Configuration;
+import org.phybros.minecraft.configuration.Configuration;
 import org.phybros.thrift.ConsoleLine;
 
 
@@ -22,6 +22,7 @@ public class SwiftApiPlugin extends JavaPlugin implements Listener {
 
     public static SwiftApiPlugin plugin;
     public static PluginManager pluginManager;
+    public static Configuration config;
 
     public static final ExtensionBag extensions = new ExtensionBag();
     public static final CommandHandler commands = new CommandHandler();
