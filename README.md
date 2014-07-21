@@ -31,7 +31,7 @@ import org.yourname.extension.vault.commands.SwiftVaultCommand;
 class SwiftApiVaultExtension implements SwiftApiExtension {
 
     // overiding this array will allow easy yamlconfig access. put in the name of the yml files in resources
-    protected String[] yamls = ['config', 'banks', 'cash']
+    protected String[] yamls = ["config", "banks', "cash"]
     
     // Note that we are not using onEnable and onDisable, instead use enable and disable
     public void enable() {  
