@@ -96,3 +96,7 @@ public class SwiftInfoCommand implements ICommand
     }
 }
 ```
+
+
+##### License
+GNU General Public License version 3 (GPLv3)
