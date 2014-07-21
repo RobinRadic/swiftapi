@@ -24,6 +24,9 @@ public class ExtensionBag  {
         Api.debug("Api:extensions:add", extension.name() + " " + extension.getVersion());
     }
 
+    public HashMap<String, SwiftExtension> all() {
+        return extensions;
+    }
 
     public SwiftExtension get(String name) throws ExtensionNotExistsException {
         if(has(name)) {

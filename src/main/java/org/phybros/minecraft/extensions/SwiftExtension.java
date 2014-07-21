@@ -1,5 +1,6 @@
 package org.phybros.minecraft.extensions;
 
+import org.apache.thrift.TProcessor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import org.phybros.minecraft.Api;
@@ -8,13 +9,16 @@ import org.phybros.minecraft.commands.ICommand;
 import org.phybros.minecraft.configuration.Configuration;
 import org.phybros.minecraft.configuration.ConfigurationFactory;
 
+import java.net.URLClassLoader;
 import java.util.HashMap;
 
 abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExtension {
 
-    protected String[] yamls = null;
+    private HashMap<String, ISwiftApiHandlerExtension> apiHandlers;
 
-    private HashMap<String, Configuration> config = null;
+    protected String[] yamls = {};
+
+    private HashMap<String, Configuration> config = new HashMap<String, Configuration>();
 
     public Configuration config(String fileName)
     {
@@ -34,6 +38,23 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
     public void disable() {
     }
 
+
+
+    public final void registerApiHandler(String thriftServiceClassName, ISwiftApiHandlerExtension handler)
+    {
+        if( ! apiHandlers.containsKey(thriftServiceClassName) ) {
+            apiHandlers.put(thriftServiceClassName, handler);
+        }
+    }
+
+    public boolean hasRegisteredApiHandlers() {
+        return apiHandlers.size() > 0;
+    }
+
+    public HashMap<String, ISwiftApiHandlerExtension> getRegisteredApiHandlers() {
+        return apiHandlers;
+    }
+
     public final void registerCommand(String name, ICommand command) {
         Api.registerCommand(name, command);
     }
@@ -41,6 +62,8 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
     @Override
     @SuppressWarnings("unchecked")
     public final void onEnable() {
+
+        apiHandlers  = new HashMap<String, ISwiftApiHandlerExtension>();
 
         SwiftApiPlugin.extensions.add(this);
 

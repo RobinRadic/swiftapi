@@ -63,8 +63,8 @@ public class Api {
 
     public static void debug(String name, String value)
     {
-        System.out.print(SwiftApiPlugin.config.get("debug"));
-        console("configetdebug", SwiftApiPlugin.config.get("debug").toString());
+        //System.out.print(SwiftApiPlugin.config.get("debug"));
+        //console("configetdebug", SwiftApiPlugin.config.get("debug").toString());
         if(true == true) {
             SwiftApiPlugin.plugin.getServer().getConsoleSender().sendMessage(
                     ChatColor.GOLD + "[" + ChatColor.GREEN + "SwiftApi:Debug" + ChatColor.GOLD + "]" +

@@ -28,7 +28,7 @@ public class SwiftApiPlugin extends JavaPlugin implements Listener {
     public static final CommandHandler commands = new CommandHandler();
     public static final List<ConsoleLine> consoleBuffer = new ArrayList<>();
 
-    private SwiftServer server;
+    public static TestServer server;
 
 	@Override
 	public void onEnable() {
@@ -56,7 +56,7 @@ public class SwiftApiPlugin extends JavaPlugin implements Listener {
             SwiftFilter filter = new SwiftFilter(this);
             ((org.apache.logging.log4j.core.Logger) LogManager.getRootLogger()).addFilter(filter);
 
-            server = new SwiftServer(this);
+            server = new TestServer(this);
 
 			getLogger().info("SwiftApi was enabled.");
 		} catch (Exception e) {

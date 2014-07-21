@@ -35,6 +35,8 @@
 			<groupId>org.apache.thrift</groupId>
 			<artifactId>libthrift</artifactId>
 			<version>0.9.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/libthrift-0.9.1.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
