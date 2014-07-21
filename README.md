@@ -13,6 +13,7 @@ Check the [SwiftApi](https://bitbucket.org/phybros/swiftapi) page for all inform
 
 ### Extending SwiftApi
 
+For a working example [check out the swiftapi-vault](https://bitbucket.org/robinradic/swiftapi-vault) extension.
 SwiftApi provides several classes to simplefy the creation oof extensions. The general gist is:
 
 - `org.phybros.minecraft.extensions.SwiftExtension` is an abstract class extending JavaPlugin. It provides several improvements to make extending a piece of cake.
@@ -31,7 +32,7 @@ import org.yourname.extension.vault.commands.SwiftVaultCommand;
 class SwiftApiVaultExtension implements SwiftApiExtension {
 
     // overiding this array will allow easy yamlconfig access. put in the name of the yml files in resources
-    protected String[] yamls = ["config", "banks', "cash"];
+    protected String[] yamls = ["config", "banks", "cash"];
     
     // Note that we are not using onEnable and onDisable, instead use enable and disable
     public void enable() {  
