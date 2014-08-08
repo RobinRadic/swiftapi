@@ -31,17 +31,17 @@ public class SwiftFilter implements Filter {
     }
 
     @Override
-    public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, String s, Object... objects) {
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object... objects) {
         return null;
     }
 
     @Override
-    public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, Object o, Throwable throwable) {
+    public Result filter(Logger logger, Level level, Marker marker, Object o, Throwable throwable) {
         return null;
     }
 
     @Override
-    public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, Message message, Throwable throwable) {
+    public Result filter(Logger logger, Level level, Marker marker, Message message, Throwable throwable) {
         return null;
     }
 

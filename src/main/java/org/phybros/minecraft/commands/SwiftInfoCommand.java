@@ -9,7 +9,7 @@ public class SwiftInfoCommand implements ICommand
 {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args, SwiftApiPlugin plugin) {
-        Api.console("swift", "info-command");
+        Api.message(sender, "Command", "info not yet implemented");
         return false;
     }
 }

@@ -5,17 +5,12 @@ import org.bukkit.command.CommandSender;
 import org.phybros.minecraft.Api;
 import org.phybros.minecraft.SwiftApiPlugin;
 
-public class SwiftCommand implements ICommand
+public class SwiftStopCommand implements ICommand
 {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args, SwiftApiPlugin plugin) {
-        Api.message(sender, "Available commands: ");
-        for (String key : SwiftApiPlugin.commands.getMap().keySet()) {
-            Api.message(sender, key);
-        }
-
+        SwiftApiPlugin.server.stopServer(sender);
+        Api.message(sender, "SwiftApi Server stopped");
         return false;
     }
-
-
 }

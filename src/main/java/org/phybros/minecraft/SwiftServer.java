@@ -3,14 +3,19 @@ package org.phybros.minecraft;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.thrift.TException;
+import org.apache.thrift.TMultiplexedProcessor;
+import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TServer;
+import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
-import org.apache.thrift.transport.TNonblockingServerSocket;
-import org.apache.thrift.transport.TNonblockingServerTransport;
+import org.apache.thrift.transport.*;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.phybros.minecraft.converters.BukkitConverter;
 import org.phybros.minecraft.converters.ThriftConverter;
+import org.phybros.minecraft.extensions.SwiftApiHandler;
+import org.phybros.minecraft.extensions.SwiftExtension;
 import org.phybros.thrift.*;
 
 import java.io.*;
@@ -30,13 +35,14 @@ import java.util.zip.ZipInputStream;
 
 public class SwiftServer {
 
-    public class SwiftApiHandler implements SwiftApi.Iface {
 
-        private String stagingPath = plugin.getDataFolder().getPath()
+    public class ApiHandler extends SwiftApiHandler implements SwiftApi.Iface {
+
+        private String stagingPath = SwiftApiPlugin.plugin.getDataFolder().getPath()
                 + File.separator + "stage";
-        private String oldPluginsPath = plugin.getDataFolder().getPath()
+        private String oldPluginsPath = SwiftApiPlugin.plugin.getDataFolder().getPath()
                 + File.separator + "oldPlugins";
-        private String pluginsPath = plugin.getDataFolder().getParent();
+        private String pluginsPath = SwiftApiPlugin.plugin.getDataFolder().getParent();
 
         /**
          * Add an item to a player's inventory
@@ -45,9 +51,9 @@ public class SwiftServer {
          * @param playerName The name of the player
          * @param item       The item to add, in the form of an ItemStack
          * @return boolean true on success, false on failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws EDataException        If the player was not found
-         * @throws org.apache.thrift.TException If something went wrong with Thrift
+         * @throws org.phybros.thrift.EAuthException If the method call was not correctly authenticated
+         * @throws org.phybros.thrift.EDataException If the player was not found
+         * @throws org.apache.thrift.TException      If something went wrong with Thrift
          * @since 1.5
          */
         @Override
@@ -55,15 +61,16 @@ public class SwiftServer {
             logCall("addItemToInventory");
             authenticate(authString, "addItemToInventory");
 
-            OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(playerName);
+            OfflinePlayer offPl = SwiftApiPlugin.plugin.getServer().getOfflinePlayer(playerName);
 
             if (offPl == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), playerName);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), playerName
+                );
                 throw e;
             }
 
@@ -75,9 +82,10 @@ public class SwiftServer {
 
                 return result.isEmpty();
             } catch (Exception e) {
-                plugin.getLogger().severe(
+                SwiftApiPlugin.plugin.getLogger().severe(
                         e.getClass().getName() + " in addItemToInventory: "
-                                + e.getMessage());
+                                + e.getMessage()
+                );
                 return false;
             }
         }
@@ -89,25 +97,26 @@ public class SwiftServer {
          * @param authString The authentication hash
          * @param name       The name of the player to add to the whitelist
          * @return boolean true on success, false on failure
-         * @throws EAuthException               If the method call was not correctly authenticated
-         * @throws EDataException               If the player was not found
-         * @throws org.apache.thrift.TException If something went wrong with Thrift
+         * @throws org.phybros.thrift.EAuthException If the method call was not correctly authenticated
+         * @throws EDataException                    If the player was not found
+         * @throws org.apache.thrift.TException      If something went wrong with Thrift
          */
         @Override
         public boolean addToWhitelist(String authString, String name)
-                throws  TException {
+                throws TException {
             logCall("addToWhitelist");
             authenticate(authString, "addToWhitelist");
 
-            OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+            OfflinePlayer offPl = SwiftApiPlugin.plugin.getServer().getOfflinePlayer(name);
 
             if (offPl == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), name
+                );
                 throw e;
             }
 
@@ -115,12 +124,13 @@ public class SwiftServer {
                 boolean wasWhitelisted = offPl.isWhitelisted();
                 if (!wasWhitelisted) {
                     offPl.setWhitelisted(true);
-                    plugin.getLogger().info(
+                    SwiftApiPlugin.plugin.getLogger().info(
                             "Whitelisted player " + offPl.getName());
                 } else {
-                    plugin.getLogger().info(
+                    SwiftApiPlugin.plugin.getLogger().info(
                             "Player " + offPl.getName()
-                                    + " is already whitelisted");
+                                    + " is already whitelisted"
+                    );
                 }
                 return true;
             } catch (Exception e) {
@@ -134,8 +144,8 @@ public class SwiftServer {
          * @param authString The authentication hash
          * @param message    The message to send
          * @return boolean true on success false on serious failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws org.apache.thrift.TException If something went wrong with Thrift
+         * @throws org.phybros.thrift.EAuthException If the method call was not correctly authenticated
+         * @throws org.apache.thrift.TException      If something went wrong with Thrift
          */
         @Override
         public boolean announce(String authString, String message)
@@ -145,7 +155,7 @@ public class SwiftServer {
             String msgWithColor = ChatColor.translateAlternateColorCodes('&',
                     message);
             try {
-                plugin.getServer().broadcastMessage(msgWithColor);
+                SwiftApiPlugin.plugin.getServer().broadcastMessage(msgWithColor);
                 return true;
             } catch (Exception e) {
                 return false;
@@ -154,30 +164,30 @@ public class SwiftServer {
 
 		/*
          * code to be reused
-		 * 
+		 *
 		 * @Override public boolean copyPlugin(String authString, String
 		 * fileName) throws  TException {
 		 * logCall("copyPlugin"); authenticate(authString, "copyPlugin");
-		 * 
+		 *
 		 * File pluginToCopy = new File(stagingPath + "/" + fileName); if
-		 * (!pluginToCopy.exists()) { plugin.getLogger().severe(
-		 * plugin.getConfig().getString( "errorMessages.fileNotFound"));
+		 * (!pluginToCopy.exists()) { SwiftApiPlugin.plugin.getLogger().severe(
+		 * SwiftApiPlugin.plugin.getConfig().getString( "errorMessages.fileNotFound"));
 		 * EDataException fileNotFoundEx = new EDataException();
 		 * fileNotFoundEx.code = ErrorCode.FILE_ERROR;
-		 * fileNotFoundEx.errorMessage = plugin.getConfig().getString(
+		 * fileNotFoundEx.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
 		 * "errorMessages.fileNotFound"); throw fileNotFoundEx; }
-		 * 
+		 *
 		 * try { String newPluginPath = pluginsPath + "/" +
 		 * pluginToCopy.getName();
-		 * 
-		 * plugin.getLogger().info( "Copying file " + pluginToCopy + " to " +
+		 *
+		 * SwiftApiPlugin.plugin.getLogger().info( "Copying file " + pluginToCopy + " to " +
 		 * newPluginPath + "..."); FileUtils.copyFile(pluginToCopy, new
-		 * File(newPluginPath)); plugin.getLogger().info("File copied."); }
-		 * catch (IOException e) { plugin.getLogger().severe(e.getMessage());
+		 * File(newPluginPath)); SwiftApiPlugin.plugin.getLogger().info("File copied."); }
+		 * catch (IOException e) { SwiftApiPlugin.plugin.getLogger().severe(e.getMessage());
 		 * EDataException ioEx = new EDataException(); ioEx.code =
 		 * ErrorCode.FILE_ERROR; ioEx.errorMessage = ioEx.getMessage(); throw
 		 * ioEx; }
-		 * 
+		 *
 		 * return false; }
 		 */
 
@@ -188,31 +198,32 @@ public class SwiftServer {
          * @param authString The authentication hash
          * @param name       The name of the player to ban
          * @return boolean true on success false on failure
-         * @throws EAuthException               If the method call was not correctly authenticated
-         * @throws EDataException               If the player was not found
-         * @throws org.apache.thrift.TException If something went wrong with Thrift
+         * @throws org.phybros.thrift.EAuthException If the method call was not correctly authenticated
+         * @throws EDataException                    If the player was not found
+         * @throws org.apache.thrift.TException      If something went wrong with Thrift
          */
         @Override
         public boolean ban(String authString, String name)
-                throws  TException {
+                throws TException {
             logCall("ban");
             authenticate(authString, "ban");
 
-            OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+            OfflinePlayer offPl = SwiftApiPlugin.plugin.getServer().getOfflinePlayer(name);
 
             if (offPl == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), name
+                );
                 throw e;
             }
 
             try {
                 offPl.setBanned(true);
-                plugin.getLogger().info("Banned player " + offPl.getName());
+                SwiftApiPlugin.plugin.getLogger().info("Banned player " + offPl.getName());
                 return true;
             } catch (Exception e) {
                 return false;
@@ -220,51 +231,51 @@ public class SwiftServer {
         }
 
 		/*
-		 * code to be reused
-		 * 
+         * code to be reused
+		 *
 		 * @Override public boolean downloadFile(String authString, String url,
 		 * String md5) throws  TException {
 		 * logCall("downloadFile"); authenticate(authString, "downloadFile");
-		 * 
+		 *
 		 * // this will create the holding area if it doesn't exist File
 		 * holdingArea = new File(stagingPath);
-		 * 
-		 * if (!holdingArea.exists()) { plugin.getLogger().info(
+		 *
+		 * if (!holdingArea.exists()) { SwiftApiPlugin.plugin.getLogger().info(
 		 * "Staging directory doesn't exist. Creating dir: " + stagingPath); //
 		 * try and create the directory if (!holdingArea.mkdir()) {
-		 * plugin.getLogger().severe( "Could not create staging directory!");
+		 * SwiftApiPlugin.plugin.getLogger().severe( "Could not create staging directory!");
 		 * EDataException e = new EDataException(); e.code =
-		 * ErrorCode.FILE_ERROR; e.errorMessage = plugin.getConfig().getString(
+		 * ErrorCode.FILE_ERROR; e.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
 		 * "errorMessages.createStagingError"); throw e; } }
-		 * 
+		 *
 		 * // at this point, we can assume that "stage" exists...in theory try {
-		 * plugin.getLogger().info( "Downloading file from: " + url + " ...");
+		 * SwiftApiPlugin.plugin.getLogger().info( "Downloading file from: " + url + " ...");
 		 * URL dl = new URL(url); FileUtils.copyURLToFile(dl, new
 		 * File(stagingPath + "/" + FilenameUtils.getName(dl.getPath())), 5000,
 		 * 60000);
-		 * 
+		 *
 		 * File downloadedFile = new File(stagingPath + "/" +
 		 * FilenameUtils.getName(dl.getPath()));
-		 * plugin.getLogger().info("Download complete. Verifying md5.");
-		 * 
+		 * SwiftApiPlugin.plugin.getLogger().info("Download complete. Verifying md5.");
+		 *
 		 * String calculatedHash = byteToString(createChecksum(downloadedFile
-		 * .getPath())); plugin.getLogger().info("Calculated hash: " +
+		 * .getPath())); SwiftApiPlugin.plugin.getLogger().info("Calculated hash: " +
 		 * calculatedHash);
-		 * 
+		 *
 		 * if (md5.equalsIgnoreCase(calculatedHash)) {
-		 * plugin.getLogger().info("Hashes match"); return true; } else {
-		 * plugin.getLogger() .severe(
+		 * SwiftApiPlugin.plugin.getLogger().info("Hashes match"); return true; } else {
+		 * SwiftApiPlugin.plugin.getLogger() .severe(
 		 * "Downloaded file hash does not match provided hash. Deleting file.");
 		 * downloadedFile.delete(); return false; } } catch
 		 * (MalformedURLException e) {
-		 * plugin.getLogger().severe(e.getMessage()); EDataException e1 = new
+		 * SwiftApiPlugin.plugin.getLogger().severe(e.getMessage()); EDataException e1 = new
 		 * EDataException(); e1.code = ErrorCode.DOWNLOAD_ERROR; e1.errorMessage
-		 * = plugin.getConfig().getString( "errorMessages.malformedUrl"); throw
+		 * = SwiftApiPlugin.plugin.getConfig().getString( "errorMessages.malformedUrl"); throw
 		 * e1; } catch (IOException e) {
-		 * plugin.getLogger().severe(e.getMessage()); EDataException e1 = new
+		 * SwiftApiPlugin.plugin.getLogger().severe(e.getMessage()); EDataException e1 = new
 		 * EDataException(); e1.code = ErrorCode.FILE_ERROR; e1.errorMessage =
 		 * e.getMessage(); throw e1; } catch (Exception e) {
-		 * plugin.getLogger().severe(e.getMessage()); return false; } }
+		 * SwiftApiPlugin.plugin.getLogger().severe(e.getMessage()); return false; } }
 		 */
 
         /**
@@ -273,8 +284,8 @@ public class SwiftServer {
          * @param authString The authentication hash
          * @param ip         The IP address to ban
          * @return boolean true on success false on failure
-         * @throws EAuthException               If the method call was not correctly authenticated
-         * @throws org.apache.thrift.TException If something went wrong with Thrift
+         * @throws org.phybros.thrift.EAuthException If the method call was not correctly authenticated
+         * @throws org.apache.thrift.TException      If something went wrong with Thrift
          */
         @Override
         public boolean banIp(String authString, String ip)
@@ -283,8 +294,8 @@ public class SwiftServer {
             authenticate(authString, "banIp");
 
             try {
-                plugin.getServer().banIP(ip);
-                plugin.getLogger().info("Banned IP address " + ip);
+                SwiftApiPlugin.plugin.getServer().banIP(ip);
+                SwiftApiPlugin.plugin.getLogger().info("Banned IP address " + ip);
                 return true;
             } catch (Exception e) {
                 return false;
@@ -299,25 +310,26 @@ public class SwiftServer {
          * @param name         The player to deop
          * @param notifyPlayer Whether or not to tell the player that they were deopped
          * @return String the current bukkit version
-         * @throws TException     If something thrifty went wrong
-         * @throws EAuthException If the method call was not correctly authenticated
-         * @throws EDataException If the Player was not found
+         * @throws TException                        If something thrifty went wrong
+         * @throws org.phybros.thrift.EAuthException If the method call was not correctly authenticated
+         * @throws EDataException                    If the Player was not found
          */
         @Override
         public boolean deOp(String authString, String name, boolean notifyPlayer)
-                throws  TException {
+                throws TException {
             logCall("deOp");
             authenticate(authString, "deOp");
 
-            OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+            OfflinePlayer offPl = SwiftApiPlugin.plugin.getServer().getOfflinePlayer(name);
 
             if (offPl == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), name
+                );
                 throw e;
             }
 
@@ -326,8 +338,8 @@ public class SwiftServer {
                 offPl.setOp(false);
                 if (wasOp && notifyPlayer && offPl.isOnline()) {
                     offPl.getPlayer().sendMessage(
-                            plugin.getConfig().getString("messages.deOp"));
-                    plugin.getLogger().info("Deopped " + offPl.getName());
+                            SwiftApiPlugin.plugin.getConfig().getString("messages.deOp"));
+                    SwiftApiPlugin.plugin.getLogger().info("Deopped " + offPl.getName());
                 }
                 return true;
             } catch (Exception e) {
@@ -340,8 +352,8 @@ public class SwiftServer {
          *
          * @param authString The authentication hash
          * @return List<String> The banned IPs
-         * @throws TException            If something thrifty went wrong
-         * @throws EAuthException If the method call was not correctly authenticated
+         * @throws TException                        If something thrifty went wrong
+         * @throws org.phybros.thrift.EAuthException If the method call was not correctly authenticated
          */
         @Override
         public List<String> getBannedIps(String authString)
@@ -351,7 +363,7 @@ public class SwiftServer {
 
             List<String> bannedIps = new ArrayList<String>();
 
-            bannedIps = new ArrayList<String>(plugin.getServer().getIPBans());
+            bannedIps = new ArrayList<String>(SwiftApiPlugin.plugin.getServer().getIPBans());
             return bannedIps;
         }
 
@@ -360,8 +372,8 @@ public class SwiftServer {
          *
          * @param authString The authentication hash
          * @return List<OfflinePlayer> The banned players
-         * @throws TException            If something thrifty went wrong
-         * @throws EAuthException If the method call was not correctly authenticated
+         * @throws TException                        If something thrifty went wrong
+         * @throws org.phybros.thrift.EAuthException If the method call was not correctly authenticated
          */
         @Override
         public List<org.phybros.thrift.OfflinePlayer> getBannedPlayers(
@@ -372,7 +384,7 @@ public class SwiftServer {
             List<org.phybros.thrift.OfflinePlayer> bannedPlayers = new ArrayList<>();
 
             List<OfflinePlayer> bukkitPlayers = new ArrayList<>(
-                    plugin.getServer().getBannedPlayers());
+                    SwiftApiPlugin.plugin.getServer().getBannedPlayers());
 
             for (OfflinePlayer bukkitPlayer : bukkitPlayers) {
                 bannedPlayers.add(BukkitConverter
@@ -387,8 +399,8 @@ public class SwiftServer {
          *
          * @param authString The authentication hash
          * @return String the current bukkit version
-         * @throws TException     If something thrifty went wrong
-         * @throws EAuthException If the method call was not correctly authenticated
+         * @throws TException                        If something thrifty went wrong
+         * @throws org.phybros.thrift.EAuthException If the method call was not correctly authenticated
          */
         @Override
         public String getBukkitVersion(String authString)
@@ -396,7 +408,7 @@ public class SwiftServer {
             logCall("getBukkitVersion");
             authenticate(authString, "getBukkitVersion");
 
-            return plugin.getServer().getBukkitVersion();
+            return SwiftApiPlugin.plugin.getServer().getBukkitVersion();
         }
 
         /**
@@ -408,8 +420,8 @@ public class SwiftServer {
          *
          * @param authString The authentication hash
          * @return boolean true on success false on serious failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws org.apache.thrift.TException If something went wrong with Thrift
+         * @throws org.phybros.thrift.EAuthException If the method call was not correctly authenticated
+         * @throws org.apache.thrift.TException      If something went wrong with Thrift
          */
         @Override
         public List<ConsoleLine> getConsoleMessages(String authString,
@@ -420,7 +432,7 @@ public class SwiftServer {
 
             if (since > 0) {
                 List<ConsoleLine> lines = new ArrayList<>();
-                for (ConsoleLine c : SwiftApiPlugin.consoleBuffer) {
+                for (ConsoleLine c : SwiftApiPlugin.plugin.consoleBuffer) {
                     if (c.timestamp > since) {
                         lines.add(c);
                     }
@@ -429,7 +441,7 @@ public class SwiftServer {
                 return lines;
             }
 
-            return SwiftApiPlugin.consoleBuffer;
+            return SwiftApiPlugin.plugin.consoleBuffer;
         }
 
         /**
@@ -440,13 +452,13 @@ public class SwiftServer {
          *                   root. This method cannot get the contents of any file
          *                   outside the server root.
          * @return string the contents of the file
-         * @throws TException            If something thrifty went wrong
+         * @throws TException     If something thrifty went wrong
          * @throws EAuthException If the method call was not correctly authenticated
          * @throws EDataException If the file could not be read or does not exist
          */
         @Override
         public String getFileContents(String authString, String fileName)
-                throws  TException {
+                throws TException {
             logCall("getFileContents");
             authenticate(authString, "getFileContents");
 
@@ -465,21 +477,21 @@ public class SwiftServer {
                     // throw an EDE if it doesn't exist
                     EDataException d = new EDataException();
                     d.code = ErrorCode.NOT_FOUND;
-                    d.errorMessage = plugin.getConfig().getString(
+                    d.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.fileNotFound");
                     throw d;
                 } else if (!f.canRead()) {
                     // throw an EDE if it doesn't exist
                     EDataException d = new EDataException();
                     d.code = ErrorCode.NO_READ;
-                    d.errorMessage = plugin.getConfig().getString(
+                    d.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.noReadAccess");
                     throw d;
                 } else if (fileIsBinary(fileName)) {
                     // throw an EDE if the file is binary
                     EDataException d = new EDataException();
                     d.code = ErrorCode.NOT_FOUND;
-                    d.errorMessage = plugin.getConfig().getString(
+                    d.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.fileIsBinary");
                     throw d;
                 }
@@ -501,11 +513,11 @@ public class SwiftServer {
                 // throw an EDE if it doesn't exist
                 EDataException d = new EDataException();
                 d.code = ErrorCode.NOT_FOUND;
-                d.errorMessage = plugin.getConfig().getString(
+                d.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                         "errorMessages.fileNotFound");
                 throw d;
             } catch (IOException ioe) {
-                plugin.getLogger().severe(ioe.getMessage());
+                SwiftApiPlugin.plugin.getLogger().severe(ioe.getMessage());
                 EDataException e1 = new EDataException();
                 e1.code = ErrorCode.FILE_ERROR;
                 e1.errorMessage = ioe.getMessage();
@@ -539,15 +551,16 @@ public class SwiftServer {
             logCall("getOfflinePlayer");
             authenticate(authString, "getOfflinePlayer");
 
-            OfflinePlayer p = plugin.getServer().getOfflinePlayer(name);
+            OfflinePlayer p = SwiftApiPlugin.plugin.getServer().getOfflinePlayer(name);
 
             if (p == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.offlinePlayerNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.offlinePlayerNotFound"), name
+                );
                 throw e;
             }
 
@@ -570,7 +583,7 @@ public class SwiftServer {
             authenticate(authString, "getOfflinePlayers");
 
             List<org.phybros.thrift.OfflinePlayer> result = new ArrayList<>();
-            OfflinePlayer[] players = plugin.getServer().getOfflinePlayers();
+            OfflinePlayer[] players = SwiftApiPlugin.plugin.getServer().getOfflinePlayers();
 
             for (OfflinePlayer p : players) {
                 result.add(BukkitConverter.convertBukkitOfflinePlayer(p));
@@ -585,7 +598,7 @@ public class SwiftServer {
          * @param authString The authentication hash
          * @return List<OfflinePlayer> A list of all players who are opped on
          * this server
-         * @throws TException            If something thrifty went wrong
+         * @throws TException     If something thrifty went wrong
          * @throws EAuthException If the method call was not correctly authenticated
          */
         @Override
@@ -596,7 +609,7 @@ public class SwiftServer {
 
             List<org.phybros.thrift.OfflinePlayer> ops = new ArrayList<>();
 
-            List<OfflinePlayer> bukkitPlayers = new ArrayList<>(plugin.getServer().getOperators());
+            List<OfflinePlayer> bukkitPlayers = new ArrayList<>(SwiftApiPlugin.plugin.getServer().getOperators());
 
             for (OfflinePlayer bukkitPlayer : bukkitPlayers) {
                 ops.add(BukkitConverter.convertBukkitOfflinePlayer(bukkitPlayer));
@@ -620,18 +633,19 @@ public class SwiftServer {
          */
         @Override
         public Player getPlayer(String authString, String name)
-                throws  TException {
+                throws TException {
             logCall("getPlayer");
             authenticate(authString, "getPlayer");
-            org.bukkit.entity.Player p = plugin.getServer().getPlayer(name);
+            org.bukkit.entity.Player p = SwiftApiPlugin.plugin.getServer().getPlayer(name);
 
             if (p == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), name
+                );
                 throw e;
             }
 
@@ -653,7 +667,7 @@ public class SwiftServer {
             authenticate(authString, "getPlayers");
             List<Player> players = new ArrayList<>();
 
-            for (org.bukkit.entity.Player bPlayer : plugin.getServer()
+            for (org.bukkit.entity.Player bPlayer : SwiftApiPlugin.plugin.getServer()
                     .getOnlinePlayers()) {
                 players.add(BukkitConverter.convertBukkitPlayer(bPlayer));
             }
@@ -677,16 +691,17 @@ public class SwiftServer {
             logCall("getPlugin");
             authenticate(authString, "getPlugin");
 
-            org.bukkit.plugin.Plugin p = plugin.getServer().getPluginManager()
+            org.bukkit.plugin.Plugin p = SwiftApiPlugin.plugin.getServer().getPluginManager()
                     .getPlugin(name);
 
             if (p == null) {
-                plugin.getLogger().info("Plugin not found");
+                SwiftApiPlugin.plugin.getLogger().info("Plugin not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.pluginNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.pluginNotFound"), name
+                );
                 throw e;
             }
 
@@ -709,7 +724,7 @@ public class SwiftServer {
 
             List<Plugin> serverPlugins = new ArrayList<>();
 
-            for (org.bukkit.plugin.Plugin p : plugin.getServer()
+            for (org.bukkit.plugin.Plugin p : SwiftApiPlugin.plugin.getServer()
                     .getPluginManager().getPlugins()) {
 
                 serverPlugins.add(BukkitConverter.convertBukkitPlugin(p));
@@ -725,7 +740,7 @@ public class SwiftServer {
          *
          * @param authString The authentication hash
          * @return Server An object containing server information
-         * @throws TException            If something thrifty went wrong
+         * @throws TException     If something thrifty went wrong
          * @throws EAuthException If the method call was not correctly authenticated
          */
         @Override
@@ -734,7 +749,7 @@ public class SwiftServer {
             authenticate(authString, "getServer");
 
             Server s = new Server();
-            org.bukkit.Server server = plugin.getServer();
+            org.bukkit.Server server = SwiftApiPlugin.plugin.getServer();
 
             s.allowEnd = server.getAllowEnd();
             s.allowFlight = server.getAllowFlight();
@@ -786,7 +801,7 @@ public class SwiftServer {
 
             // get CPUs
             int cpus = Runtime.getRuntime().availableProcessors();
-            s.health.add(new ServerHealth("cpus", String.format(plugin
+            s.health.add(new ServerHealth("cpus", String.format(SwiftApiPlugin.plugin
                     .getConfig().getString("messages.cpus"), cpus), String
                     .valueOf(cpus)));
 
@@ -801,25 +816,29 @@ public class SwiftServer {
             long seconds = TimeUnit.SECONDS.toSeconds(uptime)
                     - (TimeUnit.SECONDS.toMinutes(uptime) * 60);
 
-            s.health.add(new ServerHealth("uptime", String.format(plugin
+            s.health.add(new ServerHealth("uptime", String.format(SwiftApiPlugin.plugin
                             .getConfig().getString("messages.uptime"), hours, minutes,
-                    seconds), String.valueOf(uptime)));
+                    seconds
+            ), String.valueOf(uptime)));
 
             // get memMax
             long memMax = Runtime.getRuntime().maxMemory() / 1024;
-            s.health.add(new ServerHealth("memMax", String.format(plugin
+            s.health.add(new ServerHealth("memMax", String.format(SwiftApiPlugin.plugin
                             .getConfig().getString("messages.memMax"),
-                    (int) (memMax / 1024)), String.valueOf(memMax)));
+                    (int) (memMax / 1024)
+            ), String.valueOf(memMax)));
             // get memTotal
             long memTotal = Runtime.getRuntime().totalMemory() / 1024;
-            s.health.add(new ServerHealth("memTotal", String.format(plugin
+            s.health.add(new ServerHealth("memTotal", String.format(SwiftApiPlugin.plugin
                             .getConfig().getString("messages.memTotal"),
-                    (int) (memTotal / 1024)), String.valueOf(memTotal)));
+                    (int) (memTotal / 1024)
+            ), String.valueOf(memTotal)));
             // get memFree
             long memFree = Runtime.getRuntime().freeMemory() / 1024;
-            s.health.add(new ServerHealth("memFree", String.format(plugin
+            s.health.add(new ServerHealth("memFree", String.format(SwiftApiPlugin.plugin
                             .getConfig().getString("messages.memFree"),
-                    (int) (memFree / 1024)), String.valueOf(memFree)));
+                    (int) (memFree / 1024)
+            ), String.valueOf(memFree)));
 
             /**
              * Send the server back to the client
@@ -841,7 +860,7 @@ public class SwiftServer {
             logCall("getServerVersion");
             authenticate(authString, "getServerVersion");
 
-            return plugin.getServer().getVersion();
+            return SwiftApiPlugin.plugin.getServer().getVersion();
         }
 
         /**
@@ -849,7 +868,7 @@ public class SwiftServer {
          *
          * @param authString The authentication hash
          * @return List<OfflinePlayer> The players on the server's whitelist
-         * @throws TException            If something thrifty went wrong
+         * @throws TException     If something thrifty went wrong
          * @throws EAuthException If the method call was not correctly authenticated
          */
         @Override
@@ -861,7 +880,7 @@ public class SwiftServer {
             List<org.phybros.thrift.OfflinePlayer> whitelist = new ArrayList<>();
 
             List<OfflinePlayer> bukkitPlayers = new ArrayList<>(
-                    plugin.getServer().getWhitelistedPlayers());
+                    SwiftApiPlugin.plugin.getServer().getWhitelistedPlayers());
 
             for (OfflinePlayer bukkitPlayer : bukkitPlayers) {
                 whitelist.add(BukkitConverter
@@ -877,25 +896,26 @@ public class SwiftServer {
          * @param authString The authentication hash
          * @param worldName  The name of the World to get
          * @return World The requested world
-         * @throws TException            If something thrifty went wrong
+         * @throws TException     If something thrifty went wrong
          * @throws EAuthException If the method call was not correctly authenticated
          * @throws EDataException If the requested world could not be found
          */
         @Override
         public World getWorld(String authString, String worldName)
-                throws  TException {
+                throws TException {
             logCall("getWorld");
             authenticate(authString, "getWorld");
 
-            org.bukkit.World w = plugin.getServer().getWorld(worldName);
+            org.bukkit.World w = SwiftApiPlugin.plugin.getServer().getWorld(worldName);
 
             if (w == null) {
-                plugin.getLogger().info("World not found");
+                SwiftApiPlugin.plugin.getLogger().info("World not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.worldNotFound"), worldName);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.worldNotFound"), worldName
+                );
                 throw e;
             }
 
@@ -907,7 +927,7 @@ public class SwiftServer {
          *
          * @param authString The authentication hash
          * @return List<World> the worlds on the server
-         * @throws TException            If something thrifty went wrong
+         * @throws TException     If something thrifty went wrong
          * @throws EAuthException If the method call was not correctly authenticated
          */
         @Override
@@ -916,7 +936,7 @@ public class SwiftServer {
             authenticate(authString, "getWorlds");
             List<World> worlds = new ArrayList<>();
 
-            for (org.bukkit.World w : plugin.getServer().getWorlds()) {
+            for (org.bukkit.World w : SwiftApiPlugin.plugin.getServer().getWorlds()) {
                 worlds.add(BukkitConverter.convertBukkitWorld(w));
             }
 
@@ -931,15 +951,15 @@ public class SwiftServer {
          * @param downloadUrl The URL of the file to be downloaded
          * @param md5         The md5 hash of the file that is being downloaded
          * @return boolean true on success false on failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws EDataException        If something went wrong during the file download, or the
+         * @throws EAuthException               If the method call was not correctly authenticated
+         * @throws EDataException               If something went wrong during the file download, or the
          *                                      computed hash does not match the provided hash or the
          *                                      requested plugin could not be found.
          * @throws org.apache.thrift.TException If something went wrong with Thrift
          */
         @Override
         public boolean installPlugin(String authString, String downloadUrl,
-                                     String md5) throws  TException {
+                                     String md5) throws TException {
             logCall("installPlugin");
             authenticate(authString, "installPlugin");
 
@@ -948,16 +968,17 @@ public class SwiftServer {
 
             // if the staging directory doesn't exist, then create it
             if (!holdingArea.exists()) {
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Staging directory doesn't exist. Creating dir: "
-                                + stagingPath);
+                                + stagingPath
+                );
                 // try and create the directory
                 if (!holdingArea.mkdir()) {
-                    plugin.getLogger().severe(
+                    SwiftApiPlugin.plugin.getLogger().severe(
                             "Could not create staging directory!");
                     EDataException e = new EDataException();
                     e.code = ErrorCode.FILE_ERROR;
-                    e.errorMessage = plugin.getConfig().getString(
+                    e.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.createDirectoryError");
                     throw e;
                 }
@@ -965,7 +986,7 @@ public class SwiftServer {
 
             // at this point, we can assume that "stage" exists...in theory
 
-            plugin.getLogger().info(
+            SwiftApiPlugin.plugin.getLogger().info(
                     "Downloading file from: " + downloadUrl + " ...");
 
             try {
@@ -980,28 +1001,28 @@ public class SwiftServer {
 
                 File downloadedFile = new File(stagingPath + File.separator
                         + FilenameUtils.getName(dl.getPath()));
-                plugin.getLogger().info("Download complete. Verifying md5.");
+                SwiftApiPlugin.plugin.getLogger().info("Download complete. Verifying md5.");
 
                 // figure out the MD5 hash of the downloaded file
                 String calculatedHash = byteToString(createChecksum(downloadedFile
                         .getPath()));
-                plugin.getLogger().info("Calculated hash: " + calculatedHash);
+                SwiftApiPlugin.plugin.getLogger().info("Calculated hash: " + calculatedHash);
 
                 if (md5.equalsIgnoreCase(calculatedHash)) {
-                    plugin.getLogger().info("Hashes match");
+                    SwiftApiPlugin.plugin.getLogger().info("Hashes match");
                 } else {
-                    plugin.getLogger()
+                    SwiftApiPlugin.plugin.getLogger()
                             .severe("Downloaded file hash does not match provided hash. Deleting file.");
                     downloadedFile.delete();
 
                     EDataException e = new EDataException();
                     e.code = ErrorCode.DOWNLOAD_ERROR;
-                    e.errorMessage = plugin.getConfig().getString(
+                    e.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.hashMismatch");
                     throw e;
                 }
 
-                plugin.getLogger().info("Installing plugin...");
+                SwiftApiPlugin.plugin.getLogger().info("Installing SwiftApiPlugin.plugin...");
 
                 // copy the downloaded file to the plugins DIR
                 String newDownloadedPluginPath = pluginsPath + File.separator
@@ -1011,43 +1032,43 @@ public class SwiftServer {
                     File zipFile = new File(newDownloadedPluginPath);
                     FileUtils.copyFile(downloadedFileObject, zipFile);
 
-                    plugin.getLogger().info("Unzipping plugin...");
+                    SwiftApiPlugin.plugin.getLogger().info("Unzipping SwiftApiPlugin.plugin...");
                     unzipFile(zipFile, pluginsPath);
-                    plugin.getLogger().info("Plugin unzipped.");
+                    SwiftApiPlugin.plugin.getLogger().info("Plugin unzipped.");
 
                     zipFile.delete();
                 } else if (downloadedFileObject.getName().endsWith(".jar")) {
                     FileUtils.copyFile(downloadedFileObject, new File(
                             newDownloadedPluginPath));
                 } else {
-                    plugin.getLogger()
+                    SwiftApiPlugin.plugin.getLogger()
                             .warning(
                                     "Sorry, SwiftApi can only install plugins with the extension \".jar\" and \".zip\"");
                     EDataException e = new EDataException();
                     e.code = ErrorCode.FILE_ERROR;
-                    e.errorMessage = plugin.getConfig().getString(
+                    e.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.invalidPluginType");
                     throw e;
                 }
 
-                plugin.getLogger()
+                SwiftApiPlugin.plugin.getLogger()
                         .info("Plugin installation complete. Reload or restart to use new version.");
 
                 return true;
             } catch (MalformedURLException e) {
-                plugin.getLogger().severe(e.getMessage());
+                SwiftApiPlugin.plugin.getLogger().severe(e.getMessage());
                 EDataException e1 = new EDataException();
                 e1.code = ErrorCode.DOWNLOAD_ERROR;
-                e1.errorMessage = plugin.getConfig().getString("errorMessages.malformedUrl");
+                e1.errorMessage = SwiftApiPlugin.plugin.getConfig().getString("errorMessages.malformedUrl");
                 throw e1;
             } catch (IOException e) {
-                plugin.getLogger().severe(e.getMessage());
+                SwiftApiPlugin.plugin.getLogger().severe(e.getMessage());
                 EDataException e1 = new EDataException();
                 e1.code = ErrorCode.FILE_ERROR;
                 e1.errorMessage = e.getMessage();
                 throw e1;
             } catch (NoSuchAlgorithmException e) {
-                plugin.getLogger().severe(e.getMessage());
+                SwiftApiPlugin.plugin.getLogger().severe(e.getMessage());
                 EDataException e1 = new EDataException();
                 e1.code = ErrorCode.FILE_ERROR;
                 e1.errorMessage = e.getMessage();
@@ -1070,28 +1091,30 @@ public class SwiftServer {
          */
         @Override
         public boolean kick(String authString, String name, String message)
-                throws  TException {
+                throws TException {
             logCall("kick");
             authenticate(authString, "kick");
 
-            org.bukkit.entity.Player player = plugin.getServer()
+            org.bukkit.entity.Player player = SwiftApiPlugin.plugin.getServer()
                     .getPlayer(name);
 
             if (player == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), name
+                );
                 throw e;
             }
 
             try {
                 player.kickPlayer(message);
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Kicked " + player.getName() + " with message \""
-                                + message + "\"");
+                                + message + "\""
+                );
                 return true;
             } catch (Exception e) {
                 return false;
@@ -1112,19 +1135,20 @@ public class SwiftServer {
          */
         @Override
         public boolean op(String authString, String name, boolean notifyPlayer)
-                throws  TException {
+                throws TException {
             logCall("op");
             authenticate(authString, "op");
 
-            OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+            OfflinePlayer offPl = SwiftApiPlugin.plugin.getServer().getOfflinePlayer(name);
 
             if (offPl == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), name
+                );
                 throw e;
             }
 
@@ -1133,8 +1157,8 @@ public class SwiftServer {
                 offPl.setOp(true);
                 if (!wasOp && notifyPlayer && offPl.isOnline()) {
                     offPl.getPlayer().sendMessage(
-                            plugin.getConfig().getString("messages.op"));
-                    plugin.getLogger().info("Opped " + offPl.getName());
+                            SwiftApiPlugin.plugin.getConfig().getString("messages.op"));
+                    SwiftApiPlugin.plugin.getLogger().info("Opped " + offPl.getName());
                 }
                 return true;
             } catch (Exception e) {
@@ -1147,7 +1171,7 @@ public class SwiftServer {
          *
          * @param authString The authentication hash
          * @return boolean true on success false on serious failure
-         * @throws EAuthException        If the method call was not correctly authenticated
+         * @throws EAuthException               If the method call was not correctly authenticated
          * @throws org.apache.thrift.TException If something went wrong with Thrift
          */
         @Override
@@ -1171,9 +1195,9 @@ public class SwiftServer {
 
             try {
                 authenticate(authString, "reloadServer");
-                plugin.getServer().reload();
+                SwiftApiPlugin.plugin.getServer().reload();
             } catch (Exception e) {
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Error while reloading: " + e.getMessage());
             }
 
@@ -1186,25 +1210,26 @@ public class SwiftServer {
          * @param authString The authentication hash
          * @param name       The name of the player to remove from the whitelist
          * @return boolean true on success, false on failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws EDataException        If the player was not found
+         * @throws EAuthException               If the method call was not correctly authenticated
+         * @throws EDataException               If the player was not found
          * @throws org.apache.thrift.TException If something went wrong with Thrift
          */
         @Override
         public boolean removeFromWhitelist(String authString, String name)
-                throws  TException {
+                throws TException {
             logCall("removeFromWhitelist");
             authenticate(authString, "removeFromWhitelist");
 
-            OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+            OfflinePlayer offPl = SwiftApiPlugin.plugin.getServer().getOfflinePlayer(name);
 
             if (offPl == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), name
+                );
                 throw e;
             }
 
@@ -1212,13 +1237,15 @@ public class SwiftServer {
                 boolean wasWhitelisted = offPl.isWhitelisted();
                 if (wasWhitelisted) {
                     offPl.setWhitelisted(false);
-                    plugin.getLogger().info(
+                    SwiftApiPlugin.plugin.getLogger().info(
                             "Removed player " + offPl.getName()
-                                    + " from the whitelist");
+                                    + " from the whitelist"
+                    );
                 } else {
-                    plugin.getLogger().info(
+                    SwiftApiPlugin.plugin.getLogger().info(
                             "Player " + offPl.getName()
-                                    + " is not on the whitelist");
+                                    + " is not on the whitelist"
+                    );
                 }
                 return true;
             } catch (Exception e) {
@@ -1232,16 +1259,17 @@ public class SwiftServer {
             logCall("removeInventoryItem");
             authenticate(authString, "removeInventoryItem");
 
-            OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(
+            OfflinePlayer offPl = SwiftApiPlugin.plugin.getServer().getOfflinePlayer(
                     playerName);
 
             if (offPl == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), playerName);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), playerName
+                );
                 throw e;
             }
 
@@ -1249,9 +1277,10 @@ public class SwiftServer {
                 offPl.getPlayer().getInventory().clear(itemIndex);
                 return true;
             } catch (Exception e) {
-                plugin.getLogger().severe(
+                SwiftApiPlugin.plugin.getLogger().severe(
                         e.getClass().getName() + " in removeInventoryItem: "
-                                + e.getMessage());
+                                + e.getMessage()
+                );
                 return false;
             }
         }
@@ -1268,8 +1297,8 @@ public class SwiftServer {
          * @param downloadUrl The URL of the file to be downloaded
          * @param md5         The md5 hash of the file that is being downloaded
          * @return boolean true on success false on failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws EDataException        If something went wrong during the file download, or the
+         * @throws EAuthException               If the method call was not correctly authenticated
+         * @throws EDataException               If something went wrong during the file download, or the
          *                                      computed hash does not match the provided hash or the
          *                                      requested plugin could not be found.
          * @throws org.apache.thrift.TException If something went wrong with Thrift
@@ -1281,17 +1310,18 @@ public class SwiftServer {
             authenticate(authString, "replacePlugin");
 
             // get the plugin
-            org.bukkit.plugin.Plugin p = plugin.getServer().getPluginManager()
+            org.bukkit.plugin.Plugin p = SwiftApiPlugin.plugin.getServer().getPluginManager()
                     .getPlugin(pluginName);
 
             // throw an EDataException if the plugin was not found
             if (p == null) {
-                plugin.getLogger().info("Plugin not found");
+                SwiftApiPlugin.plugin.getLogger().info("Plugin not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.pluginNotFound"), pluginName);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.pluginNotFound"), pluginName
+                );
                 throw e;
             }
 
@@ -1300,16 +1330,17 @@ public class SwiftServer {
 
             // if the staging directory doesn't exist, then create it
             if (!holdingArea.exists()) {
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Staging directory doesn't exist. Creating dir: "
-                                + stagingPath);
+                                + stagingPath
+                );
                 // try and create the directory
                 if (!holdingArea.mkdir()) {
-                    plugin.getLogger().severe(
+                    SwiftApiPlugin.plugin.getLogger().severe(
                             "Could not create staging directory!");
                     EDataException e = new EDataException();
                     e.code = ErrorCode.FILE_ERROR;
-                    e.errorMessage = plugin.getConfig().getString(
+                    e.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.createDirectoryError");
                     throw e;
                 }
@@ -1317,7 +1348,7 @@ public class SwiftServer {
 
             // at this point, we can assume that "stage" exists...in theory
 
-            plugin.getLogger().info(
+            SwiftApiPlugin.plugin.getLogger().info(
                     "Downloading file from: " + downloadUrl + " ...");
 
             try {
@@ -1332,25 +1363,26 @@ public class SwiftServer {
 
                 File downloadedFile = new File(stagingPath + File.separator
                         + FilenameUtils.getName(dl.getPath()));
-                plugin.getLogger().info("Download complete. Verifying md5.");
+                SwiftApiPlugin.plugin.getLogger().info("Download complete. Verifying md5.");
 
                 // figure out the MD5 hash of the downloaded file
                 String calculatedHash = byteToString(createChecksum(downloadedFile
                         .getPath()));
-                plugin.getLogger().info("Calculated hash: " + calculatedHash);
+                SwiftApiPlugin.plugin.getLogger().info("Calculated hash: " + calculatedHash);
 
                 if (md5.equalsIgnoreCase(calculatedHash)) {
-                    plugin.getLogger().info("Hashes match");
+                    SwiftApiPlugin.plugin.getLogger().info("Hashes match");
                 } else {
-                    plugin.getLogger()
+                    SwiftApiPlugin.plugin.getLogger()
                             .severe("Downloaded file hash does not match provided hash. Deleting file.");
                     downloadedFile.delete();
 
                     EDataException e = new EDataException();
                     e.code = ErrorCode.DOWNLOAD_ERROR;
-                    e.errorMessage = String.format(plugin.getConfig()
+                    e.errorMessage = String.format(SwiftApiPlugin.plugin.getConfig()
                                     .getString("errorMessages.hashMismatch"),
-                            pluginName);
+                            pluginName
+                    );
                     throw e;
                 }
 
@@ -1360,18 +1392,18 @@ public class SwiftServer {
                 // this returns the "classes/" directory when debugging
                 ProtectionDomain pd = p.getClass().getProtectionDomain();
                 File f = new File(pd.getCodeSource().getLocation().toString());
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Finding original JAR file..." + f.getPath());
                 if (f.isDirectory()) {
                     EDataException e = new EDataException();
                     e.code = ErrorCode.FILE_ERROR;
                     e.errorMessage = String
-                            .format(plugin.getConfig().getString(
+                            .format(SwiftApiPlugin.plugin.getConfig().getString(
                                     "errorMessages.jarNotFound"), pluginName);
                     throw e;
                 } else {
                     jarFileName = f.getName();
-                    plugin.getLogger().info(
+                    SwiftApiPlugin.plugin.getLogger().info(
                             "Located original JAR file: " + jarFileName);
                 }
 
@@ -1382,16 +1414,17 @@ public class SwiftServer {
 
                 // if the staging directory doesn't exist, then create it
                 if (!oldPlugins.exists()) {
-                    plugin.getLogger().info(
+                    SwiftApiPlugin.plugin.getLogger().info(
                             "Old Plugins directory doesn't exist. Creating dir: "
-                                    + oldPluginsPath);
+                                    + oldPluginsPath
+                    );
                     // try and create the directory
                     if (!oldPlugins.mkdir()) {
-                        plugin.getLogger().severe(
+                        SwiftApiPlugin.plugin.getLogger().severe(
                                 "Could not create Old Plugins directory!");
                         EDataException e = new EDataException();
                         e.code = ErrorCode.FILE_ERROR;
-                        e.errorMessage = plugin.getConfig().getString(
+                        e.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                                 "errorMessages.createDirectoryError");
                         throw e;
                     }
@@ -1406,19 +1439,20 @@ public class SwiftServer {
                         .currentTimeMillis())).replaceAll("\\W+", "-")
                         + ".jar.old";
 
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Backing up old JAR file to " + destination);
                 File oldPlugin = new File(pluginsPath + File.separator
                         + f.getName());
                 FileUtils.copyFile(oldPlugin, new File(destination), false);
 
                 if (downloadedFile.getName().compareTo(f.getName()) != 0) {
-                    plugin.getLogger().warning(
+                    SwiftApiPlugin.plugin.getLogger().warning(
                             "The new jar file for plugin " + p.getName()
-                                    + " will still be named " + f.getName());
+                                    + " will still be named " + f.getName()
+                    );
                 }
 
-                plugin.getLogger().info("Installing plugin...");
+                SwiftApiPlugin.plugin.getLogger().info("Installing SwiftApiPlugin.plugin...");
                 // copy the downloaded file to the plugins DIR
                 String newDownloadedPluginPath = pluginsPath + File.separator
                         + downloadedFile.getName();
@@ -1427,49 +1461,49 @@ public class SwiftServer {
                     File zipFile = new File(newDownloadedPluginPath);
                     FileUtils.copyFile(downloadedFileObject, zipFile);
 
-                    plugin.getLogger().info("Unzipping plugin...");
+                    SwiftApiPlugin.plugin.getLogger().info("Unzipping SwiftApiPlugin.plugin...");
                     unzipFile(zipFile, pluginsPath);
-                    plugin.getLogger().info("Plugin unzipped.");
+                    SwiftApiPlugin.plugin.getLogger().info("Plugin unzipped.");
 
                     zipFile.delete();
                 } else if (downloadedFileObject.getName().endsWith(".jar")) {
                     FileUtils.copyFile(downloadedFileObject, oldPlugin);
                 } else {
-                    plugin.getLogger()
+                    SwiftApiPlugin.plugin.getLogger()
                             .warning(
                                     "Sorry, SwiftApi can only install plugins with the extension \".jar\" and \".zip\"");
                     EDataException e = new EDataException();
                     e.code = ErrorCode.FILE_ERROR;
-                    e.errorMessage = plugin.getConfig().getString(
+                    e.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.invalidPluginType");
                     throw e;
                 }
 
-                plugin.getLogger()
+                SwiftApiPlugin.plugin.getLogger()
                         .info("Plugin installation complete. Reload or restart to use new version.");
 
                 return true;
             } catch (MalformedURLException e) {
-                plugin.getLogger().severe(e.getMessage());
+                SwiftApiPlugin.plugin.getLogger().severe(e.getMessage());
                 EDataException e1 = new EDataException();
                 e1.code = ErrorCode.DOWNLOAD_ERROR;
-                e1.errorMessage = plugin.getConfig().getString(
+                e1.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                         "errorMessages.malformedUrl");
                 throw e1;
             } catch (FileNotFoundException e) {
-                plugin.getLogger().severe(e.getMessage());
+                SwiftApiPlugin.plugin.getLogger().severe(e.getMessage());
                 EDataException e1 = new EDataException();
                 e1.code = ErrorCode.FILE_ERROR;
                 e1.errorMessage = e.getMessage();
                 throw e1;
             } catch (IOException e) {
-                plugin.getLogger().severe(e.getMessage());
+                SwiftApiPlugin.plugin.getLogger().severe(e.getMessage());
                 EDataException e1 = new EDataException();
                 e1.code = ErrorCode.FILE_ERROR;
                 e1.errorMessage = e.getMessage();
                 throw e1;
             } catch (NoSuchAlgorithmException e) {
-                plugin.getLogger().severe(e.getMessage());
+                SwiftApiPlugin.plugin.getLogger().severe(e.getMessage());
                 EDataException e1 = new EDataException();
                 e1.code = ErrorCode.FILE_ERROR;
                 e1.errorMessage = e.getMessage();
@@ -1483,7 +1517,7 @@ public class SwiftServer {
          *
          * @param authString The authentication hash
          * @return boolean true on success false on serious failure
-         * @throws EAuthException        If the method call was not correctly authenticated
+         * @throws EAuthException               If the method call was not correctly authenticated
          * @throws org.apache.thrift.TException If something went wrong with Thrift
          */
         @Override
@@ -1492,10 +1526,10 @@ public class SwiftServer {
 
             try {
                 authenticate(authString, "runConsoleCommand");
-                plugin.getServer().dispatchCommand(
-                        plugin.getServer().getConsoleSender(), command);
+                SwiftApiPlugin.plugin.getServer().dispatchCommand(
+                        SwiftApiPlugin.plugin.getServer().getConsoleSender(), command);
             } catch (Exception e) {
-                plugin.getLogger().severe(e.getMessage());
+                SwiftApiPlugin.plugin.getLogger().severe(e.getMessage());
             }
         }
 
@@ -1505,30 +1539,31 @@ public class SwiftServer {
          * @param authString The authentication hash
          * @param worldName  The name of the world to save
          * @return boolean true on success false on serious failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws EDataException        If the specified world could not be found
+         * @throws EAuthException               If the method call was not correctly authenticated
+         * @throws EDataException               If the specified world could not be found
          * @throws org.apache.thrift.TException If something went wrong with Thrift
          */
         @Override
         public boolean saveWorld(String authString, String worldName)
-                throws  TException {
-            org.bukkit.World w = plugin.getServer().getWorld(worldName);
+                throws TException {
+            org.bukkit.World w = SwiftApiPlugin.plugin.getServer().getWorld(worldName);
 
             if (w == null) {
-                plugin.getLogger().info("World not found");
+                SwiftApiPlugin.plugin.getLogger().info("World not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.worldNotFound"), worldName);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.worldNotFound"), worldName
+                );
                 throw e;
             }
 
             try {
-                plugin.getLogger()
+                SwiftApiPlugin.plugin.getLogger()
                         .info("Saving world \"" + worldName + "\"...");
                 w.save();
-                plugin.getLogger().info("World saved.");
+                SwiftApiPlugin.plugin.getLogger().info("World saved.");
                 return true;
             } catch (Exception e) {
                 return false;
@@ -1543,13 +1578,13 @@ public class SwiftServer {
          *                   This method cannot set the contents of any file outside
          *                   /plugins.
          * @return bool true on success, else false
-         * @throws TException            If something thrifty went wrong
+         * @throws TException     If something thrifty went wrong
          * @throws EAuthException If the method call was not correctly authenticated
          * @throws EDataException If the file could not be opened or does not exist
          */
         @Override
         public boolean setFileContents(String authString, String fileName,
-                                       String fileContents) throws 
+                                       String fileContents) throws
                 TException {
             logCall("setFileContents");
             authenticate(authString, "setFileContents");
@@ -1566,21 +1601,21 @@ public class SwiftServer {
                     // throw an EDE if it doesn't exist
                     EDataException d = new EDataException();
                     d.code = ErrorCode.NOT_FOUND;
-                    d.errorMessage = plugin.getConfig().getString(
+                    d.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.fileNotFound");
                     throw d;
                 } else if (!f.canWrite()) {
                     // throw an EDE if it can't be written to
                     EDataException d = new EDataException();
                     d.code = ErrorCode.NO_READ;
-                    d.errorMessage = plugin.getConfig().getString(
+                    d.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.noWriteAccess");
                     throw d;
                 } else if (fileIsBinary(fileName)) {
                     // throw an EDE if the file is binary
                     EDataException d = new EDataException();
                     d.code = ErrorCode.NOT_FOUND;
-                    d.errorMessage = plugin.getConfig().getString(
+                    d.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                             "errorMessages.fileIsBinary");
                     throw d;
                 }
@@ -1593,11 +1628,11 @@ public class SwiftServer {
                 // throw an EDE if it doesn't exist
                 EDataException d = new EDataException();
                 d.code = ErrorCode.NOT_FOUND;
-                d.errorMessage = plugin.getConfig().getString(
+                d.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
                         "errorMessages.fileNotFound");
                 throw d;
             } catch (IOException ioe) {
-                plugin.getLogger().severe(ioe.getMessage());
+                SwiftApiPlugin.plugin.getLogger().severe(ioe.getMessage());
                 EDataException e1 = new EDataException();
                 e1.code = ErrorCode.FILE_ERROR;
                 e1.errorMessage = ioe.getMessage();
@@ -1618,20 +1653,21 @@ public class SwiftServer {
          */
         @Override
         public boolean setGameMode(String authString, String name, GameMode mode)
-                throws  TException {
+                throws TException {
             logCall("setGameMode");
             authenticate(authString, "setGameMode");
 
-            org.bukkit.entity.Player player = plugin.getServer()
+            org.bukkit.entity.Player player = SwiftApiPlugin.plugin.getServer()
                     .getPlayer(name);
 
             if (player == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), name
+                );
                 throw e;
             }
 
@@ -1639,9 +1675,10 @@ public class SwiftServer {
                 org.bukkit.GameMode m = org.bukkit.GameMode.getByValue(mode
                         .getValue());
                 player.setGameMode(m);
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Set gamemode to " + String.valueOf(m.getValue())
-                                + " for " + player.getName());
+                                + " for " + player.getName()
+                );
                 return true;
             } catch (Exception e) {
                 return false;
@@ -1655,32 +1692,34 @@ public class SwiftServer {
          * @param worldName  The name of the world to set the pvp flag for
          * @param isPvp      The value to set the isPVP property to
          * @return boolean true on success false on serious failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws EDataException        If the specified world could not be found
+         * @throws EAuthException               If the method call was not correctly authenticated
+         * @throws EDataException               If the specified world could not be found
          * @throws org.apache.thrift.TException If something went wrong with Thrift
          */
         @Override
         public boolean setPvp(String authString, String worldName, boolean isPvp)
-                throws  TException {
+                throws TException {
             logCall("setPvp");
             authenticate(authString, "setPvp");
 
-            org.bukkit.World w = plugin.getServer().getWorld(worldName);
+            org.bukkit.World w = SwiftApiPlugin.plugin.getServer().getWorld(worldName);
 
             if (w == null) {
-                plugin.getLogger().info("World not found");
+                SwiftApiPlugin.plugin.getLogger().info("World not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.worldNotFound"), worldName);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.worldNotFound"), worldName
+                );
                 throw e;
             }
 
             try {
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Setting PVP to " + String.valueOf(isPvp)
-                                + " for world \"" + worldName + "\"");
+                                + " for world \"" + worldName + "\""
+                );
                 w.setPVP(isPvp);
                 return true;
             } catch (Exception e) {
@@ -1696,33 +1735,35 @@ public class SwiftServer {
          * @param worldName  The name of the world to set the storm for
          * @param hasStorm   The value to set the storm property to
          * @return boolean true on success false on serious failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws EDataException        If the specified world could not be found
+         * @throws EAuthException               If the method call was not correctly authenticated
+         * @throws EDataException               If the specified world could not be found
          * @throws org.apache.thrift.TException If something went wrong with Thrift
          */
         @Override
         public boolean setStorm(String authString, String worldName,
-                                boolean hasStorm) throws 
+                                boolean hasStorm) throws
                 TException {
             logCall("setStorm");
             authenticate(authString, "setStorm");
 
-            org.bukkit.World w = plugin.getServer().getWorld(worldName);
+            org.bukkit.World w = SwiftApiPlugin.plugin.getServer().getWorld(worldName);
 
             if (w == null) {
-                plugin.getLogger().info("World not found");
+                SwiftApiPlugin.plugin.getLogger().info("World not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.worldNotFound"), worldName);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.worldNotFound"), worldName
+                );
                 throw e;
             }
 
             try {
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Setting storm to " + String.valueOf(hasStorm)
-                                + " for world \"" + worldName + "\"");
+                                + " for world \"" + worldName + "\""
+                );
                 w.setStorm(hasStorm);
                 return true;
             } catch (Exception e) {
@@ -1737,33 +1778,35 @@ public class SwiftServer {
          * @param worldName    The name of the world to set the storm for
          * @param isThundering The value to set the isThundering property to
          * @return boolean true on success false on serious failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws EDataException        If the specified world could not be found
+         * @throws EAuthException               If the method call was not correctly authenticated
+         * @throws EDataException               If the specified world could not be found
          * @throws org.apache.thrift.TException If something went wrong with Thrift
          */
         @Override
         public boolean setThundering(String authString, String worldName,
-                                     boolean isThundering) throws 
+                                     boolean isThundering) throws
                 TException {
             logCall("setThundering");
             authenticate(authString, "setThundering");
 
-            org.bukkit.World w = plugin.getServer().getWorld(worldName);
+            org.bukkit.World w = SwiftApiPlugin.plugin.getServer().getWorld(worldName);
 
             if (w == null) {
-                plugin.getLogger().info("World not found");
+                SwiftApiPlugin.plugin.getLogger().info("World not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.worldNotFound"), worldName);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.worldNotFound"), worldName
+                );
                 throw e;
             }
 
             try {
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Setting thundering to " + String.valueOf(isThundering)
-                                + " for world \"" + worldName + "\"");
+                                + " for world \"" + worldName + "\""
+                );
                 w.setThundering(isThundering);
                 return true;
             } catch (Exception e) {
@@ -1780,20 +1823,20 @@ public class SwiftServer {
          *                   world name is specified, the time is set for all worlds.
          * @param time       The value to set the world time
          * @return boolean true on success false on serious failure
-         * @throws EAuthException        If the method call was not correctly authenticated
-         * @throws EDataException        If the specified world could not be found
+         * @throws EAuthException               If the method call was not correctly authenticated
+         * @throws EDataException               If the specified world could not be found
          * @throws org.apache.thrift.TException If something went wrong with Thrift
          */
         @Override
         public boolean setWorldTime(String authString, String worldName,
-                                    long time) throws  TException {
+                                    long time) throws TException {
             // log and auth
             logCall("setWorldTime");
             authenticate(authString, "setWorldTime");
 
             // time cannot be less than 0
             if (time < 0) {
-                plugin.getLogger()
+                SwiftApiPlugin.plugin.getLogger()
                         .warning(
                                 "setWorldTime(): Time less than zero specified, assuming zero");
                 time = 0;
@@ -1801,7 +1844,7 @@ public class SwiftServer {
 
             // time cannot be greater than 24000
             if (time > 24000) {
-                plugin.getLogger()
+                SwiftApiPlugin.plugin.getLogger()
                         .warning(
                                 "setWorldTime(): Time greater than 24000 specified, assuming 24000");
                 time = 24000;
@@ -1809,37 +1852,42 @@ public class SwiftServer {
 
             // if the user specified no world...
             if (worldName.trim().equalsIgnoreCase("")) {
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Setting time to " + String.valueOf(time)
-                                + " on all worlds");
+                                + " on all worlds"
+                );
 
-                for (org.bukkit.World w : plugin.getServer().getWorlds()) {
+                for (org.bukkit.World w : SwiftApiPlugin.plugin.getServer().getWorlds()) {
                     w.setTime(time);
                 }
 
                 return true;
             } else {
                 // get the specified world
-                org.bukkit.World w = plugin.getServer().getWorld(worldName);
+                org.bukkit.World w = SwiftApiPlugin.plugin.getServer().getWorld(worldName);
 
                 // throw an EDE if the world was not found
                 if (w == null) {
-                    plugin.getLogger().info(
+                    SwiftApiPlugin.plugin.getLogger().info(
                             String.format(
-                                    plugin.getConfig().getString(
+                                    SwiftApiPlugin.plugin.getConfig().getString(
                                             "errorMessages.worldNotFound"),
-                                    worldName));
+                                    worldName
+                            )
+                    );
                     EDataException e = new EDataException();
                     e.code = ErrorCode.NOT_FOUND;
-                    e.errorMessage = String.format(plugin.getConfig()
+                    e.errorMessage = String.format(SwiftApiPlugin.plugin.getConfig()
                                     .getString("errorMessages.worldNotFound"),
-                            worldName);
+                            worldName
+                    );
                     throw e;
                 }
 
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         "Setting time to " + String.valueOf(time)
-                                + " on world \"" + worldName + "\"");
+                                + " on world \"" + worldName + "\""
+                );
                 w.setTime(time);
                 return true;
             }
@@ -1857,24 +1905,25 @@ public class SwiftServer {
          */
         @Override
         public boolean unBan(String authString, String name)
-                throws  TException {
+                throws TException {
             logCall("unBan");
             authenticate(authString, "unBan");
-            OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(name);
+            OfflinePlayer offPl = SwiftApiPlugin.plugin.getServer().getOfflinePlayer(name);
 
             if (offPl == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), name);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), name
+                );
                 throw e;
             }
 
             try {
                 offPl.setBanned(false);
-                plugin.getLogger().info("Un banned player " + offPl.getName());
+                SwiftApiPlugin.plugin.getLogger().info("Un banned player " + offPl.getName());
                 return true;
             } catch (Exception e) {
                 return false;
@@ -1892,13 +1941,13 @@ public class SwiftServer {
          */
         @Override
         public boolean unBanIp(String authString, String ip)
-                throws  TException {
+                throws TException {
             logCall("unBanIp");
             authenticate(authString, "unBanIp");
 
             try {
-                plugin.getServer().unbanIP(ip);
-                plugin.getLogger().info("Un banned IP address " + ip);
+                SwiftApiPlugin.plugin.getServer().unbanIP(ip);
+                SwiftApiPlugin.plugin.getLogger().info("Un banned IP address " + ip);
                 return true;
             } catch (Exception e) {
                 return false;
@@ -1908,20 +1957,21 @@ public class SwiftServer {
         @Override
         public boolean updateInventoryItem(String authString,
                                            String playerName, ItemStack item, int itemIndex)
-                throws  TException {
+                throws TException {
             logCall("updateInventoryItem");
             authenticate(authString, "updateInventoryItem");
 
-            OfflinePlayer offPl = plugin.getServer().getOfflinePlayer(
+            OfflinePlayer offPl = SwiftApiPlugin.plugin.getServer().getOfflinePlayer(
                     playerName);
 
             if (offPl == null) {
-                plugin.getLogger().info("Player not found");
+                SwiftApiPlugin.plugin.getLogger().info("Player not found");
                 EDataException e = new EDataException();
                 e.code = ErrorCode.NOT_FOUND;
                 e.errorMessage = String.format(
-                        plugin.getConfig().getString(
-                                "errorMessages.playerNotFound"), playerName);
+                        SwiftApiPlugin.plugin.getConfig().getString(
+                                "errorMessages.playerNotFound"), playerName
+                );
                 throw e;
             }
 
@@ -1932,61 +1982,14 @@ public class SwiftServer {
                                 ThriftConverter.convertItemStack(item));
                 return true;
             } catch (Exception e) {
-                plugin.getLogger().severe(
+                SwiftApiPlugin.plugin.getLogger().severe(
                         e.getClass().getName() + " in updateInventoryItem: "
-                                + e.getMessage());
+                                + e.getMessage()
+                );
                 return false;
             }
         }
 
-        /**
-         * Authenticate a method call.
-         *
-         * @param authString The authentication hash
-         * @param methodName The method that is being called.
-         * @throws EAuthException This is thrown if the authString is invalid.
-         */
-        private void authenticate(String authString, String methodName)
-                throws EAuthException {
-            String username = plugin.getConfig().getString("username");
-            String password = plugin.getConfig().getString("password");
-            String salt = plugin.getConfig().getString("salt");
-
-            // build the pre-hashed string
-            String myAuthString = username + methodName + password + salt;
-            MessageDigest md = null;
-
-            try {
-                md = MessageDigest.getInstance("SHA-256");
-            } catch (NoSuchAlgorithmException algex) {
-                plugin.getLogger().severe(algex.getMessage());
-            }
-            md.update(myAuthString.getBytes());
-            String hash = byteToString(md.digest());
-            // plugin.getLogger().info("Expecting: " + hash);
-            // plugin.getLogger().info("Received:  " + authString);
-
-            if (!hash.equalsIgnoreCase(authString)) {
-                plugin.getLogger().warning(
-                        String.format(
-                                "Invalid Authentication received (method: %s)",
-                                methodName));
-
-                EAuthException e = new EAuthException();
-                e.code = ErrorCode.INVALID_AUTHSTRING;
-                e.errorMessage = plugin.getConfig().getString(
-                        "errorMessages.invalidAuthentication");
-                throw e;
-            }
-        }
-
-        private String byteToString(byte[] bytes) {
-            String result = "";
-            for (int i = 0; i < bytes.length; i++) {
-                result += String.format("%02x", bytes[i]);
-            }
-            return result;
-        }
 
         private byte[] createChecksum(String filename)
                 throws NoSuchAlgorithmException, FileNotFoundException,
@@ -2036,21 +2039,9 @@ public class SwiftServer {
             return isProbablyBinary;
         }
 
-        /**
-         * Log an API call. If the config option logMethodCalls is false, this
-         * method does nothing.
-         *
-         * @param methodName Name of the method that was called.
-         */
-        private void logCall(String methodName) {
-            if (plugin.getConfig().getBoolean("logMethodCalls")) {
-                plugin.getLogger().info(
-                        "SwiftApi method called: " + methodName + "()");
-            }
-        }
 
         /**
-         * Makes a filename suitable for use by the plugin.
+         * Makes a filename suitable for use by the SwiftApiPlugin.plugin.
          * <p/>
          * This function essentially "jails" the filename in the root directory
          * of the CB Server
@@ -2103,9 +2094,10 @@ public class SwiftServer {
 
                 File newFile = new File(outputDirectory + File.separator
                         + fileName);
-                plugin.getLogger().info(
+                SwiftApiPlugin.plugin.getLogger().info(
                         String.format("Unzipping %s to %s...", fileName,
-                                newFile.getAbsolutePath()));
+                                newFile.getAbsolutePath())
+                );
 
                 // Make any folders that might exist
                 if (ze.isDirectory()) {
@@ -2138,36 +2130,63 @@ public class SwiftServer {
 
     public SwiftServer(SwiftApiPlugin plugin) throws InterruptedException {
         this.plugin = plugin;
-        this.port = plugin.getConfig().getInt("port");
-
-        this.start();
+        this.port = SwiftApiPlugin.config.getInt("port");
     }
 
-    public void stop() {
+    public void startServer(){
+        start(plugin.getServer().getConsoleSender());
+    }
+
+    public void startServer(CommandSender sender){
+        start(sender);
+    }
+
+    public void stopServer(){
+        stop(plugin.getServer().getConsoleSender());
+    }
+
+    public void stopServer(CommandSender sender){
+        stop(sender);
+    }
+
+    private void stop(CommandSender sender) {
         try {
-            plugin.getLogger().info("Stopping server...");
+            Api.message(sender, "Stopping server...");
             server.stop();
-            plugin.getLogger().info("Server stopped successfully");
+            Api.message(sender, "Server stopped successfully");
         } catch (Exception e) {
-            plugin.getLogger().severe(
-                    "Error while stopping server: " + e.getMessage());
+            plugin.getLogger().severe("Error while stopping server: " + e.getMessage());
+            Api.message(sender, "Error while stopping server: " + e.getMessage());
         }
     }
 
-    private void start() {
+    private void start(CommandSender cmdSender) {
+        final CommandSender sender = cmdSender;
+
         (new Thread(new Runnable() {
 
             public void run() {
                 try {
-
-                    plugin.getLogger().info(
-                            "Sleeping for 2 seconds before starting up...");
+                    Api.message(sender, "Sleeping for 2 seconds before starting up...");
                     Thread.sleep(2000);
 
-                    SwiftApiHandler psh = new SwiftApiHandler();
+                    TMultiplexedProcessor processor = new TMultiplexedProcessor();
+                    processor.registerProcessor("SwiftApi", new SwiftApi.Processor(new ApiHandler()));
 
-                    SwiftApi.Processor<SwiftApi.Iface> pro = new SwiftApi.Processor<SwiftApi.Iface>(
-                            psh);
+
+                    if (Api.extensions().count() > 0) {
+                        for (String extensionClassName : Api.extensions().all().keySet()) {
+                            SwiftExtension extension = Api.extensions().get(extensionClassName);
+                            if (extension.hasApiHandlers()) {
+                                for (String fullClassName : extension.getApiHandlers()) {
+                                    String[] splitted = fullClassName.split("\\.");
+                                    String className = splitted[splitted.length - 1];
+                                    TProcessor tp = extension.getApiProcessor(className);
+                                    processor.registerProcessor(className, tp);
+                                }
+                            }
+                        }
+                    }
 
                     // create the transport
                     TNonblockingServerTransport tst = null;
@@ -2178,15 +2197,21 @@ public class SwiftServer {
                     a = new TThreadedSelectorServer.Args(tst);
 
                     // allocate the server
-                    server = new TThreadedSelectorServer(a.processor(pro));
+                    server = new TThreadedSelectorServer(a.processor(processor));
 
-                    plugin.getLogger().info(
-                            "Started up and listening on port "
-                                    + String.valueOf(port));
+                    Api.message(sender, "Started up and listening on port " + port);
 
                     // start up the server
                     server.serve();
                 } catch (Exception e) {
+                    plugin.getLogger().severe("SwiftApi:SwiftServer:Run:Exception > " + e.getMessage());
+                    plugin.getLogger().severe("SwiftApi:SwiftServer:Run:Exception > In: " + e.getClass().getName());
+                    for (StackTraceElement el : e.getStackTrace()) {
+
+                        plugin.getLogger().severe("trace: file:[" + el.getFileName() + "]@" + el.getLineNumber() + " - " + el.getMethodName() + " - " + el.toString());
+                    }
+
+
                     plugin.getLogger().severe(e.getMessage());
                 }
             }

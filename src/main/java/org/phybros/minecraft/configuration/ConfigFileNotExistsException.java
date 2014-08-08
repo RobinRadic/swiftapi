@@ -1,5 +1,6 @@
 package org.phybros.minecraft.configuration;
 
+import org.bukkit.plugin.java.JavaPlugin;
 import org.phybros.minecraft.extensions.SwiftExtension;
 
 /**
@@ -11,7 +12,7 @@ public class ConfigFileNotExistsException extends ArrayIndexOutOfBoundsException
         super("Config file does not exist in ConfigrationFactory files HashMap");
     }
 
-    public ConfigFileNotExistsException(SwiftExtension plugin, String name) {
+    public ConfigFileNotExistsException(JavaPlugin plugin, String name) {
         super("Config for plugin " + plugin.getName() + " does not contains file " + name + " in ConfigrationFactory files HashMap");
     }
 

@@ -10,7 +10,7 @@ public class SwiftExtensionsCommand implements ICommand
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args, SwiftApiPlugin plugin) {
 
-        Api.console("swift:extensions", SwiftApiPlugin.extensions.toString());
+        Api.message(sender, "Extensions", SwiftApiPlugin.extensions.toString());
 
 
         return false;

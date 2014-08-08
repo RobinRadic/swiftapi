@@ -1,20 +1,24 @@
 package org.phybros.minecraft.extensions;
 
-import org.apache.thrift.TProcessor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import org.phybros.minecraft.Api;
-import org.phybros.minecraft.SwiftApiPlugin;
 import org.phybros.minecraft.commands.ICommand;
 import org.phybros.minecraft.configuration.Configuration;
 import org.phybros.minecraft.configuration.ConfigurationFactory;
 
-import java.net.URLClassLoader;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Logger;
 
 abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExtension {
 
-    private HashMap<String, ISwiftApiHandlerExtension> apiHandlers;
+    public static SwiftExtension plugin;
+
+    public static Logger log;
+
+    private Set<String> apiHandlers;
 
     protected String[] yamls = {};
 
@@ -39,19 +43,18 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
     }
 
 
-
-    public final void registerApiHandler(String thriftServiceClassName, ISwiftApiHandlerExtension handler)
+    public final void registerApiHandler(String thriftServiceClassName)
     {
-        if( ! apiHandlers.containsKey(thriftServiceClassName) ) {
-            apiHandlers.put(thriftServiceClassName, handler);
+        if( ! apiHandlers.contains(thriftServiceClassName) ) {
+            apiHandlers.add(thriftServiceClassName);
         }
     }
 
-    public boolean hasRegisteredApiHandlers() {
+    public boolean hasApiHandlers() {
         return apiHandlers.size() > 0;
     }
 
-    public HashMap<String, ISwiftApiHandlerExtension> getRegisteredApiHandlers() {
+    public Set<String> getApiHandlers() {
         return apiHandlers;
     }
 
@@ -62,10 +65,11 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
     @Override
     @SuppressWarnings("unchecked")
     public final void onEnable() {
+        plugin = this;
+        log = Api.plugin().getLogger();
+        apiHandlers  = new HashSet<>();
 
-        apiHandlers  = new HashMap<String, ISwiftApiHandlerExtension>();
-
-        SwiftApiPlugin.extensions.add(this);
+        Api.extensions().add(this);
 
         if(yamls.length > 0) {
             ConfigurationFactory factory = ConfigurationFactory.getInstance();
@@ -84,7 +88,7 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
         }
 
         this.enable();
-        Api.debug("Extension:onEnable", this.name());
+        Api.debug("Extension:onEnable", this.getName());
     }
 
     @Override
@@ -96,15 +100,11 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
             }
         }
 
-        SwiftApiPlugin.extensions.remove(name());
+        Api.extensions().remove(getName());
         this.disable();
-        Api.debug("Extension:onDisable: ", this.name());
+        Api.debug("Extension:onDisable: ", this.getName());
     }
 
-
-    public final String name(){
-        return getName();
-    }
 
     public final String getVersion() {
         return this.getDescription().getVersion();

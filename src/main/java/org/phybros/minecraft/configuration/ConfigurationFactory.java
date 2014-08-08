@@ -1,6 +1,7 @@
 package org.phybros.minecraft.configuration;
 
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.phybros.minecraft.extensions.SwiftExtension;
 
 import java.util.HashMap;
@@ -25,17 +26,17 @@ public class ConfigurationFactory implements Listener {
     }
 
 
-    public boolean has(SwiftExtension plugin, String fileName) {
+    public boolean has(JavaPlugin plugin, String fileName) {
         return hasPluginConfigFile(plugin, fileName);
     }
 
-    public void add(SwiftExtension plugin, String fileName) {
+    public void add(JavaPlugin plugin, String fileName) {
         if (!hasPluginConfigFile(plugin, fileName)) {
             addPluginConfigFile(plugin, fileName);
         }
     }
 
-    public Configuration get(SwiftExtension plugin, String fileName) throws ConfigFileNotExistsException {
+    public Configuration get(JavaPlugin plugin, String fileName) throws ConfigFileNotExistsException {
         if (hasPluginConfigFile(plugin, fileName)) {
             return getPluginConfigFile(plugin, fileName);
         }
@@ -43,27 +44,27 @@ public class ConfigurationFactory implements Listener {
     }
 
 
-    protected boolean hasPluginConfig(SwiftExtension plugin) {
+    protected boolean hasPluginConfig(JavaPlugin plugin) {
         if (files.containsKey(plugin.getName())) {
             return true;
         }
         return false;
     }
 
-    protected boolean hasPluginConfigFile(SwiftExtension plugin, String fileName) {
+    protected boolean hasPluginConfigFile(JavaPlugin plugin, String fileName) {
         if (hasPluginConfig(plugin) && files.get(plugin.getName()).containsKey(fileName)) {
             return true;
         }
         return false;
     }
 
-    protected Configuration getPluginConfigFile(SwiftExtension plugin, String fileName) {
+    protected Configuration getPluginConfigFile(JavaPlugin plugin, String fileName) {
 
         return files.get(plugin.getName()).get(fileName);
 
     }
 
-    protected void addPluginConfigFile(SwiftExtension plugin, String fileName) {
+    protected void addPluginConfigFile(JavaPlugin plugin, String fileName) {
         if (!hasPluginConfig(plugin)) {
             files.put(plugin.getName(), new HashMap<String, Configuration>());
         }

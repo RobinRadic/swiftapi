@@ -2,9 +2,11 @@ package org.phybros.minecraft.configuration;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.phybros.minecraft.SwiftApiPlugin;
 
 
 import java.io.*;
+import java.util.HashMap;
 
 /**
  * @todo make this a class that every extension can use to easily register their yml files
@@ -14,9 +16,11 @@ public class Configuration extends YamlConfiguration {
     private File configFile;
     private JavaPlugin plugin;
     private String fileName;
+    private Layout layout = new Layout();
 
     public Configuration(JavaPlugin plugin, String fileName){
         this.plugin = plugin;
+
         this.fileName = fileName;
 
         configFile = new File(plugin.getDataFolder(), fileName);
@@ -28,6 +32,14 @@ public class Configuration extends YamlConfiguration {
             e.printStackTrace();
         }
 
+    }
+
+    public Layout getLayout() {
+        return layout;
+    }
+
+    public void setLayout(Layout layout) {
+        this.layout = layout;
     }
 
     public void load() {
