@@ -81,12 +81,29 @@ public class ServerDataExtension extends SwiftExtension {
 ###### SwiftApi server extension handler
 ```
 #!java
-package org.yourname.extension.vault;
+package org.radic.minecraft.swiftapi.serverdata.handlers;
 
-class SwiftVaultApiHandler implements SwiftVaultApi.IFace {
-    public void addMoney(String playerName, Double amount){
-        // code here
+import org.radic.minecraft.swiftapi.serverdata.SysInfo;
+import org.radic.minecraft.swiftapi.serverdata.thrift.*;
+
+public class ServerDataApiHandler extends SwiftApiHandler implements SwiftApiServerData.Iface {
+
+    private SysInfo si;
+    public ServerDataApiHandler(){
+        si = SysInfo.getInstance();
     }
+
+    public Size makeSize(long bytes) {
+        Size size = new Size();
+        size.prettyBits = si.prettifyBytes(bytes, true);
+        size.prettyBytes = si.prettifyBytes(bytes, false);
+        size.KB = ((int) bytes / 1024);
+        size.MB = ((int) bytes / 1024 / 1024);
+        size.GB = ((int) bytes / 1024 / 1024 / 1024);
+        return size;
+    }
+    
+    // etc..
 }
 ```
 
