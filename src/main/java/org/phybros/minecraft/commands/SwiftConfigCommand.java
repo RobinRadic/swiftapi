@@ -6,9 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.phybros.minecraft.Api;
 import org.phybros.minecraft.SwiftApiPlugin;
 import org.phybros.minecraft.configuration.Configuration;
-import org.phybros.thrift.SwiftApi;
+import org.phybros.minecraft.extensions.SwiftExtension;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -18,41 +17,69 @@ public class SwiftConfigCommand implements ICommand
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args, SwiftApiPlugin plugin) {
 
-        switch(args.length)
-        {
+        switch(args.length) {
             case 1:
                 // config
-                for(Map.Entry<String, String> entry : SwiftApiPlugin.config.getLayout().get().entrySet()){
-                    Api.message(sender, entry.getKey(), getValue(SwiftApiPlugin.config, entry.getKey()));
-                }
+                Api.message(sender, "Syntax: swift config (get/set) <" + ChatColor.BLUE + "accessor" + ChatColor.RESET + "> <" + ChatColor.YELLOW + "configfile" + ChatColor.RESET + "> <" + ChatColor.GOLD + "path" + ChatColor.RESET + "> (newvalue)");
+                Api.message(sender, "Example: swift config get " + ChatColor.BLUE + "core" + ChatColor.RESET + " " + ChatColor.YELLOW + "config" + ChatColor.RESET + " " + ChatColor.GOLD + "port" + ChatColor.RESET);
+                Api.message(sender, "Example: swift config set " + ChatColor.BLUE + "core" + ChatColor.RESET + " " + ChatColor.YELLOW + "config" + ChatColor.RESET + " " + ChatColor.GOLD + "port" + ChatColor.RESET + " 21113");
+                Api.message(sender, "Example: swift config get " + ChatColor.BLUE + "core" + ChatColor.RESET + " " + ChatColor.YELLOW + "config" + ChatColor.RESET + " " + ChatColor.GOLD + "messages.cpus" + ChatColor.RESET);
+                Api.message(sender, "Example: swift config set " + ChatColor.BLUE + "core" + ChatColor.RESET + " " + ChatColor.YELLOW + "config" + ChatColor.RESET + " " + ChatColor.GOLD + "messages.cpus" + ChatColor.RESET + " Available cpus: %d");
+                Api.message(sender, "List all accessors/configfiles: swift config list");
+
                 break;
             case 2:
-                // config set
-                // config get
-                sender.sendMessage("The config command requires additional arguments");
+                // config list
+                if(args[1].equals("list")) {
+                    for (String accessor : Api.configuration().getAccessors()) {
+                        for(String fileName : Api.configuration().getAccessorConfigFiles(accessor)){
+                            Api.message(sender, ChatColor.BLUE + accessor + " " + ChatColor.YELLOW + fileName);
+                        }
+                    }
+                }
                 break;
             case 3:
-                // config get <name>
-                if(args[1].equals("get")) {
-                    get(sender, args[2]);
-                } else {
-                    sender.sendMessage("The config get command requires additional arguments");
+                // config get <accessor>
+                if(args[1].equals("get")){
+                    if(Api.configuration().hasAccessor(args[2])){
+                        for(String fileName : Api.configuration().getAccessorConfigFiles(args[2])){
+                            Api.message(sender, ChatColor.BLUE + args[2] + " " + ChatColor.YELLOW + fileName);
+                        }
+                    }
                 }
                 break;
             case 4:
-                // config set <name> <val>
-                // config get <ext> <name>
-                if(args[1].equals("set")){
-                    set(sender, args[2], args[3]);
-                } else if(args[1].equals("get")){
-                    get(sender, args[2], args[3]);
-                } else {
-                    sender.sendMessage("The command requires additional arguments");
+                // config get <accessor> <filename>
+                if(args[1].equals("get")){
+                    if(Api.configuration().has(args[2], args[3])){
+                        Api.message(sender, ChatColor.BLUE + args[2] + " " + ChatColor.YELLOW + args[3]);
+                        for(Map.Entry<String, String> entry : Api.configuration().get(args[2], args[3]).getLayout().get().entrySet()){
+                            if( ! entry.getValue().equals("section")) {
+                                Api.message(sender, entry.getKey(), getValue(Api.configuration().get(args[2], args[3]), entry.getKey()));
+                            }
+                        }
+                    }
                 }
                 break;
             case 5:
-                // config set <ext> <name> <val>
-                set(sender, args[2], args[3], args[4]);
+                // config get <accessor> <filename> <path>
+                if(args[1].equals("get")){
+                    if(Api.configuration().has(args[2], args[3])){
+                        if(Api.configuration().get(args[2], args[3]).has(args[4])){
+                            Api.message(sender, getValue(Api.configuration().get(args[2], args[3]), args[4]));
+                        }
+                    }
+                }
+                break;
+            case 6:
+                // config set <accessor> <filename> <path> <value>
+                if(args[1].equals("set")){
+                    if(Api.configuration().has(args[2], args[3])){
+                        if(Api.configuration().get(args[2], args[3]).has(args[4])){
+                            Api.message(sender, setValue(Api.configuration().get(args[2], args[3]), args[4], args[5]));
+                        }
+                    }
+                }
                 break;
         }
         return false;
@@ -116,19 +143,5 @@ public class SwiftConfigCommand implements ICommand
 
     }
 
-    private void get(CommandSender sender, String key){
-        Api.message(sender, key, getValue(SwiftApiPlugin.config, key));
-    }
 
-    private void get(CommandSender sender, String extensionName, String key){
-
-    }
-
-    private void set(CommandSender sender, String key, String value){
-        Api.message(sender, key, setValue(SwiftApiPlugin.config, key, value));
-    }
-
-    private void set(CommandSender sender, String extensionName, String key, String value){
-
-    }
 }

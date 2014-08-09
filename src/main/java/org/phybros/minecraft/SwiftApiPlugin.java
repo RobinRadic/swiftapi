@@ -31,8 +31,8 @@ public class SwiftApiPlugin extends JavaPlugin implements Listener {
 
     private Configuration buildConfig(){
 
-        ConfigurationFactory.getInstance().add(this, "config.yml");
-        Configuration config = ConfigurationFactory.getInstance().get(this, "config.yml");
+        Api.configuration().add("core", this, "config");
+        Configuration config = Api.configuration().get("core", "config");
         config.getLayout()
                 .string("username", "password", "salt")
                 .integer("port")
@@ -75,9 +75,7 @@ public class SwiftApiPlugin extends JavaPlugin implements Listener {
         Api.registerCommand("swift", new SwiftCommand());
         Api.registerCommand("start", new SwiftStartCommand());
         Api.registerCommand("stop", new SwiftStopCommand());
-        Api.registerCommand("serverdata", new SwiftExtensionsCommand());
-        Api.registerCommand("info", new SwiftInfoCommand());
-        Api.registerCommand("server", new SwiftInfoCommand());
+        Api.registerCommand("extensions", new SwiftExtensionsCommand());
         Api.registerCommand("config", new SwiftConfigCommand());
         Api.registerCommands();
 

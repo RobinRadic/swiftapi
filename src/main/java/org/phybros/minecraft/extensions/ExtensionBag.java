@@ -21,7 +21,6 @@ public class ExtensionBag  {
 
     public void add(SwiftExtension extension){
         extensions.put(extension.getName(), extension);
-        Api.debug("Api:serverdata:add", extension.getName() + " " + extension.getVersion());
     }
 
     public HashMap<String, SwiftExtension> all() {
@@ -30,7 +29,6 @@ public class ExtensionBag  {
 
     public SwiftExtension get(String name) throws ExtensionNotExistsException {
         if(has(name)) {
-            Api.debug("Api:serverdata:get", name);
             return extensions.get(name);
         } else {
             throw new ExtensionNotExistsException(name);
@@ -45,7 +43,6 @@ public class ExtensionBag  {
     {
         if(has(name)) {
             extensions.remove(name);
-            Api.debug("Api:serverdata:remove", name);
         } else {
             throw new ExtensionNotExistsException(name);
         }

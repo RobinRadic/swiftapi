@@ -7,6 +7,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.phybros.minecraft.commands.CommandHandler;
 import org.phybros.minecraft.commands.ICommand;
+import org.phybros.minecraft.configuration.ConfigurationFactory;
 import org.phybros.minecraft.extensions.ExtensionBag;
 import org.phybros.minecraft.configuration.Configuration;
 import org.phybros.thrift.ConsoleLine;
@@ -26,9 +27,7 @@ public class Api {
         return SwiftApiPlugin.pluginManager;
     }
 
-    public static Configuration config() {
-        return SwiftApiPlugin.config;
-    }
+    public static ConfigurationFactory configuration(){ return ConfigurationFactory.getInstance(); }
 
     public static ExtensionBag extensions() {
         return SwiftApiPlugin.extensions;

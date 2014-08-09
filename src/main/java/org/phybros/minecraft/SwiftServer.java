@@ -2167,7 +2167,7 @@ public class SwiftServer {
 
             public void run() {
                 try {
-                    Api.message(sender, "Sleeping for 2 seconds before starting up...");
+                    plugin.getLogger().info( "Sleeping for 2 seconds before starting up...");
                     Thread.sleep(2000);
 
                     TMultiplexedProcessor processor = new TMultiplexedProcessor();
@@ -2183,6 +2183,7 @@ public class SwiftServer {
                                     String className = splitted[splitted.length - 1];
                                     TProcessor tp = extension.getApiProcessor(className);
                                     processor.registerProcessor(className, tp);
+                                    Api.debug("Registered extension", className);
                                 }
                             }
                         }
@@ -2199,7 +2200,7 @@ public class SwiftServer {
                     // allocate the server
                     server = new TThreadedSelectorServer(a.processor(processor));
 
-                    Api.message(sender, "Started up and listening on port " + port);
+                    plugin.getLogger().info("Started up and listening on port " + port);
 
                     // start up the server
                     server.serve();

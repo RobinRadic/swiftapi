@@ -38,6 +38,9 @@ public class Configuration extends YamlConfiguration {
         return layout;
     }
 
+    public boolean has(String path){
+        return layout.has(path);
+    }
     public void setLayout(Layout layout) {
         this.layout = layout;
     }
