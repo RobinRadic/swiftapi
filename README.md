@@ -14,7 +14,7 @@ Check the [SwiftApi](https://bitbucket.org/phybros/swiftapi) page for all inform
 
 ### Extending SwiftApi
 
-For a working demo example [check out the swiftapi-serverdata](https://bitbucket.org/robinradic/swiftapi-serverdata) extension.
+For a working demo example [check out the swiftapi-serverdata repository](https://bitbucket.org/robinradic/swiftapi-serverdata) or [click here to download](https://bitbucket.org/robinradic/swiftapi-serverdata/get/97a36d844a5d.zip).
  
 SwiftApi provides several classes to ease the creation of extensions. The general gist is:
 

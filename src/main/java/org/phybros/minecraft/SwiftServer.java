@@ -2189,6 +2189,8 @@ public class SwiftServer {
                         }
                     }
 
+
+
                     // create the transport
                     TNonblockingServerTransport tst = null;
                     tst = new TNonblockingServerSocket(port);

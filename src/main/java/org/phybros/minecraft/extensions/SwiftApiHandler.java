@@ -1,8 +1,11 @@
 package org.phybros.minecraft.extensions;
 
+import org.phybros.minecraft.Api;
 import org.phybros.minecraft.SwiftApiPlugin;
+import org.phybros.minecraft.configuration.Configuration;
 import org.phybros.thrift.EAuthException;
 import org.phybros.thrift.ErrorCode;
+import org.phybros.thrift.SwiftApi;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -71,6 +74,31 @@ abstract public class SwiftApiHandler {
         if (SwiftApiPlugin.plugin.getConfig().getBoolean("logMethodCalls")) {
             SwiftApiPlugin.plugin.getLogger().info(
                     "SwiftApi method called: " + methodName + "()");
+        }
+    }
+
+
+    protected String getAuthString(String methodName) {
+        Configuration config = Api.configuration().get("core", "config");
+        String text = config.get("username") + methodName + config.get("password") + config.get("salt");
+        return sha256(text);
+    }
+
+    protected String sha256(String base) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(base.getBytes("UTF-8"));
+            StringBuffer hexString = new StringBuffer();
+
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

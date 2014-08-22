@@ -5,9 +5,13 @@ import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
+
+
 import org.apache.logging.log4j.message.Message;
+
 import org.phybros.thrift.ConsoleLine;
-import org.phybros.thrift.SwiftApi;
+
+
 
 /**
  * Created by will on 2014-07-11.
@@ -18,6 +22,8 @@ public class SwiftFilter implements Filter {
 
     public SwiftFilter(SwiftApiPlugin plugin) {
         this.plugin = plugin;
+
+
     }
 
     @Override

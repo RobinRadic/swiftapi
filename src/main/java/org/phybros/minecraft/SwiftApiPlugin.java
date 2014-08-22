@@ -1,5 +1,6 @@
 package org.phybros.minecraft;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.event.Listener;
@@ -88,8 +89,10 @@ public class SwiftApiPlugin extends JavaPlugin implements Listener {
 
 		try {
 			this.saveDefaultConfig();
-
-            ((org.apache.logging.log4j.core.Logger) LogManager.getRootLogger()).addFilter(new SwiftFilter(this));
+         //   Logger a = ((org.apache.logging.log4j.core.Logger) LogManager.getRootLogger());
+           // a.addAppender(org.apache.log4j.ConsoleAppender);
+            //PropertyConfigurator.configure("log4j.xml");
+                   ((org.apache.logging.log4j.core.Logger) LogManager.getRootLogger()).addFilter(new SwiftFilter(this));
 
             server = new SwiftServer(this);
             server.startServer();
