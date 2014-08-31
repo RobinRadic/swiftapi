@@ -3,6 +3,7 @@ package org.phybros.minecraft.extensions;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import org.phybros.minecraft.Api;
+import org.phybros.minecraft.SwiftApiPlugin;
 import org.phybros.minecraft.commands.ICommand;
 import org.phybros.minecraft.configuration.Configuration;
 import org.phybros.minecraft.configuration.ConfigurationFactory;
@@ -47,7 +48,7 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
     }
 
     public final Layout registerConfig(String commandAccessor, String fileName){
-        ConfigurationFactory factory = ConfigurationFactory.getInstance();
+        ConfigurationFactory factory = SwiftApiPlugin.getInstance().getConfigurationFactory();
         factory.add(commandAccessor, this, fileName);
         Configuration configFile = factory.get(commandAccessor, fileName);
         configCollection.put(fileName, configFile);
@@ -67,10 +68,10 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
     @SuppressWarnings("unchecked")
     public final void onEnable() {
         plugin = this;
-        log = Api.plugin().getLogger();
+        log = SwiftApiPlugin.getInstance().getLogger();
         apiHandlers  = new HashSet<>();
 
-        Api.extensions().add(this);
+        SwiftApiPlugin.getInstance().getExtensions().add(this);
         register();
 
         for(Configuration config : configCollection.values()) {
@@ -89,7 +90,7 @@ abstract public class SwiftExtension extends JavaPlugin implements ISwiftApiExte
             }
         }
 
-        Api.extensions().remove(getName());
+        SwiftApiPlugin.getInstance().getExtensions().remove(getName());
         this.disable();
     }
 

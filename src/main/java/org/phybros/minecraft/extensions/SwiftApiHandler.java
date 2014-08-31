@@ -1,11 +1,9 @@
 package org.phybros.minecraft.extensions;
 
-import org.phybros.minecraft.Api;
 import org.phybros.minecraft.SwiftApiPlugin;
 import org.phybros.minecraft.configuration.Configuration;
 import org.phybros.thrift.EAuthException;
 import org.phybros.thrift.ErrorCode;
-import org.phybros.thrift.SwiftApi;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,9 +22,9 @@ abstract public class SwiftApiHandler {
      */
     protected void authenticate(String authString, String methodName)
             throws EAuthException {
-        String username = SwiftApiPlugin.plugin.getConfig().getString("username");
-        String password = SwiftApiPlugin.plugin.getConfig().getString("password");
-        String salt = SwiftApiPlugin.plugin.getConfig().getString("salt");
+        String username = SwiftApiPlugin.getInstance().getConfig().getString("username");
+        String password = SwiftApiPlugin.getInstance().getConfig().getString("password");
+        String salt = SwiftApiPlugin.getInstance().getConfig().getString("salt");
 
         // build the pre-hashed string
         String myAuthString = username + methodName + password + salt;
@@ -35,15 +33,15 @@ abstract public class SwiftApiHandler {
         try {
             md = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException algex) {
-            SwiftApiPlugin.plugin.getLogger().severe(algex.getMessage());
+            SwiftApiPlugin.getInstance().getLogger().severe(algex.getMessage());
         }
         md.update(myAuthString.getBytes());
         String hash = byteToString(md.digest());
-        // SwiftApiPlugin.plugin.getLogger().info("Expecting: " + hash);
-        // SwiftApiPlugin.plugin.getLogger().info("Received:  " + authString);
+        // SwiftApiPlugin.getInstance().getLogger().info("Expecting: " + hash);
+        // SwiftApiPlugin.getInstance().getLogger().info("Received:  " + authString);
 
         if (!hash.equalsIgnoreCase(authString)) {
-            SwiftApiPlugin.plugin.getLogger().warning(
+            SwiftApiPlugin.getInstance().getLogger().warning(
                     String.format(
                             "Invalid Authentication received (method: %s)",
                             methodName)
@@ -51,7 +49,7 @@ abstract public class SwiftApiHandler {
 
             EAuthException e = new EAuthException();
             e.code = ErrorCode.INVALID_AUTHSTRING;
-            e.errorMessage = SwiftApiPlugin.plugin.getConfig().getString(
+            e.errorMessage = SwiftApiPlugin.getInstance().getConfig().getString(
                     "errorMessages.invalidAuthentication");
             throw e;
         }
@@ -71,15 +69,15 @@ abstract public class SwiftApiHandler {
      * @param methodName Name of the method that was called.
      */
     protected void logCall(String methodName) {
-        if (SwiftApiPlugin.plugin.getConfig().getBoolean("logMethodCalls")) {
-            SwiftApiPlugin.plugin.getLogger().info(
+        if (SwiftApiPlugin.getInstance().getConfig().getBoolean("logMethodCalls")) {
+            SwiftApiPlugin.getInstance().getLogger().info(
                     "SwiftApi method called: " + methodName + "()");
         }
     }
 
 
     protected String getAuthString(String methodName) {
-        Configuration config = Api.configuration().get("core", "config");
+        Configuration config = SwiftApiPlugin.getInstance().getConfiguration();
         String text = config.get("username") + methodName + config.get("password") + config.get("salt");
         return sha256(text);
     }

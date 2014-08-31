@@ -10,7 +10,7 @@ public class SwiftCommand implements ICommand
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args, SwiftApiPlugin plugin) {
         Api.message(sender, "Available commands: ");
-        for (String key : SwiftApiPlugin.commands.getMap().keySet()) {
+        for (String key : plugin.getCommands().getMap().keySet()) {
             Api.message(sender, key);
         }
 

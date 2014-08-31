@@ -1,18 +1,14 @@
 package org.phybros.minecraft;
 
-import org.apache.log4j.PropertyConfigurator;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 import org.phybros.minecraft.commands.*;
+import org.phybros.minecraft.configuration.Configuration;
 import org.phybros.minecraft.configuration.ConfigurationFactory;
 import org.phybros.minecraft.extensions.ExtensionBag;
-import org.phybros.minecraft.configuration.Configuration;
 import org.phybros.thrift.ConsoleLine;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,20 +16,17 @@ import java.util.List;
 
 public class SwiftApiPlugin extends JavaPlugin implements Listener {
 
-    public static SwiftApiPlugin plugin;
-    public static PluginManager pluginManager;
-    public static Configuration config;
-
-    public static final ExtensionBag extensions = new ExtensionBag();
-    public static final CommandHandler commands = new CommandHandler();
-    public static List<ConsoleLine> consoleBuffer = new ArrayList<>();
-
-    public static SwiftServer server;
+    protected static SwiftApiPlugin plugin;
+    protected Configuration config;
+    protected ConfigurationFactory configurationFactory;
+    protected ExtensionBag extensions;
+    protected CommandHandler commands;
+    protected List<ConsoleLine> consoleBuffer = new ArrayList<>();
+    protected SwiftServer server;
 
     private Configuration buildConfig(){
-
-        Api.configuration().add("core", this, "config");
-        Configuration config = Api.configuration().get("core", "config");
+        getConfigurationFactory().add("core", this, "config");
+        Configuration config = getConfigurationFactory().get("core", "config");
         config.getLayout()
                 .string("username", "password", "salt")
                 .integer("port")
@@ -63,22 +56,23 @@ public class SwiftApiPlugin extends JavaPlugin implements Listener {
 
         config.load();
         return config;
-
     }
 
 	@Override
 	public void onEnable() {
         plugin = this;
+        commands = new CommandHandler(plugin);
+        extensions = new ExtensionBag();
+        configurationFactory = new ConfigurationFactory();
         config = buildConfig();
-        pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(this, this);
+        getServer().getPluginManager().registerEvents(this, this);
 
-        Api.registerCommand("swift", new SwiftCommand());
-        Api.registerCommand("start", new SwiftStartCommand());
-        Api.registerCommand("stop", new SwiftStopCommand());
-        Api.registerCommand("extensions", new SwiftExtensionsCommand());
-        Api.registerCommand("config", new SwiftConfigCommand());
-        Api.registerCommands();
+        commands.register("swift", new SwiftCommand());
+        commands.register("start", new SwiftStartCommand());
+        commands.register("stop", new SwiftStopCommand());
+        commands.register("extensions", new SwiftExtensionsCommand());
+        commands.register("config", new SwiftConfigCommand());
+        registerCommands();
 
 		try {			
 			Metrics metrics = new Metrics(this);
@@ -88,11 +82,8 @@ public class SwiftApiPlugin extends JavaPlugin implements Listener {
 		}
 
 		try {
-			this.saveDefaultConfig();
-         //   Logger a = ((org.apache.logging.log4j.core.Logger) LogManager.getRootLogger());
-           // a.addAppender(org.apache.log4j.ConsoleAppender);
-            //PropertyConfigurator.configure("log4j.xml");
-                   ((org.apache.logging.log4j.core.Logger) LogManager.getRootLogger()).addFilter(new SwiftFilter(this));
+            this.saveDefaultConfig();
+            ((org.apache.logging.log4j.core.Logger) LogManager.getRootLogger()).addFilter(new SwiftFilter(this));
 
             server = new SwiftServer(this);
             server.startServer();
@@ -113,5 +104,70 @@ public class SwiftApiPlugin extends JavaPlugin implements Listener {
 		}
 	}
 
+
+    /**
+     * Gets the instantiated class for SwiftApiPlugin
+     *
+     * @return SwiftApiPlugin
+     */
+    public static SwiftApiPlugin getInstance() {
+        return plugin;
+    }
+
+    /**
+     * Gets the configuration of SwiftApi
+     *
+     * @return Configuration
+     */
+    public Configuration getConfiguration() {
+        return config;
+    }
+
+    /**
+     * Get the configuration factory, contains configuration of SwiftApi and it's extensions
+     *
+     * @return ConfigurationFactory
+     */
+    public ConfigurationFactory getConfigurationFactory() {
+        return configurationFactory;
+    }
+
+    /**
+     * Get the extensions container class instance
+     *
+     * @return ExtensionBag
+     */
+    public ExtensionBag getExtensions() {
+        return extensions;
+    }
+
+    /**
+     * The command handler registers and maintains all the SwiftApi and SwiftApi extensions commands
+     *
+     * @return CommandHandler
+     */
+    public CommandHandler getCommands() {
+        return commands;
+    }
+
+    /**
+     * Process the registered commands to execute when called
+     */
+    public void registerCommands(){
+        getCommand("swift").setExecutor(SwiftApiPlugin.getInstance().getCommands());
+    }
+
+    public List<ConsoleLine> getConsoleBuffer() {
+        return consoleBuffer;
+    }
+
+    /**
+     * The server instance which handles all communication
+     *
+     * @return SwiftServer
+     */
+    public SwiftServer getSwiftServer() {
+        return server;
+    }
 
 }

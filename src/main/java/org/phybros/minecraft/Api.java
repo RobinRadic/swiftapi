@@ -1,61 +1,49 @@
 package org.phybros.minecraft;
 
+import org.apache.thrift.TProcessor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.phybros.minecraft.commands.CommandHandler;
 import org.phybros.minecraft.commands.ICommand;
-import org.phybros.minecraft.configuration.ConfigurationFactory;
-import org.phybros.minecraft.extensions.ExtensionBag;
-import org.phybros.minecraft.configuration.Configuration;
-import org.phybros.thrift.ConsoleLine;
-
-
-import java.util.List;
 
 
 public class Api {
-    protected Api() {}
 
-    public static SwiftApiPlugin plugin() {
-        return SwiftApiPlugin.plugin;
+    private Api() {
     }
 
-    public static PluginManager pluginManager() {
-        return SwiftApiPlugin.pluginManager;
-    }
 
-    public static ConfigurationFactory configuration(){ return ConfigurationFactory.getInstance(); }
-
-    public static ExtensionBag extensions() {
-        return SwiftApiPlugin.extensions;
-    }
-
-    public static CommandHandler commands() {
-        return SwiftApiPlugin.commands;
-    }
-
-    public static List<ConsoleLine> consoleBuffer() {
-        return SwiftApiPlugin.consoleBuffer;
-    }
-
-    private static ConsoleCommandSender getConsoleSender(){
-        return SwiftApiPlugin.plugin.getServer().getConsoleSender();
-    }
-
+    /**
+     * Resolves if the debug config value is set
+     * @return
+     */
     public static boolean isDebug(){
-        return SwiftApiPlugin.config.getBoolean("debug");
+        return SwiftApiPlugin.getInstance().getConfiguration().getBoolean("debug");
     }
 
+
+    /**
+     * Registers a command in the swift namespace
+     * @param name The command name
+     * @param command A class that implements the ICommand interface to do stuff when the command is fired
+     */
     public static void registerCommand(String name, ICommand command) {
-        SwiftApiPlugin.commands.register(name, command);
+        SwiftApiPlugin.getInstance().getCommands().register(name, command);
     }
 
     public static void registerCommands() {
-        SwiftApiPlugin.plugin.getCommand("swift").setExecutor(SwiftApiPlugin.commands);
+        SwiftApiPlugin.getInstance().registerCommands();
     }
+
+    /**
+     * Registers a Thrift service to be included by the server
+     * @param serviceName The name of the service
+     * @param processor Instance of the server processor
+     */
+    public static void registerApiService(String serviceName, TProcessor processor){
+        SwiftApiPlugin.getInstance().getSwiftServer().addApiProcessor(serviceName, processor);
+    }
+
 
 
 
@@ -90,7 +78,7 @@ public class Api {
 
     public static void debug(String message){
         if(isDebug()) {
-            getConsoleSender().sendMessage("[" + ChatColor.LIGHT_PURPLE + "SwiftApi-Debug" + ChatColor.RESET + "] " + message);
+            SwiftApiPlugin.getInstance().getServer().getConsoleSender().sendMessage("[" + ChatColor.LIGHT_PURPLE + "SwiftApi-Debug" + ChatColor.RESET + "] " + message);
         }
     }
 

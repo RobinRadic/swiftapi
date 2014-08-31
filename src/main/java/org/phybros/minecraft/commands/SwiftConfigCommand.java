@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.phybros.minecraft.Api;
 import org.phybros.minecraft.SwiftApiPlugin;
 import org.phybros.minecraft.configuration.Configuration;
-import org.phybros.minecraft.extensions.SwiftExtension;
 
 import java.util.Map;
 
@@ -31,8 +30,8 @@ public class SwiftConfigCommand implements ICommand
             case 2:
                 // config list
                 if(args[1].equals("list")) {
-                    for (String accessor : Api.configuration().getAccessors()) {
-                        for(String fileName : Api.configuration().getAccessorConfigFiles(accessor)){
+                    for (String accessor : plugin.getConfigurationFactory().getAccessors()) {
+                        for(String fileName : plugin.getConfigurationFactory().getAccessorConfigFiles(accessor)){
                             Api.message(sender, ChatColor.BLUE + accessor + " " + ChatColor.YELLOW + fileName);
                         }
                     }
@@ -41,8 +40,8 @@ public class SwiftConfigCommand implements ICommand
             case 3:
                 // config get <accessor>
                 if(args[1].equals("get")){
-                    if(Api.configuration().hasAccessor(args[2])){
-                        for(String fileName : Api.configuration().getAccessorConfigFiles(args[2])){
+                    if(plugin.getConfigurationFactory().hasAccessor(args[2])){
+                        for(String fileName : plugin.getConfigurationFactory().getAccessorConfigFiles(args[2])){
                             Api.message(sender, ChatColor.BLUE + args[2] + " " + ChatColor.YELLOW + fileName);
                         }
                     }
@@ -51,11 +50,11 @@ public class SwiftConfigCommand implements ICommand
             case 4:
                 // config get <accessor> <filename>
                 if(args[1].equals("get")){
-                    if(Api.configuration().has(args[2], args[3])){
+                    if(plugin.getConfigurationFactory().has(args[2], args[3])){
                         Api.message(sender, ChatColor.BLUE + args[2] + " " + ChatColor.YELLOW + args[3]);
-                        for(Map.Entry<String, String> entry : Api.configuration().get(args[2], args[3]).getLayout().get().entrySet()){
+                        for(Map.Entry<String, String> entry : plugin.getConfigurationFactory().get(args[2], args[3]).getLayout().get().entrySet()){
                             if( ! entry.getValue().equals("section")) {
-                                Api.message(sender, entry.getKey(), getValue(Api.configuration().get(args[2], args[3]), entry.getKey()));
+                                Api.message(sender, entry.getKey(), getValue(plugin.getConfigurationFactory().get(args[2], args[3]), entry.getKey()));
                             }
                         }
                     }
@@ -64,9 +63,9 @@ public class SwiftConfigCommand implements ICommand
             case 5:
                 // config get <accessor> <filename> <path>
                 if(args[1].equals("get")){
-                    if(Api.configuration().has(args[2], args[3])){
-                        if(Api.configuration().get(args[2], args[3]).has(args[4])){
-                            Api.message(sender, getValue(Api.configuration().get(args[2], args[3]), args[4]));
+                    if(plugin.getConfigurationFactory().has(args[2], args[3])){
+                        if(plugin.getConfigurationFactory().get(args[2], args[3]).has(args[4])){
+                            Api.message(sender, getValue(plugin.getConfigurationFactory().get(args[2], args[3]), args[4]));
                         }
                     }
                 }
@@ -74,9 +73,9 @@ public class SwiftConfigCommand implements ICommand
             case 6:
                 // config set <accessor> <filename> <path> <value>
                 if(args[1].equals("set")){
-                    if(Api.configuration().has(args[2], args[3])){
-                        if(Api.configuration().get(args[2], args[3]).has(args[4])){
-                            Api.message(sender, setValue(Api.configuration().get(args[2], args[3]), args[4], args[5]));
+                    if(plugin.getConfigurationFactory().has(args[2], args[3])){
+                        if(plugin.getConfigurationFactory().get(args[2], args[3]).has(args[4])){
+                            Api.message(sender, setValue(plugin.getConfigurationFactory().get(args[2], args[3]), args[4], args[5]));
                         }
                     }
                 }

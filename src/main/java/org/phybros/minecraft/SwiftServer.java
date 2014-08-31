@@ -6,9 +6,9 @@ import org.apache.thrift.TException;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TServer;
-import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
-import org.apache.thrift.transport.*;
+import org.apache.thrift.transport.TNonblockingServerSocket;
+import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -25,15 +25,127 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.ProtectionDomain;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class SwiftServer {
+
+    private int port;
+    private TServer server;
+    private SwiftApiPlugin plugin;
+    protected HashMap<String,TProcessor> apiProcessors = new HashMap<>();
+
+    public SwiftServer(SwiftApiPlugin plugin) throws InterruptedException {
+        this.plugin = plugin;
+        this.port = plugin.getConfiguration().getInt("port");
+    }
+
+    public void addApiProcessor(String apiHandlerName, TProcessor apiProcessor){
+        apiProcessors.put(apiHandlerName, apiProcessor);
+    }
+
+    public HashMap<String,TProcessor> getApiProcessors(){
+        return apiProcessors;
+    }
+
+    public boolean hasApiProcessors(){
+        return apiProcessors.isEmpty() == false;
+    }
+
+    public void startServer(){
+        start(plugin.getServer().getConsoleSender(), this);
+    }
+
+    public void startServer(CommandSender sender){
+        start(sender, this);
+    }
+
+    public void stopServer(){
+        stop(plugin.getServer().getConsoleSender());
+    }
+
+    public void stopServer(CommandSender sender){
+        stop(sender);
+    }
+
+    private void stop(CommandSender sender) {
+        try {
+            Api.message(sender, "Stopping server...");
+            server.stop();
+            Api.message(sender, "Server stopped successfully");
+        } catch (Exception e) {
+            plugin.getLogger().severe("Error while stopping server: " + e.getMessage());
+            Api.message(sender, "Error while stopping server: " + e.getMessage());
+        }
+    }
+
+    private void start(CommandSender cmdSender, SwiftServer swiftServerInstance) {
+        final CommandSender sender = cmdSender;
+        final SwiftServer swiftServer = swiftServerInstance;
+        (new Thread(new Runnable() {
+
+            public void run() {
+                try {
+                    plugin.getLogger().info( "Sleeping for 2 seconds before starting up...");
+                    Thread.sleep(2000);
+
+                    TMultiplexedProcessor processor = new TMultiplexedProcessor();
+                    processor.registerProcessor("SwiftApi", new SwiftApi.Processor(new ApiHandler()));
+
+
+                    if (plugin.getExtensions().count() > 0) {
+                        for (String extensionClassName : plugin.getExtensions().all().keySet()) {
+                            SwiftExtension extension = plugin.getExtensions().get(extensionClassName);
+                            if (extension.hasApiHandlers()) {
+                                for (String fullClassName : extension.getApiHandlers()) {
+                                    String[] splitted = fullClassName.split("\\.");
+                                    String className = splitted[splitted.length - 1];
+                                    TProcessor tp = extension.getApiProcessor(className);
+                                    processor.registerProcessor(className, tp);
+                                    Api.debug("Registered extension", className);
+                                }
+                            }
+                        }
+                    }
+
+                    if(swiftServer.hasApiProcessors()) {
+                        for (Map.Entry<String, TProcessor> entry : swiftServer.getApiProcessors().entrySet()) {
+                            processor.registerProcessor(entry.getKey(), entry.getValue());
+                        }
+                    }
+
+                    // create the transport
+                    TNonblockingServerTransport tst = null;
+                    tst = new TNonblockingServerSocket(port);
+
+                    // set up the server arguments
+                    TThreadedSelectorServer.Args a = null;
+                    a = new TThreadedSelectorServer.Args(tst);
+
+                    // allocate the server
+                    server = new TThreadedSelectorServer(a.processor(processor));
+
+                    plugin.getLogger().info("Started up and listening on port " + port);
+
+                    // start up the server
+                    server.serve();
+                } catch (Exception e) {
+                    plugin.getLogger().severe("SwiftApi:SwiftServer:Run:Exception > " + e.getMessage());
+                    plugin.getLogger().severe("SwiftApi:SwiftServer:Run:Exception > In: " + e.getClass().getName());
+                    for (StackTraceElement el : e.getStackTrace()) {
+
+                        plugin.getLogger().severe("trace: file:[" + el.getFileName() + "]@" + el.getLineNumber() + " - " + el.getMethodName() + " - " + el.toString());
+                    }
+
+                    plugin.getLogger().severe(e.getMessage());
+                }
+            }
+
+        })).start();
+
+    }
 
 
     public class ApiHandler extends SwiftApiHandler implements SwiftApi.Iface {
@@ -2121,106 +2233,6 @@ public class SwiftServer {
             zis.closeEntry();
             zis.close();
         }
-    }
-
-    private int port;
-
-    private TServer server;
-    private SwiftApiPlugin plugin;
-
-    public SwiftServer(SwiftApiPlugin plugin) throws InterruptedException {
-        this.plugin = plugin;
-        this.port = SwiftApiPlugin.config.getInt("port");
-    }
-
-    public void startServer(){
-        start(plugin.getServer().getConsoleSender());
-    }
-
-    public void startServer(CommandSender sender){
-        start(sender);
-    }
-
-    public void stopServer(){
-        stop(plugin.getServer().getConsoleSender());
-    }
-
-    public void stopServer(CommandSender sender){
-        stop(sender);
-    }
-
-    private void stop(CommandSender sender) {
-        try {
-            Api.message(sender, "Stopping server...");
-            server.stop();
-            Api.message(sender, "Server stopped successfully");
-        } catch (Exception e) {
-            plugin.getLogger().severe("Error while stopping server: " + e.getMessage());
-            Api.message(sender, "Error while stopping server: " + e.getMessage());
-        }
-    }
-
-    private void start(CommandSender cmdSender) {
-        final CommandSender sender = cmdSender;
-
-        (new Thread(new Runnable() {
-
-            public void run() {
-                try {
-                    plugin.getLogger().info( "Sleeping for 2 seconds before starting up...");
-                    Thread.sleep(2000);
-
-                    TMultiplexedProcessor processor = new TMultiplexedProcessor();
-                    processor.registerProcessor("SwiftApi", new SwiftApi.Processor(new ApiHandler()));
-
-
-                    if (Api.extensions().count() > 0) {
-                        for (String extensionClassName : Api.extensions().all().keySet()) {
-                            SwiftExtension extension = Api.extensions().get(extensionClassName);
-                            if (extension.hasApiHandlers()) {
-                                for (String fullClassName : extension.getApiHandlers()) {
-                                    String[] splitted = fullClassName.split("\\.");
-                                    String className = splitted[splitted.length - 1];
-                                    TProcessor tp = extension.getApiProcessor(className);
-                                    processor.registerProcessor(className, tp);
-                                    Api.debug("Registered extension", className);
-                                }
-                            }
-                        }
-                    }
-
-
-
-                    // create the transport
-                    TNonblockingServerTransport tst = null;
-                    tst = new TNonblockingServerSocket(port);
-
-                    // set up the server arguments
-                    TThreadedSelectorServer.Args a = null;
-                    a = new TThreadedSelectorServer.Args(tst);
-
-                    // allocate the server
-                    server = new TThreadedSelectorServer(a.processor(processor));
-
-                    plugin.getLogger().info("Started up and listening on port " + port);
-
-                    // start up the server
-                    server.serve();
-                } catch (Exception e) {
-                    plugin.getLogger().severe("SwiftApi:SwiftServer:Run:Exception > " + e.getMessage());
-                    plugin.getLogger().severe("SwiftApi:SwiftServer:Run:Exception > In: " + e.getClass().getName());
-                    for (StackTraceElement el : e.getStackTrace()) {
-
-                        plugin.getLogger().severe("trace: file:[" + el.getFileName() + "]@" + el.getLineNumber() + " - " + el.getMethodName() + " - " + el.toString());
-                    }
-
-
-                    plugin.getLogger().severe(e.getMessage());
-                }
-            }
-
-        })).start();
-
     }
 
 }

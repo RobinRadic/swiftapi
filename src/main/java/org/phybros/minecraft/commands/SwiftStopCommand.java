@@ -9,7 +9,7 @@ public class SwiftStopCommand implements ICommand
 {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args, SwiftApiPlugin plugin) {
-        SwiftApiPlugin.server.stopServer(sender);
+        plugin.getSwiftServer().stopServer(sender);
         Api.message(sender, "SwiftApi Server stopped");
         return false;
     }

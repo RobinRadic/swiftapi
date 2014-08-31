@@ -9,7 +9,10 @@ import java.util.HashMap;
 
 public class CommandHandler implements CommandExecutor
 {
-
+    protected SwiftApiPlugin plugin;
+    public CommandHandler(SwiftApiPlugin plugin){
+        this.plugin = plugin;
+    }
     private static HashMap<String, ICommand> commands = new HashMap<String, ICommand>();
 
     public void register(String name, ICommand cmd) {
@@ -31,13 +34,13 @@ public class CommandHandler implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if(args.length == 0) {
-            getExecutor("swift").onCommand(sender, cmd, commandLabel, args, SwiftApiPlugin.plugin);
+            getExecutor("swift").onCommand(sender, cmd, commandLabel, args, plugin);
             return true;
         }
 
         if(args.length > 0) {
             if(exists(args[0])){
-                getExecutor(args[0]).onCommand(sender, cmd, commandLabel, args, SwiftApiPlugin.plugin);
+                getExecutor(args[0]).onCommand(sender, cmd, commandLabel, args, plugin);
                 return true;
             } else {
                 sender.sendMessage("This command doesn't exist!");

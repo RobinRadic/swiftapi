@@ -10,7 +10,7 @@ public class SwiftStartCommand implements ICommand
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args, SwiftApiPlugin plugin) {
         Api.message(sender, "SwiftApi Server Starting");
-        SwiftApiPlugin.server.startServer(sender);
+        plugin.getSwiftServer().startServer(sender);
         return false;
     }
 }
