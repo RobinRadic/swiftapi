@@ -62,6 +62,7 @@ abstract public class SwiftApiHandler {
         }
         return result;
     }
+
     /**
      * Log an API call. If the config option logMethodCalls is false, this
      * method does nothing.
@@ -98,5 +99,17 @@ abstract public class SwiftApiHandler {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    /**
+     * Shorthand method that combines logCall and authenticate
+     *
+     * @param authString The authentication hash
+     * @param methodName Name of the method that is called.
+     * @throws EAuthException
+     */
+    protected void authenticateAndLog(String authString, String methodName) throws EAuthException {
+        authenticate(authString, methodName);
+        logCall(methodName);
     }
 }

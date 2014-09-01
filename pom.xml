@@ -13,9 +13,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <bukkit.version>1.7.9-R0.2</bukkit.version>
-        <log4j.rootLogger>debug,stdout</log4j.rootLogger>
-        <log4j.threshhold>log4j.appender.stdout.layout</log4j.threshhold>
-        <log4j.appender.stdout>log4j.appender.stdout.layout.ConversionPattern</log4j.appender.stdout>
     </properties>
 
     <dependencies>
@@ -55,6 +52,14 @@
             <version>R7</version>
             <scope>compile</scope>
         </dependency>
+        <!--
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        -->
     </dependencies>
     <repositories>
         <repository>

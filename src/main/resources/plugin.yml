@@ -1,12 +1,17 @@
 name: SwiftApi
 description: A plugin that exposes bukkit functionality over an Apache Thrift interface
 main: org.phybros.minecraft.SwiftApiPlugin
-version: 1.7
+version: 2.0
 website: http://dev.bukkit.org/server-mods/swiftapi
-author: phybros
+authors: [phybros, deradic]
 commands:
   swift:
     description: Swift command
     usage: /<command>
-    permission: swiftapi.basic
+    permission: swiftapi.admin
     permission-message: This command requires a higher permission!
+
+permissions:
+  swiftapi.admin:
+    default: op
+    description: Give players with op everything by default
