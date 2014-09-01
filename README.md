@@ -1,146 +1,133 @@
 ![SwiftApi Logo](https://dev.bukkit.org/media/images/62/892/SwiftApi-256.png "SwiftApi is an Apache Thrift based API for your Bukkit server")
 
-Check the [SwiftApi](https://bitbucket.org/phybros/swiftapi) page for all information. 
+##### Check the [Wiki](https://bitbucket.org/robinradic/swiftapi/wiki) for detailed information
+
+An Apache Thrift based API for CraftBukkit Minecraft servers. This API allows
+simple calls to Bukkit methods over the internet using almost any programming
+language. If you're a programmer who wants to create a killer server admin
+app, this is the plugin for you!
+
+Check out [MineCenter](http://minecenter.org) for an example of what you can do with the plugin.
+
+Build Prerequisites
+----
+* Apache Maven 3.0+
 
 
-##### Commands
-- `swift` lists all registered commands including those from extensions
-- `swift start` starts the server
-- `swift stop` stops the server
-- `swift extensions` lists all extensions
-- `swift config` displays a configuration how-to
-- `swift config list` displays all extension and files that can be used in get/set
-- `swift config get <accessor> <file> <path>` shows the configuration value
-- `swift config set <accessor> <file> <path> <value>` will set a config item
+Build Instructions
+----
+Assuming you have maven installed, just run
 
-### Extending SwiftApi
+    mvn clean package
 
-For a working demo example [check out the swiftapi-serverdata repository](https://bitbucket.org/robinradic/swiftapi-serverdata) or [click here to download](https://bitbucket.org/robinradic/swiftapi-serverdata/get/97a36d844a5d.zip).
- 
-SwiftApi provides several classes to ease the creation of extensions. The general gist is:
+And maven will produce a jar file called `/target/SwiftApi-<version>.jar`
 
-- `org.phybros.minecraft.extensions.SwiftExtension` is an abstract class extending JavaPlugin. It provides several improvements to make extending a piece of cake.
-- `org.phybros.minecraft.Api` provides several static methods that do certain stuff you can invoke from anywhere in your code.
-- `org.phybors.commands.ICommand` is the interface used to internally register commands, so you can easily create and register commands in the swift namespace.
- 
-###### SwiftExtension
-```
-#!java
-package org.radic.minecraft.swiftapi.serverdata;
+Installation
+----
+Just drop the jar file into your `plugins/` directory on the server, and 
+restart the server.
 
-import org.apache.thrift.TProcessor;
-import org.phybros.minecraft.Api;
-import org.phybros.minecraft.extensions.SwiftExtension;
-import org.radic.minecraft.swiftapi.serverdata.commands.ServerDataCommand;
-import org.radic.minecraft.swiftapi.serverdata.handlers.ServerDataApiHandler;
-import org.radic.minecraft.swiftapi.serverdata.thrift.SwiftApiServerData;
+Configuration
+----
+Edit the `plugins/SwiftApi/config.yml` file to taste. Some important options to 
+set are:
 
-public class ServerDataExtension extends SwiftExtension {
+    # Authentication Information (CHANGE THESE)
+    username: admin
+    password: password
+    salt: saltines
 
-    // Note that we are not using onEnable and onDisable, instead use enable and disable
-    public void enable() {
-        Api.debug("Haai");
-    }
+Leaving these at default would make it easy for an attacker to use this API on 
+your server.
 
-    public void disable() {
-        Api.debug("Baai");
-    }
+Creating a Client
+----
+Once you have 
+[downloaded the Apache Thrift compiler](http://thrift.apache.org/download/) and 
+checked out this repo, you can create a client app in a few lines of code.
 
-    @Override
-    public void register() {
+**1. Generate the code**  
+You can generate the client library (example is in C#) by typing
+
+    thrift -r --gen csharp SwiftApi.thrift
+
+The `-r` option tells the compiler to generate code for all files (including 
+ones that are referenced in `SwiftApi.thrift` with the `include` directive.
+The `--gen csharp` option tells the compiler to generate C# code. 
+This command will leave you with a gen-csharp directory with all the code you 
+need to connect to a server running the SwiftApi plugin.
+
+**2. Include the code in your app**  
+If you're using C#, you can just drag all the source files right into your 
+client app to use them, or alternatively you could create a new project with 
+the generated files to keep your code and the generated code seperate.
+
+**3. Call some methods!**  
+Once you have included this generated code into your app, you can call API 
+methods like so:
+
+```csharp
+TTransport transport = new TSocket("your.bukkitserver.org", 21111);
+transport = new TFramedTransport(transport);
+
+TProtocol Protocol = new TBinaryProtocol(transport, true, true);
+
+TMultiplexedProtocol multiplex;
+
+multiplex = new TMultiplexedProtocol(Protocol, "SwiftApi");
+SwiftApi.Iface swiftApi = new SwiftApi.Client(multiplex);
+
+// If you are using SwiftApi extensions, SwiftApiVault for example
+multiplex = new TMultiplexedProtocol(Protocol, "SwiftApiVault");
+SwiftApiVault.Iface swiftApiVault = new SwiftApiVault.Client(multiplex);
     
-        // Any commands registered with the api will be callable like: swift vault
-        registerCommand("serverdata", new ServerDataCommand());
-        
-        // This will register your handler with the SwiftServer and allows remote clients to use your methods
-        registerApiHandler("org.radic.serverdata.serverdata.thrift.SwiftApiServerData");
-        
-        // If you have configuration files, you can define them here. registerConfig(accessor, filename)
-        // accessor is used for command line configuration, like: swift config set serverdata config logging.enabled true
-        // filename is the name of the .yml file, without .yml
-        registerConfig("serverdata", "config")
-                .section("logging")
-                .bool("logging.enabled")
-                .string("logging.file");
-        
-        // By declaring .section, .bool, .string, etc. You can define what configuration may be altered from the command line.        
-        registerConfig("serverdata", "worlds")
-                .string("type");
-    }
-
-    @Override
-    public TProcessor getApiProcessor(String name) {
-        // For every Api handler you've registered with registerApiHandler, you need to return the processor.
-        if (name.equals("SwiftApiServerData")) {
-            return new SwiftApiServerData.Processor(new ServerDataApiHandler());
-        }
-        return null;
-    }
-}
+transport.Open();
+Console.WriteLine("Server Version: " + swiftApi.getServerVersion(authString));
+Console.WriteLine("Permission groups: " + swiftApiVault.getGroups(authString));
+transport.Close();
 ```
-
-###### SwiftApi server extension handler
-```
-#!java
-package org.radic.minecraft.swiftapi.serverdata.handlers;
-
-import org.radic.minecraft.swiftapi.serverdata.SysInfo;
-import org.radic.minecraft.swiftapi.serverdata.thrift.*;
-
-public class ServerDataApiHandler extends SwiftApiHandler implements SwiftApiServerData.Iface {
-
-    private SysInfo si;
-    public ServerDataApiHandler(){
-        si = SysInfo.getInstance();
-    }
-
-    public Size makeSize(long bytes) {
-        Size size = new Size();
-        size.prettyBits = si.prettifyBytes(bytes, true);
-        size.prettyBytes = si.prettifyBytes(bytes, false);
-        size.KB = ((int) bytes / 1024);
-        size.MB = ((int) bytes / 1024 / 1024);
-        size.GB = ((int) bytes / 1024 / 1024 / 1024);
-        return size;
-    }
     
-    // etc..
-}
+The variable `authString` is required by all API methods. The `authString` is 
+calculated like this:
+
+```csharp
+authString = sha256(username + methodName + password + salt);
 ```
 
+Where the `username`, `password` and `salt` are the values you configured in the
+plugin's config.yml file at install time and `methodName` is the name of the 
+method you are calling.
 
-###### Commands
-classes implementing `org.phybros.minecraft.commands.ICommand` can be registered with `SwiftExtension.registerCommand(name, command)`
-```
-#!java
-package org.radic.minecraft.swiftapi.serverdata.commands;
+Available Languages
+----
+As of Apache Thrift version 0.9.1, the languages you can use to talk to your server with are:
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.phybros.minecraft.Api;
-import org.phybros.minecraft.commands.ICommand;
+* Actionscript 3 (AS3)
+* C (using GLib)
+* C
+* C#
+* Cocoa (Objective-C on Mac OS and iOS)
+* Delphi
+* Erlang
+* Go
+* Haskell
+* Java
+* Javascript
+* OCaml
+* Perl
+* PHP
+* Python (including Twisted async support)
+* Ruby
+* Smalltalk
 
-import java.io.File;
+More Info
+----
+For more information on Thrift (tutorials, examples in different languages 
+etc), check these sites:
 
-public class ServerDataCommand implements ICommand
-{
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args, SwiftApiPlugin plugin) {
-        long maxMemory = Runtime.getRuntime().maxMemory();
-        File[] roots = File.listRoots();
-        for (File root : roots) {
-            Api.message(sender, "File system root: " + root.getAbsolutePath());
-            Api.message(sender, "Total space (bytes): " + root.getTotalSpace());
-            Api.message(sender, "Free space (bytes): " + root.getFreeSpace());
-            Api.message(sender, "Usable space (bytes): " + root.getUsableSpace());
-        }
-        return true;
-    }
+* [Apache Thrift Wikipedia Page](http://en.wikipedia.org/wiki/Apache_Thrift)
+* [Apache Thrift Website](http://thrift.apache.org)
+* [Apache Thrift Wiki](http://wiki.apache.org/thrift/) (Recommended!)
+* [The "Missing Guide" to Apache Thrift](http://diwakergupta.github.com/thrift-missing-guide/) (Recommended!)
+* [A blog post I wrote about Thrift](http://willwarren.com/2012/01/24/creating-a-public-api-with-apache-thrift/)
 
-
-}
-```
-
-
-##### License
-GNU General Public License version 3 (GPLv3)
