@@ -6,7 +6,9 @@ Because Bukkit is dead (greatly timed, exactly when SwiftApi v2.0.0 was done) v2
 is the new Minecraft modding API taking Bukkit's place. Combining the strengths of the server and client modding,
  i'm certain Sponge is the way forward.
   
-  
+#### SwiftApi v2.0 for Sponge is still under development. [Check repository branch SwiftApi-sponge](https://github.com/RobinRadic/swiftapi/tree/SwiftApi-sponge)
+
+
 I have been keeping track of Sponge's development, and they've 
 [just released API v1.0](https://forums.spongepowered.org/t/status-update-api-release-edition/4889). 
 This means i'll slowly start converting SwiftApi v2 to the Sponge platform. The same goes for Apache Thrift, 
