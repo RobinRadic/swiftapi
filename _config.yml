@@ -1,0 +1,20 @@
+title:            SwiftApi
+description:      An Apache Thrift based API for Sponge Minecraft servers. This API allows simple calls to Sponge methods over the internet using almost any programming language.
+# Your site's domain goes here (eg: //mmistakes.github.io, http://mademistakes.com, etc)
+# When testing locally leave blank or use http://localhost:4000
+url: http://robinradic.github.io
+
+
+layouts:     ./_includes/_layouts
+data_source:  ./_includes/_data
+
+
+
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone:    Amsterdam/Netherlands
+future:      true
+
+
+sass:
+  sass_dir: _sass
+  style: compressed
