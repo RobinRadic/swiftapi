@@ -80,32 +80,33 @@ the generated files to keep your code and the generated code seperate.
 Once you have included this generated code into your app, you can call API 
 methods like so:
 
+{% highlight csharp %}
+TTransport transport = new TSocket("your.bukkitserver.org", 21111);
+transport = new TFramedTransport(transport);
 
-    TTransport transport = new TSocket("your.bukkitserver.org", 21111);
-    transport = new TFramedTransport(transport);
-    
-    TProtocol Protocol = new TBinaryProtocol(transport, true, true);
-    
-    TMultiplexedProtocol multiplex;
-    
-    multiplex = new TMultiplexedProtocol(Protocol, "SwiftApi");
-    SwiftApi.Iface swiftApi = new SwiftApi.Client(multiplex);
-    
-    // If you are using SwiftApi extensions, SwiftApiVault for example
-    multiplex = new TMultiplexedProtocol(Protocol, "SwiftApiVault");
-    SwiftApiVault.Iface swiftApiVault = new SwiftApiVault.Client(multiplex);
-        
-    transport.Open();
-    Console.WriteLine("Server Version: " + swiftApi.getServerVersion(authString));
-    Console.WriteLine("Permission groups: " + swiftApiVault.getGroups(authString));
-    transport.Close();
+TProtocol Protocol = new TBinaryProtocol(transport, true, true);
 
+TMultiplexedProtocol multiplex;
+
+multiplex = new TMultiplexedProtocol(Protocol, "SwiftApi");
+SwiftApi.Iface swiftApi = new SwiftApi.Client(multiplex);
+
+// If you are using SwiftApi extensions, SwiftApiVault for example
+multiplex = new TMultiplexedProtocol(Protocol, "SwiftApiVault");
+SwiftApiVault.Iface swiftApiVault = new SwiftApiVault.Client(multiplex);
+    
+transport.Open();
+Console.WriteLine("Server Version: " + swiftApi.getServerVersion(authString));
+Console.WriteLine("Permission groups: " + swiftApiVault.getGroups(authString));
+transport.Close();
+{% endhighlight %}
     
 The variable `authString` is required by all API methods. The `authString` is 
 calculated like this:
 
-`authString = sha256(username + methodName + password + salt);`
-
+{% highlight csharp %}
+authString = sha256(username + methodName + password + salt);
+{% endhighlight %}
 
 Where the `username`, `password` and `salt` are the values you configured in the
 plugin's config.yml file at install time and `methodName` is the name of the 
