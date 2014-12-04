@@ -12,14 +12,13 @@ widgets:
             name: 'README'
             slug: readme
             file: readme.html
-          olddocs:
-            name: 'v1.7 readme'
-            slug: olddocs
-            file: olddocs.html
+          example:
+            name: 'Example'
+            slug: example
+            file: example.html
 comments: true
 ---
-SwiftApi
-========================
+![SwiftApi Logo](https://dev.bukkit.org/media/images/62/892/SwiftApi-256.png "SwiftApi is an Apache Thrift based API for your Bukkit server")
 
 [![Build Status](https://travis-ci.org/RobinRadic/blade-extensions.svg?branch=master)](https://travis-ci.org/RobinRadic/blade-extensions)
 [![Latest Stable Version](https://poser.pugx.org/radic/blade-extensions/v/stable.svg)](https://packagist.org/packages/radic/blade-extensions)
