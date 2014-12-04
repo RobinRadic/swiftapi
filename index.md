@@ -1,7 +1,7 @@
 ---
 layout: faq
-title: SwiftApi
-subtitle: An Apache Thrift based API for Sponge Minecraft servers. This API allows simple calls to Sponge methods over the internet using almost any programming language
+title: SwiftApi v2.0 for Sponge 
+subtitle: An Apache Thrift based API for Sponge Minecraft servers.
 keywords: [sponge, minecraft, plugin, remote, api]
 comments: true
 widgets:
