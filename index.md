@@ -3,7 +3,6 @@ layout: faq
 title: SwiftApi v2.0 for Sponge 
 subtitle: An Apache Thrift based API for Sponge Minecraft servers.
 keywords: [sponge, minecraft, plugin, remote, api]
-comments: true
 widgets:
     - name: faq
       selector: "#faq"
@@ -13,6 +12,11 @@ widgets:
             name: 'README'
             slug: readme
             file: readme.html
+          olddocs:
+            name: 'v1.7 readme'
+            slug: olddocs
+            file: olddocs.html
+comments: true
 ---
 SwiftApi
 ========================
