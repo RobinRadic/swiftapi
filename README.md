@@ -1,6 +1,10 @@
 ![SwiftApi Logo](https://dev.bukkit.org/media/images/62/892/SwiftApi-256.png "SwiftApi is an Apache Thrift based API for your Bukkit server")
 
-##### Check the [Wiki](https://bitbucket.org/robinradic/swiftapi/wiki) for detailed information
+[![Build Status](https://travis-ci.org/RobinRadic/swiftapi.svg?branch=master)](https://travis-ci.org/RobinRadic/swiftapi)
+[![GitHub version](https://badge.fury.io/gh/robinradic%2Fswiftapi.svg)](http://badge.fury.io/gh/robinradic%2Fswiftapi)
+[![Goto documentation](http://img.shields.io/badge/goto-documentation-orange.svg)](http://robinradic.github.io/swiftapi)
+[![Goto repository](http://img.shields.io/badge/goto-repository-orange.svg)](https://github.com/robinradic/swiftapi)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://radic.mit-license.org)
 
 An Apache Thrift based API for CraftBukkit Minecraft servers. This API allows
 simple calls to Bukkit methods over the internet using almost any programming
@@ -11,7 +15,7 @@ Check out [MineCenter](http://minecenter.org) for an example of what you can do 
 
 Build Prerequisites
 ----
-* Apache Maven 3.0+
+* gradle 2+
 
 
 Build Instructions
