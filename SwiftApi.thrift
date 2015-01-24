@@ -1,7 +1,7 @@
-namespace java org.phybros.thrift
-namespace csharp org.phybros.thrift
+namespace java nl.radic.thrift
+//namespace csharp org.phybros.thrift
 namespace php Radic.Minecraft.SwiftApi.Thrift
-namespace js SwiftApi.Thrift
+//namespace js SwiftApi.Thrift
 
 /**
  * Various codes used for catching errors

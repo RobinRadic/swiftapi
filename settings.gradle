@@ -1,2 +1,3 @@
-rootProject.name = SwiftApi
-include "SpongeAPI"
+rootProject.name = theName
+//include 'SpongeAPI'
+//project(':SpongeAPI').projectDir = file('libs/SpongeAPI')
